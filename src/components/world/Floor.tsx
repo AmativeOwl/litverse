@@ -25,7 +25,7 @@ export function Floor({ lerpedRef }: FloorProps) {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
       <planeGeometry args={[60, 60, 1, 1]} />
-      <meshStandardMaterial ref={materialRef} metalness={0.55} roughness={0.35} />
+      <meshStandardMaterial ref={materialRef} metalness={0.12} roughness={0.4} />
     </mesh>
   )
 }

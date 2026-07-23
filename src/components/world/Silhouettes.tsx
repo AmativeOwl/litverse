@@ -126,12 +126,13 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
 
     if (materialRef.current) {
       materialRef.current.emissive.set(lerped.lighting.keyLightColor)
-      // Raised from the original 0.35 cap -- at typical camera distance the
-      // figures were nearly indistinguishable from the fog/background at
-      // that intensity. This keeps them a dark silhouette (base color is
-      // still near-black) while giving enough of a warm rim to read clearly
-      // as separate shapes against the backdrop.
-      materialRef.current.emissiveIntensity = Math.min(0.7, lerped.lighting.keyLightIntensity * 0.3)
+      // Emissive is angle-independent -- it was doing the job of making the
+      // figures visible, but that also flattened them into a uniform-color
+      // cutout with no shading gradient. Base color carries visibility now
+      // (bright enough for the key light's diffuse/NdotL response to
+      // actually vary across the form), so emissive only needs to be a thin
+      // warm rim on top, not the dominant term.
+      materialRef.current.emissiveIntensity = Math.min(0.18, lerped.lighting.keyLightIntensity * 0.08)
     }
   })
 
@@ -142,7 +143,7 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       frustumCulled={false}
     >
       <primitive object={geometry} attach="geometry" />
-      <meshStandardMaterial ref={materialRef} color="#0c0a12" roughness={0.75} metalness={0.1} />
+      <meshStandardMaterial ref={materialRef} color="#2a2436" roughness={0.85} metalness={0.05} />
     </instancedMesh>
   )
 }
