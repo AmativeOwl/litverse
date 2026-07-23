@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { ACESFilmicToneMapping, SRGBColorSpace } from 'three'
 import { useReadingStore } from '../store/readingStore'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
@@ -58,7 +59,23 @@ function WorldSceneContents() {
 export default function WorldScene() {
   return (
     <div className="h-full w-full bg-neutral-950">
-      <Canvas camera={{ position: [0, 2.6, 9], fov: 50, near: 0.1, far: 100 }} dpr={[1, 2]}>
+      <Canvas
+        camera={{ position: [0, 2.6, 9], fov: 50, near: 0.1, far: 100 }}
+        dpr={[1, 2]}
+        // Explicit renderer configuration rather than relying on R3F's
+        // (currently matching) implicit defaults, so this stays correct even
+        // if those defaults ever change: MSAA on, ACES filmic tone mapping
+        // (a physically-based operator that rolls off highlights instead of
+        // clipping them, unlike the default linear/no-tonemap response) for
+        // an accurate HDR-to-display mapping, and explicit high-precision
+        // sRGB color output for correct color reproduction on screen.
+        gl={{ antialias: true, powerPreference: 'high-performance', precision: 'highp' }}
+        onCreated={({ gl }) => {
+          gl.toneMapping = ACESFilmicToneMapping
+          gl.toneMappingExposure = 1
+          gl.outputColorSpace = SRGBColorSpace
+        }}
+      >
         <Suspense fallback={null}>
           <WorldSceneContents />
         </Suspense>
