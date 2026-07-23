@@ -18,6 +18,12 @@ dist-ssr
 # hand-tuned output lives in src/data/, not here.
 scripts/output/
 
+# Kokoro voice style-embedding files used by scripts/generate-narration-audio.ts
+# — large binaries, redownloadable from HuggingFace on demand, not source.
+# (The generated public/narration/ WAV files + manifest.json ARE committed —
+# unlike the above, those are real deployed static assets Vercel serves.)
+scripts/tts-voices/
+
 # Logs
 logs
 *.log
