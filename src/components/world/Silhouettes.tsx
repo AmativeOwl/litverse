@@ -1,6 +1,7 @@
 import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import type { SceneBeat } from '../../types'
 import type { LerpedSceneBeat } from './beatMath'
 import { createSeededRandom, hashStringToSeed } from './seededRandom'
@@ -16,7 +17,41 @@ interface SilhouettesProps {
  * or issuing more than one draw call. */
 const MAX_SILHOUETTES = 90
 const FLOOR_RADIUS = 22
-const BASE_Y = 0.83
+
+const BODY_HEIGHT = 1.0
+const BODY_RADIUS_TOP = 0.18
+const BODY_RADIUS_BOTTOM = 0.24
+const HEAD_RADIUS = 0.16
+/** How far the head sinks into the body's top so the join reads as a neck, not a gap. */
+const HEAD_OVERLAP = 0.45
+
+const BODY_HALF_HEIGHT = BODY_HEIGHT / 2
+const HEAD_CENTER_Y = BODY_HALF_HEIGHT + HEAD_RADIUS * HEAD_OVERLAP
+/** Distance from a figure's local origin down to its feet -- places it exactly on the floor (y=0). */
+const BASE_Y = BODY_HALF_HEIGHT
+
+/**
+ * A single static, unarticulated "figure" shape -- a tapered body (wider at
+ * the hem, like a coat/dress silhouette) with a rounded head merged on top --
+ * still just one abstract silhouette per instance (no bones, no rig, no
+ * per-part animation beyond the shared sway), still one draw call for the
+ * whole crowd. Built once and reused as the InstancedMesh's geometry.
+ */
+function buildFigureGeometry(): THREE.BufferGeometry {
+  const body = new THREE.CylinderGeometry(
+    BODY_RADIUS_TOP,
+    BODY_RADIUS_BOTTOM,
+    BODY_HEIGHT,
+    6,
+    1,
+  )
+  const head = new THREE.SphereGeometry(HEAD_RADIUS, 8, 6)
+  head.translate(0, HEAD_CENTER_Y, 0)
+  const merged = mergeGeometries([body, head])
+  body.dispose()
+  head.dispose()
+  return merged
+}
 
 interface Layout {
   x: number
@@ -49,15 +84,17 @@ function buildLayout(): Layout[] {
 }
 
 /**
- * Crowd abstraction: a single `InstancedMesh` of low-poly capsule
- * silhouettes (one draw call regardless of count), deterministic seeded
- * scatter, slow per-instance sine sway applied entirely in `useFrame`.
+ * Crowd abstraction: a single `InstancedMesh` of low-poly figure-like
+ * silhouettes (tapered body + head, one draw call regardless of count),
+ * deterministic seeded scatter, slow per-instance sine sway applied entirely
+ * in `useFrame`.
  */
 export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null)
   const materialRef = useRef<THREE.MeshStandardMaterial>(null)
   const layout = useMemo(buildLayout, [])
   const dummy = useMemo(() => new THREE.Object3D(), [])
+  const geometry = useMemo(buildFigureGeometry, [])
 
   useFrame(({ clock }) => {
     const lerped = lerpedRef.current
@@ -98,7 +135,7 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       args={[undefined, undefined, MAX_SILHOUETTES]}
       frustumCulled={false}
     >
-      <capsuleGeometry args={[0.28, 1.1, 2, 6]} />
+      <primitive object={geometry} attach="geometry" />
       <meshStandardMaterial ref={materialRef} color="#050508" roughness={0.8} metalness={0.05} />
     </instancedMesh>
   )
