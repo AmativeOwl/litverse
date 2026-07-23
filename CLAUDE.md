@@ -72,6 +72,7 @@ Spoke one sentence per `SpeechSynthesisUtterance`, chained via `onend`. Word-bou
 - **Camera**: `useFrame`-driven rig with named scripted behaviors (`slow-orbit`, `static-drift`, `push-in`/`pull-back`).
 - **Beat transitions**: `useLerpedSceneBeat` hook interpolates every numeric/color field each frame on beat change rather than snapping.
 - **Echo-phrase feature**: when `activeSpeakerId` matches a `namedSlots` entry, that silhouette pulses (emissive/scale) and a short floating text fragment (drei `<Text>`/`<Html>`) fades in/out near it.
+- **Deco paint grade** (`world/DecoPaintEffect.ts`, chained after `<Bloom>` in `PostProcessing.tsx`): a custom `postprocessing` `Effect` layering posterize color-banding, a soft edge-bleed blur, procedural canvas grain, a warm/cool split-tone grade, and a gold sunburst-ray + scalloped-vignette Deco ornament overlay — blending Gris's painterly softness with the flat-gouache backdrop art of golden-age (Tom & Jerry-style) animated shorts and Art Deco ornament motifs, tuned subtle so the scene still reads as itself, just painted.
 - **Fullscreen constrained-orbit mode** (phase 3 stretch): toggle expands the pane to fullscreen and swaps in `OrbitControls` with tight distance/angle constraints, panning disabled. Narration keeps playing in the background.
 
 ## Build-time content generation
