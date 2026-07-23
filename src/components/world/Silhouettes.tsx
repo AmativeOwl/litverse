@@ -72,7 +72,9 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       const instance = layout[i]
       if (!instance) continue
       const sway =
-        animation === 'sway' ? Math.sin(elapsed * instance.swaySpeed + instance.swayPhase) * instance.swayAmplitude : 0
+        animation === 'sway'
+          ? Math.sin(elapsed * instance.swaySpeed + instance.swayPhase) * instance.swayAmplitude
+          : 0
       dummy.position.set(instance.x, BASE_Y, instance.z)
       dummy.rotation.set(0, instance.rotationY + sway * 0.4, 0)
       dummy.scale.set(1, 1, 1)
@@ -83,12 +85,19 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
 
     if (materialRef.current) {
       materialRef.current.emissive.set(lerped.lighting.keyLightColor)
-      materialRef.current.emissiveIntensity = Math.min(0.35, lerped.lighting.keyLightIntensity * 0.12)
+      materialRef.current.emissiveIntensity = Math.min(
+        0.35,
+        lerped.lighting.keyLightIntensity * 0.12,
+      )
     }
   })
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, MAX_SILHOUETTES]} frustumCulled={false}>
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, MAX_SILHOUETTES]}
+      frustumCulled={false}
+    >
       <capsuleGeometry args={[0.28, 1.1, 2, 6]} />
       <meshStandardMaterial ref={materialRef} color="#050508" roughness={0.8} metalness={0.05} />
     </instancedMesh>

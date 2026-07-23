@@ -13,7 +13,12 @@ import {
 function makeBeat(overrides: Partial<SceneBeat> & { id: string }): SceneBeat {
   return {
     palette: { background: '#000000', primary: '#000000', accent: '#000000', fog: '#000000' },
-    lighting: { ambientIntensity: 0, keyLightIntensity: 0, keyLightColor: '#000000', bloomStrength: 0 },
+    lighting: {
+      ambientIntensity: 0,
+      keyLightIntensity: 0,
+      keyLightColor: '#000000',
+      bloomStrength: 0,
+    },
     particles: { type: 'none', density: 0, speed: 0, sizeRange: [0, 0] },
     camera: { behavior: 'static-drift', speed: 0, fov: 50 },
     silhouettes: { count: 0, animation: 'still' },
@@ -102,7 +107,12 @@ describe('lerpSceneBeat', () => {
   const from = makeBeat({
     id: 'from',
     palette: { background: '#000000', primary: '#111111', accent: '#222222', fog: '#333333' },
-    lighting: { ambientIntensity: 0, keyLightIntensity: 1, keyLightColor: '#000000', bloomStrength: 0 },
+    lighting: {
+      ambientIntensity: 0,
+      keyLightIntensity: 1,
+      keyLightColor: '#000000',
+      bloomStrength: 0,
+    },
     particles: { type: 'dust', density: 10, speed: 1, sizeRange: [0.1, 0.2] },
     camera: { behavior: 'static-drift', speed: 0.1, fov: 40 },
     silhouettes: { count: 10, animation: 'sway' },
@@ -110,7 +120,12 @@ describe('lerpSceneBeat', () => {
   const to = makeBeat({
     id: 'to',
     palette: { background: '#ffffff', primary: '#eeeeee', accent: '#dddddd', fog: '#cccccc' },
-    lighting: { ambientIntensity: 1, keyLightIntensity: 2, keyLightColor: '#ffffff', bloomStrength: 1 },
+    lighting: {
+      ambientIntensity: 1,
+      keyLightIntensity: 2,
+      keyLightColor: '#ffffff',
+      bloomStrength: 1,
+    },
     particles: { type: 'confetti', density: 100, speed: 2, sizeRange: [0.2, 0.4] },
     camera: { behavior: 'slow-orbit', speed: 0.3, fov: 60 },
     silhouettes: { count: 50, animation: 'sway' },
