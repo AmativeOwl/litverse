@@ -14,9 +14,9 @@ import { BlendFunction, Effect } from 'postprocessing'
 const DEFAULT_POSTERIZE_LEVELS = 6.0
 const DEFAULT_BLEED_AMOUNT = 0.35
 const BLEED_TEXEL_RADIUS = 1.5
-const DEFAULT_GRAIN_OPACITY = 0.035
+const DEFAULT_GRAIN_OPACITY = 0.018
 const DEFAULT_SPLIT_TONE_STRENGTH = 0.05
-const DEFAULT_ORNAMENT_OPACITY = 0.12
+const DEFAULT_ORNAMENT_OPACITY = 0.045
 
 // Screen-space UV anchor the sunburst rays radiate from -- "roughly
 // top-center", approximating the key light's usual position above the scene
@@ -84,7 +84,10 @@ const fragmentShader = /* glsl */ `
     float sunAngle = atan(toSun.y, toSun.x);
     float sunDist = length(toSun);
     float rays = pow(abs(sin(sunAngle * ${SUNBURST_RAY_COUNT.toFixed(1)})), ${SUNBURST_RAY_SHARPNESS.toFixed(1)});
-    float rayFalloff = smoothstep(0.95, 0.05, sunDist);
+    // Falls off to 0 well before the frame edge (rather than spanning almost
+    // the whole viewport) so the rays read as a faint suggestion near their
+    // top-center origin instead of dominating the entire scene.
+    float rayFalloff = smoothstep(0.45, 0.05, sunDist);
     float sunburst = rays * rayFalloff;
 
     vec2 centered = uv - 0.5;
@@ -93,7 +96,7 @@ const fragmentShader = /* glsl */ `
     float scallop = sin(edgeAngle * ${SCALLOP_COUNT.toFixed(1)}) * 0.015;
     float vignette = smoothstep(0.34 + scallop, 0.62 + scallop, edgeDist);
 
-    vec3 ornament = ornamentColor * (sunburst * 0.6 + vignette * 0.5) * ornamentOpacity;
+    vec3 ornament = ornamentColor * (sunburst * 0.4 + vignette * 0.35) * ornamentOpacity;
     painted += ornament;
 
     outputColor = vec4(painted, inputColor.a);
