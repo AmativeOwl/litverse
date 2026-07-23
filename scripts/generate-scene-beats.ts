@@ -238,7 +238,9 @@ async function callOpenAI(prompt: string, model: string): Promise<string> {
 async function draftFromLLM(prompt: string, model: string | undefined): Promise<string> {
   if (process.env.ANTHROPIC_API_KEY) return callAnthropic(prompt, model ?? 'claude-sonnet-4-5')
   if (process.env.OPENAI_API_KEY) return callOpenAI(prompt, model ?? 'gpt-4o')
-  throw new Error('Set ANTHROPIC_API_KEY or OPENAI_API_KEY in your local .env before running this script.')
+  throw new Error(
+    'Set ANTHROPIC_API_KEY or OPENAI_API_KEY in your local .env before running this script.',
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -335,7 +337,9 @@ async function main() {
 
   console.error(`All ${args.retries + 1} attempts failed. Last error:`)
   console.error(lastError)
-  console.error('Falling back to hand-authoring is expected/fine — see CLAUDE.md: treat AI output as a first draft only.')
+  console.error(
+    'Falling back to hand-authoring is expected/fine — see CLAUDE.md: treat AI output as a first draft only.',
+  )
   process.exit(1)
 }
 

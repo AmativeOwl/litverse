@@ -48,7 +48,10 @@ describe('gatsbyCh3 passage — structural validity', () => {
 
   it('has no empty paragraphs (every paragraph has at least one sentence)', () => {
     for (const paragraph of allParagraphs(gatsbyCh3)) {
-      expect(paragraph.sentences.length, `paragraph ${paragraph.id} has no sentences`).toBeGreaterThan(0)
+      expect(
+        paragraph.sentences.length,
+        `paragraph ${paragraph.id} has no sentences`,
+      ).toBeGreaterThan(0)
     }
   })
 
