@@ -17,6 +17,13 @@ jobs:
           node-version: 22
           cache: npm
 
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.tmp
+          key: ${{ runner.os }}-tsbuildinfo-${{ hashFiles('src/**/*.ts', 'src/**/*.tsx', 'tsconfig*.json') }}
+          restore-keys: |
+            ${{ runner.os }}-tsbuildinfo-
+
       - run: npm ci
 
       - run: npm run format:check
