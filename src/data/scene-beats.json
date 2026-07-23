@@ -8,8 +8,8 @@
       "fog": "#12172e"
     },
     "lighting": {
-      "ambientIntensity": 0.4,
-      "keyLightIntensity": 1.2,
+      "ambientIntensity": 0.55,
+      "keyLightIntensity": 1.6,
       "keyLightColor": "#f4c98a",
       "bloomStrength": 0.6
     },
@@ -17,12 +17,16 @@
       "type": "bokeh",
       "density": 40,
       "speed": 0.2,
-      "sizeRange": [0.05, 0.2]
+      "sizeRange": [0.12, 0.35]
     },
     "camera": {
       "behavior": "static-drift",
       "speed": 0.1,
       "fov": 50
+    },
+    "silhouettes": {
+      "count": 14,
+      "animation": "sway"
     },
     "transitionDurationMs": 2000
   },
@@ -50,6 +54,10 @@
       "behavior": "slow-orbit",
       "speed": 0.3,
       "fov": 55
+    },
+    "silhouettes": {
+      "count": 48,
+      "animation": "sway"
     },
     "transitionDurationMs": 1500
   }

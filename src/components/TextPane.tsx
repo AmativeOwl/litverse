@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useRef, type RefObject } from 'react'
+import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
 import { useReadingStore } from '../store/readingStore'
 import type { Passage } from '../types'
 
@@ -170,15 +171,11 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
   const currentSentenceIndex = useReadingStore((s) => s.currentSentenceIndex)
   const currentWordId = useReadingStore((s) => s.currentWordId)
   const playbackState = useReadingStore((s) => s.playbackState)
-  const jumpToSentence = useReadingStore((s) => s.jumpToSentence)
-  const play = useReadingStore((s) => s.play)
-  const pause = useReadingStore((s) => s.pause)
 
   const rootRef = useRef<HTMLDivElement>(null)
   const scrollToActive = useAutoScroll(rootRef)
 
-  // Flat list of every sentence in reading order, used for the debug bar's
-  // next/prev word affordance and for clamping seek targets.
+  // Flat list of every sentence in reading order, used for clamping seek targets.
   const flatSentences = passage.paragraphs.flatMap((p) => p.sentences)
   const totalSentences = flatSentences.length
 
@@ -193,60 +190,43 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
     scrollToActive(target)
   }, [currentWordId, currentSentenceIndex, scrollToActive])
 
-  const handleDebugNextWord = () => {
-    const sentence = flatSentences[currentSentenceIndex]
-    if (!sentence) return
-    const wordIndex = sentence.words.findIndex((w) => w.id === currentWordId)
-    const nextWord = sentence.words[wordIndex + 1] ?? sentence.words[0]
-    if (nextWord) {
-      useReadingStore.setState({ currentWordId: nextWord.id })
-    }
-  }
-
   let globalIndex = -1
 
   return (
     <div ref={rootRef} className="px-8 py-10 sm:px-12 md:px-16">
       {/*
-        Temporary manual-QA affordance for Phase 1 (no narrationController yet
-        to drive real playback). Gating this behind `import.meta.env.DEV`
-        would need `src/vite-env.d.ts`, which isn't part of this scaffold and
-        is outside this track's file ownership — left as-is (see final report
-        "Open Questions"). Safe to delete once real narration lands in
-        Phase 2, or gate behind DEV once that file exists.
+        Real playback controls, wired to narrationController (the sole owner
+        of the SpeechSynthesisUtterance lifecycle) rather than the reading
+        store's own thin play/pause/jumpToSentence actions -- those only
+        flip store state and don't touch speech synthesis. Word-by-word
+        advancement has no manual control here because it's driven entirely
+        by narrationController's onboundary/fallback-timer handling once
+        playback starts.
       */}
       <div className="mb-8 flex flex-wrap items-center gap-2 rounded-md border border-neutral-800 bg-neutral-900/60 px-3 py-2 font-sans text-xs text-neutral-400">
-        <span className="mr-1 font-semibold uppercase tracking-wide text-neutral-500">Debug</span>
         <button
           type="button"
           className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
-          onClick={() => jumpToSentence(Math.max(0, currentSentenceIndex - 1))}
+          onClick={() => seekToSentence(Math.max(0, currentSentenceIndex - 1))}
         >
           ◀ Prev sentence
         </button>
         <button
           type="button"
           className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
-          onClick={() => jumpToSentence(Math.min(totalSentences - 1, currentSentenceIndex + 1))}
+          onClick={() => seekToSentence(Math.min(totalSentences - 1, currentSentenceIndex + 1))}
         >
           Next sentence ▶
         </button>
         <button
           type="button"
           className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
-          onClick={handleDebugNextWord}
-        >
-          Next word
-        </button>
-        <button
-          type="button"
-          className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
-          onClick={() => (playbackState === 'playing' ? pause() : play())}
+          onClick={() => (playbackState === 'playing' ? narrationPause() : narrationPlay())}
         >
           {playbackState === 'playing' ? 'Pause' : 'Play'}
         </button>
         <span className="ml-auto">
-          sentence {currentSentenceIndex} · word {currentWordId ?? '—'} · {playbackState}
+          sentence {currentSentenceIndex} · {playbackState}
         </span>
       </div>
 
@@ -269,11 +249,9 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
                     type="button"
                     data-sentence-index={sentenceIndex}
                     aria-current={isActiveSentence ? 'true' : undefined}
-                    onClick={() => jumpToSentence(sentenceIndex)}
+                    onClick={() => seekToSentence(sentenceIndex)}
                     className={`m-0 inline appearance-none rounded border-0 bg-transparent px-0.5 py-0.5 text-left font-serif text-inherit cursor-pointer transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 ${
-                      isActiveSentence
-                        ? 'bg-amber-400/10 text-neutral-50'
-                        : 'text-neutral-200 hover:bg-neutral-800/60'
+                      isActiveSentence ? 'bg-amber-400/10 text-neutral-50' : 'text-neutral-200 hover:bg-neutral-800/60'
                     }`}
                   >
                     {sentence.words.map((word, wordIndex) => {
@@ -282,9 +260,7 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
                         <Fragment key={word.id}>
                           <span
                             data-word-id={word.id}
-                            className={
-                              isActiveWord ? 'rounded bg-amber-400/80 text-neutral-900' : undefined
-                            }
+                            className={isActiveWord ? 'rounded bg-amber-400/80 text-neutral-900' : undefined}
                           >
                             {word.text}
                           </span>

@@ -5,6 +5,20 @@ import TextPane from './TextPane'
 import { useReadingStore } from '../store/readingStore'
 import type { Passage } from '../types'
 
+// TextPane's playback controls call the real narrationController module
+// (the sole owner of the SpeechSynthesisUtterance lifecycle) rather than the
+// store's own thin play/pause/jumpToSentence actions. narrationController's
+// own behavior (offset-table search, fallback timers, Safari handling, etc.)
+// is already covered by its 29 dedicated tests -- this file only needs to
+// verify TextPane wires clicks to the right calls with the right arguments,
+// so the module is mocked here rather than re-exercising real speech
+// synthesis (which would also require mocking window.speechSynthesis).
+vi.mock('../lib/narrationController', () => ({
+  play: vi.fn(),
+  pause: vi.fn(),
+  seekToSentence: vi.fn(),
+}))
+
 // jsdom does not implement scrollIntoView.
 beforeEach(() => {
   Element.prototype.scrollIntoView = vi.fn()
@@ -21,6 +35,7 @@ afterEach(() => {
     playbackState: 'idle',
   })
   vi.useRealTimers()
+  vi.clearAllMocks()
 })
 
 const fixturePassage: Passage = {
@@ -114,26 +129,21 @@ describe('TextPane word/sentence highlighting', () => {
   it('updates highlighting reactively when the store changes after mount', () => {
     render(<TextPane passage={fixturePassage} />)
 
-    expect(document.querySelector('[data-sentence-index="0"]')).toHaveAttribute(
-      'aria-current',
-      'true',
-    )
+    expect(document.querySelector('[data-sentence-index="0"]')).toHaveAttribute('aria-current', 'true')
 
     act(() => {
       useReadingStore.setState({ currentSentenceIndex: 2, currentWordId: 'w8' })
     })
 
     expect(document.querySelector('[data-sentence-index="0"]')).not.toHaveAttribute('aria-current')
-    expect(document.querySelector('[data-sentence-index="2"]')).toHaveAttribute(
-      'aria-current',
-      'true',
-    )
+    expect(document.querySelector('[data-sentence-index="2"]')).toHaveAttribute('aria-current', 'true')
     expect(document.querySelector('[data-word-id="w8"]')).toHaveClass('bg-amber-400/80')
   })
 })
 
 describe('TextPane click-to-seek', () => {
-  it('calls jumpToSentence with the clicked sentence global index', async () => {
+  it('calls narrationController.seekToSentence with the clicked sentence global index', async () => {
+    const { seekToSentence } = await import('../lib/narrationController')
     const user = userEvent.setup()
     render(<TextPane passage={fixturePassage} />)
 
@@ -142,10 +152,11 @@ describe('TextPane click-to-seek', () => {
 
     await user.click(thirdSentenceButton!)
 
-    expect(useReadingStore.getState().currentSentenceIndex).toBe(2)
+    expect(seekToSentence).toHaveBeenCalledWith(2)
   })
 
   it('is keyboard-activatable (native button semantics)', async () => {
+    const { seekToSentence } = await import('../lib/narrationController')
     const user = userEvent.setup()
     render(<TextPane passage={fixturePassage} />)
 
@@ -155,7 +166,7 @@ describe('TextPane click-to-seek', () => {
     secondSentenceButton!.focus()
     await user.keyboard('{Enter}')
 
-    expect(useReadingStore.getState().currentSentenceIndex).toBe(1)
+    expect(seekToSentence).toHaveBeenCalledWith(1)
   })
 })
 
@@ -180,10 +191,7 @@ describe('TextPane accessibility', () => {
     })
     render(<TextPane passage={fixturePassage} />)
 
-    expect(screen.getByRole('button', { name: 'The second sentence.' })).toHaveAttribute(
-      'aria-current',
-      'true',
-    )
+    expect(screen.getByRole('button', { name: 'The second sentence.' })).toHaveAttribute('aria-current', 'true')
   })
 })
 
@@ -270,17 +278,26 @@ describe('TextPane auto-scroll', () => {
   })
 })
 
-describe('TextPane debug affordance', () => {
-  it('play/pause debug button calls the store actions', async () => {
+describe('TextPane playback controls', () => {
+  it('the Play button calls narrationController.play()', async () => {
+    const { play } = await import('../lib/narrationController')
     const user = userEvent.setup()
     render(<TextPane passage={fixturePassage} />)
 
-    expect(useReadingStore.getState().playbackState).toBe('idle')
-
     await user.click(screen.getByRole('button', { name: 'Play' }))
-    expect(useReadingStore.getState().playbackState).toBe('playing')
+    expect(play).toHaveBeenCalledTimes(1)
+  })
+
+  it('shows a Pause button and calls narrationController.pause() while playing', async () => {
+    const { pause } = await import('../lib/narrationController')
+    const user = userEvent.setup()
+
+    act(() => {
+      useReadingStore.setState({ playbackState: 'playing' })
+    })
+    render(<TextPane passage={fixturePassage} />)
 
     await user.click(screen.getByRole('button', { name: 'Pause' }))
-    expect(useReadingStore.getState().playbackState).toBe('paused')
+    expect(pause).toHaveBeenCalledTimes(1)
   })
 })

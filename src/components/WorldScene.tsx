@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { ACESFilmicToneMapping, SRGBColorSpace } from 'three'
 import { useReadingStore } from '../store/readingStore'
+import sceneBeatsData from '../data/scene-beats.json'
+import type { SceneBeat } from '../types'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
 import { Floor } from './world/Floor'
@@ -9,8 +11,24 @@ import { Lighting } from './world/Lighting'
 import { Particles } from './world/Particles'
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
-import { resolveFixtureBeat } from './world/fixtureBeats'
 import { useLerpedSceneBeat } from './world/useLerpedSceneBeat'
+
+// Phase 2 integration: resolves against the real, content-track-owned beat
+// data instead of the local Phase-1 fixtures (fixtureBeats.ts, still kept
+// around for this track's own isolated tests). Built once at module scope
+// since the JSON is static.
+const SCENE_BEATS = sceneBeatsData as SceneBeat[]
+const SCENE_BEATS_BY_ID: Record<string, SceneBeat> = Object.fromEntries(SCENE_BEATS.map((beat) => [beat.id, beat]))
+const DEFAULT_SCENE_BEAT = SCENE_BEATS[0]
+
+function resolveSceneBeat(activeSceneBeatId: string | null): SceneBeat {
+  const beat = activeSceneBeatId ? SCENE_BEATS_BY_ID[activeSceneBeatId] : undefined
+  if (beat) return beat
+  if (!DEFAULT_SCENE_BEAT) {
+    throw new Error('src/data/scene-beats.json must contain at least one SceneBeat')
+  }
+  return DEFAULT_SCENE_BEAT
+}
 
 /**
  * Lives inside <Canvas>, so it's free to call R3F hooks (useFrame/useThree).
@@ -22,13 +40,7 @@ import { useLerpedSceneBeat } from './world/useLerpedSceneBeat'
  */
 function WorldSceneContents() {
   const activeSceneBeatId = useReadingStore((state) => state.activeSceneBeatId)
-
-  // Phase 1: this track owns no data files, so it resolves against its own
-  // local fixtures (see fixtureBeats.ts) rather than importing
-  // `src/data/scene-beats.json`, which belongs to the content track. Phase 2
-  // integration swaps this resolution for the real beat set, still read via
-  // `activeSceneBeatId` -- this component's shape doesn't change.
-  const targetBeat = resolveFixtureBeat(activeSceneBeatId)
+  const targetBeat = resolveSceneBeat(activeSceneBeatId)
 
   // Every numeric/color field of the active beat is interpolated here, once,
   // into a ref that per-frame consumers below read inside their own
