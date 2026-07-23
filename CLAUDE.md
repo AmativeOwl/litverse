@@ -69,13 +69,52 @@ The 3D engine (`WorldScene.tsx`) only ever reads `SceneBeat` objects, never sent
 
 `scripts/generate-scene-beats.ts` — offline Node script using the Anthropic/OpenAI key (local `.env`, gitignored) to help segment the Gatsby chapter text into `Passage`/`Sentence`/`Word` JSON and draft first-pass `SceneBeat` values. Treat AI output as a first draft — hand-tune lighting/color/timing by eye afterward. This script is fully isolated from `src/` and never imported by client code.
 
-## Milestones (48h)
+## Build Plan — today's prototype (~4–5h, parallelized via git worktrees)
 
-- **M0 (h0–2)** — Vite/Tailwind/R3F/Zustand scaffold, placeholder two-pane layout, GitHub → Vercel auto-deploy verified working.
-- **M1 (h2–14)** — Vertical slice: one hand-authored paragraph fully working end-to-end (narration, highlighting, one tuned `SceneBeat`). Deploy. Do not proceed until bug-free per QA checklist.
-- **M2 (h14–30)** — Full party excerpt, 2–3 more scene beats, speaker attribution + echo-phrase feature, click-to-seek. Deploy after every meaningful chunk.
-- **M3 (h30–46)** — Polish pass (lighting/camera/timing tuning), fallback states, fullscreen constrained-orbit mode, optional second scene if M1–M2 are solid.
-- **M4 (h46–48)** — Feature freeze, full QA pass on the actual demo machine, final deploy verification, recorded fallback demo.
+Goal: a working, deployed vertical slice by end of day. Split into three phases so independent tracks can run in parallel worktrees without touching each other's files.
+
+### Phase 0 — Foundation (sequential, ~30–45 min, on `main`)
+
+Blocks everyone below — do this first, in one pass, on `main` directly:
+
+1. Vite + React + TS (strict) + Tailwind scaffold; ESLint/Prettier minimal config.
+2. `src/types.ts` — **frozen contract**: `Word`, `Sentence`, `Paragraph`, `Passage`, `SceneBeat` interfaces exactly as specified above. Do not change the shape once Phase 1 starts without re-syncing all tracks.
+3. `src/store/readingStore.ts` — full Zustand store per the sync-architecture spec above (`currentSentenceIndex`, `currentWordId`, `activeSceneBeatId`, `activeSpeakerId`, `playbackState`, plus `play`/`pause`/`jumpToSentence` action signatures). Actions can be thin (state transitions only) — Track A wires real narration behavior into them later, but their *signatures* are frozen now.
+4. `src/App.tsx` — final two-pane layout, already importing and rendering `<TextPane />` and `<WorldScene />` side by side. This file should not need to change again after Phase 0.
+5. Stub component files so imports resolve immediately: `src/components/TextPane.tsx`, `src/components/WorldScene.tsx` (each just renders a placeholder), `src/lib/narrationController.ts` (no-op export), `src/data/gatsby-ch3.ts` + `src/data/scene-beats.json` (one trivial fixture entry each) — these are the exact files each Phase 1 track will own and overwrite.
+6. GitHub → Vercel auto-deploy connected and verified with this placeholder state.
+7. Commit and push to `main`. Create the four Phase 1 branches/worktrees from this commit.
+
+```
+git worktree add .worktrees/narration   -b feat/narration
+git worktree add .worktrees/text-pane   -b feat/text-pane
+git worktree add .worktrees/world-scene -b feat/world-scene
+git worktree add .worktrees/content     -b feat/content
+```
+
+(add `.worktrees/` to `.gitignore`)
+
+### Phase 1 — Parallel tracks (~2–2.5h, run simultaneously in separate worktrees)
+
+Each track **only edits the files it owns** — this is what keeps merges conflict-free. Each track should test against a small local fixture (a hardcoded 2–3 sentence `Passage` / one `SceneBeat`) rather than waiting on another track's output, and swap to the real thing at integration.
+
+| Track | Branch | Owns (only touches) | Depends on from Phase 0 | Done when |
+|---|---|---|---|---|
+| **Narration** | `feat/narration` | `src/lib/narrationController.ts` | `types.ts`, `readingStore.ts` action signatures | Given any fixture `Passage`, calling `play()` speaks sentence-by-sentence, `currentWordId`/`currentSentenceIndex` update in the store in step with a manual `console.log` or the store devtools, pause/resume/seek work, Safari fallback timer engages when boundary events are sparse |
+| **Text pane / UI** | `feat/text-pane` | `src/components/TextPane.tsx`, its styles | `types.ts`, `readingStore.ts` (read-only) | Given fixture store state (settable via store devtools or a temporary debug button), the correct word/sentence highlight renders, auto-scroll works and backs off on manual scroll, layout is polished (serif type, spacing) |
+| **World scene** | `feat/world-scene` | `src/components/WorldScene.tsx` and any sub-components/hooks it needs (camera rig, silhouettes, beat-lerp) | `types.ts`, `readingStore.ts` (read-only) | Given a fixture `activeSceneBeatId`, the scene renders fog/floor/silhouettes/particles/bloom/camera per that beat's params, and changing the fixture beat smoothly lerps between two beats |
+| **Content** | `feat/content` | `src/data/gatsby-ch3.ts`, `src/data/scene-beats.json`, `scripts/generate-scene-beats.ts` | `types.ts` only | The Gatsby Ch.3 opening passage is segmented into valid `Passage` JSON conforming to `types.ts`, with 2–3 authored `SceneBeat`s (arrival / peak revelry) and `sceneBeatId`s assigned per paragraph |
+
+### Phase 2 — Integration (sequential, ~1–1.5h, back on `main`)
+
+1. Merge all four branches into `main` (low conflict risk since file ownership didn't overlap).
+2. Swap every track's fixture data for the real thing: `App.tsx`'s children already point at the real components; `narrationController` now drives the store from `data/gatsby-ch3.ts`; `WorldScene` now reads beats from `data/scene-beats.json` via the store.
+3. Run the manual QA checklist (see below) end-to-end.
+4. Deploy, verify on the live Vercel URL in an incognito window.
+
+### Beyond today's prototype (remaining 48h budget)
+
+Once the above is deployed and solid, continue per the original scope-expansion plan: full party excerpt across more paragraphs, speaker attribution + echo-phrase feature, click-to-seek polish, fullscreen constrained-orbit mode, lighting/camera tuning pass, fallback states for unsupported browsers, and — only if the core is rock solid — a second scene to demonstrate engine reusability. Feature-freeze with time for a full QA pass and a recorded fallback demo before the 48h limit.
 
 ## QA approach
 
