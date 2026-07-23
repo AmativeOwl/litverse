@@ -122,11 +122,7 @@ function wavDurationMs(audio: ArrayBuffer, sampleRate: number): number {
  * back to the sentence's actual total audio duration -- a safe, always-
  * correct upper bound for where the last word's speech actually ends.
  */
-function alignWordTimings(
-  sentence: Sentence,
-  metadata: TtsMetadata,
-  totalDurationMs: number,
-): WordTiming[] | null {
+function alignWordTimings(sentence: Sentence, metadata: TtsMetadata, totalDurationMs: number): WordTiming[] | null {
   if (metadata.words.length !== sentence.words.length) return null
 
   const timings: WordTiming[] = []
@@ -151,10 +147,7 @@ function writeWav(path: string, audio: ArrayBuffer): void {
   writeFileSync(path, Buffer.from(audio))
 }
 
-async function synthesizeSentence(
-  worker: Worker,
-  text: string,
-): Promise<{ metadata: TtsMetadata }> {
+async function synthesizeSentence(worker: Worker, text: string): Promise<{ metadata: TtsMetadata }> {
   return new Promise((resolveResult, reject) => {
     const onMessage = (message: { type: string; data: unknown }) => {
       if (message.type === 'audio') {

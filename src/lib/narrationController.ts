@@ -1,200 +1,93 @@
-// Plain TS module, zero React/three.js knowledge — sole owner of the
-// SpeechSynthesisUtterance lifecycle and sole writer of narration-position
-// state (currentSentenceIndex, currentWordId, activeSceneBeatId,
-// activeSpeakerId, playbackState) on the Zustand reading store.
+// Plain TS module, zero React/three.js knowledge — sole owner of narration
+// playback and sole writer of narration-position state (currentSentenceIndex,
+// currentWordId, activeSceneBeatId, activeSpeakerId, playbackState) on the
+// Zustand reading store.
+//
+// Plays pre-rendered per-sentence audio files (generated offline by
+// scripts/generate-narration-audio.ts, never at runtime) instead of the Web
+// Speech API — browser TTS voices sound noticeably robotic; the pre-rendered
+// audio uses Kokoro (an open-weight neural TTS model) and sounds much closer
+// to human. Generating it once, offline, and shipping the result as static
+// assets keeps the "no live AI generation at runtime" rule fully intact: this
+// module makes zero AI-inference calls, only fetches a JSON manifest and
+// plays <audio> elements, same risk profile as loading an image.
 //
 // See CLAUDE.md § "Narration sync architecture" for the full spec this
 // module implements.
 
 import { useReadingStore, type PlaybackState } from '../store/readingStore'
-import type { Passage, Sentence, Word } from '../types'
+import type { Passage, Sentence } from '../types'
 
 // ---------------------------------------------------------------------------
-// Pure, browser-API-free helpers (unit-testable in isolation — see the
-// "Testing note" in CLAUDE.md: jsdom has no Web Speech API, so these are
-// deliberately kept free of any dependency on it).
+// Pure, browser-API-free helpers (unit-testable in isolation).
 // ---------------------------------------------------------------------------
 
-/** One word's character range within its utterance's flattened text. */
-export interface WordOffset {
+/** One word's timing within its sentence's pre-rendered audio clip, as produced by scripts/generate-narration-audio.ts. */
+export interface WordTiming {
   wordId: string
-  charStart: number
-  charEnd: number
+  startMs: number
+  endMs: number
 }
 
-/** The minimal shape of a SpeechSynthesisVoice this module cares about. */
-export interface VoiceLike {
-  name: string
-  lang: string
+/** One sentence's entry in a passage's narration manifest (public/narration/<passageId>/manifest.json). */
+export interface NarrationManifestEntry {
+  audioUrl: string
+  durationMs: number
+  words: WordTiming[]
 }
+
+export type NarrationManifest = Record<string, NarrationManifestEntry>
 
 /**
- * Builds the text spoken for one sentence's utterance by concatenating its
- * words' `normalized` text with single spaces, alongside a parallel offset
- * table mapping each word to its `[charStart, charEnd)` range in that text.
- * This offset table is what `onboundary`'s `charIndex` gets matched against.
+ * Finds the word that should be highlighted at a given playback position:
+ * the last word whose `startMs` has already passed. `words` must be sorted
+ * ascending by `startMs` (guaranteed by how the offline generation script
+ * writes them). Before the first word starts (or for an empty array before
+ * any word exists), returns the first word so the highlight snaps on
+ * immediately rather than showing nothing during any lead-in silence.
  */
-export function buildUtteranceText(sentence: Sentence): { text: string; offsets: WordOffset[] } {
-  let text = ''
-  const offsets: WordOffset[] = []
-  for (let i = 0; i < sentence.words.length; i += 1) {
-    const word = sentence.words[i]
-    if (!word) continue
-    if (i > 0) text += ' '
-    const charStart = text.length
-    text += word.normalized
-    offsets.push({ wordId: word.id, charStart, charEnd: text.length })
-  }
-  return { text, offsets }
-}
-
-/**
- * Binary-searches the offset table for the word whose range contains
- * `charIndex`. Tolerant, not an exact-equality lookup: browsers don't
- * consistently land `charIndex` precisely on a word's first character (it
- * may land in the preceding space, or be off by a character or two for some
- * voices), so on a miss this clamps to whichever neighboring word is
- * closest rather than returning null.
- */
-export function findWordIdAtCharIndex(offsets: WordOffset[], charIndex: number): string | null {
-  if (offsets.length === 0) return null
-
+export function findWordIdAtTime(words: readonly WordTiming[], timeMs: number): string | null {
+  if (words.length === 0) return null
   let lo = 0
-  let hi = offsets.length - 1
-  while (lo <= hi) {
-    const mid = (lo + hi) >> 1
-    const word = offsets[mid]
-    if (!word) break
-    if (charIndex < word.charStart) {
-      hi = mid - 1
-    } else if (charIndex >= word.charEnd) {
-      lo = mid + 1
+  let hi = words.length - 1
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2)
+    const word = words[mid]
+    if (word && word.startMs <= timeMs) {
+      lo = mid
     } else {
-      return word.wordId
+      hi = mid - 1
     }
   }
-
-  // Tolerant fallback: charIndex fell between words (e.g. on the space
-  // separator) or outside the table entirely. `lo` is the insertion point;
-  // clamp to whichever adjacent word is nearer.
-  const after = offsets[Math.min(lo, offsets.length - 1)]
-  const before = offsets[Math.max(lo - 1, 0)]
-  if (!after) return before ? before.wordId : null
-  if (!before) return after.wordId
-  if (before === after) return after.wordId
-
-  const distAfter = Math.abs(after.charStart - charIndex)
-  const distBefore = Math.abs(charIndex - before.charEnd)
-  return distAfter <= distBefore ? after.wordId : before.wordId
-}
-
-/** Preference-ordered voice names, best-quality/most-natural first. Never a single hardcoded name. */
-export const DEFAULT_VOICE_PREFERENCES: readonly string[] = [
-  'Google US English',
-  'Microsoft Aria Online (Natural) - English (United States)',
-  'Microsoft Ava Online (Natural) - English (United States)',
-  'Samantha',
-  'Alex',
-  'Daniel',
-  'Microsoft Zira - English (United States)',
-  'Microsoft David - English (United States)',
-]
-
-/**
- * Picks a voice from a preference-ordered fallback list: exact name match
- * first (in preference order), then any English-language voice, then
- * whatever the platform offers first. Returns null only when no voices are
- * available at all (handled gracefully by callers, never thrown).
- */
-export function selectPreferredVoice<TVoice extends VoiceLike>(
-  voices: readonly TVoice[],
-  preferences: readonly string[] = DEFAULT_VOICE_PREFERENCES,
-): TVoice | null {
-  if (voices.length === 0) return null
-
-  for (const preferredName of preferences) {
-    const match = voices.find((v) => v.name === preferredName)
-    if (match) return match
-  }
-
-  const english = voices.find((v) => v.lang.toLowerCase().startsWith('en'))
-  if (english) return english
-
-  return voices[0] ?? null
+  return words[lo]?.wordId ?? null
 }
 
 /**
- * Decides whether the `onboundary` events observed during a just-finished
- * utterance arrived at roughly a per-word rate. Below the threshold, the
- * browser/voice is treated as not reliably supporting word boundaries (e.g.
- * Safari, or voices that only emit a single sentence-level boundary), and
- * the caller should switch to the synthetic WPM timer.
+ * Minimal shape of an HTMLAudioElement this module needs — kept narrow so
+ * tests can pass a fake. Handler properties are typed to accept an event arg
+ * (even though this module's own handlers never use it) so a real
+ * HTMLAudioElement — whose native `ontimeupdate`/`onended`/`onerror`
+ * properties are typed as `(ev: Event) => any`, not `() => void` — is
+ * structurally assignable to this interface without a cast.
  */
-export function isBoundaryTrackingReliable(boundaryEventCount: number, wordCount: number): boolean {
-  if (wordCount <= 0) return true
-  if (wordCount === 1) return boundaryEventCount >= 1
-  return boundaryEventCount >= Math.ceil(wordCount * 0.5)
-}
-
-/**
- * Computes a per-word highlight duration (ms) for the synthetic fallback
- * timer, given a target words-per-minute rate. Longer words get a longer
- * slice so highlighting doesn't visibly race ahead of speech on long words
- * or lag on short ones.
- */
-export function computeWordTimerDelaysMs(words: readonly Word[], wpm: number): number[] {
-  const baseMsPerWord = 60000 / Math.max(1, wpm)
-  return words.map((word) => {
-    const lengthFactor = Math.min(2, Math.max(0.6, word.normalized.length / 5))
-    return Math.round(baseMsPerWord * lengthFactor)
-  })
-}
-
-/** Minimal shape of the global scope this module needs — kept narrow so tests can pass a fake. */
-export interface SpeechCapableWindow {
-  speechSynthesis?: SpeechSynthesis
-  SpeechSynthesisUtterance?: typeof SpeechSynthesisUtterance
-}
-
-/** Feature-detects Web Speech API support without throwing on any environment shape. */
-export function isSpeechSynthesisSupported(win: SpeechCapableWindow | undefined): boolean {
-  return (
-    !!win &&
-    typeof win.speechSynthesis !== 'undefined' &&
-    typeof win.SpeechSynthesisUtterance !== 'undefined'
-  )
-}
-
-/**
- * Detects Safari (including iOS Safari) from a user-agent string, excluding
- * Chrome/Chromium/Edge/Firefox-on-iOS/Android WebView, all of which also
- * contain "Safari" in their UA strings.
- */
-export function isSafariUserAgent(userAgent: string): boolean {
-  return /safari/i.test(userAgent) && !/chrome|chromium|crios|fxios|android|edg/i.test(userAgent)
+export interface AudioLike {
+  src: string
+  currentTime: number
+  paused: boolean
+  play: () => Promise<void>
+  pause: () => void
+  ontimeupdate: ((ev: Event) => void) | null
+  onended: ((ev: Event) => void) | null
+  onerror: ((ev: Event) => void) | null
 }
 
 // ---------------------------------------------------------------------------
 // Controller
 // ---------------------------------------------------------------------------
 
-const VOICES_READY_TIMEOUT_MS = 2000
-const BOUNDARY_WATCHDOG_MS = 500
-
-/**
- * Audiobook-pacing tuning. A screen-reader-flat rate/pitch and zero gap
- * between chained sentences is the single biggest reason Web Speech output
- * reads as "a screen reader" rather than "a narrator" -- none of this
- * requires anything beyond stock SpeechSynthesisUtterance fields, so it
- * doesn't touch the "no live AI generation at runtime" constraint.
- */
-const NARRATION_RATE = 0.93
-const NARRATION_PITCH = 0.96
-/** Scaled down from the browser-default-rate value to match NARRATION_RATE, so the WPM fallback timer's highlight pace still tracks the actual (now slower) speech rate. */
-const FALLBACK_WPM = 153
-/** Natural breath between sentences. */
+/** Natural breath between sentences (separately-recorded clips chained together read as mechanical with zero gap). */
 const SENTENCE_PAUSE_MS = 260
-/** Longer beat between paragraphs -- how a narrator actually marks a paragraph break. */
+/** Longer beat between paragraphs — how a narrator actually marks a paragraph break. */
 const PARAGRAPH_PAUSE_MS = 650
 
 /**
@@ -222,83 +115,79 @@ export interface NarrationStoreApi {
 
 export interface NarrationControllerDeps {
   store: NarrationStoreApi
-  getWindow: () => SpeechCapableWindow | undefined
-  getDocument: () =>
-    Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'> | undefined
-  getUserAgent: () => string
+  createAudio: () => AudioLike
+  fetchManifest: (url: string) => Promise<NarrationManifest>
+  getDocument: () => Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'> | undefined
 }
 
 function defaultDeps(): NarrationControllerDeps {
   return {
     store: useReadingStore,
-    getWindow: () => (typeof window !== 'undefined' ? window : undefined),
+    createAudio: () => new Audio(),
+    fetchManifest: async (url) => {
+      const res = await fetch(url)
+      if (!res.ok) {
+        throw new Error(`Failed to fetch narration manifest "${url}": ${res.status} ${res.statusText}`)
+      }
+      return (await res.json()) as NarrationManifest
+    },
     getDocument: () => (typeof document !== 'undefined' ? document : undefined),
-    getUserAgent: () => (typeof navigator !== 'undefined' ? navigator.userAgent : ''),
   }
 }
 
 export interface NarrationController {
-  /** Registers the passage to narrate and resets position to its first sentence. Does not start speaking. */
+  /** Registers the passage to narrate and resets position to its first sentence. Does not start playing. Fetches that passage's narration manifest in the background. */
   loadPassage: (passage: Passage) => void
   /** Starts, or resumes, narration. No-op if already playing. */
   play: () => void
-  /** Pauses narration. Prefers `speechSynthesis.pause()`; on Safari falls back to cancel + resume-at-sentence-start. */
+  /** Pauses narration. */
   pause: () => void
-  /** Cancels current speech and starts speaking from `sentenceIndex`. */
+  /** Cancels current playback and starts playing from `sentenceIndex`. */
   seekToSentence: (sentenceIndex: number) => void
-  /** Cancels speech, detaches listeners, and clears internal state. Call on unmount. */
+  /** Cancels playback, detaches listeners, and clears internal state. Call on unmount. */
   destroy: () => void
 }
 
 interface ControllerState {
+  passageId: string | null
   sentences: Sentence[]
   /** Indices into `sentences` that are the last sentence of their paragraph -- drives the longer `PARAGRAPH_PAUSE_MS` beat instead of `SENTENCE_PAUSE_MS`. */
   paragraphEndIndices: Set<number>
   sentenceIndex: number
   epoch: number
-  offsets: WordOffset[]
-  boundaryEventCount: number
-  useFallbackTimer: boolean
-  fallbackTimerId: ReturnType<typeof setTimeout> | null
-  watchdogTimerId: ReturnType<typeof setTimeout> | null
+  manifest: NarrationManifest | null
+  manifestReadyPromise: Promise<void> | null
+  currentAudio: AudioLike | null
   interSentenceTimerId: ReturnType<typeof setTimeout> | null
-  voice: VoiceLike | null
-  voiceInitPromise: Promise<void> | null
-  playbackWasPausedViaCancel: boolean
   /**
-   * True once `speechSynthesis.speak()` has actually been called for the
-   * current sentence attempt (set just before that call, cleared by any
-   * defensive cancel). Distinguishes "genuinely mid-utterance, safe to
-   * resume via `speechSynthesis.resume()`" from "playbackState flipped to
-   * 'playing'/'paused' before any utterance was ever queued" — e.g. pause()
-   * fired while still awaiting `ensureVoiceReady()`. In the latter case
-   * `synth.resume()` has nothing to resume and would silently strand
-   * playback, so `play()`'s resume path checks this flag and restarts
-   * `speakCurrentSentence()` instead when it's false.
+   * True once `audio.play()` has actually been called for the current
+   * sentence attempt (set just before that call, cleared by any defensive
+   * cancel). Distinguishes "genuinely mid-clip, safe to resume via
+   * `currentAudio.play()`" from "playbackState flipped to 'playing'/'paused'
+   * before any clip was ever started" — e.g. pause() fired while still
+   * awaiting `ensureManifestReady()`. In the latter case there is no live
+   * audio element to resume, so `play()`'s resume path checks this flag and
+   * restarts `playCurrentSentence()` instead when it's false.
    */
-  hasStartedSpeaking: boolean
+  hasStartedPlaying: boolean
   visibilityListenerAttached: boolean
-  hasWarnedUnsupported: boolean
+  hasWarnedMissingAudio: boolean
 }
 
 function createInitialState(): ControllerState {
   return {
+    passageId: null,
     sentences: [],
     paragraphEndIndices: new Set(),
     sentenceIndex: 0,
     epoch: 0,
-    offsets: [],
-    boundaryEventCount: 0,
-    useFallbackTimer: false,
-    fallbackTimerId: null,
-    watchdogTimerId: null,
+    manifest: null,
+    manifestReadyPromise: null,
+    currentAudio: null,
     interSentenceTimerId: null,
-    voice: null,
-    voiceInitPromise: null,
-    playbackWasPausedViaCancel: false,
-    hasStartedSpeaking: false,
+    hasStartedPlaying: false,
     visibilityListenerAttached: false,
-    hasWarnedUnsupported: false,
+    hasWarnedMissingAudio: false,
   }
 }
 
@@ -323,29 +212,9 @@ function flattenPassage(passage: Passage): {
  * app use; tests should call this directly with mocked deps to get fully
  * isolated state per test, no global monkey-patching or reset required.
  */
-export function createNarrationController(
-  overrides: Partial<NarrationControllerDeps> = {},
-): NarrationController {
+export function createNarrationController(overrides: Partial<NarrationControllerDeps> = {}): NarrationController {
   const deps: NarrationControllerDeps = { ...defaultDeps(), ...overrides }
   let state = createInitialState()
-
-  function getSynth(): SpeechSynthesis | undefined {
-    return deps.getWindow()?.speechSynthesis
-  }
-
-  function clearFallbackTimer(): void {
-    if (state.fallbackTimerId !== null) {
-      clearTimeout(state.fallbackTimerId)
-      state.fallbackTimerId = null
-    }
-  }
-
-  function clearWatchdog(): void {
-    if (state.watchdogTimerId !== null) {
-      clearTimeout(state.watchdogTimerId)
-      state.watchdogTimerId = null
-    }
-  }
 
   function clearInterSentenceTimer(): void {
     if (state.interSentenceTimerId !== null) {
@@ -354,253 +223,140 @@ export function createNarrationController(
     }
   }
 
-  /** Bumps the epoch so any in-flight utterance's callbacks become stale no-ops, then cancels the speech queue. Call before any critical operation (start/seek/pause/unmount) per the narration spec. */
-  function cancelSpeechDefensively(): void {
-    clearFallbackTimer()
-    clearWatchdog()
-    clearInterSentenceTimer()
-    state.epoch += 1
-    state.hasStartedSpeaking = false
-    const synth = getSynth()
-    if (synth) {
-      synth.cancel()
-    }
+  function detachCurrentAudio(): void {
+    const audio = state.currentAudio
+    if (!audio) return
+    audio.ontimeupdate = null
+    audio.onended = null
+    audio.onerror = null
+    if (!audio.paused) audio.pause()
+    state.currentAudio = null
   }
 
-  function warnUnsupportedOnce(): void {
-    if (state.hasWarnedUnsupported) return
-    state.hasWarnedUnsupported = true
+  /** Bumps the epoch so any in-flight audio's callbacks become stale no-ops, then stops playback. Call before any critical operation (start/seek/pause/unmount). */
+  function cancelPlaybackDefensively(): void {
+    clearInterSentenceTimer()
+    state.epoch += 1
+    state.hasStartedPlaying = false
+    detachCurrentAudio()
+  }
+
+  function warnMissingAudioOnce(sentenceId: string): void {
+    if (state.hasWarnedMissingAudio) return
+    state.hasWarnedMissingAudio = true
     console.warn(
-      '[narrationController] Web Speech API is not available in this browser — degrading to silent manual-reading mode.',
+      `[narrationController] No pre-rendered audio for sentence "${sentenceId}" (manifest missing or failed to load) — skipping.`,
     )
   }
 
-  function ensureVoiceReady(): Promise<void> {
-    if (state.voiceInitPromise) return state.voiceInitPromise
+  function ensureManifestReady(passageId: string): Promise<void> {
+    if (state.manifestReadyPromise) return state.manifestReadyPromise
 
-    state.voiceInitPromise = new Promise((resolve) => {
-      const win = deps.getWindow()
-      if (!isSpeechSynthesisSupported(win) || !win?.speechSynthesis) {
-        resolve()
-        return
+    state.manifestReadyPromise = (async () => {
+      try {
+        state.manifest = await deps.fetchManifest(`/narration/${passageId}/manifest.json`)
+      } catch (error) {
+        console.warn(
+          `[narrationController] Failed to load narration manifest for passage "${passageId}" — narration audio will be unavailable.`,
+          error,
+        )
+        state.manifest = null
       }
-      const synth = win.speechSynthesis
+    })()
 
-      const tryPick = (): boolean => {
-        const voices = synth.getVoices?.() ?? []
-        if (voices.length > 0) {
-          state.voice = selectPreferredVoice(voices)
-          return true
-        }
-        return false
-      }
-
-      if (tryPick()) {
-        resolve()
-        return
-      }
-
-      let settled = false
-      const onVoicesChanged = (): void => {
-        if (settled) return
-        if (tryPick()) {
-          settled = true
-          synth.removeEventListener('voiceschanged', onVoicesChanged)
-          resolve()
-        }
-      }
-      synth.addEventListener('voiceschanged', onVoicesChanged)
-
-      setTimeout(() => {
-        if (settled) return
-        settled = true
-        synth.removeEventListener('voiceschanged', onVoicesChanged)
-        tryPick() // last attempt; proceed either way, never blocks playback forever
-        resolve()
-      }, VOICES_READY_TIMEOUT_MS)
-    })
-
-    return state.voiceInitPromise
-  }
-
-  function startFallbackTimer(sentence: Sentence, myEpoch: number): void {
-    clearFallbackTimer()
-    const delays = computeWordTimerDelaysMs(sentence.words, FALLBACK_WPM)
-    let wordIndex = 0
-
-    const advance = (): void => {
-      if (myEpoch !== state.epoch) return
-      const word = sentence.words[wordIndex]
-      if (!word) return
-      deps.store.setState({ currentWordId: word.id })
-      const delay = delays[wordIndex] ?? 60000 / FALLBACK_WPM
-      wordIndex += 1
-      if (wordIndex < sentence.words.length) {
-        state.fallbackTimerId = setTimeout(advance, delay)
-      }
-    }
-
-    advance()
-  }
-
-  function armBoundaryWatchdog(sentence: Sentence, myEpoch: number): void {
-    clearWatchdog()
-    if (state.useFallbackTimer) return
-    state.watchdogTimerId = setTimeout(() => {
-      if (myEpoch !== state.epoch) return
-      if (state.boundaryEventCount === 0) {
-        // No boundary events arrived shortly after speech started — this
-        // browser/voice doesn't fire them at a usable rate. Switch to the
-        // synthetic timer for the rest of this utterance and stay on it.
-        state.useFallbackTimer = true
-        startFallbackTimer(sentence, myEpoch)
-      }
-    }, BOUNDARY_WATCHDOG_MS)
+    return state.manifestReadyPromise
   }
 
   function finishPassage(): void {
     deps.store.setState({ playbackState: 'idle', currentWordId: null })
   }
 
-  function speakCurrentSentence(): void {
-    const win = deps.getWindow()
-    if (
-      !isSpeechSynthesisSupported(win) ||
-      !win?.speechSynthesis ||
-      !win.SpeechSynthesisUtterance
-    ) {
-      warnUnsupportedOnce()
-      return
-    }
-
+  function playCurrentSentence(): void {
     const sentence = state.sentences[state.sentenceIndex]
     if (!sentence) {
       finishPassage()
       return
     }
 
-    if (sentence.words.length === 0) {
-      // Nothing to speak or highlight — skip straight to the next sentence.
+    const entry = state.manifest?.[sentence.id]
+    if (!entry) {
+      warnMissingAudioOnce(sentence.id)
       state.sentenceIndex += 1
-      speakCurrentSentence()
+      playCurrentSentence()
       return
     }
 
     const myEpoch = state.epoch
-    const { text, offsets } = buildUtteranceText(sentence)
-    state.offsets = offsets
-    state.boundaryEventCount = 0
 
     deps.store.setState({
       currentSentenceIndex: state.sentenceIndex,
-      currentWordId: offsets[0]?.wordId ?? null,
+      currentWordId: entry.words[0]?.wordId ?? null,
       activeSceneBeatId: sentence.sceneBeatId,
       activeSpeakerId: sentence.speakerId ?? null,
     })
 
-    const utterance = new win.SpeechSynthesisUtterance(text)
-    if (state.voice) {
-      // Narrow VoiceLike back to a real SpeechSynthesisVoice: it always is
-      // one in production (selected from synth.getVoices()); only tests
-      // supply plain VoiceLike stand-ins, where assigning `.voice` is inert.
-      utterance.voice = state.voice as SpeechSynthesisVoice
-    }
-    utterance.rate = NARRATION_RATE
-    utterance.pitch = NARRATION_PITCH
+    const audio = deps.createAudio()
+    audio.src = entry.audioUrl
 
-    utterance.onstart = () => {
+    audio.ontimeupdate = () => {
       if (myEpoch !== state.epoch) return
-      armBoundaryWatchdog(sentence, myEpoch)
-    }
-
-    utterance.onboundary = (event: SpeechSynthesisEvent) => {
-      if (myEpoch !== state.epoch) return
-      // Only count events that actually represent word-level progress toward
-      // the reliability heuristic below. Some voices emit coarse
-      // sentence-level boundaries (event.name === 'sentence') alongside or
-      // instead of word boundaries; counting those would let a voice that
-      // never fires per-word events masquerade as "reliable" (e.g. a single
-      // sentence-boundary event on a 2-word sentence already meets the >=50%
-      // threshold) and wrongly skip the WPM fallback the spec requires.
-      if (event.name && event.name !== 'word') return
-      state.boundaryEventCount += 1
-      if (state.useFallbackTimer) return
-      const wordId = findWordIdAtCharIndex(state.offsets, event.charIndex)
+      const wordId = findWordIdAtTime(entry.words, audio.currentTime * 1000)
       if (wordId) {
         deps.store.setState({ currentWordId: wordId })
       }
     }
 
-    utterance.onend = () => {
+    const advanceToNextSentence = () => {
       if (myEpoch !== state.epoch) return
-      clearWatchdog()
-      clearFallbackTimer()
-      if (!isBoundaryTrackingReliable(state.boundaryEventCount, sentence.words.length)) {
-        state.useFallbackTimer = true
-      }
       // A real narrator breathes between sentences (longer between
-      // paragraphs); chaining straight into the next utterance with zero gap
-      // is what makes chained TTS read as mechanical. `cancelSpeechDefensively`
-      // (start/seek/pause/unmount) clears this via `clearInterSentenceTimer`,
-      // and the epoch check inside it guards against a stale fire either way.
-      const pauseMs = state.paragraphEndIndices.has(state.sentenceIndex)
-        ? PARAGRAPH_PAUSE_MS
-        : SENTENCE_PAUSE_MS
+      // paragraphs); chaining separately-recorded clips with zero gap is
+      // what makes it read as mechanical. cancelPlaybackDefensively (on
+      // start/seek/pause/unmount) clears this via clearInterSentenceTimer,
+      // and the epoch check guards against a stale fire either way.
+      const pauseMs = state.paragraphEndIndices.has(state.sentenceIndex) ? PARAGRAPH_PAUSE_MS : SENTENCE_PAUSE_MS
       state.sentenceIndex += 1
       state.interSentenceTimerId = setTimeout(() => {
         state.interSentenceTimerId = null
         if (myEpoch !== state.epoch) return
-        speakCurrentSentence()
+        playCurrentSentence()
       }, pauseMs)
     }
 
-    utterance.onerror = (event: SpeechSynthesisErrorEvent) => {
+    audio.onended = () => advanceToNextSentence()
+
+    audio.onerror = () => {
       if (myEpoch !== state.epoch) return
-      clearWatchdog()
-      clearFallbackTimer()
-      if (event.error !== 'canceled' && event.error !== 'interrupted') {
-        console.warn(
-          '[narrationController] speech synthesis error, skipping to next sentence:',
-          event.error,
-        )
-      }
-      state.sentenceIndex += 1
-      speakCurrentSentence()
+      console.warn(
+        `[narrationController] Audio playback error for sentence "${sentence.id}", skipping to next sentence.`,
+      )
+      advanceToNextSentence()
     }
 
-    if (state.useFallbackTimer) {
-      startFallbackTimer(sentence, myEpoch)
-    }
-
-    state.hasStartedSpeaking = true
-    win.speechSynthesis.speak(utterance)
+    state.currentAudio = audio
+    state.hasStartedPlaying = true
+    audio.play().catch((error: unknown) => {
+      if (myEpoch !== state.epoch) return
+      console.warn(
+        `[narrationController] audio.play() rejected for sentence "${sentence.id}", skipping to next sentence.`,
+        error,
+      )
+      advanceToNextSentence()
+    })
   }
 
   function handleVisibilityChange(): void {
     const doc = deps.getDocument()
-    const win = deps.getWindow()
     if (!doc || doc.visibilityState !== 'visible') return
-    if (!isSpeechSynthesisSupported(win) || !win?.speechSynthesis) return
 
-    const synth = win.speechSynthesis
     const playbackState = deps.store.getState().playbackState
-
-    if (playbackState === 'playing') {
-      const looksActive = synth.speaking && !synth.paused
-      if (!looksActive && !state.playbackWasPausedViaCancel) {
-        // Tab was backgrounded and speech silently stopped/desynced (common
-        // when the OS suspends audio in background tabs). Resync by
-        // re-speaking the current sentence from its start rather than
-        // leaving the UI stuck out of step with reality.
-        cancelSpeechDefensively()
-        speakCurrentSentence()
-      }
-    } else if (playbackState === 'paused' && !state.playbackWasPausedViaCancel) {
-      if (synth.speaking && !synth.paused) {
-        // Store thinks we're paused but the engine kept going — bring it
-        // back in line rather than silently drifting.
-        synth.pause()
-      }
+    const audio = state.currentAudio
+    if (playbackState === 'playing' && audio?.paused) {
+      // Tab was backgrounded and the browser silently paused/suspended
+      // playback (some mobile browsers throttle background <audio>) — resync
+      // by resuming rather than leaving the UI stuck out of step with reality.
+      audio.play().catch(() => {
+        // Best-effort resync; if it fails there's nothing more to do here.
+      })
     }
   }
 
@@ -620,7 +376,7 @@ export function createNarrationController(
   }
 
   function loadPassage(passage: Passage): void {
-    cancelSpeechDefensively()
+    cancelPlaybackDefensively()
     state = {
       ...createInitialState(),
       visibilityListenerAttached: state.visibilityListenerAttached,
@@ -629,6 +385,7 @@ export function createNarrationController(
     // reused across an unmount/remount, such as React StrictMode's
     // dev-mode double-invoke) — idempotent, guarded by the attached flag.
     attachVisibilityListener()
+    state.passageId = passage.id
     const { sentences, paragraphEndIndices } = flattenPassage(passage)
     state.sentences = sentences
     state.paragraphEndIndices = paragraphEndIndices
@@ -640,108 +397,91 @@ export function createNarrationController(
       activeSpeakerId: first?.speakerId ?? null,
       playbackState: 'idle',
     })
+    // Start fetching the manifest now rather than waiting for the first
+    // play() so playback can start immediately once the user clicks Play.
+    ensureManifestReady(passage.id)
   }
 
   function play(): void {
-    const win = deps.getWindow()
-    if (!isSpeechSynthesisSupported(win)) {
-      warnUnsupportedOnce()
-      return
-    }
-    if (state.sentences.length === 0) return
+    if (state.sentences.length === 0 || !state.passageId) return
 
     const currentPlaybackState = deps.store.getState().playbackState
     if (currentPlaybackState === 'playing') return // already playing — avoid overlapping audio
 
     if (currentPlaybackState === 'paused') {
-      if (state.playbackWasPausedViaCancel || !state.hasStartedSpeaking) {
-        // Safari-style resume (restart current sentence from its start), or
-        // playback was paused before any utterance was ever actually queued
-        // (e.g. pause() landed while still awaiting ensureVoiceReady()) — in
-        // both cases there's nothing live for speechSynthesis.resume() to
-        // resume, so restart the current sentence from scratch instead of
-        // silently stranding playback.
-        state.playbackWasPausedViaCancel = false
-        cancelSpeechDefensively()
-        const myEpoch = state.epoch
+      if (state.currentAudio && state.hasStartedPlaying) {
         deps.store.setState({ playbackState: 'playing' })
-        ensureVoiceReady().then(() => {
-          if (myEpoch !== state.epoch) return
-          if (deps.store.getState().playbackState !== 'playing') return
-          speakCurrentSentence()
+        state.currentAudio.play().catch(() => {
+          // If resuming genuinely fails, restart the sentence from scratch
+          // rather than leaving playback silently stuck.
+          cancelPlaybackDefensively()
+          const myEpoch = state.epoch
+          ensureManifestReady(state.passageId ?? '').then(() => {
+            if (myEpoch !== state.epoch) return
+            if (deps.store.getState().playbackState !== 'playing') return
+            playCurrentSentence()
+          })
         })
       } else {
-        const synth = getSynth()
-        if (synth?.paused) synth.resume()
+        // Paused before any clip was ever actually started (e.g. pause()
+        // landed while still awaiting ensureManifestReady()) — there's
+        // nothing live to resume, so start the current sentence fresh.
+        cancelPlaybackDefensively()
+        const myEpoch = state.epoch
         deps.store.setState({ playbackState: 'playing' })
+        ensureManifestReady(state.passageId).then(() => {
+          if (myEpoch !== state.epoch) return
+          if (deps.store.getState().playbackState !== 'playing') return
+          playCurrentSentence()
+        })
       }
       return
     }
 
     // Fresh start from idle (start of passage, or after reaching its end).
-    cancelSpeechDefensively()
+    cancelPlaybackDefensively()
     const myEpoch = state.epoch
     deps.store.setState({ playbackState: 'playing' })
-    ensureVoiceReady().then(() => {
+    ensureManifestReady(state.passageId).then(() => {
       if (myEpoch !== state.epoch) return // a seek/pause/destroy happened while we waited
       if (deps.store.getState().playbackState !== 'playing') return
-      speakCurrentSentence()
+      playCurrentSentence()
     })
   }
 
   function pause(): void {
-    const win = deps.getWindow()
-    if (!isSpeechSynthesisSupported(win)) return
     if (deps.store.getState().playbackState !== 'playing') return
-
-    clearFallbackTimer()
-    clearWatchdog()
-
-    if (isSafariUserAgent(deps.getUserAgent())) {
-      // speechSynthesis.pause() is unreliable on Safari; cancel instead and
-      // mark that resume should restart the current sentence (`sentenceIndex`
-      // itself already "remembers" which one — it's only advanced in
-      // onend/onerror, neither of which fires once we've cancelled) from the
-      // top rather than resuming mid-word — an accepted, explicit tradeoff.
-      state.playbackWasPausedViaCancel = true
-      cancelSpeechDefensively()
-      const sentence = state.sentences[state.sentenceIndex]
-      deps.store.setState({
-        playbackState: 'paused',
-        currentWordId: sentence?.words[0]?.id ?? null,
-      })
-    } else {
-      getSynth()?.pause()
-      deps.store.setState({ playbackState: 'paused' })
-    }
+    clearInterSentenceTimer()
+    state.currentAudio?.pause()
+    deps.store.setState({ playbackState: 'paused' })
   }
 
   function seekToSentence(sentenceIndex: number): void {
-    if (state.sentences.length === 0) return
+    if (state.sentences.length === 0 || !state.passageId) return
     const clamped = Math.max(0, Math.min(sentenceIndex, state.sentences.length - 1))
 
-    cancelSpeechDefensively()
+    cancelPlaybackDefensively()
     state.sentenceIndex = clamped
-    state.playbackWasPausedViaCancel = false
 
     const sentence = state.sentences[clamped]
+    const entry = state.manifest?.[sentence?.id ?? '']
     deps.store.setState({
       currentSentenceIndex: clamped,
-      currentWordId: sentence?.words[0]?.id ?? null,
+      currentWordId: entry?.words[0]?.wordId ?? null,
       activeSceneBeatId: sentence?.sceneBeatId ?? null,
       activeSpeakerId: sentence?.speakerId ?? null,
       playbackState: 'playing',
     })
 
     const myEpoch = state.epoch
-    ensureVoiceReady().then(() => {
+    ensureManifestReady(state.passageId).then(() => {
       if (myEpoch !== state.epoch) return
-      speakCurrentSentence()
+      playCurrentSentence()
     })
   }
 
   function destroy(): void {
-    cancelSpeechDefensively()
+    cancelPlaybackDefensively()
     detachVisibilityListener()
     state = createInitialState()
   }

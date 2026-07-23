@@ -19,8 +19,20 @@ const MAX_SILHOUETTES = 90
 const FLOOR_RADIUS = 22
 
 const BODY_HEIGHT = 1.0
-const BODY_RADIUS_TOP = 0.14
-const BODY_RADIUS_BOTTOM = 0.2
+// A single linear taper (the old CylinderGeometry(0.14, 0.2, ...) approach)
+// only differs by 0.06 units over the whole body height -- too subtle to
+// register at silhouette scale, so it just read as a plain cylinder (hence
+// "a sphere on a trapezium"). This profile is revolved via LatheGeometry
+// instead: hem flare, waist-in, shoulder-out, neck taper -- an actual coat
+// silhouette contour, not one straight line. y is absolute (0 = feet,
+// BODY_HEIGHT = neck), x is radius at that height.
+const BODY_PROFILE: ReadonlyArray<readonly [radius: number, y: number]> = [
+  [0.24, 0], // hem
+  [0.19, 0.16], // lower leg/coat taper
+  [0.12, 0.52], // waist
+  [0.18, 0.78], // shoulders
+  [0.08, BODY_HEIGHT], // neck
+]
 // Deliberately oversized relative to the body (real head:body proportions
 // read as a featureless blob at silhouette scale/distance) -- exaggerating
 // the head is the standard trick minimalist crowd figures use to stay
@@ -29,26 +41,20 @@ const HEAD_RADIUS = 0.24
 /** How far the head sinks into the body's top so the join reads as a neck, not a gap. */
 const HEAD_OVERLAP = 0.3
 
-const BODY_HALF_HEIGHT = BODY_HEIGHT / 2
-const HEAD_CENTER_Y = BODY_HALF_HEIGHT + HEAD_RADIUS * HEAD_OVERLAP
-/** Distance from a figure's local origin down to its feet -- places it exactly on the floor (y=0). */
-const BASE_Y = BODY_HALF_HEIGHT
+const HEAD_CENTER_Y = BODY_HEIGHT - HEAD_RADIUS * HEAD_OVERLAP
+/** The profile is already defined in absolute y (feet at 0), so instances need no vertical offset to stand on the floor. */
+const BASE_Y = 0
 
 /**
- * A single static, unarticulated "figure" shape -- a tapered body (wider at
- * the hem, like a coat/dress silhouette) with a rounded head merged on top --
- * still just one abstract silhouette per instance (no bones, no rig, no
- * per-part animation beyond the shared sway), still one draw call for the
- * whole crowd. Built once and reused as the InstancedMesh's geometry.
+ * A single static, unarticulated "figure" shape -- a revolved coat/dress
+ * silhouette (hem flare, waist, shoulders, neck) with a rounded head merged
+ * on top -- still just one abstract silhouette per instance (no bones, no
+ * rig, no per-part animation beyond the shared sway), still one draw call
+ * for the whole crowd. Built once and reused as the InstancedMesh's geometry.
  */
 function buildFigureGeometry(): THREE.BufferGeometry {
-  const body = new THREE.CylinderGeometry(
-    BODY_RADIUS_TOP,
-    BODY_RADIUS_BOTTOM,
-    BODY_HEIGHT,
-    8,
-    1,
-  )
+  const profile = BODY_PROFILE.map(([radius, y]) => new THREE.Vector2(radius, y))
+  const body = new THREE.LatheGeometry(profile, 8)
   const head = new THREE.SphereGeometry(HEAD_RADIUS, 10, 8)
   head.translate(0, HEAD_CENTER_Y, 0)
   const merged = mergeGeometries([body, head])
