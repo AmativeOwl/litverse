@@ -41,7 +41,12 @@ function buildFactors(): ParticleFactors {
 
 /** Light per-type tint so 'embers' read warmer and 'dust' read cooler/duller
  * than the raw palette accent, without needing a different shader per type. */
-function tintForType(type: LerpedSceneBeat['particles']['type'], r: number, g: number, b: number): [number, number, number] {
+function tintForType(
+  type: LerpedSceneBeat['particles']['type'],
+  r: number,
+  g: number,
+  b: number,
+): [number, number, number] {
   switch (type) {
     case 'embers':
       return [lerp(r, 1, 0.35), lerp(g, 0.45, 0.35), lerp(b, 0.15, 0.35)]

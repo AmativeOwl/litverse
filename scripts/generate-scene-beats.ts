@@ -53,10 +53,7 @@ function loadDotEnv(path: string): void {
     if (eq === -1) continue
     const key = trimmed.slice(0, eq).trim()
     let value = trimmed.slice(eq + 1).trim()
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
       value = value.slice(1, -1)
     }
     if (process.env[key] === undefined) process.env[key] = value
@@ -238,9 +235,7 @@ async function callOpenAI(prompt: string, model: string): Promise<string> {
 async function draftFromLLM(prompt: string, model: string | undefined): Promise<string> {
   if (process.env.ANTHROPIC_API_KEY) return callAnthropic(prompt, model ?? 'claude-sonnet-4-5')
   if (process.env.OPENAI_API_KEY) return callOpenAI(prompt, model ?? 'gpt-4o')
-  throw new Error(
-    'Set ANTHROPIC_API_KEY or OPENAI_API_KEY in your local .env before running this script.',
-  )
+  throw new Error('Set ANTHROPIC_API_KEY or OPENAI_API_KEY in your local .env before running this script.')
 }
 
 // ---------------------------------------------------------------------------

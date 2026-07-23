@@ -23,6 +23,5 @@ export const useReadingStore = create<ReadingState>((set) => ({
 
   play: () => set({ playbackState: 'playing' }),
   pause: () => set({ playbackState: 'paused' }),
-  jumpToSentence: (sentenceIndex) =>
-    set({ currentSentenceIndex: sentenceIndex, currentWordId: null }),
+  jumpToSentence: (sentenceIndex) => set({ currentSentenceIndex: sentenceIndex, currentWordId: null }),
 }))

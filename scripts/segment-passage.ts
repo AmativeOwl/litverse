@@ -123,14 +123,9 @@ function main() {
   const raw = readFileSync(inputPath, 'utf8')
   const paragraphs = segment(raw)
 
-  const wordCount = paragraphs.reduce(
-    (sum, p) => sum + p.sentences.reduce((s, sent) => s + sent.words.length, 0),
-    0,
-  )
+  const wordCount = paragraphs.reduce((sum, p) => sum + p.sentences.reduce((s, sent) => s + sent.words.length, 0), 0)
   const sentenceCount = paragraphs.reduce((sum, p) => sum + p.sentences.length, 0)
-  console.log(
-    `Segmented ${paragraphs.length} paragraphs, ${sentenceCount} sentences, ${wordCount} words.`,
-  )
+  console.log(`Segmented ${paragraphs.length} paragraphs, ${sentenceCount} sentences, ${wordCount} words.`)
 
   const outPath = resolve(args.out)
   mkdirSync(dirname(outPath), { recursive: true })
