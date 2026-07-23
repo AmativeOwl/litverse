@@ -180,7 +180,22 @@ export function isSafariUserAgent(userAgent: string): boolean {
 
 const VOICES_READY_TIMEOUT_MS = 2000
 const BOUNDARY_WATCHDOG_MS = 500
-const FALLBACK_WPM = 165
+
+/**
+ * Audiobook-pacing tuning. A screen-reader-flat rate/pitch and zero gap
+ * between chained sentences is the single biggest reason Web Speech output
+ * reads as "a screen reader" rather than "a narrator" -- none of this
+ * requires anything beyond stock SpeechSynthesisUtterance fields, so it
+ * doesn't touch the "no live AI generation at runtime" constraint.
+ */
+const NARRATION_RATE = 0.93
+const NARRATION_PITCH = 0.96
+/** Scaled down from the browser-default-rate value to match NARRATION_RATE, so the WPM fallback timer's highlight pace still tracks the actual (now slower) speech rate. */
+const FALLBACK_WPM = 153
+/** Natural breath between sentences. */
+const SENTENCE_PAUSE_MS = 260
+/** Longer beat between paragraphs -- how a narrator actually marks a paragraph break. */
+const PARAGRAPH_PAUSE_MS = 650
 
 /**
  * The narration-position slice of the reading store's state that this module
@@ -237,6 +252,8 @@ export interface NarrationController {
 
 interface ControllerState {
   sentences: Sentence[]
+  /** Indices into `sentences` that are the last sentence of their paragraph -- drives the longer `PARAGRAPH_PAUSE_MS` beat instead of `SENTENCE_PAUSE_MS`. */
+  paragraphEndIndices: Set<number>
   sentenceIndex: number
   epoch: number
   offsets: WordOffset[]
@@ -244,6 +261,7 @@ interface ControllerState {
   useFallbackTimer: boolean
   fallbackTimerId: ReturnType<typeof setTimeout> | null
   watchdogTimerId: ReturnType<typeof setTimeout> | null
+  interSentenceTimerId: ReturnType<typeof setTimeout> | null
   voice: VoiceLike | null
   voiceInitPromise: Promise<void> | null
   playbackWasPausedViaCancel: boolean
@@ -266,6 +284,7 @@ interface ControllerState {
 function createInitialState(): ControllerState {
   return {
     sentences: [],
+    paragraphEndIndices: new Set(),
     sentenceIndex: 0,
     epoch: 0,
     offsets: [],
@@ -273,6 +292,7 @@ function createInitialState(): ControllerState {
     useFallbackTimer: false,
     fallbackTimerId: null,
     watchdogTimerId: null,
+    interSentenceTimerId: null,
     voice: null,
     voiceInitPromise: null,
     playbackWasPausedViaCancel: false,
@@ -282,8 +302,19 @@ function createInitialState(): ControllerState {
   }
 }
 
-function flattenPassage(passage: Passage): Sentence[] {
-  return passage.paragraphs.flatMap((paragraph) => paragraph.sentences)
+function flattenPassage(passage: Passage): {
+  sentences: Sentence[]
+  paragraphEndIndices: Set<number>
+} {
+  const sentences: Sentence[] = []
+  const paragraphEndIndices = new Set<number>()
+  for (const paragraph of passage.paragraphs) {
+    sentences.push(...paragraph.sentences)
+    if (paragraph.sentences.length > 0) {
+      paragraphEndIndices.add(sentences.length - 1)
+    }
+  }
+  return { sentences, paragraphEndIndices }
 }
 
 /**
@@ -316,10 +347,18 @@ export function createNarrationController(
     }
   }
 
+  function clearInterSentenceTimer(): void {
+    if (state.interSentenceTimerId !== null) {
+      clearTimeout(state.interSentenceTimerId)
+      state.interSentenceTimerId = null
+    }
+  }
+
   /** Bumps the epoch so any in-flight utterance's callbacks become stale no-ops, then cancels the speech queue. Call before any critical operation (start/seek/pause/unmount) per the narration spec. */
   function cancelSpeechDefensively(): void {
     clearFallbackTimer()
     clearWatchdog()
+    clearInterSentenceTimer()
     state.epoch += 1
     state.hasStartedSpeaking = false
     const synth = getSynth()
@@ -466,6 +505,8 @@ export function createNarrationController(
       // supply plain VoiceLike stand-ins, where assigning `.voice` is inert.
       utterance.voice = state.voice as SpeechSynthesisVoice
     }
+    utterance.rate = NARRATION_RATE
+    utterance.pitch = NARRATION_PITCH
 
     utterance.onstart = () => {
       if (myEpoch !== state.epoch) return
@@ -497,8 +538,20 @@ export function createNarrationController(
       if (!isBoundaryTrackingReliable(state.boundaryEventCount, sentence.words.length)) {
         state.useFallbackTimer = true
       }
+      // A real narrator breathes between sentences (longer between
+      // paragraphs); chaining straight into the next utterance with zero gap
+      // is what makes chained TTS read as mechanical. `cancelSpeechDefensively`
+      // (start/seek/pause/unmount) clears this via `clearInterSentenceTimer`,
+      // and the epoch check inside it guards against a stale fire either way.
+      const pauseMs = state.paragraphEndIndices.has(state.sentenceIndex)
+        ? PARAGRAPH_PAUSE_MS
+        : SENTENCE_PAUSE_MS
       state.sentenceIndex += 1
-      speakCurrentSentence()
+      state.interSentenceTimerId = setTimeout(() => {
+        state.interSentenceTimerId = null
+        if (myEpoch !== state.epoch) return
+        speakCurrentSentence()
+      }, pauseMs)
     }
 
     utterance.onerror = (event: SpeechSynthesisErrorEvent) => {
@@ -576,7 +629,9 @@ export function createNarrationController(
     // reused across an unmount/remount, such as React StrictMode's
     // dev-mode double-invoke) — idempotent, guarded by the attached flag.
     attachVisibilityListener()
-    state.sentences = flattenPassage(passage)
+    const { sentences, paragraphEndIndices } = flattenPassage(passage)
+    state.sentences = sentences
+    state.paragraphEndIndices = paragraphEndIndices
     const first = state.sentences[0]
     deps.store.setState({
       currentSentenceIndex: 0,

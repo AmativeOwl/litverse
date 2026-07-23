@@ -287,9 +287,12 @@ describe('createNarrationController', () => {
     expect(store.getState().activeSceneBeatId).toBe('arrival')
 
     controller.play()
-    await flushMicrotasks()
-    await flushMicrotasks()
-    await flushMicrotasks()
+    // Sentences are separated by a real inter-sentence pause now, not chained
+    // in the same microtask -- both fixture sentences are in the same
+    // paragraph, so reaching 'idle' after the second one requires waiting out
+    // SENTENCE_PAUSE_MS (between the two sentences) *and* PARAGRAPH_PAUSE_MS
+    // (after the second, before finishPassage() fires), not just one.
+    await new Promise((resolve) => setTimeout(resolve, 1200))
 
     expect(spoken).toEqual(['in his', 'blue gardens'])
     expect(store.getState().playbackState).toBe('idle') // reached end of passage
