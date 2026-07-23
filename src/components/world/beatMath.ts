@@ -55,7 +55,11 @@ export function hexToRgbNormalized(hex: string): [number, number, number] {
 }
 
 /** Progress (0..1) through a beat transition, given when it started and how long it should take. */
-export function computeTransitionProgress(startMs: number, nowMs: number, durationMs: number): number {
+export function computeTransitionProgress(
+  startMs: number,
+  nowMs: number,
+  durationMs: number,
+): number {
   if (durationMs <= 0) return 1
   return clamp01((nowMs - startMs) / durationMs)
 }

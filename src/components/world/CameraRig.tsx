@@ -36,7 +36,12 @@ export function CameraRig({ lerpedRef }: CameraRigProps) {
     }
 
     const elapsedInBehavior = clock.elapsedTime - behaviorStartRef.current
-    const pose = computeCameraPose(behavior, lerped.camera.speed, lerped.camera.fov, elapsedInBehavior)
+    const pose = computeCameraPose(
+      behavior,
+      lerped.camera.speed,
+      lerped.camera.fov,
+      elapsedInBehavior,
+    )
 
     camera.position.set(pose.position[0], pose.position[1], pose.position[2])
     lookAtTarget.current.set(pose.lookAt[0], pose.lookAt[1], pose.lookAt[2])

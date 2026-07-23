@@ -13,7 +13,11 @@ interface TransitionState {
  * interrupting an in-flight transition (beat changes again before the previous
  * transition finished) blends onward from the current on-screen state instead of
  * jumping back to the fully-settled previous beat. */
-function snapshotAsBeat(id: string, lerped: LerpedSceneBeat, silhouettes: SceneBeat['silhouettes']): SceneBeat {
+function snapshotAsBeat(
+  id: string,
+  lerped: LerpedSceneBeat,
+  silhouettes: SceneBeat['silhouettes'],
+): SceneBeat {
   return {
     id,
     palette: lerped.palette,
@@ -49,7 +53,11 @@ export function useLerpedSceneBeat(targetBeat: SceneBeat): RefObject<LerpedScene
   // never drives the per-frame animation itself.
   useEffect(() => {
     if (targetBeat.id === prevIdRef.current) return
-    const inFlightSnapshot = snapshotAsBeat(prevIdRef.current, lerpedRef.current, transitionRef.current.to.silhouettes)
+    const inFlightSnapshot = snapshotAsBeat(
+      prevIdRef.current,
+      lerpedRef.current,
+      transitionRef.current.to.silhouettes,
+    )
     transitionRef.current = { from: inFlightSnapshot, to: targetBeat, startMs: performance.now() }
     prevIdRef.current = targetBeat.id
   }, [targetBeat])

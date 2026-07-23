@@ -96,7 +96,10 @@ export function Particles({ lerpedRef }: ParticlesProps) {
       colors[i * 3 + 2] = b
     }
 
-    const attributes = points.geometry.attributes as Record<string, THREE.BufferAttribute | undefined>
+    const attributes = points.geometry.attributes as Record<
+      string,
+      THREE.BufferAttribute | undefined
+    >
     if (attributes.size) attributes.size.needsUpdate = true
     if (attributes.opacity) attributes.opacity.needsUpdate = true
     if (attributes.speed) attributes.speed.needsUpdate = true
