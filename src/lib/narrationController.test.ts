@@ -164,6 +164,8 @@ function createHarness(
     activeSceneBeatId: null,
     activeSpeakerId: null,
     playbackState: 'idle',
+    activeMotifId: null,
+    activeMotifNonce: 0,
   }
 
   const audios: FakeAudio[] = []
@@ -587,6 +589,70 @@ describe('createNarrationController', () => {
       controller.loadPassage(passage)
 
       expect(documentListeners.has('visibilitychange')).toBe(true)
+    })
+  })
+
+  describe('imagery motifs', () => {
+    // src/data/motif-triggers.json is imported directly (static content data,
+    // like SCENE_BEATS in WorldScene.tsx -- not injected via deps), so these
+    // tests exercise it against one of its real entries rather than a fake
+    // trigger map. makeSentence's `${id}-w${i+1}` id scheme means a 12-word
+    // sentence built with id 'p1-s2' lands its last word on 'p1-s2-w12',
+    // which motif-triggers.json really does tag as "dust-drift" -- without
+    // needing the actual gatsby-ch3 passage text in this test.
+    function makeMotifFixture(wordCount: number) {
+      const sentence = makeSentence('p1-s2', 'arrival', wordCount)
+      const passage: Passage = {
+        id: 'motif-fixture',
+        title: 'Motif Fixture',
+        paragraphs: [{ id: 'p1', sentences: [sentence] }],
+      }
+      const manifest: NarrationManifest = { [sentence.id]: manifestEntryFor(sentence) }
+      return { sentence, passage, manifest }
+    }
+
+    it('fires the tagged motif when narration reaches a trigger word', async () => {
+      const { passage, manifest } = makeMotifFixture(12)
+      const { controller, store, audios } = createHarness(manifest)
+
+      controller.loadPassage(passage)
+      controller.play()
+      await flushMicrotasks()
+
+      expect(store.activeMotifId).toBeNull() // word 1 isn't tagged
+
+      audios[0]?.advanceTo(3300) // word 12's window (300ms/word => starts at 3300ms)
+      expect(store.activeMotifId).toBe('dust-drift')
+      expect(store.activeMotifNonce).toBe(1)
+    })
+
+    it('does not re-fire on repeated timeupdate ticks for the same already-tagged word', async () => {
+      const { passage, manifest } = makeMotifFixture(12)
+      const { controller, store, audios } = createHarness(manifest)
+
+      controller.loadPassage(passage)
+      controller.play()
+      await flushMicrotasks()
+
+      audios[0]?.advanceTo(3300)
+      expect(store.activeMotifNonce).toBe(1)
+
+      audios[0]?.advanceTo(3350)
+      audios[0]?.advanceTo(3400)
+      expect(store.activeMotifNonce).toBe(1) // unchanged -- still the same word
+    })
+
+    it('does not fire for words with no motif-triggers.json entry', async () => {
+      const { passage, manifest } = makeMotifFixture(5) // no tagged word among the first 5
+      const { controller, store, audios } = createHarness(manifest)
+
+      controller.loadPassage(passage)
+      controller.play()
+      await flushMicrotasks()
+
+      audios[0]?.advanceTo(1200) // word 5
+      expect(store.activeMotifId).toBeNull()
+      expect(store.activeMotifNonce).toBe(0)
     })
   })
 })

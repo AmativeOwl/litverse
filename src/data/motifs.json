@@ -1,0 +1,45 @@
+[
+  {
+    "id": "dust-drift",
+    "kind": "floating-glyph",
+    "color": "#cbb98a",
+    "durationMs": 1800,
+    "intensity": 0.5,
+    "glyph": "moths"
+  },
+  {
+    "id": "champagne-sparkle",
+    "kind": "particle-burst",
+    "color": "#f4d58a",
+    "durationMs": 1200,
+    "intensity": 0.8
+  },
+  {
+    "id": "starlight-pulse",
+    "kind": "glow-pulse",
+    "color": "#dce6ff",
+    "durationMs": 1600,
+    "intensity": 0.6
+  },
+  {
+    "id": "orchestra-warmup",
+    "kind": "glow-pulse",
+    "color": "#f4c98a",
+    "durationMs": 1400,
+    "intensity": 0.4
+  },
+  {
+    "id": "cocktail-burst",
+    "kind": "particle-burst",
+    "color": "#ff9fc0",
+    "durationMs": 1000,
+    "intensity": 0.7
+  },
+  {
+    "id": "orchestra-swell",
+    "kind": "particle-burst",
+    "color": "#ffd15c",
+    "durationMs": 1500,
+    "intensity": 1.0
+  }
+]
