@@ -51,6 +51,7 @@ const VOICE_PATH = resolve(__dirname, 'tts-voices')
 const DICTIONARY_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts/dictionaries')
 const WORKER_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts/modules/worker-tts.mjs')
 const OUT_DIR = resolve(__dirname, '../public/narration/gatsby-ch3')
+const SAMPLE_RATE = 24000
 
 interface TtsMetadata {
   words: string[]
@@ -95,13 +96,37 @@ function normalizeForComparison(text: string): string {
 }
 
 /**
+ * Total playable duration of a 16-bit-PCM mono WAV buffer written by
+ * HeadTTS's utils.encodeAudio (standard 44-byte header, 2 bytes/sample).
+ */
+function wavDurationMs(audio: ArrayBuffer, sampleRate: number): number {
+  const dataBytes = audio.byteLength - 44
+  const totalSamples = dataBytes / 2
+  return (totalSamples / sampleRate) * 1000
+}
+
+/**
  * Aligns HeadTTS's own word-splitting output against this sentence's
  * already-tokenized `words[]` array by normalized text, not just position --
  * a strict equality check rather than assuming the two tokenizers always
  * agree. Returns null (caller must treat as a hard failure, not silently
  * mis-map) if the sequences don't match exactly.
+ *
+ * Known upstream quirk: worker-tts.mjs's updateTimestamps() occasionally
+ * reads one index past the end of its internal per-frame `times` array when
+ * computing a word's end boundary -- observed specifically on a sentence's
+ * final word, producing `wdurations[i] = NaN` (which JSON.stringify then
+ * silently serializes as `null`, a much easier failure to miss downstream).
+ * Rather than patch node_modules or re-derive the frame math ourselves
+ * (real risk of introducing a different bug), any NaN end time here falls
+ * back to the sentence's actual total audio duration -- a safe, always-
+ * correct upper bound for where the last word's speech actually ends.
  */
-function alignWordTimings(sentence: Sentence, metadata: TtsMetadata): WordTiming[] | null {
+function alignWordTimings(
+  sentence: Sentence,
+  metadata: TtsMetadata,
+  totalDurationMs: number,
+): WordTiming[] | null {
   if (metadata.words.length !== sentence.words.length) return null
 
   const timings: WordTiming[] = []
@@ -112,8 +137,11 @@ function alignWordTimings(sentence: Sentence, metadata: TtsMetadata): WordTiming
     if (normalizeForComparison(theirs) !== ours.normalized) return null
 
     const start = metadata.wtimes[i] ?? 0
+    if (Number.isNaN(start)) return null // no sane fallback for a NaN start
+
     const duration = metadata.wdurations[i] ?? 0
-    timings.push({ wordId: ours.id, startMs: start, endMs: start + duration })
+    const end = Number.isNaN(duration) ? totalDurationMs : start + duration
+    timings.push({ wordId: ours.id, startMs: start, endMs: Math.max(start, end) })
   }
   return timings
 }
@@ -197,7 +225,7 @@ async function main() {
       device: 'cpu',
       styleDim: 256,
       frameRate: 40,
-      audioSampleRate: 24000,
+      audioSampleRate: SAMPLE_RATE,
       languages: ['en-us'],
       dictionaryPath: DICTIONARY_PATH,
       voicePath: VOICE_PATH,
@@ -217,8 +245,9 @@ async function main() {
   for (const sentence of sentences) {
     const text = buildSentenceText(sentence)
     const { metadata } = await synthesizeSentence(worker, text)
+    const audioDurationMs = wavDurationMs(metadata.audio, SAMPLE_RATE)
 
-    const words = alignWordTimings(sentence, metadata)
+    const words = alignWordTimings(sentence, metadata, audioDurationMs)
     if (!words) {
       failures.push(
         `${sentence.id}: word-count/text mismatch (ours=${sentence.words.length}, theirs=${metadata.words.length}). ` +
@@ -230,13 +259,12 @@ async function main() {
     const audioFileName = `${sentence.id}.wav`
     writeWav(resolve(OUT_DIR, audioFileName), metadata.audio)
 
-    const durationMs = words.length > 0 ? Math.max(...words.map((w) => w.endMs)) : 0
     manifest[sentence.id] = {
       audioUrl: `/narration/gatsby-ch3/${audioFileName}`,
-      durationMs,
+      durationMs: Math.round(audioDurationMs),
       words,
     }
-    console.log(`  ${sentence.id}: OK (${words.length} words, ${durationMs}ms)`)
+    console.log(`  ${sentence.id}: OK (${words.length} words, ${Math.round(audioDurationMs)}ms)`)
   }
 
   worker.terminate()
