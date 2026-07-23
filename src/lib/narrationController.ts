@@ -158,7 +158,11 @@ export interface SpeechCapableWindow {
 
 /** Feature-detects Web Speech API support without throwing on any environment shape. */
 export function isSpeechSynthesisSupported(win: SpeechCapableWindow | undefined): boolean {
-  return !!win && typeof win.speechSynthesis !== 'undefined' && typeof win.SpeechSynthesisUtterance !== 'undefined'
+  return (
+    !!win &&
+    typeof win.speechSynthesis !== 'undefined' &&
+    typeof win.SpeechSynthesisUtterance !== 'undefined'
+  )
 }
 
 /**
@@ -204,7 +208,8 @@ export interface NarrationStoreApi {
 export interface NarrationControllerDeps {
   store: NarrationStoreApi
   getWindow: () => SpeechCapableWindow | undefined
-  getDocument: () => Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'> | undefined
+  getDocument: () =>
+    Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'> | undefined
   getUserAgent: () => string
 }
 
@@ -287,7 +292,9 @@ function flattenPassage(passage: Passage): Sentence[] {
  * app use; tests should call this directly with mocked deps to get fully
  * isolated state per test, no global monkey-patching or reset required.
  */
-export function createNarrationController(overrides: Partial<NarrationControllerDeps> = {}): NarrationController {
+export function createNarrationController(
+  overrides: Partial<NarrationControllerDeps> = {},
+): NarrationController {
   const deps: NarrationControllerDeps = { ...defaultDeps(), ...overrides }
   let state = createInitialState()
 
@@ -418,7 +425,11 @@ export function createNarrationController(overrides: Partial<NarrationController
 
   function speakCurrentSentence(): void {
     const win = deps.getWindow()
-    if (!isSpeechSynthesisSupported(win) || !win?.speechSynthesis || !win.SpeechSynthesisUtterance) {
+    if (
+      !isSpeechSynthesisSupported(win) ||
+      !win?.speechSynthesis ||
+      !win.SpeechSynthesisUtterance
+    ) {
       warnUnsupportedOnce()
       return
     }
@@ -495,7 +506,10 @@ export function createNarrationController(overrides: Partial<NarrationController
       clearWatchdog()
       clearFallbackTimer()
       if (event.error !== 'canceled' && event.error !== 'interrupted') {
-        console.warn('[narrationController] speech synthesis error, skipping to next sentence:', event.error)
+        console.warn(
+          '[narrationController] speech synthesis error, skipping to next sentence:',
+          event.error,
+        )
       }
       state.sentenceIndex += 1
       speakCurrentSentence()
@@ -554,7 +568,10 @@ export function createNarrationController(overrides: Partial<NarrationController
 
   function loadPassage(passage: Passage): void {
     cancelSpeechDefensively()
-    state = { ...createInitialState(), visibilityListenerAttached: state.visibilityListenerAttached }
+    state = {
+      ...createInitialState(),
+      visibilityListenerAttached: state.visibilityListenerAttached,
+    }
     // Re-attach if a prior destroy() detached it (e.g. the controller is
     // reused across an unmount/remount, such as React StrictMode's
     // dev-mode double-invoke) — idempotent, guarded by the attached flag.
@@ -634,7 +651,10 @@ export function createNarrationController(overrides: Partial<NarrationController
       state.playbackWasPausedViaCancel = true
       cancelSpeechDefensively()
       const sentence = state.sentences[state.sentenceIndex]
-      deps.store.setState({ playbackState: 'paused', currentWordId: sentence?.words[0]?.id ?? null })
+      deps.store.setState({
+        playbackState: 'paused',
+        currentWordId: sentence?.words[0]?.id ?? null,
+      })
     } else {
       getSynth()?.pause()
       deps.store.setState({ playbackState: 'paused' })

@@ -60,12 +60,18 @@ describe('findWordIdAtCharIndex', () => {
 
 describe('selectPreferredVoice', () => {
   it('picks the first matching name in preference order', () => {
-    const voices = [{ name: 'Alex', lang: 'en-US' }, { name: 'Samantha', lang: 'en-US' }]
+    const voices = [
+      { name: 'Alex', lang: 'en-US' },
+      { name: 'Samantha', lang: 'en-US' },
+    ]
     expect(selectPreferredVoice(voices, ['Samantha', 'Alex'])?.name).toBe('Samantha')
   })
 
   it('falls back to any English voice when no preferred name matches', () => {
-    const voices = [{ name: 'Weirdo', lang: 'fr-FR' }, { name: 'Other', lang: 'en-GB' }]
+    const voices = [
+      { name: 'Weirdo', lang: 'fr-FR' },
+      { name: 'Other', lang: 'en-GB' },
+    ]
     expect(selectPreferredVoice(voices, ['Nonexistent'])?.name).toBe('Other')
   })
 
@@ -594,7 +600,11 @@ describe('createNarrationController', () => {
         speechSynthesis: synth as unknown as SpeechSynthesis,
         SpeechSynthesisUtterance: FakeUtterance as unknown as typeof SpeechSynthesisUtterance,
       }),
-      getDocument: () => doc as unknown as Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'>,
+      getDocument: () =>
+        doc as unknown as Pick<
+          Document,
+          'addEventListener' | 'removeEventListener' | 'visibilityState'
+        >,
       getUserAgent: () => 'test-agent',
     })
 
@@ -628,7 +638,11 @@ describe('createNarrationController', () => {
         speechSynthesis: synth as unknown as SpeechSynthesis,
         SpeechSynthesisUtterance: FakeUtterance as unknown as typeof SpeechSynthesisUtterance,
       }),
-      getDocument: () => doc as unknown as Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'>,
+      getDocument: () =>
+        doc as unknown as Pick<
+          Document,
+          'addEventListener' | 'removeEventListener' | 'visibilityState'
+        >,
       getUserAgent: () => 'test-agent',
     })
 
@@ -706,7 +720,11 @@ describe('createNarrationController', () => {
         speechSynthesis: synth as unknown as SpeechSynthesis,
         SpeechSynthesisUtterance: FakeUtterance as unknown as typeof SpeechSynthesisUtterance,
       }),
-      getDocument: () => doc as unknown as Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'>,
+      getDocument: () =>
+        doc as unknown as Pick<
+          Document,
+          'addEventListener' | 'removeEventListener' | 'visibilityState'
+        >,
       getUserAgent: () => 'test-agent',
     })
 
