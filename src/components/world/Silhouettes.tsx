@@ -19,11 +19,15 @@ const MAX_SILHOUETTES = 90
 const FLOOR_RADIUS = 22
 
 const BODY_HEIGHT = 1.0
-const BODY_RADIUS_TOP = 0.18
-const BODY_RADIUS_BOTTOM = 0.24
-const HEAD_RADIUS = 0.16
+const BODY_RADIUS_TOP = 0.14
+const BODY_RADIUS_BOTTOM = 0.2
+// Deliberately oversized relative to the body (real head:body proportions
+// read as a featureless blob at silhouette scale/distance) -- exaggerating
+// the head is the standard trick minimalist crowd figures use to stay
+// legible as "a person" rather than "a post," per the Journey/Gris reference.
+const HEAD_RADIUS = 0.24
 /** How far the head sinks into the body's top so the join reads as a neck, not a gap. */
-const HEAD_OVERLAP = 0.45
+const HEAD_OVERLAP = 0.3
 
 const BODY_HALF_HEIGHT = BODY_HEIGHT / 2
 const HEAD_CENTER_Y = BODY_HALF_HEIGHT + HEAD_RADIUS * HEAD_OVERLAP
@@ -42,10 +46,10 @@ function buildFigureGeometry(): THREE.BufferGeometry {
     BODY_RADIUS_TOP,
     BODY_RADIUS_BOTTOM,
     BODY_HEIGHT,
-    6,
+    8,
     1,
   )
-  const head = new THREE.SphereGeometry(HEAD_RADIUS, 8, 6)
+  const head = new THREE.SphereGeometry(HEAD_RADIUS, 10, 8)
   head.translate(0, HEAD_CENTER_Y, 0)
   const merged = mergeGeometries([body, head])
   body.dispose()
@@ -122,10 +126,12 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
 
     if (materialRef.current) {
       materialRef.current.emissive.set(lerped.lighting.keyLightColor)
-      materialRef.current.emissiveIntensity = Math.min(
-        0.35,
-        lerped.lighting.keyLightIntensity * 0.12,
-      )
+      // Raised from the original 0.35 cap -- at typical camera distance the
+      // figures were nearly indistinguishable from the fog/background at
+      // that intensity. This keeps them a dark silhouette (base color is
+      // still near-black) while giving enough of a warm rim to read clearly
+      // as separate shapes against the backdrop.
+      materialRef.current.emissiveIntensity = Math.min(0.7, lerped.lighting.keyLightIntensity * 0.3)
     }
   })
 
@@ -136,7 +142,7 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       frustumCulled={false}
     >
       <primitive object={geometry} attach="geometry" />
-      <meshStandardMaterial ref={materialRef} color="#050508" roughness={0.8} metalness={0.05} />
+      <meshStandardMaterial ref={materialRef} color="#0c0a12" roughness={0.75} metalness={0.1} />
     </instancedMesh>
   )
 }

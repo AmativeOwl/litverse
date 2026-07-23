@@ -19,8 +19,8 @@ export const FIXTURE_BEATS: Record<string, SceneBeat> = {
       fog: '#12172e',
     },
     lighting: {
-      ambientIntensity: 0.4,
-      keyLightIntensity: 1.2,
+      ambientIntensity: 0.55,
+      keyLightIntensity: 1.6,
       keyLightColor: '#f4c98a',
       bloomStrength: 0.6,
     },
@@ -28,7 +28,7 @@ export const FIXTURE_BEATS: Record<string, SceneBeat> = {
       type: 'bokeh',
       density: 40,
       speed: 0.2,
-      sizeRange: [0.05, 0.2],
+      sizeRange: [0.12, 0.35],
     },
     camera: {
       behavior: 'static-drift',

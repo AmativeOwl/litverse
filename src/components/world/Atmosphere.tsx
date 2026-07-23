@@ -18,7 +18,13 @@ export function Atmosphere({ lerpedRef }: AtmosphereProps) {
   const backgroundRef = useRef<THREE.Color | null>(null)
 
   useEffect(() => {
-    const fog = new THREE.Fog(new THREE.Color('#000000'), 8, 26)
+    // far=26 (the original value) fully obscured anything past 26 units from
+    // the camera -- but the crowd/particle scatter radius is 22 units *from
+    // the scene origin*, and the camera itself sits ~8-9 units out, so
+    // far-side instances were ~30 units from the camera and disappeared
+    // entirely into fog. far=40 keeps the whole scatter radius visible from
+    // any camera position the rig actually uses.
+    const fog = new THREE.Fog(new THREE.Color('#000000'), 8, 40)
     const background = new THREE.Color('#000000')
     fogRef.current = fog
     backgroundRef.current = background
