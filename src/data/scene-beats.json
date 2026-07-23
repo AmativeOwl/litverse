@@ -25,5 +25,32 @@
       "fov": 50
     },
     "transitionDurationMs": 2000
+  },
+  {
+    "id": "peak-revelry",
+    "palette": {
+      "background": "#2a1240",
+      "primary": "#ff6b9d",
+      "accent": "#ffd166",
+      "fog": "#1a0f2e"
+    },
+    "lighting": {
+      "ambientIntensity": 0.7,
+      "keyLightIntensity": 2.2,
+      "keyLightColor": "#ffd166",
+      "bloomStrength": 1.1
+    },
+    "particles": {
+      "type": "confetti",
+      "density": 120,
+      "speed": 0.6,
+      "sizeRange": [0.08, 0.3]
+    },
+    "camera": {
+      "behavior": "slow-orbit",
+      "speed": 0.3,
+      "fov": 55
+    },
+    "transitionDurationMs": 1500
   }
 ]
