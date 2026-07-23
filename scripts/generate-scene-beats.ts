@@ -184,7 +184,7 @@ async function callAnthropic(prompt: string, model: string): Promise<string> {
     },
     body: JSON.stringify({
       model,
-      max_tokens: 8000,
+      max_tokens: 16000,
       messages: [{ role: 'user', content: prompt }],
     }),
   })
@@ -213,6 +213,7 @@ async function callOpenAI(prompt: string, model: string): Promise<string> {
       model,
       messages: [{ role: 'user', content: prompt }],
       response_format: { type: 'json_object' },
+      max_tokens: 16000,
     }),
   })
 
@@ -220,9 +221,17 @@ async function callOpenAI(prompt: string, model: string): Promise<string> {
     throw new Error(`OpenAI API error: ${res.status} ${res.statusText} — ${await res.text()}`)
   }
 
-  const data = (await res.json()) as { choices?: { message?: { content?: string } }[] }
-  const text = data.choices?.[0]?.message?.content
+  const data = (await res.json()) as {
+    choices?: { message?: { content?: string }; finish_reason?: string }[]
+  }
+  const choice = data.choices?.[0]
+  const text = choice?.message?.content
   if (!text) throw new Error('OpenAI response contained no message content')
+  if (choice?.finish_reason === 'length') {
+    throw new Error(
+      'OpenAI response was truncated by the max_tokens limit before the JSON finished — try a shorter --input excerpt or raise max_tokens',
+    )
+  }
   return text
 }
 
