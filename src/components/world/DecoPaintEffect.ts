@@ -37,9 +37,19 @@ const fragmentShader = /* glsl */ `
 
   // 1. Flat color banding (posterize) -- quantizing luminance/color into a
   // handful of discrete steps is the single biggest lever for "flat gouache"
-  // vs. a smooth PBR gradient.
+  // vs. a smooth PBR gradient. Quantizing per-channel (floor(c*levels+0.5))
+  // looks right on paper but blows up on dark, low-saturation colors: with
+  // levels=6 (~0.167 per step), a muted color whose channels sit just above
+  // vs. just below a rounding boundary (e.g. the crowd silhouettes' dark
+  // warm-grey) gets its channels rounded to DIFFERENT steps independently --
+  // R rounds up to 1/6 while G/B round down to 0 -- turning a barely-visible
+  // figure into a solid saturated red blob. Quantizing luminance and rescaling
+  // the original color to match preserves hue/chroma (true "value banding",
+  // matching how flat gouache actually reads) instead of shifting hue.
   vec3 quantizeColor(vec3 color, float levels) {
-    return floor(color * levels + 0.5) / levels;
+    float lum = max(dot(color, vec3(0.299, 0.587, 0.114)), 0.0001);
+    float quantizedLum = floor(lum * levels + 0.5) / levels;
+    return color * (quantizedLum / lum);
   }
 
   // 3. Canvas/paper grain -- procedural hash noise, no texture asset needed.
