@@ -16,8 +16,10 @@ interface DecoEstateDetailProps {
  * segment with window-box cutouts, and a scatter of garden furniture.
  * Reuses `DecoSkyline.tsx`/`DecoFountain.tsx`'s established pattern: seeded
  * fixed placement decided once, geometry merged once via `mergeGeometries`,
- * unlit `MeshBasicMaterial` silhouettes with only material color lerped
- * per-beat in `useFrame` -- no new technique introduced.
+ * `MeshStandardMaterial` (stone/stucco roughness, low metalness) with only
+ * material color/emissive lerped per-beat in `useFrame` -- matching the
+ * real-lighting/shadow/IBL treatment the rest of the scene now uses -- no
+ * new technique introduced.
  *
  * Unlike `DecoFountain` (a single off-to-one-side set-piece) or the beat-
  * gated props other tracks are adding, this is baseline "this is a mansion
@@ -243,14 +245,36 @@ export function DecoEstateDetail({ lerpedRef }: DecoEstateDetailProps) {
   const benchInstances = useMemo(() => furniture.filter((item) => item.variantIndex === 0), [furniture])
   const planterInstances = useMemo(() => furniture.filter((item) => item.variantIndex === 1), [furniture])
 
-  // Shared unlit silhouette material for the colonnade/wall/furniture,
-  // mutated in-place per-beat -- same "dark tint blended from the palette's
-  // two darkest tones" recipe as DecoSkyline/DecoFountain, so this backdrop
-  // re-lights in lockstep with the rest of the Deco set-dressing.
-  const structureMaterial = useMemo(() => new THREE.MeshBasicMaterial({ color: '#050505', fog: true }), [])
-  // Windows read as recessed voids against the lighter wall -- a further-
-  // darkened variant of the same tint rather than a separately-lit surface.
-  const windowMaterial = useMemo(() => new THREE.MeshBasicMaterial({ color: '#020202', fog: true }), [])
+  // Colonnade/wall/furniture: stone/stucco-ish `MeshStandardMaterial`, same
+  // recipe `DecoSkyline`/`DecoFountain`'s basin use -- high roughness (matte,
+  // non-reflective cut stone/render), low metalness -- so this prop responds
+  // to the same real shadows + procedural IBL the rest of the scene now
+  // gets, instead of standing out as a flat unlit silhouette. Color is still
+  // mutated in-place per-beat via the same "dark tint blended from the
+  // palette's two darkest tones" recipe.
+  const structureMaterial = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: '#050505', roughness: 0.8, metalness: 0.05, fog: true }),
+    [],
+  )
+  // Windows read as recessed interior openings rather than just a duller
+  // version of the wall material: lower roughness (glass-like sheen picks up
+  // specular from the key light/IBL where the stucco won't) plus a faint
+  // accent-colored emissive to suggest lamplight glowing from inside, echoing
+  // `DecoSkyline`'s accent-colored window-light points. Kept subtle
+  // (low `emissiveIntensity`) so windows still read as dark voids, not bright
+  // lit panels.
+  const windowMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: '#020202',
+        roughness: 0.25,
+        metalness: 0.1,
+        emissive: '#000000',
+        emissiveIntensity: 0.2,
+        fog: true,
+      }),
+    [],
+  )
 
   const columnMeshRef = useRef<THREE.InstancedMesh | null>(null)
   const windowMeshRef = useRef<THREE.InstancedMesh | null>(null)
@@ -328,6 +352,12 @@ export function DecoEstateDetail({ lerpedRef }: DecoEstateDetailProps) {
     ]
     structureMaterial.color.setRGB(...shade)
     windowMaterial.color.setRGB(shade[0] * 0.4, shade[1] * 0.4, shade[2] * 0.4)
+
+    // Faint interior-glow emissive tinted from the beat's accent color, same
+    // hue DecoSkyline's window-lights use, so this facade's windows read as
+    // "lit from within" in the same palette as the rest of the Deco backdrop.
+    const [ar, ag, ab] = hexToRgbNormalized(lerped.palette.accent)
+    windowMaterial.emissive.setRGB(ar, ag, ab)
   })
 
   return (
@@ -336,19 +366,24 @@ export function DecoEstateDetail({ lerpedRef }: DecoEstateDetailProps) {
         ref={columnMeshRef}
         args={[columnGeometry, structureMaterial, columnPoints.length]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
-      <mesh geometry={lintelGeometry} material={structureMaterial} frustumCulled={false} />
-      <mesh geometry={wallGeometry} material={structureMaterial} frustumCulled={false} />
+      <mesh geometry={lintelGeometry} material={structureMaterial} frustumCulled={false} castShadow receiveShadow />
+      <mesh geometry={wallGeometry} material={structureMaterial} frustumCulled={false} castShadow receiveShadow />
       <instancedMesh
         ref={windowMeshRef}
         args={[windowGeometry, windowMaterial, facadeSegments.length]}
         frustumCulled={false}
+        receiveShadow
       />
       {benchInstances.length > 0 && (
         <instancedMesh
           ref={benchMeshRef}
           args={[benchGeometry, structureMaterial, benchInstances.length]}
           frustumCulled={false}
+          castShadow
+          receiveShadow
         />
       )}
       {planterInstances.length > 0 && (
@@ -356,6 +391,8 @@ export function DecoEstateDetail({ lerpedRef }: DecoEstateDetailProps) {
           ref={planterMeshRef}
           args={[planterGeometry, structureMaterial, planterInstances.length]}
           frustumCulled={false}
+          castShadow
+          receiveShadow
         />
       )}
     </group>
