@@ -2,21 +2,21 @@ import { useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { LerpedSceneBeat } from './beatMath'
-import { getToonGradientMap } from './toonGradientTexture'
 
 interface FloorProps {
   lerpedRef: RefObject<LerpedSceneBeat>
 }
 
 /**
- * One large low-poly floor plane. Uses `MeshToonMaterial` (cel-shaded,
- * quantized into discrete light/shadow bands via the shared gradient map)
- * rather than `MeshStandardMaterial` -- `metalness`/`roughness` don't apply
- * to toon shading, so they're dropped along with the switch. Tinted from
- * `palette.primary`, updated imperatively every frame exactly as before.
+ * One large low-poly floor plane. Uses `MeshStandardMaterial` (real
+ * roughness/metalness lighting response, PBR-lit rather than cel-shaded)
+ * -- a matte surface (~0.6 roughness, low metalness) so it catches the key
+ * light/bloom and the new IBL environment realistically. Tinted from
+ * `palette.primary`, still updated imperatively every frame exactly as
+ * before -- only the material type + its fixed roughness/metalness changed.
  */
 export function Floor({ lerpedRef }: FloorProps) {
-  const materialRef = useRef<THREE.MeshToonMaterial>(null)
+  const materialRef = useRef<THREE.MeshStandardMaterial>(null)
 
   useFrame(() => {
     const lerped = lerpedRef.current
@@ -25,9 +25,9 @@ export function Floor({ lerpedRef }: FloorProps) {
   })
 
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
       <planeGeometry args={[60, 60, 1, 1]} />
-      <meshToonMaterial ref={materialRef} gradientMap={getToonGradientMap()} />
+      <meshStandardMaterial ref={materialRef} roughness={0.6} metalness={0.05} />
     </mesh>
   )
 }
