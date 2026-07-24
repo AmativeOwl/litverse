@@ -1,7 +1,8 @@
 import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { clamp01, easeInOutCubic, type LerpedSceneBeat } from './beatMath'
+import type { LerpedSceneBeat } from './beatMath'
+import { vignetteVisibility } from './decoPlateKit'
 
 interface PaintedVignetteProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -36,25 +37,9 @@ const VIGNETTE_WIDTH = 17
 const VIGNETTE_HEIGHT = 9.5
 const HIDDEN_OPACITY = 0
 
-/**
- * Visibility for a beat-gated element during a transition -- exported for
- * tests. Mirrors DecoWaterfront's from/to gating: t is the *raw* transition
- * progress (LerpedSceneBeat.t is pre-easing by contract), eased here.
- */
-export function vignetteVisibility(
-  fromId: string,
-  toId: string,
-  tRaw: number,
-  memberBeatIds: ReadonlySet<string>,
-): number {
-  const eased = easeInOutCubic(clamp01(tRaw))
-  const fromIn = memberBeatIds.has(fromId)
-  const toIn = memberBeatIds.has(toId)
-  if (fromIn && toIn) return 1
-  if (toIn) return eased
-  if (fromIn) return 1 - eased
-  return 0
-}
+// Relocated to the shared plate kit as part of the painted-world pivot;
+// re-exported here so existing imports/tests keep working unchanged.
+export { vignetteVisibility }
 
 /**
  * Paints the bandstand vignette once: flat value-banded gouache -- sky bands,
