@@ -128,8 +128,8 @@ describe('computeCameraPose', () => {
     // eased(0.5) = 0.5, so the straight path's midpoint height is the mean
     const straightMid = (start.position[1] + end.position[1]) / 2
     expect(mid.position[1]).toBeGreaterThan(straightMid)
-    // ...but only a soft lift: the push reads as a straight axial dolly
-    expect(mid.position[1] - straightMid).toBeLessThan(1)
+    // ...but a modest lift: the push still reads as a centered axial dolly
+    expect(mid.position[1] - straightMid).toBeLessThan(2)
   })
 
   it('passes fov straight through unchanged', () => {

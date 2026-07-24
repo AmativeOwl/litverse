@@ -39,10 +39,10 @@ const CARD_RADIUS = 20
 const CARD_NEAR_DISTANCE = 18
 const CARD_FOV = 55
 const CARD_CENTER_Y = 4.0
-/** Near-flat travel arc: the push-in is a straight axial dolly so the card
- * purely SCALES UP centered (the "scale match" read) -- just enough lift to
- * soften any pass through a crowd figure. */
-const CRANE_ARC = 0.6
+/** Travel arc: the push-in stays a centered axial dolly (the "scale match"
+ * read), but with enough lift that the path glides above the crowd -- near
+ * objects whipping past the lens mid-move were amplifying the felt speed. */
+const CRANE_ARC = 1.2
 /** Behavior motion fully dies at zoom=1: the dwell frame is LOCKED -- the
  * camera moves between frames, never within them; all motion during a dwell
  * belongs to the painting itself (user feedback). */

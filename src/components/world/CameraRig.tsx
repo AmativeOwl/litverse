@@ -44,7 +44,10 @@ const ZOOM_DWELL = 1
  * zero pan distance, so the lock simply holds while plates crossfade.
  */
 const FOCUS_SECONDS = 0.7
-const PUSH_SECONDS = 3.6
+// Long enough that the mid-move PEAK velocity (~1.5x average for an
+// ease-in-out) stays gentle -- the felt speed of the dolly, not just its
+// duration, is what reads (user feedback).
+const PUSH_SECONDS = 5.0
 const RETREAT_RATE = 1.4
 const PAN_RATE = 0.5
 const PAN_SETTLED_RAD = 0.15
