@@ -12,6 +12,14 @@ import { MotifEffects } from './world/MotifEffects'
 import { PaintedPlates } from './world/PaintedPlates'
 import { Particles } from './world/Particles'
 import { GATSBY_PLATES } from '../data/plates/gatsby-ch3'
+import { gatsbyCh3 } from '../data/gatsby-ch3'
+
+// Ordered sentence ids, flattened once at module scope -- resolves the
+// store's sentence index into ids for PaintedPlates' 3-4-sentence window
+// track (sentence-level state, permitted by the design constraints).
+const SENTENCE_IDS: readonly string[] = gatsbyCh3.paragraphs.flatMap((paragraph) =>
+  paragraph.sentences.map((sentence) => sentence.id),
+)
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
 import { StringLights } from './world/StringLights'
@@ -59,7 +67,12 @@ function WorldSceneContents() {
           "Painted-world pivot"); PaintedPlates below is the scenery now. */}
       <Atmosphere lerpedRef={lerpedRef} />
       <StringLights lerpedRef={lerpedRef} />
-      <PaintedPlates lerpedRef={lerpedRef} plateSet={GATSBY_PLATES} beatsById={SCENE_BEATS_BY_ID} />
+      <PaintedPlates
+        lerpedRef={lerpedRef}
+        plateSet={GATSBY_PLATES}
+        beatsById={SCENE_BEATS_BY_ID}
+        sentenceIds={SENTENCE_IDS}
+      />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />

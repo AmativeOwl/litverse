@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import sceneBeatsData from '../scene-beats.json'
 import type { SceneBeat } from '../../types'
+import { gatsbyCh3 } from '../gatsby-ch3'
 import { GATSBY_PLATES } from './gatsby-ch3'
 
 const BEATS = sceneBeatsData as SceneBeat[]
@@ -62,6 +63,40 @@ describe('GATSBY_PLATES registry', () => {
       for (const sentenceId of window.sentenceIds) {
         expect(seen.has(sentenceId)).toBe(false)
         seen.add(sentenceId)
+      }
+    }
+  })
+
+  it('window sentence ids reference real passage sentences', () => {
+    const sentenceById = new Map(
+      gatsbyCh3.paragraphs.flatMap((paragraph) =>
+        paragraph.sentences.map((sentence) => [sentence.id, sentence] as const),
+      ),
+    )
+    for (const window of GATSBY_PLATES.windows ?? []) {
+      for (const sentenceId of window.sentenceIds) {
+        expect(sentenceById.has(sentenceId), `unknown sentence ${sentenceId}`).toBe(true)
+      }
+    }
+  })
+
+  it('each window hangs in the camera sector of its sentences beats', () => {
+    const beatBySentenceId = new Map(
+      gatsbyCh3.paragraphs.flatMap((paragraph) =>
+        paragraph.sentences.map((sentence) => [sentence.id, sentence.sceneBeatId] as const),
+      ),
+    )
+    for (const window of GATSBY_PLATES.windows ?? []) {
+      for (const sentenceId of window.sentenceIds) {
+        const beatId = beatBySentenceId.get(sentenceId)
+        expect(beatId).toBeDefined()
+        if (!beatId) continue
+        // while these sentences narrate, the camera faces this azimuth --
+        // the window plate must hang there or it plays offscreen
+        expect(
+          window.plate.azimuthDeg,
+          `window ${window.id} sentence ${sentenceId} (beat ${beatId})`,
+        ).toBe(GATSBY_PLATES.cameraAzimuthDeg[beatId])
       }
     }
   })
