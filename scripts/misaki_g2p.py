@@ -20,9 +20,9 @@ Deliberately installed WITHOUT the `misaki[en]` extra: that extra pulls in
 as an optional fallback for out-of-dictionary words. This project avoids
 GPL dependencies (see HeadTTS's own README rationale for the same reason),
 so this script constructs `en.G2P(fallback=None)` and never imports
-`misaki.espeak`. Setup: `pip install misaki spacy num2words` (the small
-`en_core_web_sm` spacy model, ~13MB, downloads once on first run, same
-one-time-asset pattern as the Kokoro ONNX weights and voice .bin files).
+`misaki.espeak`. Setup: `pip install -r scripts/requirements-narration.txt`
+(the small `en_core_web_sm` spacy model, ~13MB, downloads once on first run,
+same one-time-asset pattern as the Kokoro ONNX weights and voice .bin files).
 
 Any word Misaki can't resolve without the espeak fallback (phonemes=None)
 is a hard failure, not silently skipped -- printed to stderr and reported
