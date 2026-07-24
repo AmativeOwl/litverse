@@ -1,6 +1,7 @@
 import { useEffect, useRef, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import type { LerpedSceneBeat } from './beatMath'
 
 interface AtmosphereProps {
@@ -13,9 +14,29 @@ interface AtmosphereProps {
  * `useFrame` -- never re-renders, never touches React state.
  */
 export function Atmosphere({ lerpedRef }: AtmosphereProps) {
-  const { scene } = useThree()
+  const { scene, gl } = useThree()
   const fogRef = useRef<THREE.Fog | null>(null)
   const backgroundRef = useRef<THREE.Color | null>(null)
+
+  // Fake-HDRI image-based lighting/reflections with zero bundled assets and
+  // zero network fetches: three's own procedural `RoomEnvironment` (a small
+  // scene of lit boxes -- see three/examples/jsm/environments/RoomEnvironment.js)
+  // rendered once through a `PMREMGenerator` into a prefiltered environment
+  // map, assigned to `scene.environment` so every `MeshStandardMaterial` in
+  // the scene picks up real ambient reflections/specular response instead of
+  // flat ambient-only lighting. Built once on mount (not per-frame/per-beat
+  // -- this is fixed scene-level setup, the same category as the fog/
+  // background effect below, just IBL instead of fog).
+  useEffect(() => {
+    const pmremGenerator = new THREE.PMREMGenerator(gl)
+    const environmentTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture
+    scene.environment = environmentTexture
+    pmremGenerator.dispose()
+    return () => {
+      scene.environment = null
+      environmentTexture.dispose()
+    }
+  }, [scene, gl])
 
   useEffect(() => {
     // far=26 (the original value) fully obscured anything past 26 units from

@@ -170,7 +170,16 @@ export function DecoFountain({ lerpedRef }: DecoFountainProps) {
   const sprayLayout = useMemo(buildSprayLayout, [])
   const railingLayout = useMemo(buildRailingLayout, [])
 
-  const basinMaterial = useMemo(() => new THREE.MeshBasicMaterial({ color: '#050505', fog: true }), [])
+  // Basin: stone-ish -- high roughness (matte, non-reflective cut stone),
+  // low metalness. Railing: metallic/brass wrought-iron-style look -- low
+  // roughness, high metalness so it picks up real specular highlights from
+  // the key light. Both were unlit `MeshBasicMaterial` before; the spray
+  // jets stay `MeshBasicMaterial` since they're meant to read as a bright
+  // glowing highlight (like a particle), not a physically-lit solid.
+  const basinMaterial = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: '#050505', roughness: 0.85, metalness: 0.05, fog: true }),
+    [],
+  )
   const sprayMaterial = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
@@ -181,7 +190,10 @@ export function DecoFountain({ lerpedRef }: DecoFountainProps) {
       }),
     [],
   )
-  const railingMaterial = useMemo(() => new THREE.MeshBasicMaterial({ color: '#050505', fog: true }), [])
+  const railingMaterial = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: '#050505', roughness: 0.3, metalness: 0.85, fog: true }),
+    [],
+  )
 
   const sprayRefs = useRef<Array<THREE.Mesh | null>>([])
 
@@ -224,6 +236,8 @@ export function DecoFountain({ lerpedRef }: DecoFountainProps) {
         material={basinMaterial}
         position={[FOUNTAIN_X, 0, FOUNTAIN_Z]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
       {sprayLayout.map((jet, index) => (
         <mesh
@@ -237,7 +251,13 @@ export function DecoFountain({ lerpedRef }: DecoFountainProps) {
           frustumCulled={false}
         />
       ))}
-      <mesh geometry={railingLayout.rails} material={railingMaterial} frustumCulled={false} />
+      <mesh
+        geometry={railingLayout.rails}
+        material={railingMaterial}
+        frustumCulled={false}
+        castShadow
+        receiveShadow
+      />
     </group>
   )
 }
