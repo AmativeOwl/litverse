@@ -41,5 +41,237 @@
     "color": "#ffd15c",
     "durationMs": 1500,
     "intensity": 1.0
+  },
+  {
+    "id": "music-drift",
+    "kind": "floating-glyph",
+    "color": "#e7d9b8",
+    "durationMs": 1700,
+    "intensity": 0.45,
+    "glyph": "music",
+    "position": [-1.5, 3.0, -3]
+  },
+  {
+    "id": "summer-night-glow",
+    "kind": "glow-pulse",
+    "color": "#c9d6ff",
+    "durationMs": 1800,
+    "intensity": 0.5,
+    "position": [1.8, 4.0, -4.5]
+  },
+  {
+    "id": "whisper-shimmer",
+    "kind": "glow-pulse",
+    "color": "#cfc3e8",
+    "durationMs": 1400,
+    "intensity": 0.4,
+    "position": [-2.2, 3.4, -3.5]
+  },
+  {
+    "id": "sun-glint",
+    "kind": "glow-pulse",
+    "color": "#ffe08a",
+    "durationMs": 1300,
+    "intensity": 0.55,
+    "position": [2.5, 3.2, -2.5]
+  },
+  {
+    "id": "foam-spray",
+    "kind": "particle-burst",
+    "color": "#dff2ff",
+    "durationMs": 1000,
+    "intensity": 0.5,
+    "position": [0, 1.0, -1]
+  },
+  {
+    "id": "mop-glint",
+    "kind": "glow-pulse",
+    "color": "#9fb0a8",
+    "durationMs": 900,
+    "intensity": 0.25,
+    "position": [-1.8, 1.2, -1.5]
+  },
+  {
+    "id": "hammer-tap",
+    "kind": "particle-burst",
+    "color": "#b8ab8f",
+    "durationMs": 700,
+    "intensity": 0.3,
+    "position": [-1.5, 1.1, -1.3]
+  },
+  {
+    "id": "shears-snip",
+    "kind": "floating-glyph",
+    "color": "#a9c1a0",
+    "durationMs": 1100,
+    "intensity": 0.3,
+    "glyph": "garden-shears",
+    "position": [-2.0, 1.0, -1.6]
+  },
+  {
+    "id": "citrus-glow",
+    "kind": "glow-pulse",
+    "color": "#ffcf6b",
+    "durationMs": 1000,
+    "intensity": 0.35,
+    "position": [1.5, 1.3, -1.2]
+  },
+  {
+    "id": "coloured-lights-glow",
+    "kind": "glow-pulse",
+    "color": "#ff9fd8",
+    "durationMs": 1400,
+    "intensity": 0.55,
+    "position": [2.0, 3.0, -3]
+  },
+  {
+    "id": "fashion-glint",
+    "kind": "glow-pulse",
+    "color": "#ffb3c6",
+    "durationMs": 1100,
+    "intensity": 0.4,
+    "position": [-1.0, 2.0, -1.8]
+  },
+  {
+    "id": "shawl-shimmer",
+    "kind": "floating-glyph",
+    "color": "#e8c9ff",
+    "durationMs": 1500,
+    "intensity": 0.45,
+    "glyph": "shawls",
+    "position": [1.2, 2.2, -1.5]
+  },
+  {
+    "id": "chatter-murmur",
+    "kind": "floating-glyph",
+    "color": "#f0d9b0",
+    "durationMs": 1200,
+    "intensity": 0.4,
+    "glyph": "chatter",
+    "position": [0.8, 2.2, -1.5]
+  },
+  {
+    "id": "laughter-ripple",
+    "kind": "particle-burst",
+    "color": "#ffcf8f",
+    "durationMs": 1100,
+    "intensity": 0.6,
+    "position": [-0.8, 2.3, -1.7]
+  },
+  {
+    "id": "earth-lurch",
+    "kind": "glow-pulse",
+    "color": "#ffb15c",
+    "durationMs": 2200,
+    "intensity": 0.9,
+    "position": [0, 3.5, -3]
+  },
+  {
+    "id": "opera-swell",
+    "kind": "floating-glyph",
+    "color": "#ffe4b0",
+    "durationMs": 1800,
+    "intensity": 0.6,
+    "glyph": "opera of voices",
+    "position": [0, 3.0, -2.5]
+  },
+  {
+    "id": "pitch-rise",
+    "kind": "glow-pulse",
+    "color": "#fff0c2",
+    "durationMs": 1200,
+    "intensity": 0.65,
+    "position": [0, 3.2, -2.2]
+  },
+  {
+    "id": "laughter-easier",
+    "kind": "particle-burst",
+    "color": "#ffcf8f",
+    "durationMs": 1100,
+    "intensity": 0.6,
+    "position": [0.5, 2.1, -1.4]
+  },
+  {
+    "id": "prodigality-spill",
+    "kind": "particle-burst",
+    "color": "#f4d58a",
+    "durationMs": 1200,
+    "intensity": 0.65,
+    "position": [-0.5, 2.0, -1.3]
+  },
+  {
+    "id": "sea-change-shimmer",
+    "kind": "glow-pulse",
+    "color": "#bfe4ff",
+    "durationMs": 1500,
+    "intensity": 0.5,
+    "position": [0, 2.8, -2]
+  },
+  {
+    "id": "changing-light",
+    "kind": "glow-pulse",
+    "color": "#ffd9a0",
+    "durationMs": 1500,
+    "intensity": 0.5,
+    "position": [0, 3.0, -2.2]
+  },
+  {
+    "id": "gypsy-flourish",
+    "kind": "floating-glyph",
+    "color": "#d9b8ff",
+    "durationMs": 2200,
+    "intensity": 0.9,
+    "glyph": "gypsies",
+    "position": [2.43, 2.0, 13.79]
+  },
+  {
+    "id": "opal-shimmer",
+    "kind": "glow-pulse",
+    "color": "#e6d3ff",
+    "durationMs": 2000,
+    "intensity": 0.85,
+    "position": [1.3, 2.2, 14.94]
+  },
+  {
+    "id": "frisco-flourish",
+    "kind": "floating-glyph",
+    "color": "#ffcaf0",
+    "durationMs": 1800,
+    "intensity": 0.8,
+    "glyph": "Frisco",
+    "position": [3.37, 2.1, 12.56]
+  },
+  {
+    "id": "canvas-platform-burst",
+    "kind": "particle-burst",
+    "color": "#ffd15c",
+    "durationMs": 2200,
+    "intensity": 1.0,
+    "position": [2.43, 1.8, 13.79]
+  },
+  {
+    "id": "chatter-burst",
+    "kind": "particle-burst",
+    "color": "#f0d9b0",
+    "durationMs": 1000,
+    "intensity": 0.55,
+    "position": [0, 2.0, 13.0]
+  },
+  {
+    "id": "gilda-gray-spotlight",
+    "kind": "floating-glyph",
+    "color": "#fff3d6",
+    "durationMs": 2000,
+    "intensity": 0.9,
+    "glyph": "Gilda Gray!",
+    "position": [2.6, 3.0, 14.77]
+  },
+  {
+    "id": "party-begun-flourish",
+    "kind": "particle-burst",
+    "color": "#ffd15c",
+    "durationMs": 2400,
+    "intensity": 1.0,
+    "position": [0, 3.5, -1]
   }
 ]
