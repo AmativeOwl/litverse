@@ -58,7 +58,6 @@ class FakeAudio implements AudioLike {
   src = ''
   currentTime = 0
   paused = true
-  ontimeupdate: ((ev: Event) => void) | null = null
   onended: ((ev: Event) => void) | null = null
   onerror: ((ev: Event) => void) | null = null
 
@@ -77,10 +76,14 @@ class FakeAudio implements AudioLike {
     this.paused = true
   })
 
-  /** Test helper: simulate the browser advancing playback position and firing timeupdate. */
+  /**
+   * Test helper: simulate the browser advancing playback position. Unlike
+   * the old `ontimeupdate`-driven design, this no longer fires an event on
+   * its own -- word-position tracking is now a requestAnimationFrame loop
+   * (see the harness's `stepFrame()`), so call that afterward to trigger a tick.
+   */
   advanceTo(ms: number): void {
     this.currentTime = ms / 1000
-    this.ontimeupdate?.(new Event('timeupdate'))
   }
 
   /** Test helper: simulate the clip finishing. */
@@ -152,6 +155,16 @@ interface Harness {
   simulateVisibilityChange: (state: DocumentVisibilityState) => void
   /** Makes the *next* audio element created by the controller reject on play(). */
   rejectNextPlay: () => void
+  /** The fake `requestAnimationFrame` the controller was wired with -- exposes `.mock.calls` for tests that need to grab a raw tick callback directly (e.g. to simulate a stale frame the fake's own `cancelFrame` already guards against). */
+  requestFrame: ReturnType<typeof vi.fn>
+  /**
+   * Manually "steps" one animation frame: invokes every currently pending
+   * requestFrame callback once (each callback re-registers itself via
+   * requestFrame for its next tick, same as the real rAF loop). No real
+   * timers involved -- word-position tracking is driven by these steps
+   * instead of `ontimeupdate` events.
+   */
+  stepFrame: () => void
 }
 
 function createHarness(
@@ -178,6 +191,17 @@ function createHarness(
     return manifestResult
   })
 
+  let nextFrameId = 1
+  const pendingFrames = new Map<number, FrameRequestCallback>()
+  const requestFrame = vi.fn((callback: FrameRequestCallback): number => {
+    const id = nextFrameId++
+    pendingFrames.set(id, callback)
+    return id
+  })
+  const cancelFrame = vi.fn((id: number): void => {
+    pendingFrames.delete(id)
+  })
+
   const controller = createNarrationController({
     store: {
       getState: () => store,
@@ -202,6 +226,8 @@ function createHarness(
         return visibilityState
       },
     }),
+    requestFrame,
+    cancelFrame,
     ...depOverrides,
   })
 
@@ -217,6 +243,12 @@ function createHarness(
     },
     rejectNextPlay: () => {
       nextPlayResult = 'reject'
+    },
+    requestFrame,
+    stepFrame: () => {
+      const entries = Array.from(pendingFrames.entries())
+      pendingFrames.clear()
+      for (const [, callback] of entries) callback(0)
     },
   }
 }
@@ -290,15 +322,37 @@ describe('createNarrationController', () => {
       expect(audios).toHaveLength(1)
     })
 
-    it('advances currentWordId as ontimeupdate fires, via findWordIdAtTime', async () => {
+    it('advances currentWordId as animation frames tick, via findWordIdAtTime', async () => {
       const { passage, manifest, s2 } = makeFixture()
-      const { controller, store, audios } = createHarness(manifest)
+      const { controller, store, audios, stepFrame } = createHarness(manifest)
       controller.loadPassage(passage)
       controller.seekToSentence(1) // s2, 3 words at 300ms apart
       await flushMicrotasks()
 
       audios[0]?.advanceTo(650) // into the third word's window (600-900ms)
+      stepFrame()
       expect(store.currentWordId).toBe(s2.words[2]?.id)
+    })
+
+    it('keeps tracking across repeated frame ticks without redundant store writes for an unchanged word', async () => {
+      const { passage, manifest } = makeFixture()
+      const { controller, store, audios, stepFrame } = createHarness(manifest)
+      controller.loadPassage(passage)
+      controller.seekToSentence(1)
+      await flushMicrotasks()
+
+      audios[0]?.advanceTo(650)
+      stepFrame()
+      const wordIdAfterFirstTick = store.currentWordId
+
+      // Advancing within the same word's window across further ticks should
+      // simply confirm the loop keeps running (re-registering itself every
+      // frame) and doesn't drift to a different word on its own.
+      audios[0]?.advanceTo(660)
+      stepFrame()
+      audios[0]?.advanceTo(670)
+      stepFrame()
+      expect(store.currentWordId).toBe(wordIdAfterFirstTick)
     })
   })
 
@@ -441,19 +495,32 @@ describe('createNarrationController', () => {
       expect(store.currentSentenceIndex).toBe(0)
     })
 
-    it('a stale in-flight ontimeupdate from before the seek cannot clobber the new sentence state', async () => {
+    it('a stale in-flight frame-tracking tick from before the seek cannot clobber the new sentence state', async () => {
       const { passage, manifest, s3 } = makeFixture()
-      const { controller, store, audios } = createHarness(manifest)
+      const { controller, store, audios, requestFrame, stepFrame } = createHarness(manifest)
       controller.loadPassage(passage)
       controller.play()
       await flushMicrotasks()
       const staleAudio = audios[0]
 
+      // Capture the first sentence's own tick callback directly (bypassing
+      // the fake's cancelFrame bookkeeping below) to simulate a frame the
+      // browser had already queued right before cancelAnimationFrame ran --
+      // the epoch check inside the tick is the guard for exactly this race,
+      // same rationale as advanceToNextSentence's own epoch check.
+      const staleTick = requestFrame.mock.calls[0]?.[0]
+      if (staleAudio) staleAudio.currentTime = 0.05
+
       controller.seekToSentence(2)
       await flushMicrotasks()
 
-      staleAudio?.advanceTo(50) // fire a late event from the now-abandoned first sentence
-      expect(store.currentWordId).toBe(s3.words[0]?.id) // unaffected by the stale event
+      staleTick?.(0) // invoke the captured stale callback directly, bypassing cancellation
+      expect(store.currentWordId).toBe(s3.words[0]?.id) // unaffected by the stale callback
+
+      // The real cancellation path is also exercised: a normal stepFrame()
+      // after the seek only ever advances the *new* sentence's own tick.
+      stepFrame()
+      expect(store.currentWordId).toBe(s3.words[0]?.id)
     })
   })
 
@@ -613,7 +680,7 @@ describe('createNarrationController', () => {
 
     it('fires the tagged motif when narration reaches a trigger word', async () => {
       const { passage, manifest } = makeMotifFixture(12)
-      const { controller, store, audios } = createHarness(manifest)
+      const { controller, store, audios, stepFrame } = createHarness(manifest)
 
       controller.loadPassage(passage)
       controller.play()
@@ -622,35 +689,40 @@ describe('createNarrationController', () => {
       expect(store.activeMotifId).toBeNull() // word 1 isn't tagged
 
       audios[0]?.advanceTo(3300) // word 12's window (300ms/word => starts at 3300ms)
+      stepFrame()
       expect(store.activeMotifId).toBe('dust-drift')
       expect(store.activeMotifNonce).toBe(1)
     })
 
-    it('does not re-fire on repeated timeupdate ticks for the same already-tagged word', async () => {
+    it('does not re-fire on repeated frame ticks for the same already-tagged word', async () => {
       const { passage, manifest } = makeMotifFixture(12)
-      const { controller, store, audios } = createHarness(manifest)
+      const { controller, store, audios, stepFrame } = createHarness(manifest)
 
       controller.loadPassage(passage)
       controller.play()
       await flushMicrotasks()
 
       audios[0]?.advanceTo(3300)
+      stepFrame()
       expect(store.activeMotifNonce).toBe(1)
 
       audios[0]?.advanceTo(3350)
+      stepFrame()
       audios[0]?.advanceTo(3400)
+      stepFrame()
       expect(store.activeMotifNonce).toBe(1) // unchanged -- still the same word
     })
 
     it('does not fire for words with no motif-triggers.json entry', async () => {
       const { passage, manifest } = makeMotifFixture(5) // no tagged word among the first 5
-      const { controller, store, audios } = createHarness(manifest)
+      const { controller, store, audios, stepFrame } = createHarness(manifest)
 
       controller.loadPassage(passage)
       controller.play()
       await flushMicrotasks()
 
       audios[0]?.advanceTo(1200) // word 5
+      stepFrame()
       expect(store.activeMotifId).toBeNull()
       expect(store.activeMotifNonce).toBe(0)
     })

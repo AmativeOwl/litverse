@@ -80,7 +80,6 @@ export interface AudioLike {
   paused: boolean
   play: () => Promise<void>
   pause: () => void
-  ontimeupdate: ((ev: Event) => void) | null
   onended: ((ev: Event) => void) | null
   onerror: ((ev: Event) => void) | null
 }
@@ -124,6 +123,15 @@ export interface NarrationControllerDeps {
   createAudio: () => AudioLike
   fetchManifest: (url: string) => Promise<NarrationManifest>
   getDocument: () => Pick<Document, 'addEventListener' | 'removeEventListener' | 'visibilityState'> | undefined
+  /**
+   * Schedules `callback` to run on the next animation frame. Defaults to the
+   * real `requestAnimationFrame`; tests override this with a manually
+   * steppable fake (see narrationController.test.ts's harness) so word
+   * tracking can be exercised deterministically with no real timers.
+   */
+  requestFrame: (callback: FrameRequestCallback) => number
+  /** Cancels a frame previously scheduled via `requestFrame`. Defaults to the real `cancelAnimationFrame`. */
+  cancelFrame: (handle: number) => void
 }
 
 function defaultDeps(): NarrationControllerDeps {
@@ -138,6 +146,8 @@ function defaultDeps(): NarrationControllerDeps {
       return (await res.json()) as NarrationManifest
     },
     getDocument: () => (typeof document !== 'undefined' ? document : undefined),
+    requestFrame: (callback) => requestAnimationFrame(callback),
+    cancelFrame: (handle) => cancelAnimationFrame(handle),
   }
 }
 
@@ -164,6 +174,15 @@ interface ControllerState {
   manifest: NarrationManifest | null
   manifestReadyPromise: Promise<void> | null
   currentAudio: AudioLike | null
+  /**
+   * The manifest entry (word timings) for `currentAudio`'s sentence — kept
+   * alongside `currentAudio` so `pause()`/resume can restart the word-
+   * tracking rAF loop on the same audio element without re-deriving `entry`
+   * from `sentenceIndex`/`manifest` (which may have moved on by then).
+   */
+  currentEntry: NarrationManifestEntry | null
+  /** Handle for the active word-tracking requestAnimationFrame loop (see startWordTracking/stopWordTracking), or null when no loop is running. */
+  rafId: number | null
   interSentenceTimerId: ReturnType<typeof setTimeout> | null
   /**
    * True once `audio.play()` has actually been called for the current
@@ -178,7 +197,7 @@ interface ControllerState {
   hasStartedPlaying: boolean
   visibilityListenerAttached: boolean
   hasWarnedMissingAudio: boolean
-  /** Last wordId a motif was fired for -- guards against re-firing on every `timeupdate` tick while that same word stays current (ontimeupdate fires many times per word, not once). */
+  /** Last wordId a motif was fired for -- guards against re-firing on every rAF tick while that same word stays current (the tracking loop runs once per frame, not once per word). */
   lastMotifWordId: string | null
 }
 
@@ -192,6 +211,8 @@ function createInitialState(): ControllerState {
     manifest: null,
     manifestReadyPromise: null,
     currentAudio: null,
+    currentEntry: null,
+    rafId: null,
     interSentenceTimerId: null,
     hasStartedPlaying: false,
     visibilityListenerAttached: false,
@@ -232,10 +253,44 @@ export function createNarrationController(overrides: Partial<NarrationController
     }
   }
 
+  /**
+   * Starts (or restarts) the rAF-driven word-position tracking loop for
+   * `audio`/`entry`. Reads `audio.currentTime` every animation frame rather
+   * than relying on `audio.ontimeupdate` — that event is a real browser
+   * event that only fires at a browser-throttled rate (not every frame), so
+   * `findWordIdAtTime` was working off stale `currentTime` reads, which is
+   * what caused word highlighting to visibly lag the audio. Only writes to
+   * the store when the resolved word id actually changes, so this doesn't
+   * cause a re-render on every single frame.
+   */
+  function startWordTracking(audio: AudioLike, entry: NarrationManifestEntry, myEpoch: number): void {
+    stopWordTracking() // guard against two loops ever running concurrently, regardless of caller discipline
+    state.currentEntry = entry
+    let lastAppliedWordId: string | null = null
+    const tick = (): void => {
+      if (myEpoch !== state.epoch) return
+      const wordId = findWordIdAtTime(entry.words, audio.currentTime * 1000)
+      if (wordId !== null && wordId !== lastAppliedWordId) {
+        lastAppliedWordId = wordId
+        deps.store.setState({ currentWordId: wordId })
+        maybeFireMotif(wordId)
+      }
+      state.rafId = deps.requestFrame(tick)
+    }
+    state.rafId = deps.requestFrame(tick)
+  }
+
+  function stopWordTracking(): void {
+    if (state.rafId !== null) {
+      deps.cancelFrame(state.rafId)
+      state.rafId = null
+    }
+  }
+
   function detachCurrentAudio(): void {
+    stopWordTracking()
     const audio = state.currentAudio
     if (!audio) return
-    audio.ontimeupdate = null
     audio.onended = null
     audio.onerror = null
     if (!audio.paused) audio.pause()
@@ -283,9 +338,9 @@ export function createNarrationController(overrides: Partial<NarrationController
 
   /**
    * Fires a Motif's one-shot visual if `wordId` is tagged in
-   * MOTIF_TRIGGERS and isn't the same word that just fired one (ontimeupdate
-   * ticks many times while the same word stays current -- this must fire
-   * once per word, not once per tick). Bumps activeMotifNonce so the *same*
+   * MOTIF_TRIGGERS and isn't the same word that just fired one (the rAF
+   * word-tracking tick fires every frame while the same word stays current --
+   * this must fire once per word, not once per tick). Bumps activeMotifNonce so the *same*
    * motif id firing twice in a row (two tagged words sharing a catalog
    * entry) still re-triggers consumers instead of being a no-op re-render.
    */
@@ -329,15 +384,6 @@ export function createNarrationController(overrides: Partial<NarrationController
     const audio = deps.createAudio()
     audio.src = entry.audioUrl
 
-    audio.ontimeupdate = () => {
-      if (myEpoch !== state.epoch) return
-      const wordId = findWordIdAtTime(entry.words, audio.currentTime * 1000)
-      if (wordId) {
-        deps.store.setState({ currentWordId: wordId })
-        maybeFireMotif(wordId)
-      }
-    }
-
     const advanceToNextSentence = () => {
       if (myEpoch !== state.epoch) return
       // A real narrator breathes between sentences (longer between
@@ -374,6 +420,7 @@ export function createNarrationController(overrides: Partial<NarrationController
       )
       advanceToNextSentence()
     })
+    startWordTracking(audio, entry, myEpoch)
   }
 
   function handleVisibilityChange(): void {
@@ -442,8 +489,10 @@ export function createNarrationController(overrides: Partial<NarrationController
 
     if (currentPlaybackState === 'paused') {
       if (state.currentAudio && state.hasStartedPlaying) {
+        const audio = state.currentAudio
+        const entry = state.currentEntry
         deps.store.setState({ playbackState: 'playing' })
-        state.currentAudio.play().catch(() => {
+        audio.play().catch(() => {
           // If resuming genuinely fails, restart the sentence from scratch
           // rather than leaving playback silently stuck.
           cancelPlaybackDefensively()
@@ -454,6 +503,7 @@ export function createNarrationController(overrides: Partial<NarrationController
             playCurrentSentence()
           })
         })
+        if (entry) startWordTracking(audio, entry, state.epoch)
       } else {
         // Paused before any clip was ever actually started (e.g. pause()
         // landed while still awaiting ensureManifestReady()) — there's
@@ -484,6 +534,7 @@ export function createNarrationController(overrides: Partial<NarrationController
   function pause(): void {
     if (deps.store.getState().playbackState !== 'playing') return
     clearInterSentenceTimer()
+    stopWordTracking()
     state.currentAudio?.pause()
     deps.store.setState({ playbackState: 'paused' })
   }
