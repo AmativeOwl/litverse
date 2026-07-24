@@ -1,6 +1,6 @@
 [
   {
-    "id": "arrival",
+    "id": "dusk-arrival",
     "palette": {
       "background": "#0b1026",
       "primary": "#3a4a7a",
@@ -8,30 +8,185 @@
       "fog": "#12172e"
     },
     "lighting": {
-      "ambientIntensity": 0.55,
-      "keyLightIntensity": 1.6,
+      "ambientIntensity": 0.5,
+      "keyLightIntensity": 1.4,
       "keyLightColor": "#f4c98a",
-      "bloomStrength": 0.6
+      "bloomStrength": 0.5
     },
     "particles": {
       "type": "bokeh",
-      "density": 40,
-      "speed": 0.2,
+      "density": 35,
+      "speed": 0.15,
       "sizeRange": [0.12, 0.35]
     },
     "camera": {
       "behavior": "static-drift",
-      "speed": 0.1,
+      "speed": 0.08,
+      "fov": 48
+    },
+    "silhouettes": {
+      "count": 10,
+      "animation": "sway"
+    },
+    "transitionDurationMs": 1000
+  },
+  {
+    "id": "daytime-leisure",
+    "palette": {
+      "background": "#4a8fc9",
+      "primary": "#bfe6ff",
+      "accent": "#fff2b8",
+      "fog": "#cfe9ff"
+    },
+    "lighting": {
+      "ambientIntensity": 0.9,
+      "keyLightIntensity": 2.4,
+      "keyLightColor": "#fff6d8",
+      "bloomStrength": 0.5
+    },
+    "particles": {
+      "type": "dust",
+      "density": 55,
+      "speed": 0.3,
+      "sizeRange": [0.05, 0.18]
+    },
+    "camera": {
+      "behavior": "push-in",
+      "speed": 0.5,
+      "fov": 45
+    },
+    "silhouettes": {
+      "count": 6,
+      "animation": "sway"
+    },
+    "transitionDurationMs": 1100
+  },
+  {
+    "id": "weekend-traffic",
+    "palette": {
+      "background": "#6b5a3a",
+      "primary": "#c9a15a",
+      "accent": "#ffe08a",
+      "fog": "#8a7550"
+    },
+    "lighting": {
+      "ambientIntensity": 0.75,
+      "keyLightIntensity": 2.0,
+      "keyLightColor": "#ffe08a",
+      "bloomStrength": 0.6
+    },
+    "particles": {
+      "type": "dust",
+      "density": 85,
+      "speed": 0.5,
+      "sizeRange": [0.04, 0.15]
+    },
+    "camera": {
+      "behavior": "slow-orbit",
+      "speed": 0.25,
+      "fov": 52
+    },
+    "silhouettes": {
+      "count": 20,
+      "animation": "sway"
+    },
+    "transitionDurationMs": 1000
+  },
+  {
+    "id": "monday-lull",
+    "palette": {
+      "background": "#7d8ba0",
+      "primary": "#aab4c2",
+      "accent": "#e8ddb5",
+      "fog": "#99a3b3"
+    },
+    "lighting": {
+      "ambientIntensity": 0.6,
+      "keyLightIntensity": 1.3,
+      "keyLightColor": "#e8ddb5",
+      "bloomStrength": 0.35
+    },
+    "particles": {
+      "type": "dust",
+      "density": 20,
+      "speed": 0.12,
+      "sizeRange": [0.05, 0.14]
+    },
+    "camera": {
+      "behavior": "static-drift",
+      "speed": 0.06,
       "fov": 50
     },
     "silhouettes": {
-      "count": 14,
-      "animation": "sway"
+      "count": 5,
+      "animation": "still"
     },
-    "transitionDurationMs": 2000
+    "transitionDurationMs": 1200
   },
   {
-    "id": "peak-revelry",
+    "id": "evening-bar-setup",
+    "palette": {
+      "background": "#241a3d",
+      "primary": "#5a3f7a",
+      "accent": "#ffb84d",
+      "fog": "#1a1230"
+    },
+    "lighting": {
+      "ambientIntensity": 0.55,
+      "keyLightIntensity": 1.7,
+      "keyLightColor": "#ffb84d",
+      "bloomStrength": 0.65
+    },
+    "particles": {
+      "type": "bokeh",
+      "density": 55,
+      "speed": 0.25,
+      "sizeRange": [0.1, 0.3]
+    },
+    "camera": {
+      "behavior": "pull-back",
+      "speed": 0.4,
+      "fov": 50
+    },
+    "silhouettes": {
+      "count": 16,
+      "animation": "sway"
+    },
+    "transitionDurationMs": 1000
+  },
+  {
+    "id": "orchestra-tuning",
+    "palette": {
+      "background": "#2e1a44",
+      "primary": "#7a4a8a",
+      "accent": "#ffd166",
+      "fog": "#22143a"
+    },
+    "lighting": {
+      "ambientIntensity": 0.65,
+      "keyLightIntensity": 1.9,
+      "keyLightColor": "#ffd166",
+      "bloomStrength": 0.8
+    },
+    "particles": {
+      "type": "bokeh",
+      "density": 70,
+      "speed": 0.3,
+      "sizeRange": [0.08, 0.28]
+    },
+    "camera": {
+      "behavior": "slow-orbit",
+      "speed": 0.28,
+      "fov": 53
+    },
+    "silhouettes": {
+      "count": 32,
+      "animation": "sway"
+    },
+    "transitionDurationMs": 1000
+  },
+  {
+    "id": "full-swing-cocktails",
     "palette": {
       "background": "#2a1240",
       "primary": "#ff6b9d",
@@ -40,25 +195,56 @@
     },
     "lighting": {
       "ambientIntensity": 0.7,
-      "keyLightIntensity": 2.2,
+      "keyLightIntensity": 2.1,
       "keyLightColor": "#ffd166",
-      "bloomStrength": 1.1
+      "bloomStrength": 1.0
     },
     "particles": {
       "type": "confetti",
-      "density": 120,
-      "speed": 0.6,
-      "sizeRange": [0.08, 0.3]
+      "density": 95,
+      "speed": 0.5,
+      "sizeRange": [0.08, 0.28]
+    },
+    "camera": {
+      "behavior": "push-in",
+      "speed": 0.45,
+      "fov": 54
+    },
+    "silhouettes": {
+      "count": 42,
+      "animation": "sway"
+    },
+    "transitionDurationMs": 950
+  },
+  {
+    "id": "dancing-under-lights",
+    "palette": {
+      "background": "#3a1450",
+      "primary": "#ff4da6",
+      "accent": "#ffe066",
+      "fog": "#220f38"
+    },
+    "lighting": {
+      "ambientIntensity": 0.78,
+      "keyLightIntensity": 2.4,
+      "keyLightColor": "#ffe066",
+      "bloomStrength": 1.25
+    },
+    "particles": {
+      "type": "confetti",
+      "density": 130,
+      "speed": 0.65,
+      "sizeRange": [0.08, 0.32]
     },
     "camera": {
       "behavior": "slow-orbit",
-      "speed": 0.3,
-      "fov": 55
+      "speed": 0.32,
+      "fov": 56
     },
     "silhouettes": {
-      "count": 48,
+      "count": 55,
       "animation": "sway"
     },
-    "transitionDurationMs": 1500
+    "transitionDurationMs": 1100
   }
 ]

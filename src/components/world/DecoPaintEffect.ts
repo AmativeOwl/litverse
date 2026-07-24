@@ -48,7 +48,19 @@ const fragmentShader = /* glsl */ `
   // matching how flat gouache actually reads) instead of shifting hue.
   vec3 quantizeColor(vec3 color, float levels) {
     float lum = max(dot(color, vec3(0.299, 0.587, 0.114)), 0.0001);
-    float quantizedLum = floor(lum * levels + 0.5) / levels;
+    // max(1.0, ...) keeps the lowest representable band at 1/levels rather
+    // than letting round-to-nearest collapse the bottom ~1/(2*levels) of the
+    // luminance range (anything below ~0.083 at levels=6) to a literal zero
+    // multiplier. Without this, any moody/low-key SceneBeat (dark palette +
+    // modest lighting -- several of the expanded per-sentence beats, e.g.
+    // "dusk-arrival"/"evening-bar-setup", are exactly this) posterizes to a
+    // fully black floor/crowd with zero shading definition instead of a dim
+    // banded one, since floor(x+0.5) still produces bucket 0 for the entire
+    // bottom band. This only raises the *floor* of the quantization -- true
+    // black (lum clamped to 0.0001 above) still posterizes to band 1's
+    // (~1/levels) multiplier of a near-zero color, so it still renders as
+    // effectively black; only genuinely dark-but-nonzero content is rescued.
+    float quantizedLum = max(1.0, floor(lum * levels + 0.5)) / levels;
     return color * (quantizedLum / lum);
   }
 
