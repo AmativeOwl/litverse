@@ -1,20 +1,8 @@
-import { Fragment, useCallback, useEffect, useRef, type CSSProperties, type RefObject } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, type CSSProperties, type RefObject } from 'react'
 import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
 import { useReadingStore } from '../store/readingStore'
 import type { Passage, SceneBeat } from '../types'
-import sceneBeatsData from '../data/scene-beats.json'
 
-/**
- * `id -> palette.accent` lookup, built the same way `MotifEffects.tsx` builds
- * its `Motif` lookup from `motifs.json` -- imported directly as static
- * content data (not injected via the store/deps) since this is read-only
- * reference data, not narration-position state. Ties the sentence-wash
- * highlight's hue to the currently active scene beat's mood instead of a
- * fixed color, so the text pane's highlight shifts with the world's mood.
- */
-const SCENE_BEAT_ACCENTS: Record<string, string> = Object.fromEntries(
-  (sceneBeatsData as SceneBeat[]).map((beat) => [beat.id, beat.palette.accent]),
-)
 /** Fallback accent when `activeSceneBeatId` doesn't (yet) match a known beat -- keeps the original amber look. */
 const DEFAULT_SENTENCE_ACCENT = '#fbbf24' // Tailwind's amber-400, matching the pre-existing bg-amber-400/10 wash
 
@@ -180,16 +168,29 @@ function escapeForSelector(value: string): string {
 
 export interface TextPaneProps {
   passage?: Passage
+  /**
+   * The scene's beats, threaded from the active LibraryEntry (no longer a
+   * direct Gatsby data import -- the library is the reusability seam). Used
+   * only for the sentence-wash accent lookup; omitting it (tests, fixtures)
+   * keeps the original fixed-amber wash.
+   */
+  beats?: readonly SceneBeat[]
 }
 
-export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
+export default function TextPane({ passage = fallbackPassage, beats }: TextPaneProps) {
   const currentSentenceIndex = useReadingStore((s) => s.currentSentenceIndex)
   const currentWordId = useReadingStore((s) => s.currentWordId)
   const playbackState = useReadingStore((s) => s.playbackState)
   const activeSceneBeatId = useReadingStore((s) => s.activeSceneBeatId)
 
+  // `id -> palette.accent`, so the sentence wash's hue shifts with the
+  // world's mood (falls back to amber for unknown/absent beats).
+  const beatAccents = useMemo(
+    () => Object.fromEntries((beats ?? []).map((beat) => [beat.id, beat.palette.accent])),
+    [beats],
+  )
   const sentenceAccent =
-    (activeSceneBeatId && SCENE_BEAT_ACCENTS[activeSceneBeatId]) || DEFAULT_SENTENCE_ACCENT
+    (activeSceneBeatId && beatAccents[activeSceneBeatId]) || DEFAULT_SENTENCE_ACCENT
 
   const rootRef = useRef<HTMLDivElement>(null)
   const scrollToActive = useAutoScroll(rootRef)

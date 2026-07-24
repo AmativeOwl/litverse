@@ -1,9 +1,9 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { ACESFilmicToneMapping, SRGBColorSpace } from 'three'
 import { useReadingStore } from '../store/readingStore'
-import sceneBeatsData from '../data/scene-beats.json'
 import type { SceneBeat } from '../types'
+import type { LibraryEntry } from '../data/library'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
 import { Floor } from './world/Floor'
@@ -11,36 +11,40 @@ import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
 import { PaintedPlates } from './world/PaintedPlates'
 import { Particles } from './world/Particles'
-import { GATSBY_PLATES } from '../data/plates/gatsby-ch3'
-import { gatsbyCh3 } from '../data/gatsby-ch3'
-
-// Ordered sentence ids, flattened once at module scope -- resolves the
-// store's sentence index into ids for PaintedPlates' 3-4-sentence window
-// track (sentence-level state, permitted by the design constraints).
-const SENTENCE_IDS: readonly string[] = gatsbyCh3.paragraphs.flatMap((paragraph) =>
-  paragraph.sentences.map((sentence) => sentence.id),
-)
-
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
 import { StringLights } from './world/StringLights'
 import { useLerpedSceneBeat } from './world/useLerpedSceneBeat'
 
-// Phase 2 integration: resolves against the real, content-track-owned beat
-// data instead of the local Phase-1 fixtures (fixtureBeats.ts, still kept
-// around for this track's own isolated tests). Built once at module scope
-// since the JSON is static.
-const SCENE_BEATS = sceneBeatsData as SceneBeat[]
-const SCENE_BEATS_BY_ID: Record<string, SceneBeat> = Object.fromEntries(SCENE_BEATS.map((beat) => [beat.id, beat]))
-const DEFAULT_SCENE_BEAT = SCENE_BEATS[0]
+/**
+ * Everything scene-specific arrives through the LIBRARY ENTRY (the
+ * reusability seam of the reading compiler): beats, the painted-plate
+ * registry, and the passage's sentence-id order. The engine below never
+ * imports a particular book's data -- a second compiled text is a second
+ * `LibraryEntry`, zero changes here.
+ */
+interface WorldSceneProps {
+  entry: LibraryEntry
+}
 
-function resolveSceneBeat(activeSceneBeatId: string | null): SceneBeat {
-  const beat = activeSceneBeatId ? SCENE_BEATS_BY_ID[activeSceneBeatId] : undefined
-  if (beat) return beat
-  if (!DEFAULT_SCENE_BEAT) {
-    throw new Error('src/data/scene-beats.json must contain at least one SceneBeat')
+interface SceneData {
+  beatsById: Record<string, SceneBeat>
+  defaultBeat: SceneBeat
+  sentenceIds: readonly string[]
+}
+
+function buildSceneData(entry: LibraryEntry): SceneData {
+  const defaultBeat = entry.beats[0]
+  if (!defaultBeat) {
+    throw new Error(`Library entry "${entry.id}" must define at least one SceneBeat`)
   }
-  return DEFAULT_SCENE_BEAT
+  return {
+    beatsById: Object.fromEntries(entry.beats.map((beat) => [beat.id, beat])),
+    defaultBeat,
+    sentenceIds: entry.passage.paragraphs.flatMap((paragraph) =>
+      paragraph.sentences.map((sentence) => sentence.id),
+    ),
+  }
 }
 
 /**
@@ -51,9 +55,10 @@ function resolveSceneBeat(activeSceneBeatId: string | null): SceneBeat {
  * consumes `SceneBeat` objects -- never sentence text -- which is what keeps
  * this engine mood-agnostic and reusable across scenes via data alone.
  */
-function WorldSceneContents() {
+function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: SceneData }) {
   const activeSceneBeatId = useReadingStore((state) => state.activeSceneBeatId)
-  const targetBeat = resolveSceneBeat(activeSceneBeatId)
+  const targetBeat =
+    (activeSceneBeatId ? scene.beatsById[activeSceneBeatId] : undefined) ?? scene.defaultBeat
 
   // Every numeric/color field of the active beat is interpolated here, once,
   // into a ref that per-frame consumers below read inside their own
@@ -70,15 +75,15 @@ function WorldSceneContents() {
       <StringLights lerpedRef={lerpedRef} />
       <PaintedPlates
         lerpedRef={lerpedRef}
-        plateSet={GATSBY_PLATES}
-        beatsById={SCENE_BEATS_BY_ID}
-        sentenceIds={SENTENCE_IDS}
+        plateSet={entry.plateSet}
+        beatsById={scene.beatsById}
+        sentenceIds={scene.sentenceIds}
       />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
       <Particles lerpedRef={lerpedRef} />
-      <CameraRig lerpedRef={lerpedRef} azimuthByBeatDeg={GATSBY_PLATES.cameraAzimuthDeg} />
+      <CameraRig lerpedRef={lerpedRef} azimuthByBeatDeg={entry.plateSet.cameraAzimuthDeg} />
       <MotifEffects />
       <PostProcessing lerpedRef={lerpedRef} />
     </>
@@ -92,7 +97,8 @@ function WorldSceneContents() {
  * -- and there are no rigged/animated character models, only the abstract
  * instanced-silhouette crowd built in `Silhouettes.tsx`.
  */
-export default function WorldScene() {
+export default function WorldScene({ entry }: WorldSceneProps) {
+  const scene = useMemo(() => buildSceneData(entry), [entry])
   return (
     <div className="h-full w-full bg-neutral-950">
       <Canvas
@@ -114,7 +120,7 @@ export default function WorldScene() {
         }}
       >
         <Suspense fallback={null}>
-          <WorldSceneContents />
+          <WorldSceneContents entry={entry} scene={scene} />
         </Suspense>
       </Canvas>
     </div>

@@ -50,10 +50,10 @@ function App() {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-neutral-950 text-neutral-100">
       <div className="h-full w-1/2 overflow-y-auto border-r border-neutral-800">
-        <TextPane passage={stage.entry.passage} />
+        <TextPane passage={stage.entry.passage} beats={stage.entry.beats} />
       </div>
       <div className="h-full w-1/2">
-        <WorldScene />
+        <WorldScene entry={stage.entry} />
       </div>
     </div>
   )
