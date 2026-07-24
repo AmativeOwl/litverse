@@ -18,8 +18,10 @@ interface SilhouettesProps {
  * or issuing more than one draw call. */
 const MAX_SILHOUETTES = 90
 /** Exported so `Lighting.tsx` can size the key light's shadow-camera frustum
- * to match the crowd's actual scatter radius instead of guessing a number. */
-export const FLOOR_RADIUS = 22
+ * to match the crowd's actual scatter radius instead of guessing a number.
+ * Shrunk from 22 to 12 at the painted-world pivot so the crowd stays inside
+ * the painted plates (near r13.5 / mid r20) instead of poking through them. */
+export const FLOOR_RADIUS = 12
 
 const BODY_HEIGHT = 1.0
 // The profile is revolved via LatheGeometry: hem flare, skirt taper, waist

@@ -11,33 +11,21 @@ import {
 
 interface CameraRigProps {
   lerpedRef: RefObject<LerpedSceneBeat>
+  /**
+   * Which part of the world each beat is *about*: beat id -> azimuth degrees
+   * (scene polar convention x = cos, z = sin) of the sector that sentence's
+   * prose describes. The rig faces the camera toward this anchor, so each
+   * beat frames its own vignette -- the beach sentence looks at the
+   * waterfront plate, the weekend sentence at the cars. Sourced from the
+   * per-scene plate registry (ScenePlateSet.cameraAzimuthDeg) so the camera
+   * and the paintings always agree; beats missing from the map fall back to
+   * the original fixed framing.
+   */
+  azimuthByBeatDeg: Record<string, number>
 }
 
-/**
- * Which part of the world each beat is *about*, as the azimuth (degrees, in
- * the scene's polar convention x = cos, z = sin) of the set-piece sector that
- * sentence's prose describes. The rig faces the camera toward this anchor, so
- * each beat frames its own vignette out of the one persistent world -- the
- * beach sentence looks at the waterfront, the weekend sentence at the cars --
- * instead of every beat re-lighting the same fixed view.
- *
- * Sector sources: DecoWaterfront raft 28deg, DecoOrchestra 80deg,
- * DecoEstateDetail colonnade 110-170deg, DecoBuffet 190-220deg, DecoBar
- * 235deg, DecoAutomobile 260-300deg, DecoFountain ~325deg.
- */
-const BEAT_AZIMUTH_DEG: Record<string, number> = {
-  'dusk-arrival': 325, // the garden tableau: fountain, skyline, first guests
-  'daytime-leisure': 28, // "At high tide in the afternoon" -- raft, motorboats
-  'weekend-traffic': 280, // "his Rolls-Royce became an omnibus" -- the drive
-  'monday-lull': 140, // "eight servants... repairing the ravages" -- the house
-  'evening-bar-setup': 222, // buffet tables + the bar being stocked
-  'orchestra-tuning': 80, // "the orchestra has arrived" -- the bandstand
-  'full-swing-cocktails': 235, // "the bar is in full swing"
-  'dancing-under-lights': 80, // the canvas platform by the orchestra
-}
-
-function azimuthRadForBeat(beatId: string): number {
-  const deg = BEAT_AZIMUTH_DEG[beatId]
+function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: string): number {
+  const deg = azimuthByBeatDeg[beatId]
   return deg === undefined ? DEFAULT_CAMERA_AZIMUTH_RAD : (deg * Math.PI) / 180
 }
 
@@ -57,7 +45,7 @@ function azimuthRadForBeat(beatId: string): number {
  * numeric beat fields get inside lerpSceneBeat), so the camera pans smoothly
  * from one vignette to the next instead of snapping.
  */
-export function CameraRig({ lerpedRef }: CameraRigProps) {
+export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
   const { camera } = useThree()
   const behaviorRef = useRef<CameraBehavior | null>(null)
   const behaviorStartRef = useRef(0)
@@ -76,8 +64,8 @@ export function CameraRig({ lerpedRef }: CameraRigProps) {
     // LerpedSceneBeat.t is raw/pre-easing per its doc comment; ease it here
     // the same way lerpSceneBeat eases the numeric fields.
     const azimuthRad = lerpAngleRad(
-      azimuthRadForBeat(lerped.fromId),
-      azimuthRadForBeat(lerped.toId),
+      azimuthRadForBeat(azimuthByBeatDeg, lerped.fromId),
+      azimuthRadForBeat(azimuthByBeatDeg, lerped.toId),
       easeInOutCubic(lerped.t),
     )
 

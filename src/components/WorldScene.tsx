@@ -6,14 +6,6 @@ import sceneBeatsData from '../data/scene-beats.json'
 import type { SceneBeat } from '../types'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
-import { DecoAutomobile } from './world/DecoAutomobile'
-import { DecoBar } from './world/DecoBar'
-import { DecoBuffet } from './world/DecoBuffet'
-import { DecoEstateDetail } from './world/DecoEstateDetail'
-import { DecoFountain } from './world/DecoFountain'
-import { DecoOrchestra } from './world/DecoOrchestra'
-import { DecoSkyline } from './world/DecoSkyline'
-import { DecoWaterfront } from './world/DecoWaterfront'
 import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
@@ -62,22 +54,17 @@ function WorldSceneContents() {
 
   return (
     <>
+      {/* The eight 3D Deco set-pieces that used to render here are unmounted
+          as of the painted-world pivot (their files are kept -- see CLAUDE.md
+          "Painted-world pivot"); PaintedPlates below is the scenery now. */}
       <Atmosphere lerpedRef={lerpedRef} />
-      <DecoSkyline lerpedRef={lerpedRef} />
-      <DecoEstateDetail lerpedRef={lerpedRef} />
-      <DecoFountain lerpedRef={lerpedRef} />
-      <DecoOrchestra lerpedRef={lerpedRef} />
-      <DecoBuffet lerpedRef={lerpedRef} />
-      <DecoBar lerpedRef={lerpedRef} />
-      <DecoAutomobile lerpedRef={lerpedRef} />
-      <DecoWaterfront lerpedRef={lerpedRef} />
       <StringLights lerpedRef={lerpedRef} />
       <PaintedPlates lerpedRef={lerpedRef} plateSet={GATSBY_PLATES} beatsById={SCENE_BEATS_BY_ID} />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
       <Particles lerpedRef={lerpedRef} />
-      <CameraRig lerpedRef={lerpedRef} />
+      <CameraRig lerpedRef={lerpedRef} azimuthByBeatDeg={GATSBY_PLATES.cameraAzimuthDeg} />
       <MotifEffects />
       <PostProcessing lerpedRef={lerpedRef} />
     </>
