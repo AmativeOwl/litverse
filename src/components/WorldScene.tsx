@@ -17,6 +17,7 @@ import { DecoWaterfront } from './world/DecoWaterfront'
 import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
+import { PaintedVignette } from './world/PaintedVignette'
 import { Particles } from './world/Particles'
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
@@ -70,6 +71,7 @@ function WorldSceneContents() {
       <DecoAutomobile lerpedRef={lerpedRef} />
       <DecoWaterfront lerpedRef={lerpedRef} />
       <StringLights lerpedRef={lerpedRef} />
+      <PaintedVignette lerpedRef={lerpedRef} />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
