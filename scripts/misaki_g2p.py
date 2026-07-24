@@ -24,11 +24,21 @@ so this script constructs `en.G2P(fallback=None)` and never imports
 (the small `en_core_web_sm` spacy model, ~13MB, downloads once on first run,
 same one-time-asset pattern as the Kokoro ONNX weights and voice .bin files).
 
-Any word Misaki can't resolve without the espeak fallback (phonemes=None)
-is a hard failure, not silently skipped -- printed to stderr and reported
-as null in the output so the caller can catch it, mirroring
+Any word Misaki can't resolve without the espeak fallback is a hard
+failure, not silently skipped -- printed to stderr and reported as null
+phonemes in the output so the caller can catch it, mirroring
 generate-narration-audio.ts's own "hard failure over silent mis-map" rule
-for word-alignment mismatches.
+for word-alignment mismatches. This has two distinct failure shapes that
+both have to be caught: (1) certain words make `en.G2P.__call__` raise a
+raw exception (see the British-spelling note below), but (2) others --
+e.g. foreign-language loanwords like "hors d'oeuvre" -- resolve without
+raising anything, silently returning UNK_MARKER ("❓", `en.G2P`'s own
+placeholder for "no idea") as the literal phonemes. Left unhandled, that
+placeholder gets passed straight through to Kokoro as if it were real
+phonemes and comes out as near-silence -- audibly "skipping" the word
+rather than erroring, which is easy to miss in a spot-check. Both shapes
+are treated as the same failure and go through the same PHONEME_OVERRIDES
+mechanism.
 
 Known dictionary gap: Misaki's US-English lexicon doesn't cover a class of
 British spellings ("colour", "favour", "honour", "humour", "labour", ...;
@@ -74,13 +84,33 @@ SPELLING_OVERRIDES = {
 _REVERSE_OVERRIDES = {american: british for british, american in SPELLING_OVERRIDES.items()}
 _OVERRIDE_PATTERN = re.compile(r"[A-Za-z']+")
 
-# word (lowercase, no punctuation) -> literal Kokoro/Misaki-alphabet phoneme string.
+UNK_MARKER = "❓"  # en.G2P's own default `unk` placeholder for an unresolvable word/subtoken.
+
+
+def _has_unresolved_phonemes(phonemes: str | None) -> bool:
+    return phonemes is None or UNK_MARKER in phonemes
+
+
+# word (lowercase, curly quotes normalized to straight, no surrounding
+# punctuation) -> literal Kokoro/Misaki-alphabet phoneme string.
 PHONEME_OVERRIDES = {
     "pulpless": "pˈʌlpləs",
     "pitful": "pˈɪtfəl",
     "gilda": "ɡˈɪldə",
+    # Anglicized loanword; not in Misaki's US-English dictionary at all (no
+    # respelling shortcut exists like SPELLING_OVERRIDES' British spellings),
+    # so unlike a crash this silently resolves to UNK_MARKER instead of
+    # raising -- built from "door" (dˈɔɹ) + "nerve"/"serve"/"curve" (-ˈɜɹv).
+    "hors-d'oeuvre": "ˌɔɹdˈɜɹv",
 }
-_WORD_CORE_PATTERN = re.compile(r"^([^A-Za-z']*)([A-Za-z']+)([^A-Za-z']*)$")
+# Core allows internal hyphens (e.g. "hors-d'oeuvre") and both apostrophe
+# styles, so a hyphenated/curly-quoted compound is captured as ONE core
+# rather than only matching its first letter-run.
+_WORD_CORE_PATTERN = re.compile(r"^([^A-Za-z'’\-]*)([A-Za-z'’\-]+)([^A-Za-z'’\-]*)$")
+
+
+def _normalize_override_key(word: str) -> str:
+    return word.lower().replace("’", "'").replace("‘", "'")
 
 
 def _apply_overrides(text: str) -> str:
@@ -114,7 +144,7 @@ def _phonemize_word_with_overrides(g2p, word: str) -> list["_LiteralToken"]:
     match = _WORD_CORE_PATTERN.match(word)
     if match:
         prefix, core, suffix = match.groups()
-        override = PHONEME_OVERRIDES.get(core.lower())
+        override = PHONEME_OVERRIDES.get(_normalize_override_key(core))
         if override is not None:
             tokens = []
             if prefix:
@@ -130,6 +160,29 @@ def _phonemize_word_with_overrides(g2p, word: str) -> list["_LiteralToken"]:
     return word_tokens
 
 
+def _repair_unk_tokens(tokens: list) -> bool:
+    """
+    Patches any token still carrying UNK_MARKER phonemes (or None) in place
+    using PHONEME_OVERRIDES, matched against that token's own text -- this
+    is what catches the "resolved without raising, but to garbage" failure
+    shape (e.g. "hors d'oeuvre") that a try/except around the G2P call can't
+    see, without discarding the rest of the sentence's real context-aware
+    phonemes the way a full per-word retry would. Returns whether any
+    genuinely unresolved token remains (still has no override).
+    """
+    still_unresolved = False
+    for token in tokens:
+        if not _has_unresolved_phonemes(token.phonemes):
+            continue
+        match = _WORD_CORE_PATTERN.match(token.text)
+        override = PHONEME_OVERRIDES.get(_normalize_override_key(match.group(2))) if match else None
+        if override is not None:
+            token.phonemes = override
+        else:
+            still_unresolved = True
+    return still_unresolved
+
+
 def _phonemize_sentence(g2p, text: str):
     """
     Phonemizes a full sentence in one call for correct cross-word context
@@ -141,11 +194,15 @@ def _phonemize_sentence(g2p, text: str):
     cross-word context only for this one sentence) so the *other* words
     still get real phonemes and any still-unresolvable word is reported
     individually instead of masking the rest of the sentence.
+
+    Either way (crash or clean run), a final pass repairs any UNK_MARKER
+    token left over via PHONEME_OVERRIDES -- see _repair_unk_tokens.
     """
     try:
         _, tokens = g2p(_apply_overrides(text))
         for token in tokens:
             token.text = _restore_overridden_spelling(token.text)
+        _repair_unk_tokens(tokens)
         return tokens, False
     except Exception as error:
         print(f'  -- whole-sentence G2P failed ({error!r}), retrying word-by-word', file=sys.stderr)
@@ -158,6 +215,7 @@ def _phonemize_sentence(g2p, text: str):
                 print(f'  -- no phonemes for "{word}": {word_error!r}', file=sys.stderr)
                 tokens.append(_LiteralToken(word, None))
             degraded = True
+        _repair_unk_tokens(tokens)
         return tokens, degraded
 
 
@@ -188,7 +246,7 @@ def main() -> int:
         tokens, degraded = _phonemize_sentence(g2p, text)
         entries = []
         for token in tokens:
-            if token.phonemes is None:
+            if _has_unresolved_phonemes(token.phonemes):
                 had_failure = True
                 print(
                     f'{sentence_id}: no phonemes for "{token.text}" (out of Misaki\'s dictionary, '
