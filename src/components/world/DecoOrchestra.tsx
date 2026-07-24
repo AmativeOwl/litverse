@@ -375,15 +375,16 @@ function buildMusiciansGeometry(): THREE.BufferGeometry {
 // --- Component ---------------------------------------------------------
 
 /**
- * Bandstand prop: platform (unlit flat-silhouette tint, matching
- * DecoFountain/DecoSkyline's architecture treatment) plus musicians and
- * instruments rendered with real `MeshStandardMaterial` PBR shading (low
- * metalness, moderate roughness) per the scene's move toward detailed,
- * game-like hero props. Brightens (emissive boost + a small stage light +
- * a subtle scale bump) during `orchestra-tuning` and `dancing-under-lights`,
- * more subdued the rest of the time -- driven by a `useFrame`-lerped ref,
- * never React state, reading `activeSceneBeatId` the same way
- * `MotifEffects.tsx` does.
+ * Bandstand prop: platform (real `MeshStandardMaterial` lit dark-matte
+ * silhouette -- same high-roughness/low-metalness recipe as DecoFountain's
+ * basin and DecoSkyline's towers now that both were upgraded off the
+ * original unlit `MeshBasicMaterial`) plus musicians and instruments
+ * rendered with real `MeshStandardMaterial` PBR shading (low metalness,
+ * moderate roughness) per the scene's move toward detailed, game-like hero
+ * props. Brightens (emissive boost + a small stage light + a subtle scale
+ * bump) during `orchestra-tuning` and `dancing-under-lights`, more subdued
+ * the rest of the time -- driven by a `useFrame`-lerped ref, never React
+ * state, reading `activeSceneBeatId` the same way `MotifEffects.tsx` does.
  */
 export function DecoOrchestra({ lerpedRef }: DecoOrchestraProps) {
   const activeSceneBeatId = useReadingStore((s) => s.activeSceneBeatId)
@@ -392,7 +393,16 @@ export function DecoOrchestra({ lerpedRef }: DecoOrchestraProps) {
   const instrumentsGeometry = useMemo(buildInstrumentsGeometry, [])
   const musiciansGeometry = useMemo(buildMusiciansGeometry, [])
 
-  const platformMaterial = useMemo(() => new THREE.MeshBasicMaterial({ color: '#050505', fog: true }), [])
+  // Platform: stone/canvas-deck-ish -- same high-roughness, low-metalness
+  // "flat matte, but really lit" recipe DecoFountain's basin and
+  // DecoSkyline's towers use, now that both of those are MeshStandardMaterial
+  // instead of the original unlit MeshBasicMaterial. Keeps the platform's
+  // silhouette dark/matte while letting it pick up the same real shadows/IBL
+  // as everything else in the scene.
+  const platformMaterial = useMemo(
+    () => new THREE.MeshStandardMaterial({ color: '#050505', roughness: 0.85, metalness: 0.05, fog: true }),
+    [],
+  )
   const musiciansMaterial = useMemo(
     () => new THREE.MeshStandardMaterial({ color: '#3a3248', roughness: 0.75, metalness: 0.08 }),
     [],
@@ -445,7 +455,13 @@ export function DecoOrchestra({ lerpedRef }: DecoOrchestraProps) {
 
   return (
     <group ref={groupRef} position={GROUP_POSITION} rotation={GROUP_ROTATION}>
-      <mesh geometry={platformGeometry} material={platformMaterial} frustumCulled={false} />
+      <mesh
+        geometry={platformGeometry}
+        material={platformMaterial}
+        frustumCulled={false}
+        castShadow
+        receiveShadow
+      />
       <mesh geometry={instrumentsGeometry} material={instrumentsMaterial} frustumCulled={false} />
       <mesh geometry={musiciansGeometry} material={musiciansMaterial} frustumCulled={false} />
       <pointLight
