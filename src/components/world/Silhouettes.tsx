@@ -3,9 +3,9 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import type { SceneBeat } from '../../types'
+import { useReadingStore } from '../../store/readingStore'
 import type { LerpedSceneBeat } from './beatMath'
 import { createSeededRandom, hashStringToSeed } from './seededRandom'
-import { getToonGradientMap } from './toonGradientTexture'
 
 interface SilhouettesProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -17,7 +17,9 @@ interface SilhouettesProps {
  * (a draw-range style truncation) without ever re-allocating instance buffers
  * or issuing more than one draw call. */
 const MAX_SILHOUETTES = 90
-const FLOOR_RADIUS = 22
+/** Exported so `Lighting.tsx` can size the key light's shadow-camera frustum
+ * to match the crowd's actual scatter radius instead of guessing a number. */
+export const FLOOR_RADIUS = 22
 
 const BODY_HEIGHT = 1.0
 // A single linear taper (the old CylinderGeometry(0.14, 0.2, ...) approach)
@@ -94,18 +96,79 @@ function buildLayout(): Layout[] {
   return layout
 }
 
+/** Base coat/dress color for the crowd -- unchanged from the pre-PBR look. */
+const BASE_SILHOUETTE_COLOR = new THREE.Color('#2a2436')
+
+// "gaudy primary colours... hair bobbed in strange new ways... shawls beyond
+// the dreams of Castile" -- a small fixed palette of saturated, clashing
+// tones (not colors pulled from SceneBeat.palette, which is the *mood*
+// palette, not a fashion one) that a subset of crowd instances tint towards
+// instead of the uniform base coat color.
+const FASHION_COLORS: readonly string[] = [
+  '#e63946', // gaudy red
+  '#457b9d', // peacock blue
+  '#ffd166', // gold
+  '#2a9d8f', // emerald
+  '#d62aa0', // fuchsia shawl
+]
+
+/** Fraction of the crowd that's ever eligible to show fashion tinting at all -- the rest stay uniform regardless of beat, so even at peak variety it reads as "some of the crowd," not "all of it recolored." */
+const FASHION_CANDIDATE_RATE = 0.45
+/** Baseline reveal intensity for beats other than the two peak-revelry ones below. */
+const FASHION_INTENSITY_BASELINE = 0.18
+/** Reveal intensity during the orchestra-tuning / dancing-under-lights beats -- where the passage's "gaudy primary colours" description is most apt. */
+const FASHION_INTENSITY_PEAK = 0.6
+const PEAK_FASHION_BEAT_IDS = new Set(['orchestra-tuning', 'dancing-under-lights'])
+
+interface FashionTint {
+  isCandidate: boolean
+  color: THREE.Color
+  /** Instance is revealed once the current beat's variety intensity exceeds this deterministic per-instance threshold -- gives a stable (not flickering) subset that grows as intensity rises. */
+  revealThreshold: number
+}
+
+/**
+ * Deterministic per-instance fashion-tint assignment, seeded independently of
+ * `buildLayout`'s scatter positions so this can be tuned without perturbing
+ * where instances stand. Same seeded-random approach as the rest of this
+ * file -- fixed seed, computed once, never re-rolled per frame/beat.
+ */
+function buildFashionLayout(): FashionTint[] {
+  const random = createSeededRandom(hashStringToSeed('litverse-crowd-fashion'))
+  const tints: FashionTint[] = []
+  for (let i = 0; i < MAX_SILHOUETTES; i++) {
+    const isCandidate = random() < FASHION_CANDIDATE_RATE
+    const colorHex = FASHION_COLORS[Math.floor(random() * FASHION_COLORS.length)] ?? FASHION_COLORS[0]
+    tints.push({
+      isCandidate,
+      color: new THREE.Color(colorHex),
+      revealThreshold: random(),
+    })
+  }
+  return tints
+}
+
 /**
  * Crowd abstraction: a single `InstancedMesh` of low-poly figure-like
  * silhouettes (tapered body + head, one draw call regardless of count),
  * deterministic seeded scatter, slow per-instance sine sway applied entirely
- * in `useFrame`.
+ * in `useFrame`. Real `MeshStandardMaterial` lighting response (roughness/
+ * metalness) replaces the old toon shading; a per-instance `instanceColor`
+ * buffer (rather than material.color) carries the base/fashion tinting so
+ * each figure can differ without any extra draw calls.
  */
 export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null)
-  const materialRef = useRef<THREE.MeshToonMaterial>(null)
+  const materialRef = useRef<THREE.MeshStandardMaterial>(null)
   const layout = useMemo(buildLayout, [])
+  const fashionLayout = useMemo(buildFashionLayout, [])
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const geometry = useMemo(buildFigureGeometry, [])
+
+  // Beat-level state, per the design constraints (only sentence/beat-level
+  // fields may trigger R3F re-renders) -- read the same way
+  // `MotifEffects.tsx` reads store fields to gate its own per-beat behavior.
+  const activeSceneBeatId = useReadingStore((state) => state.activeSceneBeatId)
 
   useFrame(({ clock }) => {
     const lerped = lerpedRef.current
@@ -114,6 +177,11 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
 
     const count = Math.max(0, Math.min(MAX_SILHOUETTES, Math.round(lerped.silhouetteCount)))
     mesh.count = count
+
+    const varietyIntensity =
+      activeSceneBeatId && PEAK_FASHION_BEAT_IDS.has(activeSceneBeatId)
+        ? FASHION_INTENSITY_PEAK
+        : FASHION_INTENSITY_BASELINE
 
     const elapsed = clock.elapsedTime
     for (let i = 0; i < count; i++) {
@@ -128,8 +196,13 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       dummy.scale.set(1, 1, 1)
       dummy.updateMatrix()
       mesh.setMatrixAt(i, dummy.matrix)
+
+      const fashion = fashionLayout[i]
+      const showFashion = !!fashion && fashion.isCandidate && fashion.revealThreshold < varietyIntensity
+      mesh.setColorAt(i, showFashion && fashion ? fashion.color : BASE_SILHOUETTE_COLOR)
     }
     mesh.instanceMatrix.needsUpdate = true
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
 
     if (materialRef.current) {
       materialRef.current.emissive.set(lerped.lighting.keyLightColor)
@@ -148,9 +221,11 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       ref={meshRef}
       args={[undefined, undefined, MAX_SILHOUETTES]}
       frustumCulled={false}
+      castShadow
+      receiveShadow
     >
       <primitive object={geometry} attach="geometry" />
-      <meshToonMaterial ref={materialRef} color="#2a2436" gradientMap={getToonGradientMap()} />
+      <meshStandardMaterial ref={materialRef} roughness={0.6} metalness={0.05} />
     </instancedMesh>
   )
 }
