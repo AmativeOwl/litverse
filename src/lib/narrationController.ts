@@ -17,6 +17,10 @@
 
 import { useReadingStore, type PlaybackState } from '../store/readingStore'
 import type { Passage, Sentence } from '../types'
+import type { MotifTriggers } from '../types-motifs'
+import motifTriggersData from '../data/motif-triggers.json'
+
+const MOTIF_TRIGGERS = motifTriggersData as MotifTriggers
 
 // ---------------------------------------------------------------------------
 // Pure, browser-API-free helpers (unit-testable in isolation).
@@ -105,6 +109,8 @@ export interface NarrationPositionState {
   activeSceneBeatId: string | null
   activeSpeakerId: string | null
   playbackState: PlaybackState
+  activeMotifId: string | null
+  activeMotifNonce: number
 }
 
 /** The store surface this module reads/writes. Narrow enough to fake in tests without satisfying Zustand's full overloaded `setState`. */
@@ -172,6 +178,8 @@ interface ControllerState {
   hasStartedPlaying: boolean
   visibilityListenerAttached: boolean
   hasWarnedMissingAudio: boolean
+  /** Last wordId a motif was fired for -- guards against re-firing on every `timeupdate` tick while that same word stays current (ontimeupdate fires many times per word, not once). */
+  lastMotifWordId: string | null
 }
 
 function createInitialState(): ControllerState {
@@ -188,6 +196,7 @@ function createInitialState(): ControllerState {
     hasStartedPlaying: false,
     visibilityListenerAttached: false,
     hasWarnedMissingAudio: false,
+    lastMotifWordId: null,
   }
 }
 
@@ -238,6 +247,7 @@ export function createNarrationController(overrides: Partial<NarrationController
     clearInterSentenceTimer()
     state.epoch += 1
     state.hasStartedPlaying = false
+    state.lastMotifWordId = null
     detachCurrentAudio()
   }
 
@@ -271,6 +281,25 @@ export function createNarrationController(overrides: Partial<NarrationController
     deps.store.setState({ playbackState: 'idle', currentWordId: null })
   }
 
+  /**
+   * Fires a Motif's one-shot visual if `wordId` is tagged in
+   * MOTIF_TRIGGERS and isn't the same word that just fired one (ontimeupdate
+   * ticks many times while the same word stays current -- this must fire
+   * once per word, not once per tick). Bumps activeMotifNonce so the *same*
+   * motif id firing twice in a row (two tagged words sharing a catalog
+   * entry) still re-triggers consumers instead of being a no-op re-render.
+   */
+  function maybeFireMotif(wordId: string | null): void {
+    if (!wordId || wordId === state.lastMotifWordId) return
+    state.lastMotifWordId = wordId
+    const motifId = MOTIF_TRIGGERS[wordId]
+    if (!motifId) return
+    deps.store.setState({
+      activeMotifId: motifId,
+      activeMotifNonce: deps.store.getState().activeMotifNonce + 1,
+    })
+  }
+
   function playCurrentSentence(): void {
     const sentence = state.sentences[state.sentenceIndex]
     if (!sentence) {
@@ -288,12 +317,14 @@ export function createNarrationController(overrides: Partial<NarrationController
 
     const myEpoch = state.epoch
 
+    const firstWordId = entry.words[0]?.wordId ?? null
     deps.store.setState({
       currentSentenceIndex: state.sentenceIndex,
-      currentWordId: entry.words[0]?.wordId ?? null,
+      currentWordId: firstWordId,
       activeSceneBeatId: sentence.sceneBeatId,
       activeSpeakerId: sentence.speakerId ?? null,
     })
+    maybeFireMotif(firstWordId)
 
     const audio = deps.createAudio()
     audio.src = entry.audioUrl
@@ -303,6 +334,7 @@ export function createNarrationController(overrides: Partial<NarrationController
       const wordId = findWordIdAtTime(entry.words, audio.currentTime * 1000)
       if (wordId) {
         deps.store.setState({ currentWordId: wordId })
+        maybeFireMotif(wordId)
       }
     }
 

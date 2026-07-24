@@ -8,6 +8,7 @@ import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
 import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
+import { MotifEffects } from './world/MotifEffects'
 import { Particles } from './world/Particles'
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
@@ -56,6 +57,7 @@ function WorldSceneContents() {
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
       <Particles lerpedRef={lerpedRef} />
       <CameraRig lerpedRef={lerpedRef} />
+      <MotifEffects />
       <PostProcessing lerpedRef={lerpedRef} />
     </>
   )
