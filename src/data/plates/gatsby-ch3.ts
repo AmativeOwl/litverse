@@ -191,12 +191,18 @@ function paintDaytimeMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
     }
     ctx.globalAlpha = 1
   }
-  // motorboat crossing the Sound, wake trailing behind
+  // NUMERIC FIDELITY: "his TWO motorboats slit the waters" -- both of them,
+  // crossing on different lanes and phases, wakes trailing behind
   const boatX = w * (0.85 - ((t * 0.022) % 0.5))
   ctx.fillStyle = darkenHex(p.background, 0.55)
   ctx.fillRect(boatX - w * 0.07, h * 0.72, w * 0.14, h * 0.03)
   ctx.fillRect(boatX + w * 0.01, h * 0.69, w * 0.03, h * 0.03)
   drawSunburst(ctx, boatX + w * 0.07, h * 0.735, w * 0.01, w * 0.11, 6, lightenHex(p.primary, 0.35), -Math.PI * 0.15, Math.PI * 0.15, 0.9)
+  const boat2X = w * (0.3 + ((t * 0.018 + 0.22) % 0.55))
+  ctx.fillStyle = darkenHex(p.background, 0.48)
+  ctx.fillRect(boat2X - w * 0.05, h * 0.8, w * 0.1, h * 0.024)
+  ctx.fillRect(boat2X - w * 0.028, h * 0.776, w * 0.022, h * 0.024)
+  drawSunburst(ctx, boat2X - w * 0.05, h * 0.812, w * 0.008, w * 0.09, 6, lightenHex(p.primary, 0.3), Math.PI * 0.85, Math.PI * 1.15, 0.9)
   drawDecoFrame(ctx, w, h, mixHex(p.accent, '#b98a3a', 0.5))
 }
 
@@ -258,15 +264,28 @@ function paintMondayMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: 
     ctx.closePath()
     ctx.fill()
   })
-  // the servants at work: moppers scrub in short strokes, the third paces
-  // the veranda with a tray of gathered glasses
-  const scrubA = Math.sin(t * 3.1) * w * 0.007
-  const scrubB = Math.sin(t * 2.7 + 2) * w * 0.007
-  drawSilhouetteFigure(ctx, w * 0.3 + scrubA, h * 0.9, h * 0.17, 'mop', darkenHex(p.background, 0.35))
-  drawSilhouetteFigure(ctx, w * 0.68 + scrubB, h * 0.9, h * 0.17, 'mop', darkenHex(p.background, 0.35))
-  const paceX = w * (0.5 + 0.16 * Math.sin(t * 0.35))
-  const paceBob = Math.abs(Math.sin(t * 2.4)) * h * 0.004
-  drawSilhouetteFigure(ctx, paceX, h * 0.88 + paceBob, h * 0.15, 'serve', darkenHex(p.background, 0.3))
+  // NUMERIC FIDELITY: the text says "EIGHT servants, including an extra
+  // gardener" -- so eight figures toil, each on their own rhythm: five
+  // scrubbing with mops, two pacing with trays of gathered glasses, and
+  // the extra gardener working the hedge line at the right edge.
+  const moppers: ReadonlyArray<readonly [number, number, number]> = [
+    [0.12, 0.9, 0.16],
+    [0.3, 0.91, 0.17],
+    [0.46, 0.89, 0.15],
+    [0.62, 0.91, 0.17],
+    [0.74, 0.9, 0.16],
+  ]
+  moppers.forEach(([mx, my, mh], i) => {
+    const scrub = Math.sin(t * (2.7 + i * 0.25) + i * 2.1) * w * 0.007
+    drawSilhouetteFigure(ctx, w * mx + scrub, h * my, h * mh, 'mop', darkenHex(p.background, 0.35))
+  })
+  for (let i = 0; i < 2; i++) {
+    const paceX = w * (0.38 + i * 0.18 + 0.12 * Math.sin(t * (0.35 + i * 0.1) + i * 2.6))
+    const paceBob = Math.abs(Math.sin(t * 2.4 + i)) * h * 0.004
+    drawSilhouetteFigure(ctx, paceX, h * 0.86 + paceBob, h * 0.14, 'serve', darkenHex(p.background, 0.3))
+  }
+  // the extra gardener, shears at the hedge
+  drawSilhouetteFigure(ctx, w * 0.9 + Math.sin(t * 3.4) * w * 0.005, h * 0.88, h * 0.16, 'mop', darkenHex(p.background, 0.4))
   // the pyramid of pulpless halves
   ctx.fillStyle = mixHex(p.accent, '#d98324', 0.5)
   for (let row = 0; row < 3; row++) {
@@ -783,9 +802,22 @@ function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: num
   ctx.fillStyle = darkenHex(p.background, 0.45)
   ctx.fillRect(w * 0.1, h * 0.66, w * 0.8, h * 0.05)
   // the whole pitful, as a silhouette lineup: horns raised in a row
-  const players: readonly number[] = [0.2, 0.32, 0.44, 0.56, 0.68]
-  players.forEach((px, i) => {
-    // the pitful warms up, every player rocking on their own beat
+  // NEGATION: "no thin five-piece affair, but a whole PITFUL" -- the card
+  // must never show five players (that's the image the text denies). Two
+  // crowded rows, eleven strong, every player rocking on their own beat.
+  const backRow: readonly number[] = [0.16, 0.27, 0.38, 0.49, 0.6, 0.71]
+  backRow.forEach((px, i) => {
+    drawSilhouetteFigure(
+      ctx,
+      w * px + Math.sin(t * 1.5 + i * 2.2) * w * 0.0025,
+      h * 0.585 + Math.sin(t * 2.1 + i * 1.6) * h * 0.003,
+      h * 0.2,
+      'horn',
+      darkenHex(p.background, 0.5),
+    )
+  })
+  const frontRow: readonly number[] = [0.21, 0.33, 0.45, 0.57, 0.69]
+  frontRow.forEach((px, i) => {
     drawSilhouetteFigure(
       ctx,
       w * px + Math.sin(t * 1.7 + i * 1.9) * w * 0.003,

@@ -253,6 +253,18 @@ pace). Only what the text moves should move; scenery holds still. If the
 text truly demands an object/verb outside the lexicons, use the closest fit
 and add a "NEW:<name>" note in sourcePhrases for a human to consider.
 
+NUMERIC FIDELITY: when the text states a count, the card renders exactly
+that count -- "five crates" is five crate elements, "eight servants" is
+eight figures, "two motorboats" is two boats. List each instance as its own
+element with its own position/phase. Hyperbolic quantities ("two hundred
+oranges") are depicted as abundance (pyramids, heaps), not literal counts.
+
+NEGATION: when the text denies an image ("NO thin five-piece affair, but a
+whole pitful"), the card must NEVER depict the denied image -- render the
+asserted opposite emphatically (a crowded pit of clearly more than five,
+never exactly five). A card that shows what the sentence says it is NOT is
+a compile error.
+
 OBJECT NOUNS:
 ${OBJECT_NOUNS.map((noun) => `- ${noun}`).join('\n')}
 
