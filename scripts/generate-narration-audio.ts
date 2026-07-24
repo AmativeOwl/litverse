@@ -397,6 +397,43 @@ function runMisakiBridge(sentences: Sentence[]): Map<string, MisakiToken[]> {
  * HeadTTS's own `splitText` convention (each word "part" carries its own
  * leading space) that the proven-correct word-timing math already assumes.
  */
+/**
+ * Weak-form reduction for mid-phrase function words. Misaki emits citation
+ * (dictionary) phonemes for glue words -- "and" comes out as the fully
+ * stressed form -- and Kokoro then gives it word-level emphasis, which the
+ * ear reads as a hitch: "oranges... AND lemons" instead of one breath
+ * ("oranges-and-lemons"). A human narrator reduces these to their weak
+ * forms everywhere except at a phrase start or after a pause, which is
+ * exactly the rule applied here: a listed function word is reduced unless
+ * it is sentence-initial or the previous word ends in pause punctuation
+ * (where insertPauseBreaks adds silence and a fresh phrase genuinely
+ * starts). Same doctrine as the Misaki bridge itself -- context-correct
+ * pronunciation over citation forms.
+ */
+const WEAK_FORMS: Record<string, string> = {
+  and: 'ənd',
+  of: 'əv',
+  or: 'ər',
+}
+/** Trailing punctuation after which a function word legitimately starts a fresh phrase (keep the strong form there). */
+const PHRASE_BREAK_BEFORE = /[,;:—–.!?]$/
+
+function reduceFunctionWords(tokens: MisakiToken[]): MisakiToken[] {
+  // work over the non-whitespace tokens so "previous word" skips separators
+  const wordIndices = tokens
+    .map((token, index) => ({ token, index }))
+    .filter(({ token }) => normalizeForComparison(token.text) !== '')
+  return tokens.map((token, index) => {
+    const wordPos = wordIndices.findIndex((entry) => entry.index === index)
+    if (wordPos <= 0) return token // whitespace, or sentence-initial word
+    const weak = WEAK_FORMS[normalizeForComparison(token.text)]
+    if (!weak || token.phonemes === null) return token
+    const previousWord = wordIndices[wordPos - 1]
+    if (previousWord && PHRASE_BREAK_BEFORE.test(previousWord.token.text)) return token
+    return { ...token, phonemes: weak }
+  })
+}
+
 function buildPhoneticInputItems(sentence: Sentence, tokens: MisakiToken[]): PhoneticInputItem[] | null {
   const merged: { value: string; subtitles: string }[] = []
   let current: { value: string; subtitles: string } | null = null
@@ -543,7 +580,7 @@ async function main() {
       continue
     }
 
-    const input = buildPhoneticInputItems(sentence, misakiTokens)
+    const input = buildPhoneticInputItems(sentence, reduceFunctionWords(misakiTokens))
     if (!input) {
       failures.push(
         `${sentence.id}: Misaki token/word mismatch (ours=${sentence.words.length}, theirs=${misakiTokens.length}). ` +
