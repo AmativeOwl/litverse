@@ -20,6 +20,16 @@ export interface Motif {
   intensity: number
   /** Required for `floating-glyph`, ignored otherwise: the short text that fades up near camera. */
   glyph?: string
+  /**
+   * World-space point where this one-shot motif plays. Optional -- falls back
+   * to MotifEffects.tsx's fixed STAGE_POSITION when omitted, which is what
+   * every pre-imagery-motifs-v2 catalog entry continues to do. Lets
+   * different imagery categories read from different parts of the scene
+   * (e.g. celestial/atmospheric motifs higher up and more spread out, the
+   * gypsy-dance/Gilda Gray moment near the canvas-platform/orchestra zone)
+   * instead of every motif stacking at one point.
+   */
+  position?: [number, number, number]
 }
 
 /** Word.id -> Motif.id. Hand-authored (optionally offline-script-assisted), never inferred at runtime -- see scripts/tag-motif-words.ts. */
