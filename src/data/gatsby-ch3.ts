@@ -2,8 +2,16 @@ import type { Passage } from '../types'
 
 // Segmented from The Great Gatsby, Chapter 3 opening (public domain,
 // Project Gutenberg #64317), via scripts/segment-passage.ts (deterministic,
-// no API). sceneBeatId per sentence hand-assigned for the mood arc:
-// calm arrival build-up -> party reaching full swing.
+// no API). sceneBeatId per sentence hand-assigned (against the 8 SceneBeats
+// authored in scene-beats.json) for a day-progressing-to-night mood arc that
+// follows the prose's own distinct party "moments": dusk arrival (music
+// drifting from the house) -> bright daytime leisure (diving, motorboats) ->
+// busy weekend traffic (Rolls-Royce omnibus, station wagon) -> the quiet
+// Monday-after lull (servants repairing the ravages of the night before) ->
+// evening bar/buffet setup (caterers, coloured lights, brass rail) ->
+// orchestra tuning up as guests keep arriving -> the bar reaching full swing
+// -> dancing under the lights through the party's peak (Frisco-style solo
+// dance, "the party has begun").
 export const gatsbyCh3: Passage = {
   id: 'gatsby-ch3',
   title: 'Chapter 3',
@@ -13,7 +21,7 @@ export const gatsbyCh3: Passage = {
       sentences: [
         {
           id: 'p1-s1',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'dusk-arrival',
           words: [
             {
               id: 'p1-s1-w1',
@@ -74,7 +82,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p1-s2',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'dusk-arrival',
           words: [
             {
               id: 'p1-s2-w1',
@@ -185,7 +193,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p1-s3',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'daytime-leisure',
           words: [
             {
               id: 'p1-s3-w1',
@@ -411,7 +419,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p1-s4',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'weekend-traffic',
           words: [
             {
               id: 'p1-s4-w1',
@@ -602,7 +610,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p1-s5',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'monday-lull',
           words: [
             {
               id: 'p1-s5-w1',
@@ -748,7 +756,7 @@ export const gatsbyCh3: Passage = {
       sentences: [
         {
           id: 'p2-s1',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'monday-lull',
           words: [
             {
               id: 'p2-s1-w1',
@@ -914,7 +922,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p2-s2',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'monday-lull',
           words: [
             {
               id: 'p2-s2-w1',
@@ -1090,7 +1098,7 @@ export const gatsbyCh3: Passage = {
       sentences: [
         {
           id: 'p3-s1',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'evening-bar-setup',
           words: [
             {
               id: 'p3-s1-w1',
@@ -1246,7 +1254,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p3-s2',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'evening-bar-setup',
           words: [
             {
               id: 'p3-s2-w1',
@@ -1382,7 +1390,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p3-s3',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'evening-bar-setup',
           words: [
             {
               id: 'p3-s3-w1',
@@ -1593,7 +1601,7 @@ export const gatsbyCh3: Passage = {
       sentences: [
         {
           id: 'p4-s1',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'orchestra-tuning',
           words: [
             {
               id: 'p4-s1-w1',
@@ -1759,7 +1767,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p4-s2',
-          sceneBeatId: 'arrival',
+          sceneBeatId: 'orchestra-tuning',
           words: [
             {
               id: 'p4-s2-w1',
@@ -2030,7 +2038,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p4-s3',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'full-swing-cocktails',
           words: [
             {
               id: 'p4-s3-w1',
@@ -2261,7 +2269,7 @@ export const gatsbyCh3: Passage = {
       sentences: [
         {
           id: 'p5-s1',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'dancing-under-lights',
           words: [
             {
               id: 'p5-s1-w1',
@@ -2417,7 +2425,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p5-s2',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'dancing-under-lights',
           words: [
             {
               id: 'p5-s2-w1',
@@ -2498,7 +2506,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p5-s3',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'dancing-under-lights',
           words: [
             {
               id: 'p5-s3-w1',
@@ -2834,7 +2842,7 @@ export const gatsbyCh3: Passage = {
       sentences: [
         {
           id: 'p6-s1',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'dancing-under-lights',
           words: [
             {
               id: 'p6-s1-w1',
@@ -3005,7 +3013,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p6-s2',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'dancing-under-lights',
           words: [
             {
               id: 'p6-s2-w1',
@@ -3181,7 +3189,7 @@ export const gatsbyCh3: Passage = {
         },
         {
           id: 'p6-s3',
-          sceneBeatId: 'peak-revelry',
+          sceneBeatId: 'dancing-under-lights',
           words: [
             {
               id: 'p6-s3-w1',
