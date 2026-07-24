@@ -20,6 +20,7 @@ import { MotifEffects } from './world/MotifEffects'
 import { Particles } from './world/Particles'
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
+import { StringLights } from './world/StringLights'
 import { useLerpedSceneBeat } from './world/useLerpedSceneBeat'
 
 // Phase 2 integration: resolves against the real, content-track-owned beat
@@ -68,6 +69,7 @@ function WorldSceneContents() {
       <DecoBar lerpedRef={lerpedRef} />
       <DecoAutomobile lerpedRef={lerpedRef} />
       <DecoWaterfront lerpedRef={lerpedRef} />
+      <StringLights lerpedRef={lerpedRef} />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
