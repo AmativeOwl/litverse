@@ -243,9 +243,13 @@ export function DecoSkyline({ lerpedRef }: DecoSkylineProps) {
 
   // Shared, mutable-in-place material instances -- one each for every
   // variant's InstancedMesh and for the window-light points, updated
-  // imperatively in useFrame rather than via React state/props.
+  // imperatively in useFrame rather than via React state/props. Buildings
+  // now use `MeshStandardMaterial` (real lighting response) instead of the
+  // old unlit `MeshBasicMaterial` -- facades stay fairly flat/matte (high
+  // roughness, low metalness) but are now actually lit rather than
+  // fully unlit-emissive silhouettes.
   const buildingMaterial = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: '#050505', fog: true }),
+    () => new THREE.MeshStandardMaterial({ color: '#050505', roughness: 0.9, metalness: 0.05, fog: true }),
     [],
   )
   const windowMaterial = useMemo(
@@ -324,6 +328,8 @@ export function DecoSkyline({ lerpedRef }: DecoSkylineProps) {
             }}
             args={[geometry, buildingMaterial, count]}
             frustumCulled={false}
+            castShadow
+            receiveShadow
           />
         )
       })}

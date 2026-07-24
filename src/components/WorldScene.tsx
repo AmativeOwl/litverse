@@ -80,6 +80,7 @@ export default function WorldScene() {
       <Canvas
         camera={{ position: [0, 2.6, 9], fov: 50, near: 0.1, far: 100 }}
         dpr={[1, 2]}
+        shadows
         // Explicit renderer configuration rather than relying on R3F's
         // (currently matching) implicit defaults, so this stays correct even
         // if those defaults ever change: MSAA on, ACES filmic tone mapping
