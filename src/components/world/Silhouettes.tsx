@@ -22,47 +22,70 @@ const MAX_SILHOUETTES = 90
 export const FLOOR_RADIUS = 22
 
 const BODY_HEIGHT = 1.0
-// A single linear taper (the old CylinderGeometry(0.14, 0.2, ...) approach)
-// only differs by 0.06 units over the whole body height -- too subtle to
-// register at silhouette scale, so it just read as a plain cylinder (hence
-// "a sphere on a trapezium"). This profile is revolved via LatheGeometry
-// instead: hem flare, waist-in, shoulder-out, neck taper -- an actual coat
-// silhouette contour, not one straight line. y is absolute (0 = feet,
-// BODY_HEIGHT = neck), x is radius at that height.
+// The profile is revolved via LatheGeometry: hem flare, skirt taper, waist
+// pinch, chest, a distinct shoulder ledge, then a narrow neck. More control
+// points than before so the shoulder actually reads as a shoulder (the widest
+// point sits high, just under the neck) rather than a gentle bulge. y is
+// absolute (0 = feet, BODY_HEIGHT = neck top), x is radius at that height.
 const BODY_PROFILE: ReadonlyArray<readonly [radius: number, y: number]> = [
-  [0.24, 0], // hem
-  [0.19, 0.16], // lower leg/coat taper
-  [0.12, 0.52], // waist
-  [0.18, 0.78], // shoulders
-  [0.08, BODY_HEIGHT], // neck
+  // The single biggest "pawn vs person" tell is where the widest point sits.
+  // A pawn/bishop is narrow at top and flares wide at the base (a bell). A
+  // person is widest across the *shoulders* and tapers *down* to the feet, so
+  // the shoulder here (0.205) is the widest point in the whole profile and the
+  // hem (0.15) is well below it -- an upright, shoulder-dominant silhouette,
+  // not a bell.
+  [0.15, 0], // hem -- only a slight coat flare, narrower than the shoulders
+  [0.135, 0.2], // lower body
+  [0.13, 0.42], // legs/skirt
+  [0.125, 0.55], // hip
+  [0.115, 0.64], // waist (pinched in)
+  [0.17, 0.78], // chest, widening up
+  [0.205, 0.88], // shoulders -- WIDEST point, high on the body
+  [0.145, 0.92], // shoulder slope down to the neck
+  [0.05, BODY_HEIGHT], // neck
 ]
-// Deliberately oversized relative to the body (real head:body proportions
-// read as a featureless blob at silhouette scale/distance) -- exaggerating
-// the head is the standard trick minimalist crowd figures use to stay
-// legible as "a person" rather than "a post," per the Journey/Gris reference.
-const HEAD_RADIUS = 0.24
-/** How far the head sinks into the body's top so the join reads as a neck, not a gap. */
-const HEAD_OVERLAP = 0.3
+// A perfect surface of revolution is radially symmetric -- which is precisely
+// what a turned chess pawn is, and why the old figure read as one. Collapsing
+// the depth (z) axis turns the round cross-section into a broad, shallow
+// ellipse: wide across the shoulders, thin front-to-back, the way a person
+// reads head-on. This single scale is the main de-"pawn" move.
+const DEPTH_SCALE = 0.6
+// Sized to read clearly as a head above the shoulders -- not oversized into a
+// ball. It sits *above* the neck (not sunk down into the shoulders as before),
+// which is what creates a legible head/neck/shoulder break instead of a
+// featureless sphere-on-a-cone.
+const HEAD_RADIUS = 0.185
+/** Fraction of the head radius that dips below the neck top, so the join reads as a neck rather than a floating ball or a gap. */
+const HEAD_OVERLAP = 0.28
 
-const HEAD_CENTER_Y = BODY_HEIGHT - HEAD_RADIUS * HEAD_OVERLAP
+const HEAD_CENTER_Y = BODY_HEIGHT + HEAD_RADIUS * (1 - HEAD_OVERLAP)
 /** The profile is already defined in absolute y (feet at 0), so instances need no vertical offset to stand on the floor. */
 const BASE_Y = 0
 
 /**
  * A single static, unarticulated "figure" shape -- a revolved coat/dress
- * silhouette (hem flare, waist, shoulders, neck) with a rounded head merged
- * on top -- still just one abstract silhouette per instance (no bones, no
- * rig, no per-part animation beyond the shared sway), still one draw call
- * for the whole crowd. Built once and reused as the InstancedMesh's geometry.
+ * silhouette (hem flare, waist, shoulders, neck) with a rounded head, then
+ * flattened front-to-back so its cross-section is a broad ellipse instead of
+ * a circle. Still one abstract silhouette per instance (no bones, no rig, no
+ * per-part animation beyond the shared sway), still one draw call for the
+ * whole crowd. Built once and reused as the InstancedMesh's geometry.
  */
 function buildFigureGeometry(): THREE.BufferGeometry {
   const profile = BODY_PROFILE.map(([radius, y]) => new THREE.Vector2(radius, y))
-  const body = new THREE.LatheGeometry(profile, 8)
-  const head = new THREE.SphereGeometry(HEAD_RADIUS, 10, 8)
+  const body = new THREE.LatheGeometry(profile, 12)
+  // A head a touch taller than it is wide reads as a head; a perfect sphere
+  // reads as a ball. (The whole figure is flattened in z below, so only the
+  // width/height ratio is set here.)
+  const head = new THREE.SphereGeometry(HEAD_RADIUS, 12, 10)
+  head.scale(0.92, 1.08, 0.92)
   head.translate(0, HEAD_CENTER_Y, 0)
   const merged = mergeGeometries([body, head])
   body.dispose()
   head.dispose()
+  // Broad-and-shallow cross-section. Normals are recomputed because the
+  // non-uniform scale skews the revolved/sphere normals otherwise.
+  merged.scale(1, 1, DEPTH_SCALE)
+  merged.computeVertexNormals()
   return merged
 }
 
@@ -73,6 +96,9 @@ interface Layout {
   swayPhase: number
   swaySpeed: number
   swayAmplitude: number
+  /** Per-person build variation so the crowd reads as different people, not one figure stamped N times. */
+  heightScale: number
+  widthScale: number
 }
 
 function buildLayout(): Layout[] {
@@ -91,6 +117,8 @@ function buildLayout(): Layout[] {
       swayPhase: random() * Math.PI * 2,
       swaySpeed: 0.5 + random() * 0.6,
       swayAmplitude: 0.08 + random() * 0.1,
+      heightScale: 0.88 + random() * 0.3,
+      widthScale: 0.9 + random() * 0.18,
     })
   }
   return layout
@@ -193,7 +221,7 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
           : 0
       dummy.position.set(instance.x, BASE_Y, instance.z)
       dummy.rotation.set(0, instance.rotationY + sway * 0.4, 0)
-      dummy.scale.set(1, 1, 1)
+      dummy.scale.set(instance.widthScale, instance.heightScale, instance.widthScale)
       dummy.updateMatrix()
       mesh.setMatrixAt(i, dummy.matrix)
 
