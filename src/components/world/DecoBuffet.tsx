@@ -33,13 +33,20 @@ interface DecoBuffetProps {
  * The table's long axis runs tangential to the radius at the anchor (purely
  * aesthetic -- "a table set along the garden path"), and every food item is
  * placed within +/-1.75 local units of the table center along that same
- * tangent. Checking the two extreme food positions against that assignment:
- *   - low end (local x = -1.75): world angle ~198.5 degrees, radius ~14.1
- *   - high end (local x = +1.75): world angle ~211.6 degrees, radius ~14.1
- * both comfortably inside 190-220 / 12-16, with ~8 degrees of margin on each
- * side. Clear of `DecoFountain`'s own placement (13, -9; ~325 degrees from
- * origin) and well inside `Silhouettes.tsx`'s FLOOR_RADIUS = 22 crowd
- * scatter, matching how the fountain itself sits as a foreground set-piece.
+ * tangent. Checking the widest actual footprint against that assignment --
+ * the merged table geometry's own skirt (+/-2.15 local x, the widest single
+ * piece, wider than any food item) at its four corners (also offset
+ * +/-0.9 along local z, the skirt's half-depth):
+ *   - narrowest angle (local x = -2.15): world angle ~195.7-196.8 degrees
+ *   - widest angle (local x = +2.15): world angle ~213.2-214.3 degrees
+ *   - radius across all four corners: ~13.1-15.1
+ * comfortably inside 190-220 / 12-16, with several degrees of angular margin
+ * and a full radius unit of margin on each side. (Verified numerically, not
+ * just by inspection -- see the `TABLE_ROTATION_Y` comment below for a fix
+ * that was needed to actually achieve this tangential alignment.) Clear of
+ * `DecoFountain`'s own placement (13, -9; ~325 degrees from origin) and well
+ * inside `Silhouettes.tsx`'s FLOOR_RADIUS = 22 crowd scatter, matching how
+ * the fountain itself sits as a foreground set-piece.
  */
 const ANCHOR_ANGLE_DEG = 205
 const ANCHOR_RADIUS = 14
@@ -50,9 +57,23 @@ const ANCHOR_Z = Math.sin(ANCHOR_ANGLE_RAD) * ANCHOR_RADIUS
 // Tangent direction at the anchor point -- the table's local +X axis is
 // aligned to this, so the table sits "along the path" rather than pointing
 // straight at (or away from) the scene origin.
+//
+// Bug fix: this used to be `Math.atan2(TANGENT_X, TANGENT_Z)`, which does NOT
+// align local +X to the tangent. Three.js's Y-axis rotation (the same
+// convention `localToWorld` below replicates: `x' = x*cos + z*sin`,
+// `z' = -x*sin + z*cos`) maps local +X to the world direction
+// `(cos(rotY), -sin(rotY))`, so the yaw solving `(cos(rotY), -sin(rotY)) ==
+// (TANGENT_X, TANGENT_Z)` is `atan2(-TANGENT_Z, TANGENT_X)` -- not
+// `atan2(TANGENT_X, TANGENT_Z)`, which collapses to `-ANCHOR_ANGLE_RAD` and
+// instead points local +X *radially* (straight at/away from the origin,
+// exactly what this comment says to avoid). Confirmed numerically: the old
+// radial version put the table skirt's radius extent at ~11.85-16.15,
+// poking outside the assigned 12-16 sector; this tangential version keeps
+// the whole footprint (skirt corners included) within angle ~195.7-214.3
+// degrees / radius ~13.1-15.1, comfortably inside 190-220 / 12-16.
 const TANGENT_X = -Math.sin(ANCHOR_ANGLE_RAD)
 const TANGENT_Z = Math.cos(ANCHOR_ANGLE_RAD)
-const TABLE_ROTATION_Y = Math.atan2(TANGENT_X, TANGENT_Z)
+const TABLE_ROTATION_Y = Math.atan2(-TANGENT_Z, TANGENT_X)
 
 const TABLE_WIDTH = 4.0
 const TABLE_DEPTH = 1.5
@@ -221,9 +242,15 @@ function buildFoodLayout(): FoodLayout {
  * points-based string of warm coloured lights along the table edge. Table
  * and food use lit `MeshStandardMaterial` so they read as detailed, close-up
  * props reacting to the scene's real key/ambient lighting, unlike the
- * unlit Deco silhouettes. Only material color (lerped from the beat
- * palette) and the coloured-lights' emphasis animate per-frame -- all
- * geometry/instance matrices are static, set once at mount.
+ * unlit Deco silhouettes. The table and every food instanced mesh also set
+ * `castShadow`/`receiveShadow` (matching `Floor`/`Silhouettes`/`DecoSkyline`/
+ * `DecoFountain` post-PBR-merge) so the buffet casts and catches real shadows
+ * from the key light instead of looking flatly lit against the rest of the
+ * now-shadowed scene; the coloured-lights `points` layer is left out of
+ * shadow casting, same as `DecoSkyline`'s window-light points. Only material
+ * color (lerped from the beat palette) and the coloured-lights' emphasis
+ * animate per-frame -- all geometry/instance matrices are static, set once
+ * at mount.
  */
 export function DecoBuffet({ lerpedRef }: DecoBuffetProps) {
   const tableGeometry = useMemo(buildTableGeometry, [])
@@ -382,32 +409,50 @@ export function DecoBuffet({ lerpedRef }: DecoBuffetProps) {
         position={[ANCHOR_X, 0, ANCHOR_Z]}
         rotation={[0, TABLE_ROTATION_Y, 0]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
-      <instancedMesh ref={hamMeshRef} args={[hamGeometry, hamMaterial, layout.hams.length]} frustumCulled={false} />
+      <instancedMesh
+        ref={hamMeshRef}
+        args={[hamGeometry, hamMaterial, layout.hams.length]}
+        frustumCulled={false}
+        castShadow
+        receiveShadow
+      />
       <instancedMesh
         ref={turkeyMeshRef}
         args={[turkeyGeometry, turkeyMaterial, layout.turkeyBodies.length]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
       <instancedMesh
         ref={drumstickMeshRef}
         args={[drumstickGeometry, drumstickMaterial, layout.drumsticks.length]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
       <instancedMesh
         ref={fruitMeshRef}
         args={[fruitGeometry, fruitMaterial, layout.fruit.length]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
       <instancedMesh
         ref={bowlMeshRef}
         args={[bowlGeometry, bowlMaterial, layout.saladBowls.length]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
       <instancedMesh
         ref={pastryMeshRef}
         args={[pastryGeometry, pastryMaterial, layout.pastries.length]}
         frustumCulled={false}
+        castShadow
+        receiveShadow
       />
       <points args={[lightGeometry, lightMaterial]} frustumCulled={false} />
     </group>
