@@ -138,3 +138,109 @@ Once the above is deployed and solid, continue per the original scope-expansion 
 ## QA approach
 
 Later added a Vitest + Testing Library baseline after all (see `src/**/*.test.ts(x)`) — genuinely useful for the pure/injectable-deps modules (`narrationController`, `beatMath`/`cameraMath`/`seededRandom`, data validation) once the codebase grew past a single afternoon's fixture. Still primarily relying on TypeScript strict mode + manual testing for the browser-API/WebGL-heavy UI itself. Manual checklist before every milestone deploy: fresh load in Chrome/Edge/Safari with no console errors; pause/resume with no overlapping audio; seek cancels cleanly; tab-backgrounding doesn't desync; resize doesn't break layout/canvas; text selection doesn't break highlighting; reload mid-passage resets cleanly; FPS stays smooth during word-boundary churn; narration audio actually plays on first click (autoplay-policy edge case) and word highlighting stays in sync with audible speech; a sentence with no manifest entry / a 404'd audio file is skipped without breaking playback; production build (`vite build && vite preview`) tested locally before trusting the live deploy.
+
+---
+
+## Working plan (temporary — doc agents will fold this into the permanent sections above once each track lands): Audio engagement + context-reactive visuals
+
+### Context
+
+The previous round of polish (narration prosody via a Misaki G2P bridge, the painted Deco post-process pass, and the Deco skyline backdrop — all merged into `main` at `17ba167`) fixed *pronunciation accuracy* and added a *first pass* at a painted identity, but two gaps remain that the user wants addressed now, as two separate workflows:
+
+1. **Audio**: word-highlighting visibly lags the audio (a real latency bug, not a perception issue), the narrator voice still reads as monotonous/mechanical even though pronunciation is now correct, and the text-pane highlighting itself should be more visually interesting.
+2. **Visual**: the world only shifts mood twice (a single `arrival` → `peak-revelry` cutover) despite the prose describing many distinct party "moments," and the Deco/Gris/Journey blend should go deeper than the existing post-process-only treatment (previously deliberately scoped out, now being revisited).
+
+Investigation (3 parallel Explore passes + direct reads of `narrationController.ts`, `TextPane.tsx`, `generate-narration-audio.ts`, `misaki_g2p.py`, `beatMath.ts`, `WorldScene.tsx` and its `world/*` siblings) confirmed concrete, low-risk fixes exist for all of these — details below. User decisions locked in:
+- Visual: full combo — expanded scene beats + material-level toon/gradient shading + a new foreground Deco motif.
+- Audio: include mid-sentence pause insertion (in addition to the rAF latency fix and a voice/speed retrial), confirmed low-risk after reading the actual current pipeline (see Track A, item 2).
+
+These two tracks touch **fully disjoint files**, so they're built as two separate git worktrees/branches (`feat/audio-engagement`, `feat/context-reactive-world`), matching this project's own established parallel-track convention, and merged back into `main` once each is independently verified.
+
+### Track A — Audio engagement (branch: `feat/audio-engagement`)
+
+#### A1. Fix word-highlight latency
+
+**File**: `src/lib/narrationController.ts`.
+
+Confirmed root cause: word-position updates are driven *purely* by `audio.ontimeupdate` (`narrationController.ts:332-339`), which is a real `<audio>` element event that only fires at a browser-throttled rate — not every frame — so `findWordIdAtTime` is working off stale `audio.currentTime` reads. This is the sole source of the lag (no debounce, no React-render bottleneck).
+
+Fix: replace the `ontimeupdate`-driven update with a `requestAnimationFrame` loop that reads `audio.currentTime` every frame while a sentence is actively playing:
+- Add `requestFrame`/`cancelFrame` to `NarrationControllerDeps` (default to `requestAnimationFrame`/`cancelAnimationFrame`, overridable in tests with a manually-steppable fake — same override pattern already used for `createAudio`/`fetchManifest`/`getDocument`).
+- Add `rafId: number | null` and `currentEntry: NarrationManifestEntry | null` to `ControllerState` (the latter needed so `pause()`/resume can restart tracking on the same audio element without re-deriving `entry`).
+- Add `startWordTracking(audio, entry, myEpoch)` / `stopWordTracking()` helpers: the tick function reads `audio.currentTime`, calls `findWordIdAtTime`, and only calls `store.setState({ currentWordId })` (+ `maybeFireMotif`) when the resolved id actually *changes* from the last-applied value (avoid redundant re-renders every frame).
+- Call `startWordTracking` right after `audio.play()` is issued in `playCurrentSentence()` (`narrationController.ts:367-376`); call `stopWordTracking()` inside `detachCurrentAudio()` (`:235-243`, covers start/seek/destroy paths for free) and explicitly in `pause()` (`:484-489`, which doesn't call `detachCurrentAudio()` since it wants to resume the same element); restart tracking in `play()`'s resume branch (`:443-457`) using `state.currentAudio`/`state.currentEntry`.
+- Remove the `ontimeupdate` handler entirely (superseded, not kept as a fallback — one driver, not two racing).
+
+**Test updates**: `src/lib/narrationController.test.ts` uses a fake `AudioLike` harness — extend it with fake `requestFrame`/`cancelFrame` overrides that capture the callback so tests can manually "step" frames deterministically (no real timers), updating any test that currently asserts on `ontimeupdate`-driven word updates.
+
+#### A2. Reduce voice monotony (regenerate `public/narration/gatsby-ch3/*`)
+
+**Files**: `scripts/generate-narration-audio.ts` only (Python bridge `misaki_g2p.py` untouched — the pause insertion below is pure post-processing on the already-returned phonetic items, no G2P changes needed).
+
+Confirmed current state (re-read the *actual* current file, not the stale version from before the Misaki G2P work landed): a voice/speed A/B trial harness *already exists* (`--voice`/`--speed`/`--trial` CLI flags, `scripts/generate-narration-audio.ts:70-114`, output to `scripts/output/voice-trials/<voice>-<speed>/`) and was already used once to pick `af_sky` over `af_bella` (recorded in memory). What was **never** pushed past the default is `speed` (`SPEED = cliArgs.speed ?? 1`, line 106) — the exact lever the earlier investigation identified as most directly addressing "pronouncing every syllable" (higher speed compresses inter-syllable gaps). Three concrete additions:
+
+1. **Re-run the existing trial harness** at `af_sky` speed `~1.08-1.15` (a couple of values), listen, pick a winner. No new tooling needed — just use what's there (`npx tsx scripts/generate-narration-audio.ts --voice af_sky --speed 1.1`).
+2. **Deterministic per-sentence speed micro-jitter**: a small self-contained hash function (can't import `src/`'s `seededRandom.ts` — scripts stay isolated from `src/` per this doc's own rule) mapping each `sentence.id` to a small ±0.03-0.05 offset from the winning base speed, so cadence isn't perfectly metronomic sentence-to-sentence.
+3. **Mid-sentence pause insertion**: confirmed low-risk after reading the current pipeline —
+   - `buildPhoneticInputItems` (`generate-narration-audio.ts:272-303`) already returns an **array** of one `PhoneticInputItem` per word (not a single string — this changed when the Misaki bridge landed), so inserting a new item type between existing entries is a natural fit, not a restructuring.
+   - Confirmed via `node_modules/@met4citizen/headtts/modules/language.mjs:255-258` and `worker-tts.mjs:332,377,383` that a `{type: 'break', value: ms}` item produces **no entry** in `metadata.words`/`wtimes`/`wdurations` (it only contributes to a separate `silences` array consumed by `updateTimestamps`/`insertSilences`) — so inserting breaks cannot desync `alignWordTimings`'s strict word-count/text matching against `sentence.words`.
+   - Add `insertPauseBreaks(items: PhoneticInputItem[], sentence: Sentence): (PhoneticInputItem | BreakInputItem)[]`: walks each word's original `.text` (trailing punctuation intact) and inserts a `{type: 'break', value: N}` after words ending in `,`/`;`/`:`/`—`/`–` (regex-detected), with duration varying by punctuation weight (commas shorter ~90-140ms, semicolons/colons/dashes longer ~150-220ms — mirrors how a human reader actually paces these differently). Add a `BreakInputItem` interface alongside `PhoneticInputItem` and widen `synthesizeSentence`'s `input` parameter type to the union array.
+   - Call this after `buildPhoneticInputItems` succeeds, before `synthesizeSentence`.
+4. Re-run the full (non-trial) `npm run generate:narration`, re-verify 19/19 sentences with no `NaN`/failed alignments (same check every prior narration commit has done), listen through the full passage end-to-end before committing.
+
+#### A3. Richer dual-level highlight UI
+
+**File**: `src/components/TextPane.tsx`.
+
+Confirmed current state: both levels **already** render distinctly (`TextPane.tsx:252-254` sentence gets a soft `bg-amber-400/10` wash with a 300ms transition; `:260-263` the active word gets a solid `bg-amber-400/80` block, no transition) — so this is enrichment, not building dual-highlighting from scratch. Two concrete additions:
+1. Add a transition on the word highlight itself (currently instant on/off) — a quick fade/glow-in (`transition-colors` + a subtle `box-shadow`/text-glow) so the word doesn't hard-cut.
+2. Tie the sentence-level wash's tint to the *currently active scene beat's* palette accent color (subscribe `activeSceneBeatId` from the store, look up its `palette.accent` from `src/data/scene-beats.json` — import it the same way `MotifEffects.tsx` imports `motifs.json`, build an `id -> accent` map via `Object.fromEntries`), applied as an inline CSS custom property on the active sentence's wrapper so the highlight hue shifts with the world's mood instead of staying fixed amber. This is a nice free synergy with Track B's expanded beats (more beats = more visible hue variety in the text pane too) and stays entirely within `TextPane.tsx` — no R3F/store-shape changes, doesn't touch the "word-level state never reaches three.js" rule.
+
+**Test updates**: re-run `src/components/TextPane.test.tsx` (15 existing tests check word/sentence text content, click-to-seek, and accessible names — none assert on exact highlight styling, so this should be additive-safe, but verify after the change).
+
+### Track B — Context-reactive visuals (branch: `feat/context-reactive-world`)
+
+#### B1. Expand scene beats to match the prose's actual party "moments"
+
+**Files**: `src/data/scene-beats.json`, `src/data/gatsby-ch3.ts` (reassign `sceneBeatId` per sentence only — word/sentence/paragraph structure itself is untouched).
+
+Confirmed current state: `sceneBeatId` already lives on `Sentence` (not `Paragraph`), so per-sentence granularity is already the contract; it's just that only **2** `SceneBeat`s exist (`scene-beats.json`) and all 19 sentences get one hard binary split at `p4-s3` (12 sentences `arrival`, 7 `peak-revelry`). Confirmed distinct "moments" currently flattened into one bucket: `p1-s3` (daytime diving/motorboats), `p1-s4` (weekend Rolls-Royce/cars), `p3-s3` (bar setup), `p4-s1` (orchestra tuning up, still tagged `arrival`), `p4-s3` (bar in full swing — first `peak-revelry` sentence), `p5-s1` (orchestra playing/dancing). Confirmed the lerp architecture (`beatMath.ts`'s `lerpSceneBeat`, `useLerpedSceneBeat`'s `snapshotAsBeat`) already generalizes to any number of beats and handles rapid/interrupted transitions gracefully (blends onward from current on-screen state rather than jumping) — **no code changes needed there**, only data.
+
+Plan:
+1. Author ~6-8 `SceneBeat`s covering the confirmed distinct moments above plus whatever else the full text describes (read `gatsby-ch3.ts` in full at implementation time to place the remaining sentences — this is a hand-authored creative pass, same as the original 2-beat authoring was, not something to guess from partial quotes). Aim for a coherent day-progressing-to-night mood arc (e.g. dusk arrival → bright daytime leisure → busy weekend traffic → quiet Monday-after lull → evening bar setup → orchestra tuning → full-swing cocktails → dancing under lights), varying palette/lighting/particles/camera/silhouette-count per beat, reusing the existing 4 `camera.behavior` values (`slow-orbit`/`static-drift`/`push-in`/`pull-back` — adding a 5th would require a new `cameraMath.ts` switch case; stay within the existing 4 to keep scope contained).
+2. Shorten `transitionDurationMs` from the current 1500-2000ms to roughly 900-1300ms given much more frequent switching (per-sentence rather than twice-total).
+3. Reassign every sentence's `sceneBeatId` in `gatsby-ch3.ts` to the new ids.
+4. Optional/low-priority: update `scripts/generate-scene-beats.ts`'s LLM prompt (currently explicitly says "propose 2-3 beats total") to reflect the richer granularity, for future reuse on other passages — doc-consistency only, this script isn't in the actual authoring path.
+
+#### B2. Material-level painterly (Gris/Deco) treatment
+
+**Files**: `src/components/world/Floor.tsx`, `src/components/world/Silhouettes.tsx`, new `src/components/world/toonGradientTexture.ts`.
+
+Confirmed current state: both currently use flat `MeshStandardMaterial` with no texture maps at all — the only "painted" quality today comes from the global post-process pass, nothing at the geometry/material level. This was explicitly deferred in the prior round; now revisited.
+
+- New `toonGradientTexture.ts`: builds a small (e.g. 4-step) grayscale `THREE.DataTexture` once (module-scope singleton, lazily created) with `minFilter`/`magFilter = THREE.NearestFilter` (critical — smooth filtering would defeat the discrete-band toon look) — the standard three.js toon-shading gradient-map recipe, no external image asset.
+- `Floor.tsx`: swap `meshStandardMaterial` → `meshToonMaterial`, drop `metalness`/`roughness` (not applicable to `MeshToonMaterial`), add the shared `gradientMap`. Keep the existing per-frame `color.set(...)` mutation unchanged.
+- `Silhouettes.tsx`: same material swap. `MeshToonMaterial` supports `emissive`/`emissiveIntensity` the same as `MeshStandardMaterial`, so the existing emissive-rim lerp logic (`Silhouettes.tsx:133-142`) needs no changes beyond the material tag + `gradientMap`.
+- This gives the crowd/floor actual cel-shaded lighting *response* (discrete light/shadow bands), complementing the existing post-process posterize at the geometry level instead of relying on it alone — directly what "more developed" painterly blending means.
+
+#### B3. Foreground Deco motif (fountain + wrought-iron railing)
+
+**File**: new `src/components/world/DecoFountain.tsx`, wired into `WorldScene.tsx`'s `WorldSceneContents` alongside `DecoSkyline` etc.
+
+Directly inspired by user-supplied reference images (gouache Deco fountain + scalloped fan canopy + wrought-iron railing night scene). Reuses `DecoSkyline.tsx`'s proven pattern (seeded/fixed placement, merge-many-geometries-once via `mergeGeometries`, tint from `lerped.palette`/`lighting` in `useFrame`, no per-frame geometry recompute):
+- A stepped circular fountain basin: 2-3 tapering `CylinderGeometry` rings merged into one shape, placed at a fixed mid-ground position (inside the crowd's radius, offset to one side so it doesn't block the camera rig's typical framing).
+- A simple water-spray suggestion (a couple of thin cones or tubes) with a very cheap upward-drift `useFrame` animation (not a rigged character, so no conflict with the "no rigged/animated characters" rule).
+- A short wrought-iron-scroll railing silhouette in the near-foreground (simple repeating flat post-and-rail shapes, unlit `MeshBasicMaterial` matching `DecoSkyline`'s silhouette treatment) — evokes the reference images' ironwork without needing complex curve extrusion.
+- Tinted per-beat like `DecoSkyline` (dark silhouette + accent highlights); static geometry, cheap `useFrame` (color lerp only, plus the small spray drift).
+- **Priority note**: sequence this after B1 and B2 — if time runs short, the scene-beat expansion and material treatment are the higher-value, lower-risk deliverables; this is the stretch item.
+
+### Execution strategy
+
+Two git worktrees/branches (`feat/audio-engagement`, `feat/context-reactive-world`) created from `main`, matching this project's established parallel-track convention. File ownership is fully disjoint between the two tracks (Track A touches `scripts/generate-narration-audio.ts`, `src/lib/narrationController.ts`(+test), `src/components/TextPane.tsx`(+test), and regenerated `public/narration/gatsby-ch3/*`; Track B touches `src/data/scene-beats.json`, `src/data/gatsby-ch3.ts`, `src/components/world/Floor.tsx`, `src/components/world/Silhouettes.tsx`, new `toonGradientTexture.ts` + `DecoFountain.tsx`, `src/components/WorldScene.tsx`), so both run concurrently and are reviewed/merged into `main` sequentially once each is independently verified — never leaving `main` mid-feature.
+
+### Verification
+
+- Each track independently: `npm run lint && npm run test && npm run build` clean before merge.
+- Track A: listen through the full passage post-regeneration (subjective call on monotony/pacing), confirm word-highlight visually tracks the audio tighter than before (manual browser check), confirm no overlapping-audio/pause-resume regressions per the existing manual QA checklist.
+- Track B: manual playthrough via `npm run dev` across the new beat sequence — confirm the mood arc reads as a coherent progression, confirm the toon material swap doesn't tank FPS or look broken against existing lighting, confirm the new fountain/railing sit correctly in the frame across camera behaviors and don't clip through the crowd/skyline, confirm the already-shipped `MotifEffects`/`DecoPaintEffect`/`DecoSkyline` still render correctly alongside all of this (no regressions).
+- After each merge into `main`: full lint/test/build once more on `main`, then a final combined manual playthrough with both tracks merged together before considering the session's work demo-ready.
