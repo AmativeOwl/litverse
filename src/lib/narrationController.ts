@@ -289,6 +289,7 @@ export function createNarrationController(overrides: Partial<NarrationController
 
   function detachCurrentAudio(): void {
     stopWordTracking()
+    state.currentEntry = null
     const audio = state.currentAudio
     if (!audio) return
     audio.onended = null
@@ -533,9 +534,23 @@ export function createNarrationController(overrides: Partial<NarrationController
 
   function pause(): void {
     if (deps.store.getState().playbackState !== 'playing') return
-    clearInterSentenceTimer()
-    stopWordTracking()
-    state.currentAudio?.pause()
+
+    // If a sentence's clip has already ended and we're just waiting out the
+    // natural inter-sentence pause (advanceToNextSentence's setTimeout),
+    // state.currentAudio still points at that *ended* clip. Pausing here and
+    // later resuming via `audio.play()` would, per the HTML spec, seek that
+    // already-ended element back to time 0 and replay it -- audibly
+    // repeating the just-finished sentence instead of advancing to the next
+    // one. Detect that case (the timer is still pending) and treat it as
+    // "nothing live to resume" so play()'s resume branch starts the next
+    // sentence fresh instead, the same way it already handles pause()
+    // landing before any clip had actually started.
+    if (state.interSentenceTimerId !== null) {
+      cancelPlaybackDefensively()
+    } else {
+      stopWordTracking()
+      state.currentAudio?.pause()
+    }
     deps.store.setState({ playbackState: 'paused' })
   }
 

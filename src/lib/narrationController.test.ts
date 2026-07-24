@@ -431,6 +431,34 @@ describe('createNarrationController', () => {
       expect(store.playbackState).toBe('playing')
     })
 
+    it('resuming after a pause mid-gap advances to the next sentence instead of replaying the just-ended clip', async () => {
+      // Regression test: state.currentAudio still points at the just-ended
+      // clip while advanceToNextSentence's inter-sentence setTimeout is
+      // pending. Per the HTML spec, calling .play() again on an ended,
+      // paused <audio> element seeks it back to time 0 and replays it --
+      // pausing in this window must not let resume fall into that trap.
+      vi.useFakeTimers()
+      const { passage, manifest, s2 } = makeFixture()
+      const { controller, store, audios } = createHarness(manifest)
+      controller.loadPassage(passage)
+      controller.play()
+      await flushMicrotasks()
+
+      audios[0]?.finish() // s1 ends; advanceToNextSentence schedules the pause timer
+      controller.pause() // ...but we pause before that timer fires
+
+      expect(store.playbackState).toBe('paused')
+      expect(audios).toHaveLength(1) // nothing new started yet
+
+      controller.play()
+      await flushMicrotasks()
+
+      expect(store.currentSentenceIndex).toBe(1) // advanced to s2, not replayed s1
+      expect(audios).toHaveLength(2) // a fresh audio element for s2
+      expect(audios[1]?.src).toBe(manifest[s2.id]?.audioUrl)
+      expect(audios[0]?.playCalls).toBe(1) // s1's element was never replayed
+    })
+
     it('restarts the sentence fresh if pause() landed before any audio had actually started', async () => {
       // Simulate pause() racing ahead of the manifest fetch resolving.
       const { passage, manifest } = makeFixture()
