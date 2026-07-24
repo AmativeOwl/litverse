@@ -1,7 +1,7 @@
 import { useRef, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import type { LerpedSceneBeat } from './beatMath'
+import { easeInOutCubic, type LerpedSceneBeat } from './beatMath'
 import {
   computeCameraPose,
   DEFAULT_CAMERA_AZIMUTH_RAD,
@@ -33,23 +33,23 @@ const ZOOM_DWELL = 1
  * lands on the identical framing (fixed distance + normalized CARD_FOV),
  * so consecutive cards read as matched cuts. Exit is a brisk damped
  * retreat, then the drift-glide to the next wall.
- * - PUSH_SECONDS: duration of the snap push-in (ease-out cubic).
+ * - FOCUS_SECONDS: a held beat facing the frame before the move -- "focus
+ *   on the frame" -- so the push reads as a deliberate decision.
+ * - PUSH_SECONDS: the push itself -- a single committed dolly, slow but
+ *   still a snap: one accelerate-decelerate motion (ease-in-out), never a
+ *   drifting settle.
  * - RETREAT_RATE: damped exit (~95% in ~2s).
  * - PAN: azimuth pursuit (~95% in ~6s), decoupled from the ~1s beat lerp.
  * Sequencing keys on remaining pan distance; same-sector card swaps have
  * zero pan distance, so the lock simply holds while plates crossfade.
  */
-const PUSH_SECONDS = 0.7
+const FOCUS_SECONDS = 0.7
+const PUSH_SECONDS = 2.1
 const RETREAT_RATE = 1.4
 const PAN_RATE = 0.5
 const PAN_SETTLED_RAD = 0.15
 
-type ShotPhase = 'wide' | 'push' | 'dwell' | 'retreat'
-
-function easeOutCubic(u: number): number {
-  const clamped = u < 0 ? 0 : u > 1 ? 1 : u
-  return 1 - (1 - clamped) ** 3
-}
+type ShotPhase = 'wide' | 'focus' | 'push' | 'dwell' | 'retreat'
 
 function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: string): number {
   const deg = azimuthByBeatDeg[beatId]
@@ -100,12 +100,22 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
     if (panError < 0.002) azimuthRef.current = targetAzimuth
     const azimuthRad = azimuthRef.current
 
-    // --- the shot cycle: drift wide -> snap push -> locked dwell -> retreat --
+    // --- the shot cycle: drift -> focus -> one committed push -> lock -------
     const settled = panError <= PAN_SETTLED_RAD
     switch (phaseRef.current) {
       case 'wide':
         zoomRef.current = 0
         if (settled) {
+          phaseRef.current = 'focus'
+          pushStartRef.current = clock.elapsedTime
+        }
+        break
+      case 'focus':
+        // held beat facing the frame before the move
+        zoomRef.current = 0
+        if (!settled) {
+          phaseRef.current = 'wide'
+        } else if (clock.elapsedTime - pushStartRef.current >= FOCUS_SECONDS) {
           phaseRef.current = 'push'
           pushStartRef.current = clock.elapsedTime
         }
@@ -116,7 +126,7 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
           break
         }
         const u = (clock.elapsedTime - pushStartRef.current) / PUSH_SECONDS
-        zoomRef.current = easeOutCubic(u) * ZOOM_DWELL
+        zoomRef.current = easeInOutCubic(u) * ZOOM_DWELL
         if (u >= 1) {
           zoomRef.current = ZOOM_DWELL
           phaseRef.current = 'dwell'
