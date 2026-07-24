@@ -27,6 +27,15 @@ describe('GATSBY_PLATES registry', () => {
     }
   })
 
+  it('every beat is covered by at least one mid plate', () => {
+    for (const beatId of BEAT_IDS) {
+      const midPlates = GATSBY_PLATES.plates.filter(
+        (plate) => plate.layer === 'mid' && plate.memberBeatIds.includes(beatId),
+      )
+      expect(midPlates.length, `beat ${beatId} has no mid plate`).toBeGreaterThan(0)
+    }
+  })
+
   it('plate ids are unique', () => {
     const ids = GATSBY_PLATES.plates.map((plate) => plate.id)
     expect(new Set(ids).size).toBe(ids.length)
