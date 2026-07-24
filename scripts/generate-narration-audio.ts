@@ -54,7 +54,18 @@ import { fileURLToPath } from 'node:url'
 import { Worker } from 'node:worker_threads'
 
 import { gatsbyCh3 } from '../src/data/gatsby-ch3.ts'
-import type { Sentence } from '../src/types.ts'
+import { masqueRedDeath } from '../src/data/masque.ts'
+import type { Passage, Sentence } from '../src/types.ts'
+
+/**
+ * Compiled passages this script can narrate, keyed by passage id
+ * (`--passage <id>`, default gatsby-ch3). Adding a text = one import + one
+ * entry here; output lands in public/narration/<id>/ automatically.
+ */
+const PASSAGES: Record<string, Passage> = {
+  [gatsbyCh3.id]: gatsbyCh3,
+  [masqueRedDeath.id]: masqueRedDeath,
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -71,11 +82,13 @@ interface CliArgs {
   voice?: string
   speed?: number
   trial: boolean
+  passage?: string
 }
 
 function parseCliArgs(argv: string[]): CliArgs {
   let voice: string | undefined
   let speed: number | undefined
+  let passage: string | undefined
   let trialFlag = false
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i]
@@ -90,9 +103,11 @@ function parseCliArgs(argv: string[]): CliArgs {
       speed = parsed
     } else if (arg === '--trial') {
       trialFlag = true
+    } else if (arg === '--passage') {
+      passage = argv[++i]
     }
   }
-  return { voice, speed, trial: trialFlag || voice !== undefined || speed !== undefined }
+  return { voice, speed, passage, trial: trialFlag || voice !== undefined || speed !== undefined }
 }
 
 const cliArgs = parseCliArgs(process.argv.slice(2))
@@ -120,9 +135,16 @@ const DICTIONARY_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts
 const WORKER_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts/modules/worker-tts.mjs')
 const MISAKI_BRIDGE_PATH = resolve(__dirname, 'misaki_g2p.py')
 const PYTHON_BIN = process.env.PYTHON_BIN ?? 'python3'
+const PASSAGE_ID = cliArgs.passage ?? 'gatsby-ch3'
+const PASSAGE = PASSAGES[PASSAGE_ID]
+if (!PASSAGE) {
+  throw new Error(
+    `Unknown passage id: ${PASSAGE_ID}. Known passages: ${Object.keys(PASSAGES).join(', ')}`,
+  )
+}
 const OUT_DIR = IS_TRIAL
   ? resolve(__dirname, `output/voice-trials/${VOICE_NAME}-${SPEED}`)
-  : resolve(__dirname, '../public/narration/gatsby-ch3')
+  : resolve(__dirname, `../public/narration/${PASSAGE_ID}`)
 const SAMPLE_RATE = 24000
 
 interface TtsMetadata {
@@ -170,7 +192,7 @@ interface MisakiToken {
 }
 
 function flattenSentences(): Sentence[] {
-  const all = gatsbyCh3.paragraphs.flatMap((p) => p.sentences)
+  const all = PASSAGE.paragraphs.flatMap((p) => p.sentences)
   if (!IS_TRIAL) return all
 
   const bySentenceId = new Map(all.map((s) => [s.id, s]))
