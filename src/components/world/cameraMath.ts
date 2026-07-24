@@ -29,10 +29,15 @@ const LOOKAT_HEIGHT = 1
 // (the dolly crosses the scene), so the crane arc below lifts the travel
 // over the crowd's heads instead of through them.
 const CARD_RADIUS = 20
-// Far enough back that the WHOLE card -- gold frame included -- sits in
-// frame with a margin at every beat fov (45-56), so dwelling shows a living
-// painting with its perimeter, not a crop of it.
-const CARD_NEAR_DISTANCE = 13.5
+// The dwell frames the WHOLE card -- gold frame included -- like a
+// photocard pressed on a table: the card comfortably inside the frame with
+// its surroundings visible. Two levers make that reliable: distance (the
+// pane is roughly square-ish, so the card's 18-unit WIDTH is the binding
+// constraint, needing ~18 units of standoff) and a normalized dwell fov
+// (each beat's lens, 45-56, is blended toward CARD_FOV as zoom settles, so
+// the framing stops depending on which beat we arrived from).
+const CARD_NEAR_DISTANCE = 18
+const CARD_FOV = 55
 const CARD_CENTER_Y = 4.0
 /** Peak extra height mid-travel (sin arc), so the dolly clears the crowd. */
 const CRANE_ARC = 2.2
@@ -171,6 +176,6 @@ export function computeCameraPose(
       lerp(basePose.lookAt[1], CARD_CENTER_Y, eased),
       lerp(basePose.lookAt[2], cardLookZ, eased),
     ],
-    fov,
+    fov: lerp(fov, CARD_FOV, eased),
   }
 }

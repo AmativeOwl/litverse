@@ -1,7 +1,7 @@
 import { useRef, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import { easeInOutCubic, type LerpedSceneBeat } from './beatMath'
+import type { LerpedSceneBeat } from './beatMath'
 import {
   computeCameraPose,
   DEFAULT_CAMERA_AZIMUTH_RAD,
@@ -26,15 +26,25 @@ interface CameraRigProps {
 
 /** Full zoom while dwelling at a card. */
 const ZOOM_DWELL = 1
-/** Damping rates (per second): the approach is a slow cinematic settle
- * (~95% in roughly 7s -- most of a sentence's narration, so the push-in
- * itself is part of the shot, per user feedback that faster zooms rushed
- * it), the retreat brisker but still unhurried. Same-sector card swaps do
- * NOT move the camera at all -- consecutive sentences on the same sector
- * simply crossfade their plates while the camera keeps dwelling (user
- * feedback: no zoom-out/in between cards that share a wall). */
+/**
+ * The shot rhythm -- press in, watch, ease out, glide, press into the next
+ * card (the user's "photocard" cadence). All damping rates are per-second:
+ * - APPROACH: slow settle (~95% in ~7s), the push-in is part of the shot.
+ * - RETREAT: an unhurried exit (~95% in ~3.5s), not a snap back.
+ * - PAN: the camera's own azimuth pursuit (~95% in ~6s) -- deliberately
+ *   DECOUPLED from the beat lerp's ~1s transitionDurationMs, which was far
+ *   too fast for a camera move; palettes may snap moods quickly, the
+ *   camera glides.
+ * Sequencing is driven by remaining pan distance, not the beat clock: while
+ * the camera still has more than PAN_SETTLED_RAD left to turn it stays
+ * retreated; once the new wall is nearly ahead, the approach begins. Same-
+ * sector card swaps have zero pan distance, so the dwell simply continues
+ * while plates crossfade.
+ */
 const APPROACH_RATE = 0.45
-const RETREAT_RATE = 1.8
+const RETREAT_RATE = 0.9
+const PAN_RATE = 0.5
+const PAN_SETTLED_RAD = 0.15
 
 function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: string): number {
   const deg = azimuthByBeatDeg[beatId]
@@ -64,6 +74,7 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
   const lookAtTarget = useRef(new THREE.Vector3())
   // shot-choreography state -- mutated per frame, never React state
   const zoomRef = useRef(0)
+  const azimuthRef = useRef<number | null>(null)
 
   useFrame(({ clock }, delta) => {
     const lerped = lerpedRef.current
@@ -75,19 +86,21 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
       behaviorStartRef.current = clock.elapsedTime
     }
 
-    // LerpedSceneBeat.t is raw/pre-easing per its doc comment; ease it here
-    // the same way lerpSceneBeat eases the numeric fields.
-    const azimuthRad = lerpAngleRad(
-      azimuthRadForBeat(azimuthByBeatDeg, lerped.fromId),
-      azimuthRadForBeat(azimuthByBeatDeg, lerped.toId),
-      easeInOutCubic(lerped.t),
+    // --- the camera's own pan: damped shortest-arc pursuit of the target ----
+    const targetAzimuth = azimuthRadForBeat(azimuthByBeatDeg, lerped.toId)
+    if (azimuthRef.current === null) azimuthRef.current = targetAzimuth
+    const panError = Math.abs(
+      Math.atan2(Math.sin(targetAzimuth - azimuthRef.current), Math.cos(targetAzimuth - azimuthRef.current)),
     )
+    azimuthRef.current = lerpAngleRad(
+      azimuthRef.current,
+      targetAzimuth,
+      1 - Math.exp(-delta * PAN_RATE),
+    )
+    const azimuthRad = azimuthRef.current
 
-    // --- shot choreography: approach / dwell / retreat -----------------------
-    // Retreat only for actual sector moves (beat transitions); same-sector
-    // card swaps keep dwelling while the plates crossfade.
-    const beatTransitioning = lerped.fromId !== lerped.toId && lerped.t < 1
-    const zoomTarget = beatTransitioning ? 0 : ZOOM_DWELL
+    // --- shot choreography: ease out while turning, press in on arrival -----
+    const zoomTarget = panError > PAN_SETTLED_RAD ? 0 : ZOOM_DWELL
     const rate = zoomTarget < zoomRef.current ? RETREAT_RATE : APPROACH_RATE
     zoomRef.current += (zoomTarget - zoomRef.current) * (1 - Math.exp(-delta * rate))
 

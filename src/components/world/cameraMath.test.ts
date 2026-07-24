@@ -101,14 +101,16 @@ describe('computeCameraPose', () => {
   it('zoom=1 dollies the camera onto the SECTOR side, framing the whole card', () => {
     const azimuth = degToRad(80)
     const pose = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1)
-    // camera sits between origin and the card (radius 20), ~13.5 units from
-    // it -- far enough that the full plate + frame stays in view
+    // camera sits between origin and the card (radius 20), 18 units from it
+    // -- the photocard framing: the full plate + gold frame in view with a
+    // margin, dwell fov normalized to CARD_FOV
     expect(azimuthOf(pose.position)).toBeCloseTo(azimuth, 3)
     const radius = Math.hypot(pose.position[0], pose.position[2])
-    expect(radius).toBeCloseTo(6.5, 1)
+    expect(radius).toBeCloseTo(2, 1)
     // looking at the card's center height, in the sector direction
     expect(azimuthOf(pose.lookAt)).toBeCloseTo(azimuth, 3)
     expect(pose.lookAt[1]).toBeCloseTo(4.0, 1)
+    expect(pose.fov).toBeCloseTo(55, 5)
   })
 
   it('zoom clamps out-of-range and non-finite values safely', () => {
