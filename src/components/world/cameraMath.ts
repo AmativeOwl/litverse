@@ -41,8 +41,10 @@ const CARD_FOV = 55
 const CARD_CENTER_Y = 4.0
 /** Peak extra height mid-travel (sin arc), so the dolly clears the crowd. */
 const CRANE_ARC = 2.2
-/** How much of the behavior's own motion survives at zoom=1 -- a little float keeps the "inside the painting" moment alive. */
-const ZOOMED_MOTION_SCALE = 0.25
+/** Behavior motion fully dies at zoom=1: the dwell frame is LOCKED -- the
+ * camera moves between frames, never within them; all motion during a dwell
+ * belongs to the painting itself (user feedback). */
+const ZOOMED_MOTION_SCALE = 0
 
 /**
  * The azimuth every pose faced before per-beat anchoring existed: the camera
@@ -162,13 +164,11 @@ export function computeCameraPose(
   const eased = easeInOutCubicLocal(safeZoom)
   const [nearX, nearZ] = polar(safeAzimuth, CARD_RADIUS - CARD_NEAR_DISTANCE)
   const crane = Math.sin(Math.PI * eased) * CRANE_ARC
-  // a whisper of float so the dwell never freezes entirely
-  const dwellFloat = Math.sin(elapsedSeconds * 0.35) * 0.12 * safeZoom
   const [cardLookX, cardLookZ] = polar(safeAzimuth, CARD_RADIUS)
   return {
     position: [
       lerp(basePose.position[0], nearX, eased),
-      lerp(basePose.position[1], CARD_CENTER_Y + dwellFloat, eased) + crane,
+      lerp(basePose.position[1], CARD_CENTER_Y, eased) + crane,
       lerp(basePose.position[2], nearZ, eased),
     ],
     lookAt: [

@@ -97,12 +97,18 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
       targetAzimuth,
       1 - Math.exp(-delta * PAN_RATE),
     )
+    // snap out the asymptotic tail -- a locked frame must actually lock
+    if (panError < 0.002) azimuthRef.current = targetAzimuth
     const azimuthRad = azimuthRef.current
 
     // --- shot choreography: ease out while turning, press in on arrival -----
     const zoomTarget = panError > PAN_SETTLED_RAD ? 0 : ZOOM_DWELL
     const rate = zoomTarget < zoomRef.current ? RETREAT_RATE : APPROACH_RATE
     zoomRef.current += (zoomTarget - zoomRef.current) * (1 - Math.exp(-delta * rate))
+    // same snap for the zoom: exponential damping never finishes on its own,
+    // which read as perpetual creep during what should be a still frame
+    if (zoomTarget === ZOOM_DWELL && zoomRef.current > 0.995) zoomRef.current = ZOOM_DWELL
+    if (zoomTarget === 0 && zoomRef.current < 0.005) zoomRef.current = 0
 
     const elapsedInBehavior = clock.elapsedTime - behaviorStartRef.current
     const pose = computeCameraPose(
