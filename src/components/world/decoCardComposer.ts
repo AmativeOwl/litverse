@@ -148,7 +148,13 @@ function drawElement(
   el: ElementSpec,
   t: number,
 ): void {
-  const m = motionTransform(el.motion, t)
+  // Grammar default: figures are never statues. An un-verbed figure sways
+  // gently, phase-desynced by its position so crowds don't move in lockstep.
+  const motion: typeof el.motion =
+    el.motion ?? (el.noun === 'figure'
+      ? { verb: 'sway', amplitude: 0.7, phase: el.at[0] * 7 + el.at[1] * 13 }
+      : undefined)
+  const m = motionTransform(motion, t)
   if (m.alpha <= 0.01) return
   const x = w * (el.at[0] + m.dx)
   const y = h * (el.at[1] + m.dy)

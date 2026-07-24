@@ -22,28 +22,17 @@ interface CameraRigProps {
    * the original fixed framing.
    */
   azimuthByBeatDeg: Record<string, number>
-  /**
-   * Identity of the card currently on stage: the active window id when a
-   * sentence window is up, else the active beat id. Drives the shot
-   * choreography -- on arrival the camera cranes over the crowd and dollies
-   * INTO the card until the painting fills the frame, dwells there with a
-   * whisper of float, pulls back when the card changes, and (for a new
-   * sector) pans before pushing into the next one. Same-sector card swaps
-   * get a partial retreat-and-return pulse rather than a full pull-out.
-   */
-  activeCardKey: string
 }
 
-/** Full zoom while dwelling inside a card. */
+/** Full zoom while dwelling at a card. */
 const ZOOM_DWELL = 1
-/** Retreat depth for a same-sector card swap -- a punctuation pulse, not a full pull-out. */
-const ZOOM_PULSE = 0.35
-/** Seconds the pulse holds before re-approaching. */
-const PULSE_SECONDS = 1.1
 /** Damping rates (per second): the approach is a slow cinematic settle
  * (~95% in roughly 7s -- most of a sentence's narration, so the push-in
  * itself is part of the shot, per user feedback that faster zooms rushed
- * it), the retreat brisker but still unhurried. */
+ * it), the retreat brisker but still unhurried. Same-sector card swaps do
+ * NOT move the camera at all -- consecutive sentences on the same sector
+ * simply crossfade their plates while the camera keeps dwelling (user
+ * feedback: no zoom-out/in between cards that share a wall). */
 const APPROACH_RATE = 0.45
 const RETREAT_RATE = 1.8
 
@@ -68,18 +57,13 @@ function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: str
  * numeric beat fields get inside lerpSceneBeat), so the camera pans smoothly
  * from one vignette to the next instead of snapping.
  */
-export function CameraRig({ lerpedRef, azimuthByBeatDeg, activeCardKey }: CameraRigProps) {
+export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
   const { camera } = useThree()
   const behaviorRef = useRef<CameraBehavior | null>(null)
   const behaviorStartRef = useRef(0)
   const lookAtTarget = useRef(new THREE.Vector3())
   // shot-choreography state -- mutated per frame, never React state
   const zoomRef = useRef(0)
-  const cardKeyRef = useRef(activeCardKey)
-  const pulseRemainingRef = useRef(0)
-  // mirror the prop into a ref so the useFrame closure stays fresh
-  const activeCardKeyRef = useRef(activeCardKey)
-  activeCardKeyRef.current = activeCardKey
 
   useFrame(({ clock }, delta) => {
     const lerped = lerpedRef.current
@@ -100,16 +84,10 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg, activeCardKey }: Camera
     )
 
     // --- shot choreography: approach / dwell / retreat -----------------------
-    const cardKey = activeCardKeyRef.current
-    if (cardKey !== cardKeyRef.current) {
-      cardKeyRef.current = cardKey
-      // a new card in the same sector: partial retreat, then re-approach
-      pulseRemainingRef.current = PULSE_SECONDS
-    }
-    if (pulseRemainingRef.current > 0) pulseRemainingRef.current -= delta
-
+    // Retreat only for actual sector moves (beat transitions); same-sector
+    // card swaps keep dwelling while the plates crossfade.
     const beatTransitioning = lerped.fromId !== lerped.toId && lerped.t < 1
-    const zoomTarget = beatTransitioning ? 0 : pulseRemainingRef.current > 0 ? ZOOM_PULSE : ZOOM_DWELL
+    const zoomTarget = beatTransitioning ? 0 : ZOOM_DWELL
     const rate = zoomTarget < zoomRef.current ? RETREAT_RATE : APPROACH_RATE
     zoomRef.current += (zoomTarget - zoomRef.current) * (1 - Math.exp(-delta * rate))
 

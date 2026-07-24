@@ -98,13 +98,14 @@ describe('computeCameraPose', () => {
     expect(explicit.lookAt).toEqual(omitted.lookAt)
   })
 
-  it('zoom=1 dollies the camera onto the SECTOR side, framing the card', () => {
+  it('zoom=1 dollies the camera onto the SECTOR side, framing the whole card', () => {
     const azimuth = degToRad(80)
     const pose = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1)
-    // camera sits between origin and the card (radius 20), ~11 units from it
+    // camera sits between origin and the card (radius 20), ~13.5 units from
+    // it -- far enough that the full plate + frame stays in view
     expect(azimuthOf(pose.position)).toBeCloseTo(azimuth, 3)
     const radius = Math.hypot(pose.position[0], pose.position[2])
-    expect(radius).toBeCloseTo(9, 1)
+    expect(radius).toBeCloseTo(6.5, 1)
     // looking at the card's center height, in the sector direction
     expect(azimuthOf(pose.lookAt)).toBeCloseTo(azimuth, 3)
     expect(pose.lookAt[1]).toBeCloseTo(4.0, 1)

@@ -21,13 +21,6 @@ const SENTENCE_IDS: readonly string[] = gatsbyCh3.paragraphs.flatMap((paragraph)
   paragraph.sentences.map((sentence) => sentence.id),
 )
 
-// sentenceId -> windowId, for the camera's active-card key (the shot
-// choreography pulses on card changes; windows and beats are both cards).
-const WINDOW_ID_BY_SENTENCE_ID: Record<string, string> = Object.fromEntries(
-  (GATSBY_PLATES.windows ?? []).flatMap((window) =>
-    window.sentenceIds.map((sentenceId) => [sentenceId, window.id]),
-  ),
-)
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
 import { StringLights } from './world/StringLights'
@@ -60,14 +53,7 @@ function resolveSceneBeat(activeSceneBeatId: string | null): SceneBeat {
  */
 function WorldSceneContents() {
   const activeSceneBeatId = useReadingStore((state) => state.activeSceneBeatId)
-  // Sentence-level store field (permitted by the design constraints; only
-  // word-level is barred) -- resolves which "card" is on stage so the camera
-  // choreography can pulse between same-sector cards.
-  const currentSentenceIndex = useReadingStore((state) => state.currentSentenceIndex)
   const targetBeat = resolveSceneBeat(activeSceneBeatId)
-  const activeSentenceId = SENTENCE_IDS[currentSentenceIndex]
-  const activeCardKey =
-    (activeSentenceId ? WINDOW_ID_BY_SENTENCE_ID[activeSentenceId] : undefined) ?? targetBeat.id
 
   // Every numeric/color field of the active beat is interpolated here, once,
   // into a ref that per-frame consumers below read inside their own
@@ -92,11 +78,7 @@ function WorldSceneContents() {
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
       <Particles lerpedRef={lerpedRef} />
-      <CameraRig
-        lerpedRef={lerpedRef}
-        azimuthByBeatDeg={GATSBY_PLATES.cameraAzimuthDeg}
-        activeCardKey={activeCardKey}
-      />
+      <CameraRig lerpedRef={lerpedRef} azimuthByBeatDeg={GATSBY_PLATES.cameraAzimuthDeg} />
       <MotifEffects />
       <PostProcessing lerpedRef={lerpedRef} />
     </>

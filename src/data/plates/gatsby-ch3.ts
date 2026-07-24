@@ -138,7 +138,8 @@ function paintDaytimeMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
     ctx.fillRect(w * 0.14, h * 0.3, w * 0.012, h * 0.32)
     ctx.fillRect(w * 0.2, h * 0.3, w * 0.012, h * 0.32)
     ctx.fillRect(w * 0.12, h * 0.3, w * 0.11, h * 0.018)
-    drawSilhouetteFigure(ctx, w * 0.3, h * 0.62, h * 0.16, 'stand', darkenHex(p.background, 0.4))
+    // sunbathers taking the sun on the hot sand, shifting lazily
+    drawSilhouetteFigure(ctx, w * 0.3 + Math.sin(t * 0.6) * w * 0.004, h * 0.62, h * 0.16, 'stand', darkenHex(p.background, 0.4))
   })
   // --- the act of diving and splashing, on a ~6.5s loop ---------------------
   const diveT = (t / 6.5) % 1
@@ -279,7 +280,7 @@ function paintMondayMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: 
 }
 
 /** evening-bar-setup: hall columns, bottle rows, the counter with THE brass rail, buffet pyramid, caterers. */
-function paintBarSetupMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintBarSetupMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.58, [
     darkenHex(p.background, 0.25),
     p.background,
@@ -317,13 +318,14 @@ function paintBarSetupMid(ctx: CanvasRenderingContext2D, w: number, h: number, p
       ctx.fill()
     }
   }
-  drawSilhouetteFigure(ctx, w * 0.12, h * 0.94, h * 0.2, 'serve', darkenHex(p.background, 0.5))
-  drawSilhouetteFigure(ctx, w * 0.88, h * 0.94, h * 0.2, 'serve', darkenHex(p.background, 0.5))
+  // caterers stocking the bar, busy back and forth
+  drawSilhouetteFigure(ctx, w * (0.12 + 0.03 * Math.sin(t * 0.5)), h * 0.94, h * 0.2, 'serve', darkenHex(p.background, 0.5))
+  drawSilhouetteFigure(ctx, w * (0.88 + 0.03 * Math.sin(t * 0.45 + 2.5)), h * 0.94, h * 0.2, 'serve', darkenHex(p.background, 0.5))
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
 /** full-swing-cocktails: bokeh discs, the center glow, floating deco cocktail glasses, raised-arm crowd. */
-function paintFullSwingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintFullSwingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.62, [
     darkenHex(p.background, 0.25),
     p.background,
@@ -361,11 +363,11 @@ function paintFullSwingMid(ctx: CanvasRenderingContext2D, w: number, h: number, 
       ctx.lineTo(w * gx, h * (gy + 0.085))
       ctx.stroke()
     }
-    drawSilhouetteFigure(ctx, w * 0.14, h * 0.96, h * 0.22, 'dance', darkenHex(p.background, 0.55))
-    drawSilhouetteFigure(ctx, w * 0.26, h * 0.94, h * 0.2, 'horn', darkenHex(p.background, 0.5))
-    drawSilhouetteFigure(ctx, w * 0.38, h * 0.96, h * 0.23, 'dance', darkenHex(p.background, 0.55))
+    drawSilhouetteFigure(ctx, w * 0.14, h * 0.96 + Math.sin(t * 2.6) * h * 0.006, h * 0.22, 'dance', darkenHex(p.background, 0.55))
+    drawSilhouetteFigure(ctx, w * 0.26, h * 0.94 + Math.sin(t * 2.2 + 1.4) * h * 0.005, h * 0.2, 'horn', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.38, h * 0.96 + Math.sin(t * 2.9 + 2.6) * h * 0.006, h * 0.23, 'dance', darkenHex(p.background, 0.55))
   })
-  drawSilhouetteFigure(ctx, w * 0.5, h * 0.97, h * 0.24, 'dance', darkenHex(p.background, 0.6))
+  drawSilhouetteFigure(ctx, w * 0.5, h * 0.97 + Math.sin(t * 2.4 + 0.7) * h * 0.007, h * 0.24, 'dance', darkenHex(p.background, 0.6))
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
@@ -412,11 +414,11 @@ function paintDuskFountainMid(
     ctx.fill()
     ctx.fillRect(cx - w * 0.012, fy - h * dy - h * 0.1, w * 0.024, h * 0.08)
   }
-  // gate posts + arriving guests
+  // gate posts + arriving guests, swaying in mirrored step
   withMirrorSymmetry(ctx, w, () => {
     ctx.fillStyle = darkenHex(p.primary, 0.45)
     ctx.fillRect(w * 0.33, h * 0.6, w * 0.008, h * 0.26)
-    drawSilhouetteFigure(ctx, w * 0.4, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.4 + Math.sin(t * 1.2) * w * 0.005, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
   })
   drawDecoFrame(ctx, w, h, p.accent)
 }
@@ -465,10 +467,11 @@ function paintOrchestraMid(ctx: CanvasRenderingContext2D, w: number, h: number, 
   drawSunburst(ctx, cx, by - R, h * 0.005, h * 0.05, 5, lightenHex(p.accent, 0.3), -Math.PI * 0.8, -Math.PI * 0.2, 1)
   const seats: readonly number[] = [-0.22, -0.08, 0.06, 0.2]
   seats.forEach((dx, i) => {
+    // each musician rocks on their own rhythm -- tuning up
     drawSilhouetteFigure(
       ctx,
-      cx + R * 2 * dx,
-      by,
+      cx + R * 2 * dx + Math.sin(t * 1.9 + i * 1.4) * w * 0.003,
+      by + Math.sin(t * 2.3 + i * 2.1) * h * 0.004,
       R * (0.62 + (i % 2) * 0.1),
       i % 2 ? 'horn' : 'stand',
       darkenHex(p.background, 0.6),
@@ -501,10 +504,10 @@ function paintDancingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
   ctx.stroke()
   // the dancer, arms up, center-lit, swaying with the music
   drawSilhouetteFigure(ctx, w / 2 + Math.sin(t * 1.4) * w * 0.006, h * 0.85, h * (0.3 + 0.006 * Math.sin(t * 2.8)), 'dance', darkenHex(p.background, 0.65))
-  // watchers in shadow, mirrored
+  // watchers in shadow, mirrored, swaying with her
   withMirrorSymmetry(ctx, w, () => {
-    drawSilhouetteFigure(ctx, w * 0.16, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
-    drawSilhouetteFigure(ctx, w * 0.24, h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
+    drawSilhouetteFigure(ctx, w * 0.16 + Math.sin(t * 1.3) * w * 0.004, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.24 + Math.sin(t * 1.1 + 1.8) * w * 0.004, h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
   })
   drawStringDots(ctx, w, h * 0.1, h * 0.06, 22, p.accent, Math.max(1.4, h * 0.0055), t)
   drawStringDots(ctx, w, h * 0.18, h * 0.05, 18, lightenHex(p.primary, 0.25), Math.max(1.1, h * 0.0045), t + 1.1)
@@ -611,8 +614,8 @@ function paintCanvasLightsWindow(ctx: CanvasRenderingContext2D, w: number, h: nu
   withMirrorSymmetry(ctx, w, () => {
     ctx.fillStyle = darkenHex(p.primary, 0.4)
     ctx.fillRect(w * 0.12, h * 0.2, w * 0.008, h * 0.55)
-    drawSilhouetteFigure(ctx, w * 0.2, h * 0.93, h * 0.22, 'serve', darkenHex(p.background, 0.5))
-    drawSilhouetteFigure(ctx, w * 0.34, h * 0.95, h * 0.2, 'mop', darkenHex(p.background, 0.45))
+    drawSilhouetteFigure(ctx, w * (0.2 + 0.02 * Math.sin(t * 0.55)), h * 0.93, h * 0.22, 'serve', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.34 + Math.sin(t * 3.2) * w * 0.006, h * 0.95, h * 0.2, 'mop', darkenHex(p.background, 0.45))
   })
   drawDecoFrame(ctx, w, h, p.accent)
 }
@@ -669,9 +672,9 @@ function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, 
   }
   drawPastryRow(ctx, w * 0.3, h * 0.635, 7, w * 0.058, h * 0.028, mixHex(p.accent, '#ffdf9e', 0.5))
   drawFruitPyramid(ctx, w * 0.13, h * 0.62, 3, h * 0.017, mixHex(p.accent, '#d98324', 0.5))
-  // caterers
-  drawSilhouetteFigure(ctx, w * 0.07, h * 0.95, h * 0.22, 'serve', darkenHex(p.background, 0.5))
-  drawSilhouetteFigure(ctx, w * 0.93, h * 0.95, h * 0.22, 'serve', darkenHex(p.background, 0.5))
+  // caterers, garnishing and rearranging
+  drawSilhouetteFigure(ctx, w * 0.07 + Math.sin(t * 2.8) * w * 0.005, h * 0.95, h * 0.22, 'serve', darkenHex(p.background, 0.5))
+  drawSilhouetteFigure(ctx, w * 0.93 + Math.sin(t * 2.5 + 1.7) * w * 0.005, h * 0.95, h * 0.22, 'serve', darkenHex(p.background, 0.5))
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
@@ -756,9 +759,9 @@ function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p
       ctx.fill()
       ctx.restore()
     })
-    // men and girls, coming and going
-    drawSilhouetteFigure(ctx, w * 0.1, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
-    drawSilhouetteFigure(ctx, w * 0.17, h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
+    // men and girls, coming and going -- drifting like the moths above them
+    drawSilhouetteFigure(ctx, w * (0.1 + 0.015 * Math.sin(t * 0.5)), h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * (0.17 + 0.012 * Math.sin(t * 0.4 + 2)), h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
   })
   drawDecoFrame(ctx, w, h, p.accent)
 }
@@ -768,7 +771,7 @@ function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p
  * trombones and saxophones and viols and cornets and piccolos, and low and
  * high drums."
  */
-function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.6, [
     darkenHex(p.background, 0.3),
     p.background,
@@ -782,7 +785,15 @@ function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: num
   // the whole pitful, as a silhouette lineup: horns raised in a row
   const players: readonly number[] = [0.2, 0.32, 0.44, 0.56, 0.68]
   players.forEach((px, i) => {
-    drawSilhouetteFigure(ctx, w * px, h * 0.66, h * (0.26 + (i % 2) * 0.03), 'horn', darkenHex(p.background, 0.6))
+    // the pitful warms up, every player rocking on their own beat
+    drawSilhouetteFigure(
+      ctx,
+      w * px + Math.sin(t * 1.7 + i * 1.9) * w * 0.003,
+      h * 0.66 + Math.sin(t * 2.5 + i * 1.3) * h * 0.004,
+      h * (0.26 + (i % 2) * 0.03),
+      'horn',
+      darkenHex(p.background, 0.6),
+    )
   })
   // low and high drums: a big bass drum disc with crossed tension lines
   const dx = w * 0.82
@@ -812,15 +823,18 @@ function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: num
   ctx.moveTo(w * 0.115, h * 0.49)
   ctx.lineTo(w * 0.13, h * 0.3)
   ctx.stroke()
-  // notes rising: sunburst rays + accent dots
+  // notes rising: sunburst rays + accent dots drifting upward
   drawSunburst(ctx, w / 2, h * 0.3, h * 0.04, h * 0.12, 9, mixHex(p.accent, p.primary, 0.3), Math.PI * 1.15, Math.PI * 1.85, 0.6)
   ctx.fillStyle = p.accent
   for (let i = 0; i < 6; i++) {
+    const lift = (t * 0.05 + i * 0.17) % 1
+    ctx.globalAlpha = 1 - lift * 0.7
     ctx.beginPath()
-    ctx.arc(w * (0.3 + i * 0.08), h * (0.22 - (i % 2) * 0.05), Math.max(1.5, h * 0.007), 0, Math.PI * 2)
+    ctx.arc(w * (0.3 + i * 0.08), h * (0.3 - lift * 0.14 - (i % 2) * 0.02), Math.max(1.5, h * 0.007), 0, Math.PI * 2)
     ctx.fill()
   }
-  drawStringDots(ctx, w, h * 0.1, h * 0.045, 18, p.accent, Math.max(1.3, h * 0.005))
+  ctx.globalAlpha = 1
+  drawStringDots(ctx, w, h * 0.1, h * 0.045, 18, p.accent, Math.max(1.3, h * 0.005), t)
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
@@ -829,7 +843,7 @@ function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: num
  * colours, and hair bobbed in strange new ways, and shawls beyond the
  * dreams of Castile."
  */
-function paintGaudyArrivalsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintGaudyArrivalsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.55, [
     darkenHex(p.background, 0.25),
     p.background,
@@ -856,9 +870,10 @@ function paintGaudyArrivalsWindow(ctx: CanvasRenderingContext2D, w: number, h: n
     ]
     spots.forEach(([fx, fh], i) => {
       const color = FASHION[i % FASHION.length] ?? p.accent
-      const x = w * fx
+      // the arrivals mill about, each on their own rhythm
+      const x = w * fx + Math.sin(t * 1.1 + i * 2.3) * w * 0.006
       const figH = h * fh
-      const baseY = h * 0.97
+      const baseY = h * 0.97 + Math.abs(Math.sin(t * 1.8 + i)) * -h * 0.003
       drawSilhouetteFigure(ctx, x, baseY, figH, 'stand', mixHex(color, darkenHex(p.background, 0.4), 0.35))
       // the shawl: an arc swept off the shoulders
       ctx.strokeStyle = color
@@ -960,9 +975,18 @@ function paintSeaChangeWindow(ctx: CanvasRenderingContext2D, w: number, h: numbe
       [0.055, 0.21],
       [-0.02, 0.18],
     ]
-    for (const [dx, fh] of members) {
-      drawSilhouetteFigure(ctx, cx + w * dx, baseY, h * fh, 'stand', darkenHex(p.background, 0.5))
-    }
+    members.forEach(([dx, fh], mi) => {
+      // clusters swell and dissolve: members breathe apart and together
+      const swell = Math.sin(t * 0.8 + cxf * 5) * 0.35 + 1
+      drawSilhouetteFigure(
+        ctx,
+        cx + w * dx * swell + Math.sin(t * 1.4 + mi * 2.2 + cxf * 7) * w * 0.003,
+        baseY,
+        h * fh,
+        'stand',
+        darkenHex(p.background, 0.5),
+      )
+    })
   }
   // the confident girl, weaving between clusters -- she and her dotted
   // glide path drift along the sine track together
@@ -1014,14 +1038,14 @@ function paintHushWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p:
   ctx.fill()
   // her, mid-gesture in the beam, swaying almost imperceptibly
   drawSilhouetteFigure(ctx, cx + Math.sin(t * 1.1) * w * 0.004, h * 0.86, h * 0.3, 'dance', darkenHex(p.background, 0.65))
-  // the orchestra leader on his podium, baton raised, obliging
+  // the orchestra leader on his podium, varying his rhythm obligingly
   ctx.fillStyle = darkenHex(p.background, 0.55)
   ctx.fillRect(w * 0.16, h * 0.82, w * 0.07, h * 0.05)
-  drawSilhouetteFigure(ctx, w * 0.195, h * 0.82, h * 0.22, 'horn', darkenHex(p.background, 0.62))
-  // watchers leaning in from the edges, in shadow
+  drawSilhouetteFigure(ctx, w * 0.195, h * 0.82 + Math.sin(t * 1.6) * h * 0.004, h * 0.22, 'horn', darkenHex(p.background, 0.62))
+  // watchers leaning in from the edges, in shadow, barely breathing
   withMirrorSymmetry(ctx, w, () => {
-    drawSilhouetteFigure(ctx, w * 0.05, h * 0.97, h * 0.2, 'stand', darkenHex(p.background, 0.55))
-    drawSilhouetteFigure(ctx, w * 0.11, h * 0.99, h * 0.18, 'stand', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.05 + Math.sin(t * 0.7) * w * 0.003, h * 0.97, h * 0.2, 'stand', darkenHex(p.background, 0.55))
+    drawSilhouetteFigure(ctx, w * 0.11 + Math.sin(t * 0.6 + 1.9) * w * 0.003, h * 0.99, h * 0.18, 'stand', darkenHex(p.background, 0.5))
   })
   drawDecoFrame(ctx, w, h, mixHex(p.accent, p.background, 0.25))
 }
@@ -1147,7 +1171,8 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 222,
       memberBeatIds: ['evening-bar-setup'],
-      source: { kind: 'paint', paint: paintBarSetupMid },
+      animated: true,
+        source: { kind: 'paint', paint: paintBarSetupMid },
     },
     // --- full-swing-cocktails (the garden bar, 235) ---
     {
@@ -1162,7 +1187,8 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 235,
       memberBeatIds: ['full-swing-cocktails'],
-      source: { kind: 'paint', paint: paintFullSwingMid },
+      animated: true,
+        source: { kind: 'paint', paint: paintFullSwingMid },
     },
   ],
   // The window track: each window's mid plate depicts what its sentence run
@@ -1258,6 +1284,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 80, // orchestra-tuning sector
         memberBeatIds: ['orchestra-tuning'],
         radius: 19.4,
+        animated: true,
         source: { kind: 'paint', paint: paintInstrumentsWindow },
       },
     },
@@ -1270,6 +1297,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 80, // orchestra-tuning sector
         memberBeatIds: ['orchestra-tuning'],
         radius: 19.1,
+        animated: true,
         source: { kind: 'paint', paint: paintGaudyArrivalsWindow },
       },
     },
