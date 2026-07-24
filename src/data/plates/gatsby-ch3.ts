@@ -626,6 +626,328 @@ function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, 
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
+/**
+ * p1-s2: "In his blue gardens men and girls came and went like moths among
+ * the whisperings and the champagne and the stars."
+ */
+function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  drawBandedSky(ctx, 0, w, h * 0.7, [
+    darkenHex(p.background, 0.3),
+    p.background,
+    mixHex(p.background, p.primary, 0.4),
+  ])
+  ctx.fillStyle = darkenHex(p.primary, 0.35)
+  ctx.fillRect(0, h * 0.7, w, h * 0.3)
+  // the stars
+  ctx.fillStyle = lightenHex(p.accent, 0.4)
+  for (let i = 0; i < 70; i++) {
+    ctx.globalAlpha = 0.2 + ((i * 37) % 10) / 13
+    ctx.fillRect((i * 131) % w, (i * 47) % (h * 0.5), 1.5, 1.5)
+  }
+  ctx.globalAlpha = 1
+  // a giant champagne coupe, center -- bowl, stem, rising bubble dots
+  const cx = w / 2
+  ctx.strokeStyle = p.accent
+  ctx.lineWidth = Math.max(2, h * 0.008)
+  ctx.beginPath()
+  ctx.moveTo(cx - w * 0.09, h * 0.34)
+  ctx.quadraticCurveTo(cx, h * 0.52, cx + w * 0.09, h * 0.34)
+  ctx.moveTo(cx, h * 0.5)
+  ctx.lineTo(cx, h * 0.72)
+  ctx.moveTo(cx - w * 0.05, h * 0.72)
+  ctx.lineTo(cx + w * 0.05, h * 0.72)
+  ctx.stroke()
+  ctx.fillStyle = lightenHex(p.accent, 0.3)
+  for (let i = 0; i < 8; i++) {
+    ctx.beginPath()
+    ctx.arc(cx + Math.sin(i * 2.1) * w * 0.04, h * (0.36 - i * 0.035), Math.max(1.2, h * 0.006 - i * 0.3), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  // moths: paired-triangle wings circling two glowing garden lamps, mirrored
+  withMirrorSymmetry(ctx, w, () => {
+    ctx.fillStyle = p.accent
+    ctx.beginPath()
+    ctx.arc(w * 0.22, h * 0.4, h * 0.02, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.fillStyle = mixHex(p.primary, '#ffffff', 0.35)
+    const moths: ReadonlyArray<readonly [number, number, number]> = [
+      [0.16, 0.3, 0.5],
+      [0.27, 0.5, -0.4],
+      [0.2, 0.55, 0.2],
+      [0.31, 0.26, -0.7],
+    ]
+    for (const [mx, my, rot] of moths) {
+      ctx.save()
+      ctx.translate(w * mx, h * my)
+      ctx.rotate(rot)
+      const s = h * 0.018
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(-s * 1.6, -s)
+      ctx.lineTo(-s * 1.2, s * 0.4)
+      ctx.closePath()
+      ctx.fill()
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(s * 1.6, -s)
+      ctx.lineTo(s * 1.2, s * 0.4)
+      ctx.closePath()
+      ctx.fill()
+      ctx.restore()
+    }
+    // men and girls, coming and going
+    drawSilhouetteFigure(ctx, w * 0.1, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.17, h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
+  })
+  drawDecoFrame(ctx, w, h, p.accent)
+}
+
+/**
+ * p4-s1: "no thin five-piece affair, but a whole pitful of oboes and
+ * trombones and saxophones and viols and cornets and piccolos, and low and
+ * high drums."
+ */
+function paintInstrumentsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  drawBandedSky(ctx, 0, w, h * 0.6, [
+    darkenHex(p.background, 0.3),
+    p.background,
+    mixHex(p.background, p.primary, 0.5),
+  ])
+  ctx.fillStyle = darkenHex(p.primary, 0.4)
+  ctx.fillRect(0, h * 0.6, w, h * 0.4)
+  // the band riser
+  ctx.fillStyle = darkenHex(p.background, 0.45)
+  ctx.fillRect(w * 0.1, h * 0.66, w * 0.8, h * 0.05)
+  // the whole pitful, as a silhouette lineup: horns raised in a row
+  const players: readonly number[] = [0.2, 0.32, 0.44, 0.56, 0.68]
+  players.forEach((px, i) => {
+    drawSilhouetteFigure(ctx, w * px, h * 0.66, h * (0.26 + (i % 2) * 0.03), 'horn', darkenHex(p.background, 0.6))
+  })
+  // low and high drums: a big bass drum disc with crossed tension lines
+  const dx = w * 0.82
+  const dy = h * 0.55
+  const dr = h * 0.11
+  ctx.fillStyle = mixHex(p.accent, p.background, 0.5)
+  ctx.beginPath()
+  ctx.arc(dx, dy, dr, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.strokeStyle = p.accent
+  ctx.lineWidth = Math.max(1.5, h * 0.006)
+  ctx.beginPath()
+  ctx.arc(dx, dy, dr, 0, Math.PI * 2)
+  ctx.moveTo(dx - dr * 0.7, dy - dr * 0.7)
+  ctx.lineTo(dx + dr * 0.7, dy + dr * 0.7)
+  ctx.moveTo(dx + dr * 0.7, dy - dr * 0.7)
+  ctx.lineTo(dx - dr * 0.7, dy + dr * 0.7)
+  ctx.stroke()
+  // a viol: lathe-profile body + neck, leaning
+  ctx.fillStyle = mixHex(p.accent, '#8a5a2a', 0.5)
+  ctx.beginPath()
+  ctx.ellipse(w * 0.11, h * 0.56, w * 0.028, h * 0.075, -0.15, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.strokeStyle = mixHex(p.accent, '#8a5a2a', 0.5)
+  ctx.lineWidth = Math.max(2, h * 0.008)
+  ctx.beginPath()
+  ctx.moveTo(w * 0.115, h * 0.49)
+  ctx.lineTo(w * 0.13, h * 0.3)
+  ctx.stroke()
+  // notes rising: sunburst rays + accent dots
+  drawSunburst(ctx, w / 2, h * 0.3, h * 0.04, h * 0.12, 9, mixHex(p.accent, p.primary, 0.3), Math.PI * 1.15, Math.PI * 1.85, 0.6)
+  ctx.fillStyle = p.accent
+  for (let i = 0; i < 6; i++) {
+    ctx.beginPath()
+    ctx.arc(w * (0.3 + i * 0.08), h * (0.22 - (i % 2) * 0.05), Math.max(1.5, h * 0.007), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  drawStringDots(ctx, w, h * 0.1, h * 0.045, 18, p.accent, Math.max(1.3, h * 0.005))
+  drawDecoFrame(ctx, w, h, p.accent)
+}
+
+/**
+ * p4-s2: "...the halls and salons and verandas are gaudy with primary
+ * colours, and hair bobbed in strange new ways, and shawls beyond the
+ * dreams of Castile."
+ */
+function paintGaudyArrivalsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  drawBandedSky(ctx, 0, w, h * 0.55, [
+    darkenHex(p.background, 0.25),
+    p.background,
+    mixHex(p.background, p.primary, 0.45),
+  ])
+  ctx.fillStyle = darkenHex(p.background, 0.4)
+  ctx.fillRect(0, h * 0.55, w, h * 0.45)
+  // glowing hall doorway behind
+  ctx.fillStyle = mixHex(p.accent, '#ffdf9e', 0.4)
+  ctx.fillRect(w * 0.44, h * 0.22, w * 0.12, h * 0.4)
+  ctx.strokeStyle = p.accent
+  ctx.lineWidth = Math.max(1.5, h * 0.007)
+  ctx.strokeRect(w * 0.44, h * 0.22, w * 0.12, h * 0.4)
+  // cars five deep in the drive, far left/right
+  drawCarProfile(ctx, w * 0.1, h * 0.6, w * 0.13, darkenHex(p.background, 0.55), p.accent)
+  drawCarProfile(ctx, w * 0.9, h * 0.6, w * 0.13, darkenHex(p.background, 0.55), p.accent)
+  // the gaudy primary-colour crowd, mirrored: shawl arcs + bobbed hair
+  const FASHION: readonly string[] = ['#e63946', '#457b9d', '#ffd166', '#2a9d8f', '#d62aa0']
+  withMirrorSymmetry(ctx, w, () => {
+    const spots: ReadonlyArray<readonly [number, number]> = [
+      [0.16, 0.3],
+      [0.28, 0.32],
+      [0.4, 0.29],
+    ]
+    spots.forEach(([fx, fh], i) => {
+      const color = FASHION[i % FASHION.length] ?? p.accent
+      const x = w * fx
+      const figH = h * fh
+      const baseY = h * 0.97
+      drawSilhouetteFigure(ctx, x, baseY, figH, 'stand', mixHex(color, darkenHex(p.background, 0.4), 0.35))
+      // the shawl: an arc swept off the shoulders
+      ctx.strokeStyle = color
+      ctx.lineWidth = Math.max(2.5, figH * 0.06)
+      ctx.beginPath()
+      ctx.arc(x, baseY - figH * 0.66, figH * 0.34, Math.PI * 0.1, Math.PI * 0.9)
+      ctx.stroke()
+      // bobbed hair: a fringe block over the head
+      ctx.fillStyle = darkenHex(p.background, 0.6)
+      ctx.fillRect(x - figH * 0.1, baseY - figH * 0.97, figH * 0.2, figH * 0.08)
+    })
+  })
+  drawDecoFrame(ctx, w, h, p.accent)
+}
+
+/**
+ * p5-s1: "The lights grow brighter as the earth lurches away from the sun,
+ * and now the orchestra is playing yellow cocktail music..."
+ */
+function paintYellowMusicWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  drawBandedSky(ctx, 0, w, h * 0.62, [
+    darkenHex(p.background, 0.3),
+    p.background,
+    mixHex(p.background, p.primary, 0.35),
+    mixHex(p.primary, p.accent, 0.3),
+  ])
+  ctx.fillStyle = darkenHex(p.background, 0.45)
+  ctx.fillRect(0, h * 0.62, w, h * 0.38)
+  // the sun, half-lurched below the horizon, rays clipped upward
+  const sy = h * 0.62
+  drawSunburst(ctx, w * 0.5, sy, h * 0.09, h * 0.2, 13, p.accent, Math.PI * 1.05, Math.PI * 1.95, 0.8)
+  ctx.fillStyle = mixHex(p.accent, '#ff9a3a', 0.4)
+  ctx.beginPath()
+  ctx.arc(w * 0.5, sy, h * 0.08, Math.PI, 0)
+  ctx.closePath()
+  ctx.fill()
+  // the lights growing brighter: three strands, biggest dots of any plate
+  drawStringDots(ctx, w, h * 0.12, h * 0.05, 20, p.accent, Math.max(2, h * 0.008))
+  drawStringDots(ctx, w, h * 0.22, h * 0.045, 17, lightenHex(p.accent, 0.25), Math.max(1.7, h * 0.007))
+  drawStringDots(ctx, w, h * 0.32, h * 0.04, 14, lightenHex(p.primary, 0.25), Math.max(1.4, h * 0.006))
+  // yellow cocktail music: a gramophone horn pouring note-dots
+  ctx.fillStyle = mixHex(p.accent, p.primary, 0.25)
+  ctx.beginPath()
+  ctx.moveTo(w * 0.14, h * 0.52)
+  ctx.lineTo(w * 0.26, h * 0.38)
+  ctx.lineTo(w * 0.26, h * 0.6)
+  ctx.closePath()
+  ctx.fill()
+  ctx.fillStyle = p.accent
+  for (let i = 0; i < 7; i++) {
+    ctx.beginPath()
+    ctx.arc(w * (0.3 + i * 0.07), h * (0.42 - Math.sin(i * 1.1) * 0.06), Math.max(1.6, h * 0.007), 0, Math.PI * 2)
+    ctx.fill()
+    ctx.fillRect(w * (0.3 + i * 0.07) + h * 0.006, h * (0.36 - Math.sin(i * 1.1) * 0.06), Math.max(1, h * 0.003), h * 0.055)
+  }
+  drawDecoFrame(ctx, w, h, p.accent)
+}
+
+/**
+ * p5-s3: "The groups change more swiftly... confident girls who weave here
+ * and there... glide on through the sea-change of faces and voices and
+ * colour under the constantly changing light."
+ */
+function paintSeaChangeWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  drawBandedSky(ctx, 0, w, h * 0.64, [
+    darkenHex(p.background, 0.3),
+    p.background,
+    mixHex(p.background, p.primary, 0.35),
+  ])
+  ctx.fillStyle = darkenHex(p.background, 0.42)
+  ctx.fillRect(0, h * 0.64, w, h * 0.36)
+  // bokeh: the constantly changing light
+  for (let i = 0; i < 12; i++) {
+    const t = ((i * 61) % 100) / 100
+    ctx.globalAlpha = 0.1 + t * 0.12
+    ctx.fillStyle = i % 2 ? p.accent : lightenHex(p.primary, 0.2)
+    ctx.beginPath()
+    ctx.arc((i * 173) % w, h * (0.08 + t * 0.35), h * (0.02 + t * 0.045), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  ctx.globalAlpha = 1
+  // three group clusters, dissolving and forming
+  const clusters: ReadonlyArray<readonly [number, number]> = [
+    [0.18, 0.9],
+    [0.5, 0.86],
+    [0.82, 0.9],
+  ]
+  for (const [cxf, byf] of clusters) {
+    const cx = w * cxf
+    const baseY = h * byf
+    const members: ReadonlyArray<readonly [number, number]> = [
+      [-0.055, 0.2],
+      [0, 0.24],
+      [0.055, 0.21],
+      [-0.02, 0.18],
+    ]
+    for (const [dx, fh] of members) {
+      drawSilhouetteFigure(ctx, cx + w * dx, baseY, h * fh, 'stand', darkenHex(p.background, 0.5))
+    }
+  }
+  // the confident girl, weaving between clusters on a dotted glide path
+  ctx.fillStyle = lightenHex(p.accent, 0.15)
+  for (let i = 0; i < 14; i++) {
+    const t = i / 13
+    ctx.beginPath()
+    ctx.arc(w * (0.22 + t * 0.5), h * (0.78 + Math.sin(t * Math.PI * 2) * 0.05), Math.max(1, h * 0.004), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  drawSilhouetteFigure(ctx, w * 0.62, h * 0.85, h * 0.26, 'dance', mixHex(p.accent, darkenHex(p.background, 0.3), 0.4))
+  drawDecoFrame(ctx, w, h, p.accent)
+}
+
+/**
+ * p6-s2: "A momentary hush; the orchestra leader varies his rhythm
+ * obligingly for her... she is Gilda Gray's understudy from the Follies."
+ */
+function paintHushWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  // the hush: darker than any other plate, one beam, lots of negative space
+  drawBandedSky(ctx, 0, w, h, [
+    darkenHex(p.background, 0.5),
+    darkenHex(p.background, 0.35),
+    darkenHex(p.background, 0.2),
+  ])
+  // the single narrowed spotlight
+  const cx = w * 0.5
+  const gradient = ctx.createLinearGradient(cx, 0, cx, h * 0.86)
+  gradient.addColorStop(0, mixHex(p.accent, '#ffffff', 0.2))
+  gradient.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = gradient
+  ctx.beginPath()
+  ctx.moveTo(cx - w * 0.015, 0)
+  ctx.lineTo(cx + w * 0.015, 0)
+  ctx.lineTo(cx + w * 0.09, h * 0.86)
+  ctx.lineTo(cx - w * 0.09, h * 0.86)
+  ctx.closePath()
+  ctx.fill()
+  // her, mid-gesture in the beam
+  drawSilhouetteFigure(ctx, cx, h * 0.86, h * 0.3, 'dance', darkenHex(p.background, 0.65))
+  // the orchestra leader on his podium, baton raised, obliging
+  ctx.fillStyle = darkenHex(p.background, 0.55)
+  ctx.fillRect(w * 0.16, h * 0.82, w * 0.07, h * 0.05)
+  drawSilhouetteFigure(ctx, w * 0.195, h * 0.82, h * 0.22, 'horn', darkenHex(p.background, 0.62))
+  // watchers leaning in from the edges, in shadow
+  withMirrorSymmetry(ctx, w, () => {
+    drawSilhouetteFigure(ctx, w * 0.05, h * 0.97, h * 0.2, 'stand', darkenHex(p.background, 0.55))
+    drawSilhouetteFigure(ctx, w * 0.11, h * 0.99, h * 0.18, 'stand', darkenHex(p.background, 0.5))
+  })
+  drawDecoFrame(ctx, w, h, mixHex(p.accent, p.background, 0.25))
+}
+
 // ---------------------------------------------------------------------------
 // the registry
 // ---------------------------------------------------------------------------
@@ -815,6 +1137,86 @@ export const GATSBY_PLATES: ScenePlateSet = {
         memberBeatIds: ['evening-bar-setup'],
         radius: 19.2,
         source: { kind: 'paint', paint: paintBuffetWindow },
+      },
+    },
+    // -- description-mining pass (full-passage sweep, 2026-07-24) ---------
+    // Covered below: p1-s2, p4-s1, p4-s2, p5-s1, p5-s3, p6-s2.
+    // Deliberately skipped (the beat plate already IS the sentence's
+    // subject): p1-s1 music/fountain-court, p1-s3 raft/motorboats,
+    // p1-s4 Rolls/yellow bug, p1-s5 servants repairing, p3-s3 brass-rail
+    // bar, p4-s3 bar in full swing, p6-s1 the gypsy on the platform.
+    // Skipped as abstract (the motif system covers them): p5-s2 laughter
+    // spilled with prodigality, p6-s3 "The party has begun."
+    {
+      id: 'w-moths',
+      sentenceIds: ['p1-s2'], // moths among the whisperings and the champagne and the stars
+      plate: {
+        id: 'win-moths',
+        layer: 'mid',
+        azimuthDeg: 325, // dusk-arrival sector
+        memberBeatIds: ['dusk-arrival'],
+        radius: 19.4,
+        source: { kind: 'paint', paint: paintMothsWindow },
+      },
+    },
+    {
+      id: 'w-instruments',
+      sentenceIds: ['p4-s1'], // the whole pitful of oboes and trombones and saxophones
+      plate: {
+        id: 'win-instruments',
+        layer: 'mid',
+        azimuthDeg: 80, // orchestra-tuning sector
+        memberBeatIds: ['orchestra-tuning'],
+        radius: 19.4,
+        source: { kind: 'paint', paint: paintInstrumentsWindow },
+      },
+    },
+    {
+      id: 'w-gaudy-arrivals',
+      sentenceIds: ['p4-s2'], // halls gaudy with primary colours, bobbed hair, shawls of Castile
+      plate: {
+        id: 'win-gaudy-arrivals',
+        layer: 'mid',
+        azimuthDeg: 80, // orchestra-tuning sector
+        memberBeatIds: ['orchestra-tuning'],
+        radius: 19.1,
+        source: { kind: 'paint', paint: paintGaudyArrivalsWindow },
+      },
+    },
+    {
+      id: 'w-yellow-music',
+      sentenceIds: ['p5-s1'], // lights grow brighter, the earth lurches away from the sun
+      plate: {
+        id: 'win-yellow-music',
+        layer: 'mid',
+        azimuthDeg: 80, // dancing-under-lights sector
+        memberBeatIds: ['dancing-under-lights'],
+        radius: 19.4,
+        source: { kind: 'paint', paint: paintYellowMusicWindow },
+      },
+    },
+    {
+      id: 'w-sea-change',
+      sentenceIds: ['p5-s3'], // groups dissolve and form; the girl weaving the sea-change of faces
+      plate: {
+        id: 'win-sea-change',
+        layer: 'mid',
+        azimuthDeg: 80, // dancing-under-lights sector
+        memberBeatIds: ['dancing-under-lights'],
+        radius: 19.1,
+        source: { kind: 'paint', paint: paintSeaChangeWindow },
+      },
+    },
+    {
+      id: 'w-gilda-hush',
+      sentenceIds: ['p6-s2'], // the momentary hush; the obliging orchestra leader; Gilda Gray
+      plate: {
+        id: 'win-gilda-hush',
+        layer: 'mid',
+        azimuthDeg: 80, // dancing-under-lights sector
+        memberBeatIds: ['dancing-under-lights'],
+        radius: 19.4,
+        source: { kind: 'paint', paint: paintHushWindow },
       },
     },
   ],
