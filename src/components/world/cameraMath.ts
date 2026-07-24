@@ -22,6 +22,20 @@ const DOLLY_HEIGHT = 2
 const LOOKAT_BIAS = 2.2
 const LOOKAT_HEIGHT = 1
 
+// --- "inside the card" framing (zoom = 1) -----------------------------------
+// Mid plates hang at radius ~19-20, sized ~18x10 with center ~4.2 up. A
+// camera ~11 units in front of one fills the frame with the painting. That
+// puts the zoomed camera at radius ~9 on the SECTOR side of the origin
+// (the dolly crosses the scene), so the crane arc below lifts the travel
+// over the crowd's heads instead of through them.
+const CARD_RADIUS = 20
+const CARD_NEAR_DISTANCE = 11
+const CARD_CENTER_Y = 4.0
+/** Peak extra height mid-travel (sin arc), so the dolly clears the crowd. */
+const CRANE_ARC = 2.2
+/** How much of the behavior's own motion survives at zoom=1 -- a little float keeps the "inside the painting" moment alive. */
+const ZOOMED_MOTION_SCALE = 0.25
+
 /**
  * The azimuth every pose faced before per-beat anchoring existed: the camera
  * sat on +z (polar angle 90 degrees) looking across the origin toward -z
@@ -79,49 +93,81 @@ export function computeCameraPose(
   fov: number,
   elapsedSeconds: number,
   azimuthRad: number = DEFAULT_CAMERA_AZIMUTH_RAD,
+  zoom = 0,
 ): CameraPose {
   const safeSpeed = Number.isFinite(speed) ? Math.max(speed, 0) : 0
   const safeAzimuth = Number.isFinite(azimuthRad) ? azimuthRad : DEFAULT_CAMERA_AZIMUTH_RAD
+  const safeZoom = Number.isFinite(zoom) ? Math.min(1, Math.max(0, zoom)) : 0
   // Camera stands opposite the featured sector...
   const cameraAzimuth = safeAzimuth + Math.PI
   // ...and aims at a point nudged from the origin toward the sector.
   const [lookX, lookZ] = polar(safeAzimuth, LOOKAT_BIAS)
   const lookAt: [number, number, number] = [lookX, LOOKAT_HEIGHT, lookZ]
+  // The behavior's own motion attenuates (but never fully dies) as the
+  // camera settles inside the card.
+  const motionScale = 1 - safeZoom * (1 - ZOOMED_MOTION_SCALE)
 
-  switch (behavior) {
-    case 'slow-orbit': {
-      const swing = Math.sin(elapsedSeconds * safeSpeed * 0.9) * ORBIT_SWING
-      const [x, z] = polar(cameraAzimuth + swing, ORBIT_RADIUS)
-      return { position: [x, ORBIT_HEIGHT, z], lookAt, fov }
-    }
-    case 'static-drift': {
-      const [baseX, baseZ] = polar(cameraAzimuth, DRIFT_BASE_DISTANCE)
-      // lateral bob along the tangent of the circle (perpendicular to the view axis)
-      const lateral = Math.sin(elapsedSeconds * safeSpeed) * DRIFT_AMPLITUDE_LATERAL
-      const tangentX = -Math.sin(cameraAzimuth)
-      const tangentZ = Math.cos(cameraAzimuth)
-      const y = ORBIT_HEIGHT + Math.sin(elapsedSeconds * safeSpeed * 0.6) * DRIFT_AMPLITUDE_Y
-      return {
-        position: [baseX + tangentX * lateral, y, baseZ + tangentZ * lateral],
-        lookAt,
-        fov,
+  const basePose = ((): CameraPose => {
+    switch (behavior) {
+      case 'slow-orbit': {
+        const swing = Math.sin(elapsedSeconds * safeSpeed * 0.9) * ORBIT_SWING * motionScale
+        const [x, z] = polar(cameraAzimuth + swing, ORBIT_RADIUS)
+        return { position: [x, ORBIT_HEIGHT, z], lookAt, fov }
+      }
+      case 'static-drift': {
+        const [baseX, baseZ] = polar(cameraAzimuth, DRIFT_BASE_DISTANCE)
+        // lateral bob along the tangent of the circle (perpendicular to the view axis)
+        const lateral = Math.sin(elapsedSeconds * safeSpeed) * DRIFT_AMPLITUDE_LATERAL * motionScale
+        const tangentX = -Math.sin(cameraAzimuth)
+        const tangentZ = Math.cos(cameraAzimuth)
+        const y = ORBIT_HEIGHT + Math.sin(elapsedSeconds * safeSpeed * 0.6) * DRIFT_AMPLITUDE_Y * motionScale
+        return {
+          position: [baseX + tangentX * lateral, y, baseZ + tangentZ * lateral],
+          lookAt,
+          fov,
+        }
+      }
+      case 'push-in': {
+        const progress = easeInOutCubicLocal(elapsedSeconds * safeSpeed * 0.2)
+        const distance = lerp(DOLLY_FAR_DISTANCE, DOLLY_NEAR_DISTANCE, progress)
+        const [x, z] = polar(cameraAzimuth, distance)
+        return { position: [x, DOLLY_HEIGHT, z], lookAt, fov }
+      }
+      case 'pull-back': {
+        const progress = easeInOutCubicLocal(elapsedSeconds * safeSpeed * 0.2)
+        const distance = lerp(DOLLY_NEAR_DISTANCE, DOLLY_FAR_DISTANCE, progress)
+        const [x, z] = polar(cameraAzimuth, distance)
+        return { position: [x, DOLLY_HEIGHT, z], lookAt, fov }
+      }
+      default: {
+        const exhaustiveCheck: never = behavior
+        return exhaustiveCheck
       }
     }
-    case 'push-in': {
-      const progress = easeInOutCubicLocal(elapsedSeconds * safeSpeed * 0.2)
-      const distance = lerp(DOLLY_FAR_DISTANCE, DOLLY_NEAR_DISTANCE, progress)
-      const [x, z] = polar(cameraAzimuth, distance)
-      return { position: [x, DOLLY_HEIGHT, z], lookAt, fov }
-    }
-    case 'pull-back': {
-      const progress = easeInOutCubicLocal(elapsedSeconds * safeSpeed * 0.2)
-      const distance = lerp(DOLLY_NEAR_DISTANCE, DOLLY_FAR_DISTANCE, progress)
-      const [x, z] = polar(cameraAzimuth, distance)
-      return { position: [x, DOLLY_HEIGHT, z], lookAt, fov }
-    }
-    default: {
-      const exhaustiveCheck: never = behavior
-      return exhaustiveCheck
-    }
+  })()
+
+  if (safeZoom === 0) return basePose
+
+  // --- blend toward the "inside the card" framing ---------------------------
+  // Zoomed position sits on the SECTOR side of the origin, CARD_NEAR_DISTANCE
+  // in front of the mid plate; the crane arc lifts the travel over the crowd.
+  const eased = easeInOutCubicLocal(safeZoom)
+  const [nearX, nearZ] = polar(safeAzimuth, CARD_RADIUS - CARD_NEAR_DISTANCE)
+  const crane = Math.sin(Math.PI * eased) * CRANE_ARC
+  // a whisper of float so the dwell never freezes entirely
+  const dwellFloat = Math.sin(elapsedSeconds * 0.35) * 0.12 * safeZoom
+  const [cardLookX, cardLookZ] = polar(safeAzimuth, CARD_RADIUS)
+  return {
+    position: [
+      lerp(basePose.position[0], nearX, eased),
+      lerp(basePose.position[1], CARD_CENTER_Y + dwellFloat, eased) + crane,
+      lerp(basePose.position[2], nearZ, eased),
+    ],
+    lookAt: [
+      lerp(basePose.lookAt[0], cardLookX, eased),
+      lerp(basePose.lookAt[1], CARD_CENTER_Y, eased),
+      lerp(basePose.lookAt[2], cardLookZ, eased),
+    ],
+    fov,
   }
 }

@@ -60,6 +60,10 @@ const TEXTURE_WIDTH = 1152
 const CENTER_Y_FACTOR = 0.42
 /** Damping rate for window fades -- reaches ~95% of target in roughly 0.75s. */
 const WINDOW_FADE_RATE = 4
+/** Living-painting repaint cadence: ~12fps, "on twos" -- the cel rate of the animated shorts this look quotes. */
+const REPAINT_INTERVAL_SECONDS = 1 / 12
+/** Plates dimmer than this skip their repaint (invisible work). */
+const REPAINT_MIN_OPACITY = 0.04
 
 interface BuiltPlate {
   def: PlateDef
@@ -70,6 +74,13 @@ interface BuiltPlate {
   rotationY: number
   size: readonly [number, number]
   fogTint: number
+  /** Present on animated paint-source plates: everything needed to repaint per tick. */
+  repaint?: {
+    canvas: HTMLCanvasElement
+    ctx: CanvasRenderingContext2D
+    palette: SceneBeat['palette']
+    paint: NonNullable<Extract<PlateDef['source'], { kind: 'paint' }>>['paint']
+  }
 }
 
 interface BuiltWindow {
@@ -79,11 +90,16 @@ interface BuiltWindow {
   opacity: number
 }
 
-function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): THREE.Texture {
+interface BuiltTexture {
+  texture: THREE.Texture
+  repaint?: BuiltPlate['repaint']
+}
+
+function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltTexture {
   if (def.source.kind === 'png') {
     const texture = new THREE.TextureLoader().load(def.source.url)
     texture.colorSpace = THREE.SRGBColorSpace
-    return texture
+    return { texture }
   }
   const [width, height] = def.size ?? LAYER_SIZE[def.layer]
   const canvas = document.createElement('canvas')
@@ -93,11 +109,15 @@ function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): THRE
   const firstBeatId = def.memberBeatIds[0]
   const palette = firstBeatId ? beatsById[firstBeatId]?.palette : undefined
   if (ctx && palette) {
-    def.source.paint(ctx, canvas.width, canvas.height, palette)
+    def.source.paint(ctx, canvas.width, canvas.height, palette, 0)
   }
   const texture = new THREE.CanvasTexture(canvas)
   texture.colorSpace = THREE.SRGBColorSpace
-  return texture
+  const repaint =
+    def.animated && ctx && palette
+      ? { canvas, ctx, palette, paint: def.source.paint }
+      : undefined
+  return { texture, repaint }
 }
 
 function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltPlate {
@@ -106,7 +126,7 @@ function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltP
   const angleRad = (def.azimuthDeg * Math.PI) / 180
   const x = Math.cos(angleRad) * radius
   const z = Math.sin(angleRad) * radius
-  const texture = buildTexture(def, beatsById)
+  const { texture, repaint } = buildTexture(def, beatsById)
   return {
     def,
     memberSet: new Set(def.memberBeatIds),
@@ -122,6 +142,7 @@ function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltP
     rotationY: Math.atan2(-x, -z),
     size,
     fogTint: LAYER_FOG_TINT[def.layer],
+    repaint,
   }
 }
 
@@ -165,11 +186,26 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
   builtRef.current = built
   const windowsRef = useRef(builtWindows)
   windowsRef.current = builtWindows
+  const lastRepaintRef = useRef(0)
 
-  useFrame((_, delta) => {
+  useFrame(({ clock }, delta) => {
     const lerped = lerpedRef.current
     if (!lerped) return
     workingColor.set(lerped.palette.fog)
+
+    // -- living paintings: repaint visible animated plates "on twos"
+    if (clock.elapsedTime - lastRepaintRef.current >= REPAINT_INTERVAL_SECONDS) {
+      lastRepaintRef.current = clock.elapsedTime
+      const repaintIfLive = (plate: BuiltPlate) => {
+        if (!plate.repaint || plate.material.opacity < REPAINT_MIN_OPACITY) return
+        const { canvas, ctx, palette, paint } = plate.repaint
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        paint(ctx, canvas.width, canvas.height, palette, clock.elapsedTime)
+        plate.texture.needsUpdate = true
+      }
+      for (const plate of builtRef.current) repaintIfLive(plate)
+      for (const window of windowsRef.current) repaintIfLive(window.built)
+    }
 
     // -- window track: damped fades toward active/inactive targets
     const activeSentenceId = sentenceIds?.[sentenceIndexRef.current]

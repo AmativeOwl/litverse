@@ -91,6 +91,41 @@ describe('computeCameraPose', () => {
     expect(pose.position).toEqual(reference.position)
   })
 
+  it('zoom=0 (and omitted zoom) reproduce the un-zoomed pose exactly', () => {
+    const omitted = computeCameraPose('static-drift', 0.3, 50, 2, degToRad(80))
+    const explicit = computeCameraPose('static-drift', 0.3, 50, 2, degToRad(80), 0)
+    expect(explicit.position).toEqual(omitted.position)
+    expect(explicit.lookAt).toEqual(omitted.lookAt)
+  })
+
+  it('zoom=1 dollies the camera onto the SECTOR side, framing the card', () => {
+    const azimuth = degToRad(80)
+    const pose = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1)
+    // camera sits between origin and the card (radius 20), ~11 units from it
+    expect(azimuthOf(pose.position)).toBeCloseTo(azimuth, 3)
+    const radius = Math.hypot(pose.position[0], pose.position[2])
+    expect(radius).toBeCloseTo(9, 1)
+    // looking at the card's center height, in the sector direction
+    expect(azimuthOf(pose.lookAt)).toBeCloseTo(azimuth, 3)
+    expect(pose.lookAt[1]).toBeCloseTo(4.0, 1)
+  })
+
+  it('zoom clamps out-of-range and non-finite values safely', () => {
+    const wild = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 5)
+    const clamped = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 1)
+    expect(wild.position).toEqual(clamped.position)
+    const nan = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), Number.NaN)
+    for (const value of nan.position) expect(Number.isFinite(value)).toBe(true)
+  })
+
+  it('mid-zoom cranes the camera above both endpoints', () => {
+    const start = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 0)
+    const mid = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 0.5)
+    const end = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 1)
+    expect(mid.position[1]).toBeGreaterThan(start.position[1])
+    expect(mid.position[1]).toBeGreaterThan(end.position[1])
+  })
+
   it('passes fov straight through unchanged', () => {
     expect(computeCameraPose('slow-orbit', 0.2, 73, 1).fov).toBe(73)
     expect(computeCameraPose('static-drift', 0.2, 73, 1).fov).toBe(73)

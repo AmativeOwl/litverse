@@ -359,7 +359,11 @@ export function drawBeamCone(
   ctx.fill()
 }
 
-/** A swagged strand of light dots across the full plate width. */
+/**
+ * A swagged strand of light dots across the full plate width. Pass
+ * `twinkleTime` (seconds) to make the bulbs shimmer individually -- each
+ * dot's alpha breathes on its own phase, the "coloured lights" alive.
+ */
 export function drawStringDots(
   ctx: CanvasRenderingContext2D,
   width: number,
@@ -368,14 +372,20 @@ export function drawStringDots(
   count: number,
   color: string,
   dotRadius: number,
+  twinkleTime?: number,
 ): void {
+  ctx.save()
   ctx.fillStyle = color
   for (let i = 0; i <= count; i++) {
     const t = i / count
+    if (twinkleTime !== undefined) {
+      ctx.globalAlpha = 0.55 + 0.45 * Math.sin(twinkleTime * 3 + i * 1.7)
+    }
     ctx.beginPath()
     ctx.arc(t * width, catenaryY(t, topY, sag), dotRadius, 0, Math.PI * 2)
     ctx.fill()
   }
+  ctx.restore()
 }
 
 export interface Point {
@@ -505,7 +515,11 @@ export function drawPastryRow(
   }
 }
 
-/** The kitchen juice machine -- deco appliance: body, hopper funnel, crank, glass, the little button. */
+/**
+ * The kitchen juice machine -- deco appliance: body, hopper funnel, crank,
+ * glass, the little button. Pass `crankTime` (seconds) and the crank handle
+ * turns -- two hundred oranges in half an hour.
+ */
 export function drawJuiceMachine(
   ctx: CanvasRenderingContext2D,
   centerX: number,
@@ -513,6 +527,7 @@ export function drawJuiceMachine(
   height: number,
   bodyColor: string,
   accent: string,
+  crankTime?: number,
 ): void {
   const width = height * 0.56
   // body
@@ -535,14 +550,19 @@ export function drawJuiceMachine(
     ctx.lineTo(centerX + i * width * 0.22, baseY - height * 0.2)
     ctx.stroke()
   }
-  // crank
+  // crank: axis on the body's side; handle turns when crankTime is passed
+  const crankAxisX = centerX + width * 0.56
+  const crankAxisY = baseY - height * 0.6
+  const crankAngle = crankTime === undefined ? -0.5 : crankTime * 2.4
+  const handleX = crankAxisX + Math.cos(crankAngle) * width * 0.24
+  const handleY = crankAxisY + Math.sin(crankAngle) * width * 0.24
   ctx.beginPath()
-  ctx.moveTo(centerX + width / 2, baseY - height * 0.6)
-  ctx.lineTo(centerX + width * 0.78, baseY - height * 0.68)
+  ctx.moveTo(crankAxisX, crankAxisY)
+  ctx.lineTo(handleX, handleY)
   ctx.stroke()
   ctx.fillStyle = accent
   ctx.beginPath()
-  ctx.arc(centerX + width * 0.78, baseY - height * 0.68, height * 0.03, 0, Math.PI * 2)
+  ctx.arc(handleX, handleY, height * 0.03, 0, Math.PI * 2)
   ctx.fill()
   // THE little button, pressed two hundred times
   ctx.beginPath()

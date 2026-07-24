@@ -315,6 +315,7 @@ function paintDuskFountainMid(
   w: number,
   h: number,
   p: Palette,
+  t = 0,
 ): void {
   drawBandedSky(ctx, 0, w, h * 0.66, [
     darkenHex(p.background, 0.25),
@@ -335,10 +336,10 @@ function paintDuskFountainMid(
     drawZigguratTower(ctx, w * 0.24, h * 0.66, w * 0.07, h * 0.24, 3, darkenHex(p.background, 0.3))
     drawWindows(ctx, w * 0.12, h * 0.66, w * 0.1, h * 0.3, p.accent, 0.37)
   })
-  // tiered fountain with a spray fan
+  // tiered fountain with a spray fan, shimmering
   const cx = w / 2
   const fy = h * 0.82
-  drawSunburst(ctx, cx, fy - h * 0.3, h * 0.02, h * 0.13, 9, p.accent, -Math.PI * 0.85, -Math.PI * 0.15, 0.9)
+  drawSunburst(ctx, cx, fy - h * 0.3, h * 0.02, h * (0.125 + 0.012 * Math.sin(t * 1.7)), 9, p.accent, -Math.PI * 0.85, -Math.PI * 0.15, 0.7 + 0.2 * Math.sin(t * 2.3))
   ctx.fillStyle = mixHex(p.primary, p.background, 0.3)
   const tiers: ReadonlyArray<readonly [number, number]> = [
     [0.16, 0],
@@ -361,7 +362,7 @@ function paintDuskFountainMid(
 }
 
 /** orchestra-tuning: the glowing sunburst bandstand shell with musicians. */
-function paintOrchestraMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintOrchestraMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.64, [
     darkenHex(p.background, 0.3),
     p.background,
@@ -413,13 +414,13 @@ function paintOrchestraMid(ctx: CanvasRenderingContext2D, w: number, h: number, 
       darkenHex(p.background, 0.6),
     )
   })
-  drawStringDots(ctx, w, h * 0.12, h * 0.05, 20, lightenHex(p.accent, 0.2), Math.max(1.5, h * 0.006))
-  drawStringDots(ctx, w, h * 0.2, h * 0.045, 17, p.accent, Math.max(1.2, h * 0.005))
+  drawStringDots(ctx, w, h * 0.12, h * 0.05, 20, lightenHex(p.accent, 0.2), Math.max(1.5, h * 0.006), t)
+  drawStringDots(ctx, w, h * 0.2, h * 0.045, 17, p.accent, Math.max(1.2, h * 0.005), t + 1.6)
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
 /** dancing-under-lights: the gypsy alone on the canvas platform under a spotlight sunburst. */
-function paintDancingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintDancingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.66, [
     darkenHex(p.background, 0.3),
     p.background,
@@ -438,15 +439,15 @@ function paintDancingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
   ctx.beginPath()
   ctx.ellipse(w / 2, h * 0.85, w * 0.2, h * 0.045, 0, 0, Math.PI * 2)
   ctx.stroke()
-  // the dancer, arms up, center-lit
-  drawSilhouetteFigure(ctx, w / 2, h * 0.85, h * 0.3, 'dance', darkenHex(p.background, 0.65))
+  // the dancer, arms up, center-lit, swaying with the music
+  drawSilhouetteFigure(ctx, w / 2 + Math.sin(t * 1.4) * w * 0.006, h * 0.85, h * (0.3 + 0.006 * Math.sin(t * 2.8)), 'dance', darkenHex(p.background, 0.65))
   // watchers in shadow, mirrored
   withMirrorSymmetry(ctx, w, () => {
     drawSilhouetteFigure(ctx, w * 0.16, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
     drawSilhouetteFigure(ctx, w * 0.24, h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
   })
-  drawStringDots(ctx, w, h * 0.1, h * 0.06, 22, p.accent, Math.max(1.4, h * 0.0055))
-  drawStringDots(ctx, w, h * 0.18, h * 0.05, 18, lightenHex(p.primary, 0.25), Math.max(1.1, h * 0.0045))
+  drawStringDots(ctx, w, h * 0.1, h * 0.06, 22, p.accent, Math.max(1.4, h * 0.0055), t)
+  drawStringDots(ctx, w, h * 0.18, h * 0.05, 18, lightenHex(p.primary, 0.25), Math.max(1.1, h * 0.0045), t + 1.1)
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
@@ -507,7 +508,7 @@ function paintCratesWindow(ctx: CanvasRenderingContext2D, w: number, h: number, 
  * juice of two hundred oranges in half an hour if a little button was
  * pressed two hundred times by a butler's thumb."
  */
-function paintJuiceMachineWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintJuiceMachineWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   // kitchen interior: banded wall, counter line
   drawBandedSky(ctx, 0, w, h * 0.7, [
     lightenHex(p.background, 0.15),
@@ -517,10 +518,21 @@ function paintJuiceMachineWindow(ctx: CanvasRenderingContext2D, w: number, h: nu
   ctx.fillStyle = mixHex(p.primary, p.background, 0.3)
   ctx.fillRect(0, h * 0.7, w, h * 0.3)
   const orange = mixHex(p.accent, '#d98324', 0.55)
-  // the machine, hero-scale center
-  drawJuiceMachine(ctx, w * 0.52, h * 0.88, h * 0.56, darkenHex(p.primary, 0.15), p.accent)
-  // the butler at the little button
-  drawSilhouetteFigure(ctx, w * 0.34, h * 0.92, h * 0.28, 'serve', darkenHex(p.background, 0.4))
+  // the machine, hero-scale center, crank turning
+  drawJuiceMachine(ctx, w * 0.52, h * 0.88, h * 0.56, darkenHex(p.primary, 0.15), p.accent, t)
+  // juice dripping from the spout into the glass
+  ctx.fillStyle = lightenHex(p.accent, 0.2)
+  for (let i = 0; i < 3; i++) {
+    const phase = (t * 0.9 + i * 0.33) % 1
+    ctx.globalAlpha = 1 - phase * 0.5
+    ctx.beginPath()
+    ctx.arc(w * 0.52, h * (0.76 + phase * 0.1), Math.max(1, h * 0.006), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  ctx.globalAlpha = 1
+  // the butler at the little button, pressing (two hundred times)
+  const press = Math.max(0, Math.sin(t * 3.1)) * h * 0.008
+  drawSilhouetteFigure(ctx, w * 0.34, h * 0.92 + press, h * 0.28, 'serve', darkenHex(p.background, 0.4))
   // two hundred oranges, waiting
   drawFruitPyramid(ctx, w * 0.76, h * 0.88, 4, h * 0.02, orange)
   drawFruitPyramid(ctx, w * 0.88, h * 0.88, 3, h * 0.018, orange)
@@ -537,7 +549,7 @@ function paintJuiceMachineWindow(ctx: CanvasRenderingContext2D, w: number, h: nu
  * canvas and enough coloured lights to make a Christmas tree of Gatsby's
  * enormous garden."
  */
-function paintCanvasLightsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintCanvasLightsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.6, [
     darkenHex(p.background, 0.25),
     p.background,
@@ -553,10 +565,10 @@ function paintCanvasLightsWindow(ctx: CanvasRenderingContext2D, w: number, h: nu
     ctx.arc(w * (0.04 + i * 0.084), h * 0.1, w * 0.032, 0, Math.PI)
     ctx.fill()
   }
-  // enough coloured lights for a Christmas tree
+  // enough coloured lights for a Christmas tree -- twinkling
   const lightColors = [p.accent, mixHex(p.accent, '#ff6b6b', 0.5), mixHex(p.accent, '#6bd6ff', 0.4)]
   lightColors.forEach((color, i) => {
-    drawStringDots(ctx, w, h * (0.2 + i * 0.1), h * 0.055, 19 - i * 2, color, Math.max(1.4, h * 0.0055))
+    drawStringDots(ctx, w, h * (0.2 + i * 0.1), h * 0.055, 19 - i * 2, color, Math.max(1.4, h * 0.0055), t + i * 2.2)
   })
   // rigging poles + the corps of caterers at work
   withMirrorSymmetry(ctx, w, () => {
@@ -573,7 +585,7 @@ function paintCanvasLightsWindow(ctx: CanvasRenderingContext2D, w: number, h: nu
  * spiced baked hams crowded against salads of harlequin designs and pastry
  * pigs and turkeys bewitched to a dark gold."
  */
-function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.6, [
     darkenHex(p.background, 0.25),
     p.background,
@@ -582,7 +594,7 @@ function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, 
   ctx.fillStyle = darkenHex(p.background, 0.4)
   ctx.fillRect(0, h * 0.6, w, h * 0.4)
   // a single garland overhead -- the full light rig is the p3-s1 window's show
-  drawStringDots(ctx, w, h * 0.12, h * 0.05, 17, p.accent, Math.max(1.3, h * 0.005))
+  drawStringDots(ctx, w, h * 0.12, h * 0.05, 17, p.accent, Math.max(1.3, h * 0.005), t)
   // the long draped buffet table
   ctx.fillStyle = lightenHex(p.primary, 0.35)
   ctx.fillRect(w * 0.12, h * 0.62, w * 0.76, h * 0.05)
@@ -630,7 +642,7 @@ function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, 
  * p1-s2: "In his blue gardens men and girls came and went like moths among
  * the whisperings and the champagne and the stars."
  */
-function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.7, [
     darkenHex(p.background, 0.3),
     p.background,
@@ -657,18 +669,24 @@ function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p
   ctx.moveTo(cx - w * 0.05, h * 0.72)
   ctx.lineTo(cx + w * 0.05, h * 0.72)
   ctx.stroke()
+  // bubbles rising in the coupe, looping deterministically on t
   ctx.fillStyle = lightenHex(p.accent, 0.3)
   for (let i = 0; i < 8; i++) {
+    const phase = (t * 0.12 + i * 0.125) % 1
+    ctx.globalAlpha = 1 - phase * 0.7
     ctx.beginPath()
-    ctx.arc(cx + Math.sin(i * 2.1) * w * 0.04, h * (0.36 - i * 0.035), Math.max(1.2, h * 0.006 - i * 0.3), 0, Math.PI * 2)
+    ctx.arc(cx + Math.sin(i * 2.1) * w * 0.04, h * (0.5 - phase * 0.16), Math.max(1.2, h * 0.006 - i * 0.3), 0, Math.PI * 2)
     ctx.fill()
   }
+  ctx.globalAlpha = 1
   // moths: paired-triangle wings circling two glowing garden lamps, mirrored
   withMirrorSymmetry(ctx, w, () => {
     ctx.fillStyle = p.accent
+    ctx.globalAlpha = 0.8 + 0.2 * Math.sin(t * 2.3)
     ctx.beginPath()
     ctx.arc(w * 0.22, h * 0.4, h * 0.02, 0, Math.PI * 2)
     ctx.fill()
+    ctx.globalAlpha = 1
     ctx.fillStyle = mixHex(p.primary, '#ffffff', 0.35)
     const moths: ReadonlyArray<readonly [number, number, number]> = [
       [0.16, 0.3, 0.5],
@@ -676,25 +694,31 @@ function paintMothsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p
       [0.2, 0.55, 0.2],
       [0.31, 0.26, -0.7],
     ]
-    for (const [mx, my, rot] of moths) {
+    moths.forEach(([mx, my, rot], i) => {
+      // each moth loops a small ellipse around the lamp and flutters
+      const orbit = t * (0.5 + i * 0.13) + i * 1.7
+      const ox = Math.cos(orbit) * w * 0.012
+      const oy = Math.sin(orbit * 1.3) * h * 0.02
+      const flutter = Math.sin(t * 9 + i * 2.1) * 0.45
       ctx.save()
-      ctx.translate(w * mx, h * my)
-      ctx.rotate(rot)
+      ctx.translate(w * mx + ox, h * my + oy)
+      ctx.rotate(rot + flutter * 0.3)
       const s = h * 0.018
+      const wingLift = 1 - Math.abs(flutter) * 0.5
       ctx.beginPath()
       ctx.moveTo(0, 0)
-      ctx.lineTo(-s * 1.6, -s)
+      ctx.lineTo(-s * 1.6, -s * wingLift)
       ctx.lineTo(-s * 1.2, s * 0.4)
       ctx.closePath()
       ctx.fill()
       ctx.beginPath()
       ctx.moveTo(0, 0)
-      ctx.lineTo(s * 1.6, -s)
+      ctx.lineTo(s * 1.6, -s * wingLift)
       ctx.lineTo(s * 1.2, s * 0.4)
       ctx.closePath()
       ctx.fill()
       ctx.restore()
-    }
+    })
     // men and girls, coming and going
     drawSilhouetteFigure(ctx, w * 0.1, h * 0.94, h * 0.2, 'stand', darkenHex(p.background, 0.5))
     drawSilhouetteFigure(ctx, w * 0.17, h * 0.95, h * 0.21, 'stand', darkenHex(p.background, 0.55))
@@ -817,7 +841,7 @@ function paintGaudyArrivalsWindow(ctx: CanvasRenderingContext2D, w: number, h: n
  * p5-s1: "The lights grow brighter as the earth lurches away from the sun,
  * and now the orchestra is playing yellow cocktail music..."
  */
-function paintYellowMusicWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintYellowMusicWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.62, [
     darkenHex(p.background, 0.3),
     p.background,
@@ -834,11 +858,11 @@ function paintYellowMusicWindow(ctx: CanvasRenderingContext2D, w: number, h: num
   ctx.arc(w * 0.5, sy, h * 0.08, Math.PI, 0)
   ctx.closePath()
   ctx.fill()
-  // the lights growing brighter: three strands, biggest dots of any plate
-  drawStringDots(ctx, w, h * 0.12, h * 0.05, 20, p.accent, Math.max(2, h * 0.008))
-  drawStringDots(ctx, w, h * 0.22, h * 0.045, 17, lightenHex(p.accent, 0.25), Math.max(1.7, h * 0.007))
-  drawStringDots(ctx, w, h * 0.32, h * 0.04, 14, lightenHex(p.primary, 0.25), Math.max(1.4, h * 0.006))
-  // yellow cocktail music: a gramophone horn pouring note-dots
+  // the lights growing brighter: three twinkling strands, biggest dots of any plate
+  drawStringDots(ctx, w, h * 0.12, h * 0.05, 20, p.accent, Math.max(2, h * 0.008), t)
+  drawStringDots(ctx, w, h * 0.22, h * 0.045, 17, lightenHex(p.accent, 0.25), Math.max(1.7, h * 0.007), t + 1.3)
+  drawStringDots(ctx, w, h * 0.32, h * 0.04, 14, lightenHex(p.primary, 0.25), Math.max(1.4, h * 0.006), t + 2.6)
+  // yellow cocktail music: a gramophone horn pouring note-dots that drift away
   ctx.fillStyle = mixHex(p.accent, p.primary, 0.25)
   ctx.beginPath()
   ctx.moveTo(w * 0.14, h * 0.52)
@@ -848,11 +872,16 @@ function paintYellowMusicWindow(ctx: CanvasRenderingContext2D, w: number, h: num
   ctx.fill()
   ctx.fillStyle = p.accent
   for (let i = 0; i < 7; i++) {
+    const drift = (t * 0.04 + i * 0.07) % 0.52
+    const nx = w * (0.3 + drift)
+    const ny = h * (0.42 - Math.sin((drift * 9 + i) * 1.1) * 0.06)
+    ctx.globalAlpha = 1 - (drift / 0.52) * 0.6
     ctx.beginPath()
-    ctx.arc(w * (0.3 + i * 0.07), h * (0.42 - Math.sin(i * 1.1) * 0.06), Math.max(1.6, h * 0.007), 0, Math.PI * 2)
+    ctx.arc(nx, ny, Math.max(1.6, h * 0.007), 0, Math.PI * 2)
     ctx.fill()
-    ctx.fillRect(w * (0.3 + i * 0.07) + h * 0.006, h * (0.36 - Math.sin(i * 1.1) * 0.06), Math.max(1, h * 0.003), h * 0.055)
+    ctx.fillRect(nx + h * 0.006, ny - h * 0.055, Math.max(1, h * 0.003), h * 0.055)
   }
+  ctx.globalAlpha = 1
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
@@ -861,7 +890,7 @@ function paintYellowMusicWindow(ctx: CanvasRenderingContext2D, w: number, h: num
  * and there... glide on through the sea-change of faces and voices and
  * colour under the constantly changing light."
  */
-function paintSeaChangeWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintSeaChangeWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.64, [
     darkenHex(p.background, 0.3),
     p.background,
@@ -898,15 +927,26 @@ function paintSeaChangeWindow(ctx: CanvasRenderingContext2D, w: number, h: numbe
       drawSilhouetteFigure(ctx, cx + w * dx, baseY, h * fh, 'stand', darkenHex(p.background, 0.5))
     }
   }
-  // the confident girl, weaving between clusters on a dotted glide path
+  // the confident girl, weaving between clusters -- she and her dotted
+  // glide path drift along the sine track together
   ctx.fillStyle = lightenHex(p.accent, 0.15)
   for (let i = 0; i < 14; i++) {
-    const t = i / 13
+    const pathT = (i / 13 + t * 0.02) % 1
+    ctx.globalAlpha = 0.4 + 0.6 * ((i + Math.floor(t * 4)) % 14) / 14
     ctx.beginPath()
-    ctx.arc(w * (0.22 + t * 0.5), h * (0.78 + Math.sin(t * Math.PI * 2) * 0.05), Math.max(1, h * 0.004), 0, Math.PI * 2)
+    ctx.arc(w * (0.22 + pathT * 0.5), h * (0.78 + Math.sin(pathT * Math.PI * 2) * 0.05), Math.max(1, h * 0.004), 0, Math.PI * 2)
     ctx.fill()
   }
-  drawSilhouetteFigure(ctx, w * 0.62, h * 0.85, h * 0.26, 'dance', mixHex(p.accent, darkenHex(p.background, 0.3), 0.4))
+  ctx.globalAlpha = 1
+  const glideT = (t * 0.02 + 0.55) % 1
+  drawSilhouetteFigure(
+    ctx,
+    w * (0.22 + glideT * 0.5),
+    h * (0.85 + Math.sin(glideT * Math.PI * 2) * 0.03),
+    h * 0.26,
+    'dance',
+    mixHex(p.accent, darkenHex(p.background, 0.3), 0.4),
+  )
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
@@ -914,28 +954,29 @@ function paintSeaChangeWindow(ctx: CanvasRenderingContext2D, w: number, h: numbe
  * p6-s2: "A momentary hush; the orchestra leader varies his rhythm
  * obligingly for her... she is Gilda Gray's understudy from the Follies."
  */
-function paintHushWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+function paintHushWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   // the hush: darker than any other plate, one beam, lots of negative space
   drawBandedSky(ctx, 0, w, h, [
     darkenHex(p.background, 0.5),
     darkenHex(p.background, 0.35),
     darkenHex(p.background, 0.2),
   ])
-  // the single narrowed spotlight
+  // the single narrowed spotlight, breathing with the hush
   const cx = w * 0.5
+  const breathe = 1 + 0.14 * Math.sin(t * 0.9)
   const gradient = ctx.createLinearGradient(cx, 0, cx, h * 0.86)
   gradient.addColorStop(0, mixHex(p.accent, '#ffffff', 0.2))
   gradient.addColorStop(1, 'rgba(0,0,0,0)')
   ctx.fillStyle = gradient
   ctx.beginPath()
-  ctx.moveTo(cx - w * 0.015, 0)
-  ctx.lineTo(cx + w * 0.015, 0)
-  ctx.lineTo(cx + w * 0.09, h * 0.86)
-  ctx.lineTo(cx - w * 0.09, h * 0.86)
+  ctx.moveTo(cx - w * 0.015 * breathe, 0)
+  ctx.lineTo(cx + w * 0.015 * breathe, 0)
+  ctx.lineTo(cx + w * 0.09 * breathe, h * 0.86)
+  ctx.lineTo(cx - w * 0.09 * breathe, h * 0.86)
   ctx.closePath()
   ctx.fill()
-  // her, mid-gesture in the beam
-  drawSilhouetteFigure(ctx, cx, h * 0.86, h * 0.3, 'dance', darkenHex(p.background, 0.65))
+  // her, mid-gesture in the beam, swaying almost imperceptibly
+  drawSilhouetteFigure(ctx, cx + Math.sin(t * 1.1) * w * 0.004, h * 0.86, h * 0.3, 'dance', darkenHex(p.background, 0.65))
   // the orchestra leader on his podium, baton raised, obliging
   ctx.fillStyle = darkenHex(p.background, 0.55)
   ctx.fillRect(w * 0.16, h * 0.82, w * 0.07, h * 0.05)
@@ -978,7 +1019,8 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 325,
       memberBeatIds: ['dusk-arrival'],
-      source: { kind: 'paint', paint: paintDuskFountainMid },
+      animated: true,
+        source: { kind: 'paint', paint: paintDuskFountainMid },
     },
     // --- orchestra sector (80), far plate shared with dancing ---
     {
@@ -993,7 +1035,8 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 80,
       memberBeatIds: ['orchestra-tuning'],
-      source: { kind: 'paint', paint: paintOrchestraMid },
+      animated: true,
+        source: { kind: 'paint', paint: paintOrchestraMid },
     },
     {
       // slightly inside the orchestra plate so the crossfade between the two
@@ -1003,7 +1046,8 @@ export const GATSBY_PLATES: ScenePlateSet = {
       azimuthDeg: 80,
       memberBeatIds: ['dancing-under-lights'],
       radius: 19.4,
-      source: { kind: 'paint', paint: paintDancingMid },
+      animated: true,
+        source: { kind: 'paint', paint: paintDancingMid },
     },
     // --- daytime-leisure (the Sound, 28) ---
     {
@@ -1112,6 +1156,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 140, // monday-lull sector
         memberBeatIds: ['monday-lull'],
         radius: 19.2,
+        animated: true,
         source: { kind: 'paint', paint: paintJuiceMachineWindow },
       },
     },
@@ -1124,6 +1169,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 222, // evening-bar-setup sector
         memberBeatIds: ['evening-bar-setup'],
         radius: 19.4,
+        animated: true,
         source: { kind: 'paint', paint: paintCanvasLightsWindow },
       },
     },
@@ -1136,6 +1182,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 222, // evening-bar-setup sector
         memberBeatIds: ['evening-bar-setup'],
         radius: 19.2,
+        animated: true,
         source: { kind: 'paint', paint: paintBuffetWindow },
       },
     },
@@ -1156,6 +1203,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 325, // dusk-arrival sector
         memberBeatIds: ['dusk-arrival'],
         radius: 19.4,
+        animated: true,
         source: { kind: 'paint', paint: paintMothsWindow },
       },
     },
@@ -1192,6 +1240,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 80, // dancing-under-lights sector
         memberBeatIds: ['dancing-under-lights'],
         radius: 19.4,
+        animated: true,
         source: { kind: 'paint', paint: paintYellowMusicWindow },
       },
     },
@@ -1204,6 +1253,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 80, // dancing-under-lights sector
         memberBeatIds: ['dancing-under-lights'],
         radius: 19.1,
+        animated: true,
         source: { kind: 'paint', paint: paintSeaChangeWindow },
       },
     },
@@ -1216,6 +1266,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 80, // dancing-under-lights sector
         memberBeatIds: ['dancing-under-lights'],
         radius: 19.4,
+        animated: true,
         source: { kind: 'paint', paint: paintHushWindow },
       },
     },

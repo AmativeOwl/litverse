@@ -15,12 +15,21 @@ export type PlateLayer = 'far' | 'mid' | 'near'
  * (from scene-beats.json) so compositions are palette-parameterized -- the
  * same paint function produces a different painting for a different scene's
  * palette, which is what keeps the kit reusable across texts.
+ *
+ * `timeSeconds` (optional) makes a plate a *living painting*: the renderer
+ * repaints active plates at ~12fps -- deliberately "on twos," the cel rate
+ * of the golden-age animated shorts this look quotes -- passing elapsed
+ * time. Static paint functions simply ignore the parameter; animated ones
+ * derive small deterministic motion from it (flutter, twinkle, a turning
+ * crank). Never use randomness at paint time -- derive everything from
+ * `timeSeconds` so repaints are stable.
  */
 export type PlatePaintFn = (
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
   palette: SceneBeat['palette'],
+  timeSeconds?: number,
 ) => void
 
 /**
@@ -45,6 +54,8 @@ export interface PlateDef {
   radius?: number
   /** Plane size in world units [width, height]; defaults per layer. */
   size?: readonly [number, number]
+  /** Living painting: repaint this plate at ~12fps while visible, passing timeSeconds to its paint fn. Paint-source plates only. */
+  animated?: boolean
 }
 
 /**
