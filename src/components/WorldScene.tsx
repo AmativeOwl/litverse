@@ -6,8 +6,14 @@ import sceneBeatsData from '../data/scene-beats.json'
 import type { SceneBeat } from '../types'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
+import { DecoAutomobile } from './world/DecoAutomobile'
+import { DecoBar } from './world/DecoBar'
+import { DecoBuffet } from './world/DecoBuffet'
+import { DecoEstateDetail } from './world/DecoEstateDetail'
 import { DecoFountain } from './world/DecoFountain'
+import { DecoOrchestra } from './world/DecoOrchestra'
 import { DecoSkyline } from './world/DecoSkyline'
+import { DecoWaterfront } from './world/DecoWaterfront'
 import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
@@ -55,7 +61,13 @@ function WorldSceneContents() {
     <>
       <Atmosphere lerpedRef={lerpedRef} />
       <DecoSkyline lerpedRef={lerpedRef} />
+      <DecoEstateDetail lerpedRef={lerpedRef} />
       <DecoFountain lerpedRef={lerpedRef} />
+      <DecoOrchestra lerpedRef={lerpedRef} />
+      <DecoBuffet lerpedRef={lerpedRef} />
+      <DecoBar lerpedRef={lerpedRef} />
+      <DecoAutomobile lerpedRef={lerpedRef} />
+      <DecoWaterfront lerpedRef={lerpedRef} />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />

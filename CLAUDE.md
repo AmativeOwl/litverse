@@ -132,6 +132,7 @@ Each track **only edits the files it owns** — this is what keeps merges confli
 
 ### Phase 2 — Integration (sequential, ~1–1.5h, back on `main`)
 
+
 1. Merge all four branches into `main` (low conflict risk since file ownership didn't overlap).
 2. Swap every track's fixture data for the real thing: `App.tsx`'s children already point at the real components; `narrationController` now drives the store from `data/gatsby-ch3.ts`; `WorldScene` now reads beats from `data/scene-beats.json` via the store.
 3. Run the manual QA checklist (see below) end-to-end.
