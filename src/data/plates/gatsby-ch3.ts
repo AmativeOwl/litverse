@@ -455,12 +455,12 @@ function paintDancingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
 // ---------------------------------------------------------------------------
 
 /**
- * p2-s1/p2-s2: "five crates of oranges and lemons... a machine in the
- * kitchen which could extract the juice of two hundred oranges... if a
- * little button was pressed two hundred times by a butler's thumb."
+ * p2-s1 only (~3-4 rendered lines): "Every Friday five crates of oranges and
+ * lemons arrived from a fruiterer in New York -- every Monday these same
+ * oranges and lemons left his back door in a pyramid of pulpless halves."
  */
-function paintProvisionsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
-  // kitchen back-door interior: pale banded wall + floor
+function paintCratesWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  // kitchen back-door exterior: pale banded wall + floor
   drawBandedSky(ctx, 0, w, h * 0.68, [
     lightenHex(p.background, 0.18),
     p.background,
@@ -470,18 +470,20 @@ function paintProvisionsWindow(ctx: CanvasRenderingContext2D, w: number, h: numb
   ctx.fillRect(0, h * 0.68, w, h * 0.32)
   // the back door
   ctx.fillStyle = darkenHex(p.background, 0.35)
-  ctx.fillRect(w * 0.08, h * 0.18, w * 0.14, h * 0.56)
+  ctx.fillRect(w * 0.44, h * 0.16, w * 0.14, h * 0.58)
   ctx.strokeStyle = mixHex(p.accent, '#9a8a5a', 0.4)
   ctx.lineWidth = Math.max(1.2, h * 0.006)
-  ctx.strokeRect(w * 0.08, h * 0.18, w * 0.14, h * 0.56)
-  // crates of oranges and lemons, stacked
+  ctx.strokeRect(w * 0.44, h * 0.16, w * 0.14, h * 0.58)
+  // FIVE crates of oranges and lemons
   const orange = mixHex(p.accent, '#d98324', 0.55)
   const lemon = mixHex(p.accent, '#ffe95a', 0.45)
   const crate = darkenHex(p.primary, 0.25)
   const crates: ReadonlyArray<readonly [number, number, string]> = [
-    [0.3, 0.86, orange],
-    [0.42, 0.86, lemon],
-    [0.36, 0.7, orange],
+    [0.14, 0.86, orange],
+    [0.26, 0.86, lemon],
+    [0.2, 0.7, orange],
+    [0.72, 0.86, lemon],
+    [0.84, 0.86, orange],
   ]
   for (const [cx, cy, fruit] of crates) {
     ctx.fillStyle = crate
@@ -493,20 +495,83 @@ function paintProvisionsWindow(ctx: CanvasRenderingContext2D, w: number, h: numb
       ctx.fill()
     }
   }
-  // the pyramid of pulpless halves by the door
-  drawFruitPyramid(ctx, w * 0.15, h * 0.94, 3, h * 0.02, orange)
-  // the juice machine, center-right, with the butler at the button
-  drawJuiceMachine(ctx, w * 0.66, h * 0.9, h * 0.42, darkenHex(p.primary, 0.15), p.accent)
-  drawSilhouetteFigure(ctx, w * 0.52, h * 0.92, h * 0.24, 'serve', darkenHex(p.background, 0.4))
+  // the Monday pyramid of pulpless halves at the door
+  drawFruitPyramid(ctx, w * 0.51, h * 0.9, 4, h * 0.022, orange)
+  // the delivery man
+  drawSilhouetteFigure(ctx, w * 0.34, h * 0.93, h * 0.24, 'serve', darkenHex(p.background, 0.4))
   drawDecoFrame(ctx, w, h, mixHex(p.accent, '#9a8a5a', 0.4))
 }
 
 /**
- * p3-s1/p3-s2: "several hundred feet of canvas and enough coloured lights to
- * make a Christmas tree of Gatsby's enormous garden. On buffet tables,
- * garnished with glistening hors-d'oeuvre, spiced baked hams crowded against
- * salads of harlequin designs and pastry pigs and turkeys bewitched to a
- * dark gold."
+ * p2-s2 only: "There was a machine in the kitchen which could extract the
+ * juice of two hundred oranges in half an hour if a little button was
+ * pressed two hundred times by a butler's thumb."
+ */
+function paintJuiceMachineWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  // kitchen interior: banded wall, counter line
+  drawBandedSky(ctx, 0, w, h * 0.7, [
+    lightenHex(p.background, 0.15),
+    p.background,
+    mixHex(p.background, p.primary, 0.45),
+  ])
+  ctx.fillStyle = mixHex(p.primary, p.background, 0.3)
+  ctx.fillRect(0, h * 0.7, w, h * 0.3)
+  const orange = mixHex(p.accent, '#d98324', 0.55)
+  // the machine, hero-scale center
+  drawJuiceMachine(ctx, w * 0.52, h * 0.88, h * 0.56, darkenHex(p.primary, 0.15), p.accent)
+  // the butler at the little button
+  drawSilhouetteFigure(ctx, w * 0.34, h * 0.92, h * 0.28, 'serve', darkenHex(p.background, 0.4))
+  // two hundred oranges, waiting
+  drawFruitPyramid(ctx, w * 0.76, h * 0.88, 4, h * 0.02, orange)
+  drawFruitPyramid(ctx, w * 0.88, h * 0.88, 3, h * 0.018, orange)
+  // a row of filled juice glasses
+  ctx.fillStyle = lightenHex(p.accent, 0.2)
+  for (let i = 0; i < 4; i++) {
+    ctx.fillRect(w * (0.12 + i * 0.045), h * 0.63, w * 0.02, h * 0.05)
+  }
+  drawDecoFrame(ctx, w, h, mixHex(p.accent, '#9a8a5a', 0.4))
+}
+
+/**
+ * p3-s1 only: "a corps of caterers came down with several hundred feet of
+ * canvas and enough coloured lights to make a Christmas tree of Gatsby's
+ * enormous garden."
+ */
+function paintCanvasLightsWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+  drawBandedSky(ctx, 0, w, h * 0.6, [
+    darkenHex(p.background, 0.25),
+    p.background,
+    mixHex(p.background, p.primary, 0.45),
+  ])
+  ctx.fillStyle = darkenHex(p.background, 0.4)
+  ctx.fillRect(0, h * 0.6, w, h * 0.4)
+  // the canvas canopy: scalloped tent band across the top
+  ctx.fillStyle = lightenHex(p.primary, 0.3)
+  ctx.fillRect(0, 0, w, h * 0.1)
+  for (let i = 0; i < 12; i++) {
+    ctx.beginPath()
+    ctx.arc(w * (0.04 + i * 0.084), h * 0.1, w * 0.032, 0, Math.PI)
+    ctx.fill()
+  }
+  // enough coloured lights for a Christmas tree
+  const lightColors = [p.accent, mixHex(p.accent, '#ff6b6b', 0.5), mixHex(p.accent, '#6bd6ff', 0.4)]
+  lightColors.forEach((color, i) => {
+    drawStringDots(ctx, w, h * (0.2 + i * 0.1), h * 0.055, 19 - i * 2, color, Math.max(1.4, h * 0.0055))
+  })
+  // rigging poles + the corps of caterers at work
+  withMirrorSymmetry(ctx, w, () => {
+    ctx.fillStyle = darkenHex(p.primary, 0.4)
+    ctx.fillRect(w * 0.12, h * 0.2, w * 0.008, h * 0.55)
+    drawSilhouetteFigure(ctx, w * 0.2, h * 0.93, h * 0.22, 'serve', darkenHex(p.background, 0.5))
+    drawSilhouetteFigure(ctx, w * 0.34, h * 0.95, h * 0.2, 'mop', darkenHex(p.background, 0.45))
+  })
+  drawDecoFrame(ctx, w, h, p.accent)
+}
+
+/**
+ * p3-s2 only: "On buffet tables, garnished with glistening hors-d'oeuvre,
+ * spiced baked hams crowded against salads of harlequin designs and pastry
+ * pigs and turkeys bewitched to a dark gold."
  */
 function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
   drawBandedSky(ctx, 0, w, h * 0.6, [
@@ -516,11 +581,8 @@ function paintBuffetWindow(ctx: CanvasRenderingContext2D, w: number, h: number, 
   ])
   ctx.fillStyle = darkenHex(p.background, 0.4)
   ctx.fillRect(0, h * 0.6, w, h * 0.4)
-  // "enough coloured lights to make a Christmas tree of the garden"
-  const lightColors = [p.accent, mixHex(p.accent, '#ff6b6b', 0.5), mixHex(p.accent, '#6bd6ff', 0.4)]
-  lightColors.forEach((color, i) => {
-    drawStringDots(ctx, w, h * (0.1 + i * 0.07), h * 0.045, 19 - i * 2, color, Math.max(1.3, h * 0.005))
-  })
+  // a single garland overhead -- the full light rig is the p3-s1 window's show
+  drawStringDots(ctx, w, h * 0.12, h * 0.05, 17, p.accent, Math.max(1.3, h * 0.005))
   // the long draped buffet table
   ctx.fillStyle = lightenHex(p.primary, 0.35)
   ctx.fillRect(w * 0.12, h * 0.62, w * 0.76, h * 0.05)
@@ -697,32 +759,61 @@ export const GATSBY_PLATES: ScenePlateSet = {
       source: { kind: 'paint', paint: paintFullSwingMid },
     },
   ],
-  // The 3-4-sentence window track: each window's mid plate depicts what
-  // those sentences literally describe, superseding the beat mid plate in
-  // the same sector while active. Window plate azimuths match the camera
-  // sector of the beats those sentences belong to (test-enforced).
+  // The window track: each window's mid plate depicts what its sentence run
+  // literally describes, superseding the beat mid plate in the same sector
+  // while active. Windows are sized to ~3-4 *rendered lines* of the text
+  // pane -- one long Gatsby sentence, or a couple of short ones -- since a
+  // two-long-sentence window ran ~7 lines and overstayed. (Sub-sentence
+  // windows are off the table: that would need word-derived state in the
+  // R3F subtree, which the design constraints forbid.) Window plate
+  // azimuths match the camera sector of the sentences' beats
+  // (test-enforced).
   windows: [
     {
-      id: 'w-provisions',
-      sentenceIds: ['p2-s1', 'p2-s2'], // oranges & lemons crates + the juice machine
+      id: 'w-crates',
+      sentenceIds: ['p2-s1'], // five crates of oranges and lemons / pyramid of pulpless halves
       plate: {
-        id: 'win-provisions',
+        id: 'win-crates',
         layer: 'mid',
         azimuthDeg: 140, // monday-lull sector
         memberBeatIds: ['monday-lull'],
         radius: 19.4,
-        source: { kind: 'paint', paint: paintProvisionsWindow },
+        source: { kind: 'paint', paint: paintCratesWindow },
+      },
+    },
+    {
+      id: 'w-juice-machine',
+      sentenceIds: ['p2-s2'], // the kitchen machine, the little button, the butler's thumb
+      plate: {
+        id: 'win-juice-machine',
+        layer: 'mid',
+        azimuthDeg: 140, // monday-lull sector
+        memberBeatIds: ['monday-lull'],
+        radius: 19.2,
+        source: { kind: 'paint', paint: paintJuiceMachineWindow },
+      },
+    },
+    {
+      id: 'w-canvas-lights',
+      sentenceIds: ['p3-s1'], // several hundred feet of canvas + coloured lights
+      plate: {
+        id: 'win-canvas-lights',
+        layer: 'mid',
+        azimuthDeg: 222, // evening-bar-setup sector
+        memberBeatIds: ['evening-bar-setup'],
+        radius: 19.4,
+        source: { kind: 'paint', paint: paintCanvasLightsWindow },
       },
     },
     {
       id: 'w-buffet',
-      sentenceIds: ['p3-s1', 'p3-s2'], // coloured lights + the buffet spread
+      sentenceIds: ['p3-s2'], // the buffet spread: hams, harlequin salads, pastry pigs, turkeys
       plate: {
         id: 'win-buffet',
         layer: 'mid',
         azimuthDeg: 222, // evening-bar-setup sector
         memberBeatIds: ['evening-bar-setup'],
-        radius: 19.4,
+        radius: 19.2,
         source: { kind: 'paint', paint: paintBuffetWindow },
       },
     },
