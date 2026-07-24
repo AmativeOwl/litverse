@@ -146,12 +146,12 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
         break
     }
 
-    // The wide pose is always the parallax drift -- a slow lateral track
-    // that slides the 3D layers against the flat card. (Beat data's named
-    // behaviors are superseded by the drift/snap/lock cycle.)
+    // The wide pose is fully static (speed 0 -- no drift, no bob): the only
+    // camera movement is the slow smooth pan between walls and the single
+    // committed push. (Beat data's named behaviors are superseded.)
     const pose = computeCameraPose(
       'static-drift',
-      lerped.camera.speed,
+      0,
       lerped.camera.fov,
       clock.elapsedTime,
       azimuthRad,

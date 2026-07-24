@@ -12,9 +12,7 @@ const ORBIT_RADIUS = 9
 const ORBIT_HEIGHT = 2.6
 /** slow-orbit swings +/- this many radians around its azimuth anchor (a pendulum, not a full circle, so the featured sector stays in frame). */
 const ORBIT_SWING = 0.6
-// Wide enough to read as true parallax: the 3D layers (crowd, string
-// lights, particles) slide visibly against the flat card during the drift.
-const DRIFT_AMPLITUDE_LATERAL = 1.5
+const DRIFT_AMPLITUDE_LATERAL = 0.6
 const DRIFT_AMPLITUDE_Y = 0.25
 const DRIFT_BASE_DISTANCE = 8
 const DOLLY_FAR_DISTANCE = 11
