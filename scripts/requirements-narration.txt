@@ -1,0 +1,19 @@
+# Python dependencies for scripts/misaki_g2p.py (the Misaki G2P bridge used
+# by scripts/generate-narration-audio.ts). Offline, build-time only -- see
+# that script's own header for what it does and why.
+#
+# Setup:
+#   pip install -r scripts/requirements-narration.txt
+#   (the en_core_web_sm spaCy model, ~13MB, downloads automatically on first
+#   run of misaki_g2p.py if not already present)
+#
+# Deliberately NOT `pip install "misaki[en]"` -- that extra pulls in
+# `phonemizer`, a GPL-licensed wrapper around the espeak-ng binary, used only
+# as an optional fallback for out-of-dictionary words. This project avoids
+# GPL dependencies (see @met4citizen/headtts's own README rationale for the
+# same reason), so misaki_g2p.py constructs its G2P instance with
+# `fallback=None` and never imports `misaki.espeak`. These three packages are
+# everything misaki/en.py itself needs.
+misaki
+spacy
+num2words
