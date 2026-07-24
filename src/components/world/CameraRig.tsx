@@ -44,7 +44,7 @@ const ZOOM_DWELL = 1
  * zero pan distance, so the lock simply holds while plates crossfade.
  */
 const FOCUS_SECONDS = 0.7
-const PUSH_SECONDS = 2.1
+const PUSH_SECONDS = 3.6
 const RETREAT_RATE = 1.4
 const PAN_RATE = 0.5
 const PAN_SETTLED_RAD = 0.15
