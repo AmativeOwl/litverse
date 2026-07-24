@@ -17,8 +17,9 @@ import { DecoWaterfront } from './world/DecoWaterfront'
 import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
-import { PaintedVignette } from './world/PaintedVignette'
+import { PaintedPlates } from './world/PaintedPlates'
 import { Particles } from './world/Particles'
+import { GATSBY_PLATES } from '../data/plates/gatsby-ch3'
 import { PostProcessing } from './world/PostProcessing'
 import { Silhouettes } from './world/Silhouettes'
 import { StringLights } from './world/StringLights'
@@ -71,7 +72,7 @@ function WorldSceneContents() {
       <DecoAutomobile lerpedRef={lerpedRef} />
       <DecoWaterfront lerpedRef={lerpedRef} />
       <StringLights lerpedRef={lerpedRef} />
-      <PaintedVignette lerpedRef={lerpedRef} />
+      <PaintedPlates lerpedRef={lerpedRef} plateSet={GATSBY_PLATES} beatsById={SCENE_BEATS_BY_ID} />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
