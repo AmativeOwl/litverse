@@ -227,6 +227,8 @@ export function DecoAutomobile({ lerpedRef }: DecoAutomobileProps) {
           ref={rollsMeshRef}
           args={[carGeometry, rollsMaterial, layout.rolls.length]}
           frustumCulled={false}
+          castShadow
+          receiveShadow
         />
       )}
       {layout.wagon.length > 0 && (
@@ -234,6 +236,8 @@ export function DecoAutomobile({ lerpedRef }: DecoAutomobileProps) {
           ref={wagonMeshRef}
           args={[carGeometry, wagonMaterial, layout.wagon.length]}
           frustumCulled={false}
+          castShadow
+          receiveShadow
         />
       )}
     </group>
