@@ -221,7 +221,10 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
         control here because it's driven entirely by narrationController's
         pre-rendered-audio timeupdate handling once playback starts.
       */}
-      <div className="mb-8 flex flex-wrap items-center gap-2 rounded-md border border-neutral-800 bg-neutral-900/60 px-3 py-2 font-sans text-xs text-neutral-400">
+      {/* Sticky so playback stays reachable however deep the reader has
+          scrolled -- floats as a pill over the text (backdrop blur + a solid
+          enough tint to stay legible over the serif type beneath). */}
+      <div className="sticky top-4 z-20 mb-8 flex flex-wrap items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/85 px-4 py-2 font-sans text-xs text-neutral-400 shadow-lg shadow-black/40 backdrop-blur-md">
         <button
           type="button"
           className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
