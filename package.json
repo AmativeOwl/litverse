@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run --passWithNoTests",
     "generate:beats": "tsx scripts/generate-scene-beats.ts",
-    "generate:narration": "tsx scripts/generate-narration-audio.ts"
+    "generate:narration": "tsx scripts/generate-narration-audio.ts",
+    "generate:plates": "tsx scripts/generate-plate-specs.ts"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.0",
