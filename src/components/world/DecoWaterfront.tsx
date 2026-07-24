@@ -15,9 +15,9 @@ interface DecoWaterfrontProps {
  * raft, or taking the sun on the hot sand of his beach while his two
  * motorboats slit the waters of the Sound, drawing aquaplanes over cataracts
  * of foam." Follows `DecoSkyline`/`DecoFountain`'s established pattern
- * (seeded/fixed placement, `mergeGeometries`-once static geometry, unlit
- * `MeshBasicMaterial` tinted per-beat in `useFrame`) with one addition: this
- * is the only Deco prop that's beat-*gated in visibility*, not just emphasis.
+ * (seeded/fixed placement, `mergeGeometries`-once static geometry, real
+ * `MeshStandardMaterial` tinted per-beat in `useFrame`) with one addition:
+ * this is the only Deco prop that's beat-*gated in visibility*, not just emphasis.
  * The passage's daytime/beach content is a single memory sitting inside an
  * otherwise evening scene, so it should read as essentially absent except
  * during `daytime-leisure`, where it should clearly brighten into a sunlit
@@ -180,8 +180,23 @@ export function DecoWaterfront({ lerpedRef }: DecoWaterfrontProps) {
     [wakeLayouts],
   )
 
+  // Raft/tower and motorboat hulls: weathered-wood/wet-stone-ish surface --
+  // fairly high roughness (matte, not glossy plastic), low metalness -- so
+  // they pick up real lighting/shadow like `DecoFountain`'s basin and
+  // `DecoSkyline`'s towers, instead of standing out as flat unlit silhouettes
+  // now that the rest of the scene uses real `MeshStandardMaterial` lighting.
+  // Still `transparent`/opacity-driven (not `visible` toggling) so the
+  // beat-gated fade in `useFrame` below keeps working unchanged.
   const structureMaterial = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: '#050505', transparent: true, opacity: HIDDEN_OPACITY, fog: true }),
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: '#050505',
+        roughness: 0.7,
+        metalness: 0.08,
+        transparent: true,
+        opacity: HIDDEN_OPACITY,
+        fog: true,
+      }),
     [],
   )
   const wakeMaterial = useMemo(
