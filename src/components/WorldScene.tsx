@@ -6,6 +6,7 @@ import sceneBeatsData from '../data/scene-beats.json'
 import type { SceneBeat } from '../types'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
+import { DecoSkyline } from './world/DecoSkyline'
 import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
@@ -52,6 +53,7 @@ function WorldSceneContents() {
   return (
     <>
       <Atmosphere lerpedRef={lerpedRef} />
+      <DecoSkyline lerpedRef={lerpedRef} />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
       <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
