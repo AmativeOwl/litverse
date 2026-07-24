@@ -12,7 +12,9 @@ const ORBIT_RADIUS = 9
 const ORBIT_HEIGHT = 2.6
 /** slow-orbit swings +/- this many radians around its azimuth anchor (a pendulum, not a full circle, so the featured sector stays in frame). */
 const ORBIT_SWING = 0.6
-const DRIFT_AMPLITUDE_LATERAL = 0.6
+// Wide enough to read as true parallax: the 3D layers (crowd, string
+// lights, particles) slide visibly against the flat card during the drift.
+const DRIFT_AMPLITUDE_LATERAL = 1.5
 const DRIFT_AMPLITUDE_Y = 0.25
 const DRIFT_BASE_DISTANCE = 8
 const DOLLY_FAR_DISTANCE = 11
@@ -39,8 +41,10 @@ const CARD_RADIUS = 20
 const CARD_NEAR_DISTANCE = 18
 const CARD_FOV = 55
 const CARD_CENTER_Y = 4.0
-/** Peak extra height mid-travel (sin arc), so the dolly clears the crowd. */
-const CRANE_ARC = 2.2
+/** Near-flat travel arc: the push-in is a straight axial dolly so the card
+ * purely SCALES UP centered (the "scale match" read) -- just enough lift to
+ * soften any pass through a crowd figure. */
+const CRANE_ARC = 0.6
 /** Behavior motion fully dies at zoom=1: the dwell frame is LOCKED -- the
  * camera moves between frames, never within them; all motion during a dwell
  * belongs to the painting itself (user feedback). */

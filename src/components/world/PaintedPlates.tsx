@@ -5,7 +5,7 @@ import type { SceneBeat } from '../../types'
 import type { PlateDef, PlateLayer, ScenePlateSet } from '../../types-plates'
 import { useReadingStore } from '../../store/readingStore'
 import type { LerpedSceneBeat } from './beatMath'
-import { drawCelOverlay, setInkBoilPhase, vignetteVisibility } from './decoPlateKit'
+import { vignetteVisibility } from './decoPlateKit'
 
 interface PaintedPlatesProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -109,9 +109,7 @@ function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): Buil
   const firstBeatId = def.memberBeatIds[0]
   const palette = firstBeatId ? beatsById[firstBeatId]?.palette : undefined
   if (ctx && palette) {
-    setInkBoilPhase(0)
     def.source.paint(ctx, canvas.width, canvas.height, palette, 0)
-    drawCelOverlay(ctx, canvas.width, canvas.height)
   }
   const texture = new THREE.CanvasTexture(canvas)
   texture.colorSpace = THREE.SRGBColorSpace
@@ -198,13 +196,11 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
     // -- living paintings: repaint visible animated plates "on twos"
     if (clock.elapsedTime - lastRepaintRef.current >= REPAINT_INTERVAL_SECONDS) {
       lastRepaintRef.current = clock.elapsedTime
-      setInkBoilPhase(clock.elapsedTime)
       const repaintIfLive = (plate: BuiltPlate) => {
         if (!plate.repaint || plate.material.opacity < REPAINT_MIN_OPACITY) return
         const { canvas, ctx, palette, paint } = plate.repaint
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         paint(ctx, canvas.width, canvas.height, palette, clock.elapsedTime)
-        drawCelOverlay(ctx, canvas.width, canvas.height)
         plate.texture.needsUpdate = true
       }
       for (const plate of builtRef.current) repaintIfLive(plate)

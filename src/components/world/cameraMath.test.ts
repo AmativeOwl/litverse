@@ -121,12 +121,15 @@ describe('computeCameraPose', () => {
     for (const value of nan.position) expect(Number.isFinite(value)).toBe(true)
   })
 
-  it('mid-zoom cranes the camera above both endpoints', () => {
+  it('mid-zoom lifts gently above the straight travel path (near-flat scale-match arc)', () => {
     const start = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 0)
     const mid = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 0.5)
     const end = computeCameraPose('static-drift', 0, 50, 0, degToRad(80), 1)
-    expect(mid.position[1]).toBeGreaterThan(start.position[1])
-    expect(mid.position[1]).toBeGreaterThan(end.position[1])
+    // eased(0.5) = 0.5, so the straight path's midpoint height is the mean
+    const straightMid = (start.position[1] + end.position[1]) / 2
+    expect(mid.position[1]).toBeGreaterThan(straightMid)
+    // ...but only a soft lift: the push reads as a straight axial dolly
+    expect(mid.position[1] - straightMid).toBeLessThan(1)
   })
 
   it('passes fov straight through unchanged', () => {

@@ -6,7 +6,6 @@ import {
   computeCameraPose,
   DEFAULT_CAMERA_AZIMUTH_RAD,
   lerpAngleRad,
-  type CameraBehavior,
 } from './cameraMath'
 
 interface CameraRigProps {
@@ -27,24 +26,30 @@ interface CameraRigProps {
 /** Full zoom while dwelling at a card. */
 const ZOOM_DWELL = 1
 /**
- * The shot rhythm -- press in, watch, ease out, glide, press into the next
- * card (the user's "photocard" cadence). All damping rates are per-second:
- * - APPROACH: slow settle (~95% in ~7s), the push-in is part of the shot.
- * - RETREAT: an unhurried exit (~95% in ~3.5s), not a snap back.
- * - PAN: the camera's own azimuth pursuit (~95% in ~6s) -- deliberately
- *   DECOUPLED from the beat lerp's ~1s transitionDurationMs, which was far
- *   too fast for a camera move; palettes may snap moods quickly, the
- *   camera glides.
- * Sequencing is driven by remaining pan distance, not the beat clock: while
- * the camera still has more than PAN_SETTLED_RAD left to turn it stays
- * retreated; once the new wall is nearly ahead, the approach begins. Same-
- * sector card swaps have zero pan distance, so the dwell simply continues
- * while plates crossfade.
+ * The shot cycle (user-specified): PARALLAX DRIFT wide -- the camera
+ * tracks laterally so the 3D layers slide against the flat card -- then a
+ * SNAP PUSH-IN (a fast, decisive axial dolly with an ease-out landing, the
+ * card purely scaling up centered), then a SCALE-MATCHED LOCK: every card
+ * lands on the identical framing (fixed distance + normalized CARD_FOV),
+ * so consecutive cards read as matched cuts. Exit is a brisk damped
+ * retreat, then the drift-glide to the next wall.
+ * - PUSH_SECONDS: duration of the snap push-in (ease-out cubic).
+ * - RETREAT_RATE: damped exit (~95% in ~2s).
+ * - PAN: azimuth pursuit (~95% in ~6s), decoupled from the ~1s beat lerp.
+ * Sequencing keys on remaining pan distance; same-sector card swaps have
+ * zero pan distance, so the lock simply holds while plates crossfade.
  */
-const APPROACH_RATE = 0.45
-const RETREAT_RATE = 0.9
+const PUSH_SECONDS = 0.7
+const RETREAT_RATE = 1.4
 const PAN_RATE = 0.5
 const PAN_SETTLED_RAD = 0.15
+
+type ShotPhase = 'wide' | 'push' | 'dwell' | 'retreat'
+
+function easeOutCubic(u: number): number {
+  const clamped = u < 0 ? 0 : u > 1 ? 1 : u
+  return 1 - (1 - clamped) ** 3
+}
 
 function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: string): number {
   const deg = azimuthByBeatDeg[beatId]
@@ -69,22 +74,16 @@ function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: str
  */
 export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
   const { camera } = useThree()
-  const behaviorRef = useRef<CameraBehavior | null>(null)
-  const behaviorStartRef = useRef(0)
   const lookAtTarget = useRef(new THREE.Vector3())
   // shot-choreography state -- mutated per frame, never React state
   const zoomRef = useRef(0)
   const azimuthRef = useRef<number | null>(null)
+  const phaseRef = useRef<ShotPhase>('wide')
+  const pushStartRef = useRef(0)
 
   useFrame(({ clock }, delta) => {
     const lerped = lerpedRef.current
     if (!lerped) return
-
-    const behavior = lerped.camera.behavior
-    if (behaviorRef.current !== behavior) {
-      behaviorRef.current = behavior
-      behaviorStartRef.current = clock.elapsedTime
-    }
 
     // --- the camera's own pan: damped shortest-arc pursuit of the target ----
     const targetAzimuth = azimuthRadForBeat(azimuthByBeatDeg, lerped.toId)
@@ -101,21 +100,50 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
     if (panError < 0.002) azimuthRef.current = targetAzimuth
     const azimuthRad = azimuthRef.current
 
-    // --- shot choreography: ease out while turning, press in on arrival -----
-    const zoomTarget = panError > PAN_SETTLED_RAD ? 0 : ZOOM_DWELL
-    const rate = zoomTarget < zoomRef.current ? RETREAT_RATE : APPROACH_RATE
-    zoomRef.current += (zoomTarget - zoomRef.current) * (1 - Math.exp(-delta * rate))
-    // same snap for the zoom: exponential damping never finishes on its own,
-    // which read as perpetual creep during what should be a still frame
-    if (zoomTarget === ZOOM_DWELL && zoomRef.current > 0.995) zoomRef.current = ZOOM_DWELL
-    if (zoomTarget === 0 && zoomRef.current < 0.005) zoomRef.current = 0
+    // --- the shot cycle: drift wide -> snap push -> locked dwell -> retreat --
+    const settled = panError <= PAN_SETTLED_RAD
+    switch (phaseRef.current) {
+      case 'wide':
+        zoomRef.current = 0
+        if (settled) {
+          phaseRef.current = 'push'
+          pushStartRef.current = clock.elapsedTime
+        }
+        break
+      case 'push': {
+        if (!settled) {
+          phaseRef.current = 'retreat'
+          break
+        }
+        const u = (clock.elapsedTime - pushStartRef.current) / PUSH_SECONDS
+        zoomRef.current = easeOutCubic(u) * ZOOM_DWELL
+        if (u >= 1) {
+          zoomRef.current = ZOOM_DWELL
+          phaseRef.current = 'dwell'
+        }
+        break
+      }
+      case 'dwell':
+        zoomRef.current = ZOOM_DWELL
+        if (!settled) phaseRef.current = 'retreat'
+        break
+      case 'retreat':
+        zoomRef.current += (0 - zoomRef.current) * (1 - Math.exp(-delta * RETREAT_RATE))
+        if (zoomRef.current < 0.005) {
+          zoomRef.current = 0
+          phaseRef.current = 'wide'
+        }
+        break
+    }
 
-    const elapsedInBehavior = clock.elapsedTime - behaviorStartRef.current
+    // The wide pose is always the parallax drift -- a slow lateral track
+    // that slides the 3D layers against the flat card. (Beat data's named
+    // behaviors are superseded by the drift/snap/lock cycle.)
     const pose = computeCameraPose(
-      behavior,
+      'static-drift',
       lerped.camera.speed,
       lerped.camera.fov,
-      elapsedInBehavior,
+      clock.elapsedTime,
       azimuthRad,
       zoomRef.current,
     )
