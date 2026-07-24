@@ -379,8 +379,24 @@ function runMisakiBridge(sentences: Sentence[]): Map<string, MisakiToken[]> {
     )
   }
 
-  const parsed = JSON.parse(stdout) as { sentences: Record<string, MisakiToken[]> }
-  return new Map(Object.entries(parsed.sentences))
+  // The payload is the LAST line that parses as our JSON shape: on a fresh
+  // environment spaCy's automatic en_core_web_sm download runs pip, whose
+  // "Collecting..." chatter lands on STDOUT ahead of the bridge's own
+  // output (observed 2026-07-24, corrupted the whole run). Scanning from
+  // the last line keeps the contract while tolerating library noise.
+  const lines = stdout.split('\n').filter((line) => line.trim().startsWith('{'))
+  for (let i = lines.length - 1; i >= 0; i--) {
+    try {
+      const parsed = JSON.parse(lines[i] ?? '') as { sentences?: Record<string, MisakiToken[]> }
+      if (parsed.sentences) return new Map(Object.entries(parsed.sentences))
+    } catch {
+      // keep scanning
+    }
+  }
+  throw new Error(
+    `Misaki G2P bridge stdout contained no parseable {"sentences": ...} JSON line. ` +
+      `First 200 chars of stdout: ${stdout.slice(0, 200)}`,
+  )
 }
 
 /**
