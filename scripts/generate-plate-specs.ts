@@ -121,25 +121,50 @@ function coveredSentenceIds(): Set<string> {
 // Prompt
 // ---------------------------------------------------------------------------
 
-/** Kit vocabulary the model may reference in suggestions -- kept in sync by hand with world/decoPlateKit.ts. */
-const KIT_HELPERS = [
-  'drawBandedSky',
-  'drawSunburst',
-  'drawZigguratTower',
-  'drawWindows',
-  'drawDecoFrame',
-  'withMirrorSymmetry',
-  "drawSilhouetteFigure (poses: 'stand'|'dance'|'serve'|'mop'|'horn')",
-  'drawCarProfile',
-  'drawBeamCone',
-  'drawStringDots',
-  'drawWaveBand',
-  'drawFruitPyramid',
-  'drawGlazedHam',
-  'drawTurkey',
-  'drawPastryRow',
-  'drawJuiceMachine',
-  'mixHex / lightenHex / darkenHex / fogTintHex',
+/**
+ * The card grammar's two lexicons -- kept in sync by hand with
+ * src/types-plates.ts (ObjectNoun / MotionVerb) and decoCardComposer.ts.
+ * The compiler maps the text's nouns onto object nouns and its verbs onto
+ * the CLOSED motion-verb vocabulary ("scampered" -> weave, "toiled" ->
+ * scrub, "diving" -> dive); a text demanding a genuinely new noun/verb is
+ * flagged "NEW:" for a human to add to the shared lexicons.
+ */
+const OBJECT_NOUNS = [
+  "figure (poses: 'stand'|'dance'|'serve'|'mop'|'horn')",
+  'car',
+  'boat',
+  'crate',
+  'door',
+  'fruit-pyramid',
+  'juice-machine',
+  'ham',
+  'turkey',
+  'pastry-row',
+  'lights-strand',
+  'ziggurat',
+  'sun',
+  'waves',
+  'stars',
+  'spray',
+] as const
+
+const MOTION_VERBS = [
+  'still',
+  'sway',
+  'bob',
+  'weave (travel across on a serpentine line)',
+  'cross (travel straight across on a loop)',
+  'pace (walk back and forth)',
+  'scrub (short strokes in place)',
+  'dive (poise, leap arc, reset)',
+  'rise (drift up, fading)',
+  'fall (drift down, fading)',
+  'twinkle',
+  'breathe (slow scale pulse)',
+  'flutter',
+  'orbit',
+  'burst (expand and fade)',
+  'glide (slow sine path across)',
 ] as const
 
 function buildPrompt(
@@ -176,9 +201,22 @@ JSON with exactly this shape (raw JSON only — no prose, no code fences):
       "sentenceIds": ["<sentenceId>"],
       "beatId": "<the sentences' beatId>",
       "subject": "<3-8 word title of the picture>",
-      "elements": ["<concrete noun phrases taken from the text itself>"],
-      "composition": "<one sentence: what is where — center/left/right, foreground/background, mirrored or not>",
-      "kitHelpers": ["<names from the helper list below>"]
+      "sourcePhrases": ["<concrete noun/verb phrases quoted from the text itself>"],
+      "card": {
+        "skyBands": 3,
+        "groundY": 0.66,
+        "elements": [
+          {
+            "noun": "<one of the OBJECT NOUNS below — the sentence's nouns as objects>",
+            "at": [0.5, 0.85],
+            "size": 0.2,
+            "pose": "<figures only>",
+            "colorRole": "accent|accent-light|primary|primary-light|shadow",
+            "mirror": false,
+            "motion": { "verb": "<one of the MOTION VERBS below — the sentence's verbs as movements>", "speed": 1, "amplitude": 1, "loopSeconds": 6, "phase": 0 }
+          }
+        ]
+      }
     }
   ],
   "skipped": [
@@ -206,9 +244,19 @@ Rules:
 - These are FIRST DRAFTS for a human to hand-tune into procedural canvas
   paint functions. Do not overthink precision.
 
-Available drawing-kit helpers (suggest from these; new helpers are allowed
-but mark them "NEW:"):
-${KIT_HELPERS.map((helper) => `- ${helper}`).join('\n')}
+THE CARD GRAMMAR: pick each element's "noun" from the sentence's own nouns
+mapped onto the OBJECT NOUNS below, and each element's "motion.verb" from
+the sentence's own verbs mapped onto the MOTION VERBS below (e.g.
+"scampered" -> weave, "toiled" -> scrub, "diving" -> dive, "arrived" ->
+pace). Only what the text moves should move; scenery holds still. If the
+text truly demands an object/verb outside the lexicons, use the closest fit
+and add a "NEW:<name>" note in sourcePhrases for a human to consider.
+
+OBJECT NOUNS:
+${OBJECT_NOUNS.map((noun) => `- ${noun}`).join('\n')}
+
+MOTION VERBS:
+${MOTION_VERBS.map((verb) => `- ${verb}`).join('\n')}
 
 Beat camera sectors (degrees), for context only: ${JSON.stringify(azimuthByBeat)}
 

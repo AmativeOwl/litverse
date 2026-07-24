@@ -1,5 +1,6 @@
-import type { ScenePlateSet } from '../../types-plates'
+import type { CardSpec, ScenePlateSet } from '../../types-plates'
 import type { SceneBeat } from '../../types'
+import { composeCard } from '../../components/world/decoCardComposer'
 import {
   darkenHex,
   drawBandedSky,
@@ -515,51 +516,28 @@ function paintDancingMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
 // ---------------------------------------------------------------------------
 
 /**
- * p2-s1 only (~3-4 rendered lines): "Every Friday five crates of oranges and
- * lemons arrived from a fruiterer in New York -- every Monday these same
- * oranges and lemons left his back door in a pyramid of pulpless halves."
+ * p2-s1 only: "Every Friday five crates of oranges and lemons arrived from a
+ * fruiterer in New York -- every Monday these same oranges and lemons left
+ * his back door in a pyramid of pulpless halves."
+ *
+ * THE CARD-GRAMMAR PROOF: this card is pure data -- nouns as objects, verbs
+ * as movements -- interpreted by decoCardComposer, exactly the shape the
+ * compiler's mining pass emits for any text. ("arrived" -> the delivery
+ * figure paces with its load; everything else holds still, Monday-quiet.)
  */
-function paintCratesWindow(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
-  // kitchen back-door exterior: pale banded wall + floor
-  drawBandedSky(ctx, 0, w, h * 0.68, [
-    lightenHex(p.background, 0.18),
-    p.background,
-    mixHex(p.background, p.primary, 0.5),
-  ])
-  ctx.fillStyle = mixHex(p.primary, p.background, 0.35)
-  ctx.fillRect(0, h * 0.68, w, h * 0.32)
-  // the back door
-  ctx.fillStyle = darkenHex(p.background, 0.35)
-  ctx.fillRect(w * 0.44, h * 0.16, w * 0.14, h * 0.58)
-  ctx.strokeStyle = mixHex(p.accent, '#9a8a5a', 0.4)
-  ctx.lineWidth = Math.max(1.2, h * 0.006)
-  ctx.strokeRect(w * 0.44, h * 0.16, w * 0.14, h * 0.58)
-  // FIVE crates of oranges and lemons
-  const orange = mixHex(p.accent, '#d98324', 0.55)
-  const lemon = mixHex(p.accent, '#ffe95a', 0.45)
-  const crate = darkenHex(p.primary, 0.25)
-  const crates: ReadonlyArray<readonly [number, number, string]> = [
-    [0.14, 0.86, orange],
-    [0.26, 0.86, lemon],
-    [0.2, 0.7, orange],
-    [0.72, 0.86, lemon],
-    [0.84, 0.86, orange],
-  ]
-  for (const [cx, cy, fruit] of crates) {
-    ctx.fillStyle = crate
-    ctx.fillRect(w * cx - w * 0.055, h * cy - h * 0.1, w * 0.11, h * 0.1)
-    ctx.fillStyle = fruit
-    for (let i = 0; i < 4; i++) {
-      ctx.beginPath()
-      ctx.arc(w * cx - w * 0.036 + i * w * 0.024, h * cy - h * 0.1, h * 0.016, 0, Math.PI * 2)
-      ctx.fill()
-    }
-  }
-  // the Monday pyramid of pulpless halves at the door
-  drawFruitPyramid(ctx, w * 0.51, h * 0.9, 4, h * 0.022, orange)
-  // the delivery man
-  drawSilhouetteFigure(ctx, w * 0.34, h * 0.93, h * 0.24, 'serve', darkenHex(p.background, 0.4))
-  drawDecoFrame(ctx, w, h, mixHex(p.accent, '#9a8a5a', 0.4))
+const CRATES_CARD: CardSpec = {
+  skyBands: 3,
+  groundY: 0.68,
+  elements: [
+    { noun: 'door', at: [0.51, 0.74], size: 0.58 },
+    { noun: 'crate', at: [0.14, 0.86], size: 0.1, colorRole: 'accent' },
+    { noun: 'crate', at: [0.26, 0.86], size: 0.1, colorRole: 'accent-light' },
+    { noun: 'crate', at: [0.2, 0.7], size: 0.1, colorRole: 'accent' },
+    { noun: 'crate', at: [0.72, 0.86], size: 0.1, colorRole: 'accent-light' },
+    { noun: 'crate', at: [0.84, 0.86], size: 0.1, colorRole: 'accent' },
+    { noun: 'fruit-pyramid', at: [0.51, 0.9], size: 0.55 },
+    { noun: 'figure', at: [0.34, 0.93], size: 0.24, pose: 'serve', colorRole: 'shadow', motion: { verb: 'pace', amplitude: 0.55, speed: 0.8 } },
+  ],
 }
 
 /**
@@ -1206,7 +1184,9 @@ export const GATSBY_PLATES: ScenePlateSet = {
         azimuthDeg: 140, // monday-lull sector
         memberBeatIds: ['monday-lull'],
         radius: 19.4,
-        source: { kind: 'paint', paint: paintCratesWindow },
+        animated: true,
+        // composed from CRATES_CARD -- the data-driven grammar path
+        source: { kind: 'paint', paint: composeCard(CRATES_CARD) },
       },
     },
     {
