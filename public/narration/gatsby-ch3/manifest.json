@@ -1,3170 +1,3170 @@
 {
   "p1-s1": {
     "audioUrl": "/narration/gatsby-ch3/p1-s1.wav",
-    "durationMs": 3875,
+    "durationMs": 3625,
     "words": [
       {
         "wordId": "p1-s1-w1",
-        "startMs": 433,
-        "endMs": 549
+        "startMs": 398,
+        "endMs": 505
       },
       {
         "wordId": "p1-s1-w2",
-        "startMs": 539,
-        "endMs": 708
+        "startMs": 495,
+        "endMs": 652
       },
       {
         "wordId": "p1-s1-w3",
-        "startMs": 698,
-        "endMs": 1105
+        "startMs": 642,
+        "endMs": 1017
       },
       {
         "wordId": "p1-s1-w4",
-        "startMs": 1095,
-        "endMs": 1260
+        "startMs": 1007,
+        "endMs": 1159
       },
       {
         "wordId": "p1-s1-w5",
-        "startMs": 1250,
-        "endMs": 1415
+        "startMs": 1149,
+        "endMs": 1302
       },
       {
         "wordId": "p1-s1-w6",
-        "startMs": 1405,
-        "endMs": 1835
+        "startMs": 1292,
+        "endMs": 1688
       },
       {
         "wordId": "p1-s1-w7",
-        "startMs": 1825,
-        "endMs": 2289
+        "startMs": 1678,
+        "endMs": 2105
       },
       {
         "wordId": "p1-s1-w8",
-        "startMs": 2279,
-        "endMs": 2524
+        "startMs": 2095,
+        "endMs": 2322
       },
       {
         "wordId": "p1-s1-w9",
-        "startMs": 2514,
-        "endMs": 2629
+        "startMs": 2312,
+        "endMs": 2418
       },
       {
         "wordId": "p1-s1-w10",
-        "startMs": 2619,
-        "endMs": 2999
+        "startMs": 2408,
+        "endMs": 2759
       },
       {
         "wordId": "p1-s1-w11",
-        "startMs": 2989,
-        "endMs": 3840
+        "startMs": 2749,
+        "endMs": 3533
       }
     ]
   },
   "p1-s2": {
     "audioUrl": "/narration/gatsby-ch3/p1-s2.wav",
-    "durationMs": 7225,
+    "durationMs": 6700,
     "words": [
       {
         "wordId": "p1-s2-w1",
-        "startMs": 441,
-        "endMs": 545
+        "startMs": 394,
+        "endMs": 488
       },
       {
         "wordId": "p1-s2-w2",
-        "startMs": 535,
-        "endMs": 713
+        "startMs": 478,
+        "endMs": 639
       },
       {
         "wordId": "p1-s2-w3",
-        "startMs": 703,
-        "endMs": 948
+        "startMs": 629,
+        "endMs": 848
       },
       {
         "wordId": "p1-s2-w4",
-        "startMs": 938,
-        "endMs": 1465
+        "startMs": 838,
+        "endMs": 1312
       },
       {
         "wordId": "p1-s2-w5",
-        "startMs": 1455,
-        "endMs": 1732
+        "startMs": 1302,
+        "endMs": 1551
       },
       {
         "wordId": "p1-s2-w6",
-        "startMs": 1722,
-        "endMs": 1832
+        "startMs": 1541,
+        "endMs": 1640
       },
       {
         "wordId": "p1-s2-w7",
-        "startMs": 1822,
-        "endMs": 2233
+        "startMs": 1630,
+        "endMs": 1999
       },
       {
         "wordId": "p1-s2-w8",
-        "startMs": 2223,
-        "endMs": 2880
+        "startMs": 1989,
+        "endMs": 2578
       },
       {
         "wordId": "p1-s2-w9",
-        "startMs": 2870,
-        "endMs": 3052
+        "startMs": 2568,
+        "endMs": 2733
       },
       {
         "wordId": "p1-s2-w10",
-        "startMs": 3042,
-        "endMs": 3223
+        "startMs": 2723,
+        "endMs": 2885
       },
       {
         "wordId": "p1-s2-w11",
-        "startMs": 3213,
-        "endMs": 3420
+        "startMs": 2875,
+        "endMs": 3062
       },
       {
         "wordId": "p1-s2-w12",
-        "startMs": 3410,
-        "endMs": 3825
+        "startMs": 3052,
+        "endMs": 3424
       },
       {
         "wordId": "p1-s2-w13",
-        "startMs": 3815,
-        "endMs": 4060
+        "startMs": 3414,
+        "endMs": 3634
       },
       {
         "wordId": "p1-s2-w14",
-        "startMs": 4050,
-        "endMs": 4138
+        "startMs": 3624,
+        "endMs": 3704
       },
       {
         "wordId": "p1-s2-w15",
-        "startMs": 4128,
-        "endMs": 5100
+        "startMs": 3694,
+        "endMs": 4566
       },
       {
         "wordId": "p1-s2-w16",
-        "startMs": 5090,
-        "endMs": 5291
+        "startMs": 4556,
+        "endMs": 4737
       },
       {
         "wordId": "p1-s2-w17",
-        "startMs": 5281,
-        "endMs": 5370
+        "startMs": 4727,
+        "endMs": 4807
       },
       {
         "wordId": "p1-s2-w18",
-        "startMs": 5360,
-        "endMs": 5992
+        "startMs": 4797,
+        "endMs": 5364
       },
       {
         "wordId": "p1-s2-w19",
-        "startMs": 5982,
-        "endMs": 6114
+        "startMs": 5354,
+        "endMs": 5473
       },
       {
         "wordId": "p1-s2-w20",
-        "startMs": 6104,
-        "endMs": 6189
+        "startMs": 5463,
+        "endMs": 5541
       },
       {
         "wordId": "p1-s2-w21",
-        "startMs": 6179,
-        "endMs": 7203
+        "startMs": 5531,
+        "endMs": 6448
       }
     ]
   },
   "p1-s3": {
     "audioUrl": "/narration/gatsby-ch3/p1-s3.wav",
-    "durationMs": 13400,
+    "durationMs": 12848,
     "words": [
       {
         "wordId": "p1-s3-w1",
-        "startMs": 440,
-        "endMs": 550
+        "startMs": 386,
+        "endMs": 485
       },
       {
         "wordId": "p1-s3-w2",
-        "startMs": 540,
-        "endMs": 775
+        "startMs": 475,
+        "endMs": 686
       },
       {
         "wordId": "p1-s3-w3",
-        "startMs": 765,
-        "endMs": 1080
+        "startMs": 676,
+        "endMs": 957
       },
       {
         "wordId": "p1-s3-w4",
-        "startMs": 1070,
-        "endMs": 1155
+        "startMs": 947,
+        "endMs": 1023
       },
       {
         "wordId": "p1-s3-w5",
-        "startMs": 1145,
-        "endMs": 1238
+        "startMs": 1013,
+        "endMs": 1097
       },
       {
         "wordId": "p1-s3-w6",
-        "startMs": 1228,
-        "endMs": 2023
+        "startMs": 1087,
+        "endMs": 1799
       },
       {
         "wordId": "p1-s3-w7",
-        "startMs": 2013,
-        "endMs": 2208
+        "startMs": 1789,
+        "endMs": 1962
       },
       {
         "wordId": "p1-s3-w8",
-        "startMs": 2198,
-        "endMs": 2521
+        "startMs": 1952,
+        "endMs": 2238
       },
       {
         "wordId": "p1-s3-w9",
-        "startMs": 2511,
-        "endMs": 2671
+        "startMs": 2228,
+        "endMs": 2371
       },
       {
         "wordId": "p1-s3-w10",
-        "startMs": 2661,
-        "endMs": 3065
+        "startMs": 2361,
+        "endMs": 2721
       },
       {
         "wordId": "p1-s3-w11",
-        "startMs": 3055,
-        "endMs": 3485
+        "startMs": 2711,
+        "endMs": 3096
       },
       {
         "wordId": "p1-s3-w12",
-        "startMs": 3475,
-        "endMs": 3640
+        "startMs": 3086,
+        "endMs": 3233
       },
       {
         "wordId": "p1-s3-w13",
-        "startMs": 3630,
-        "endMs": 3717
+        "startMs": 3223,
+        "endMs": 3301
       },
       {
         "wordId": "p1-s3-w14",
-        "startMs": 3707,
-        "endMs": 4060
+        "startMs": 3291,
+        "endMs": 3606
       },
       {
         "wordId": "p1-s3-w15",
-        "startMs": 4050,
-        "endMs": 4136
+        "startMs": 3596,
+        "endMs": 3673
       },
       {
         "wordId": "p1-s3-w16",
-        "startMs": 4126,
-        "endMs": 4281
+        "startMs": 3663,
+        "endMs": 3801
       },
       {
         "wordId": "p1-s3-w17",
-        "startMs": 4271,
-        "endMs": 5153
+        "startMs": 3791,
+        "endMs": 4581
       },
       {
         "wordId": "p1-s3-w18",
-        "startMs": 5143,
-        "endMs": 5312
+        "startMs": 4726,
+        "endMs": 4878
       },
       {
         "wordId": "p1-s3-w19",
-        "startMs": 5302,
-        "endMs": 5642
+        "startMs": 4868,
+        "endMs": 5167
       },
       {
         "wordId": "p1-s3-w20",
-        "startMs": 5632,
-        "endMs": 5728
+        "startMs": 5157,
+        "endMs": 5241
       },
       {
         "wordId": "p1-s3-w21",
-        "startMs": 5718,
-        "endMs": 6021
+        "startMs": 5231,
+        "endMs": 5498
       },
       {
         "wordId": "p1-s3-w22",
-        "startMs": 6011,
-        "endMs": 6127
+        "startMs": 5488,
+        "endMs": 5591
       },
       {
         "wordId": "p1-s3-w23",
-        "startMs": 6117,
-        "endMs": 6205
+        "startMs": 5581,
+        "endMs": 5660
       },
       {
         "wordId": "p1-s3-w24",
-        "startMs": 6195,
-        "endMs": 6498
+        "startMs": 5650,
+        "endMs": 5920
       },
       {
         "wordId": "p1-s3-w25",
-        "startMs": 6488,
-        "endMs": 6820
+        "startMs": 5910,
+        "endMs": 6203
       },
       {
         "wordId": "p1-s3-w26",
-        "startMs": 6810,
-        "endMs": 6895
+        "startMs": 6193,
+        "endMs": 6270
       },
       {
         "wordId": "p1-s3-w27",
-        "startMs": 6885,
-        "endMs": 7043
+        "startMs": 6260,
+        "endMs": 6401
       },
       {
         "wordId": "p1-s3-w28",
-        "startMs": 7033,
-        "endMs": 7770
+        "startMs": 6391,
+        "endMs": 7007
       },
       {
         "wordId": "p1-s3-w29",
-        "startMs": 7760,
-        "endMs": 8010
+        "startMs": 6997,
+        "endMs": 7212
       },
       {
         "wordId": "p1-s3-w30",
-        "startMs": 8000,
-        "endMs": 8163
+        "startMs": 7202,
+        "endMs": 7347
       },
       {
         "wordId": "p1-s3-w31",
-        "startMs": 8153,
-        "endMs": 8392
+        "startMs": 7337,
+        "endMs": 7545
       },
       {
         "wordId": "p1-s3-w32",
-        "startMs": 8382,
-        "endMs": 8969
+        "startMs": 7535,
+        "endMs": 8045
       },
       {
         "wordId": "p1-s3-w33",
-        "startMs": 8959,
-        "endMs": 9280
+        "startMs": 8035,
+        "endMs": 8331
       },
       {
         "wordId": "p1-s3-w34",
-        "startMs": 9270,
-        "endMs": 9397
+        "startMs": 8321,
+        "endMs": 8436
       },
       {
         "wordId": "p1-s3-w35",
-        "startMs": 9387,
-        "endMs": 9783
+        "startMs": 8426,
+        "endMs": 8789
       },
       {
         "wordId": "p1-s3-w36",
-        "startMs": 9773,
-        "endMs": 9863
+        "startMs": 8779,
+        "endMs": 8860
       },
       {
         "wordId": "p1-s3-w37",
-        "startMs": 9853,
-        "endMs": 9950
+        "startMs": 8850,
+        "endMs": 8937
       },
       {
         "wordId": "p1-s3-w38",
-        "startMs": 9940,
-        "endMs": 10828
+        "startMs": 8927,
+        "endMs": 9739
       },
       {
         "wordId": "p1-s3-w39",
-        "startMs": 10818,
-        "endMs": 11205
+        "startMs": 9889,
+        "endMs": 10223
       },
       {
         "wordId": "p1-s3-w40",
-        "startMs": 11195,
-        "endMs": 11863
+        "startMs": 10213,
+        "endMs": 10815
       },
       {
         "wordId": "p1-s3-w41",
-        "startMs": 11853,
-        "endMs": 12067
+        "startMs": 10805,
+        "endMs": 10994
       },
       {
         "wordId": "p1-s3-w42",
-        "startMs": 12057,
-        "endMs": 12630
+        "startMs": 10984,
+        "endMs": 11489
       },
       {
         "wordId": "p1-s3-w43",
-        "startMs": 12620,
-        "endMs": 12714
+        "startMs": 11479,
+        "endMs": 11564
       },
       {
         "wordId": "p1-s3-w44",
-        "startMs": 12704,
-        "endMs": 13601
+        "startMs": 11554,
+        "endMs": 12345
       }
     ]
   },
   "p1-s4": {
     "audioUrl": "/narration/gatsby-ch3/p1-s4.wav",
-    "durationMs": 13100,
+    "durationMs": 12480,
     "words": [
       {
         "wordId": "p1-s4-w1",
-        "startMs": 462,
-        "endMs": 604
+        "startMs": 408,
+        "endMs": 536
       },
       {
         "wordId": "p1-s4-w2",
-        "startMs": 594,
-        "endMs": 1122
+        "startMs": 526,
+        "endMs": 1000
       },
       {
         "wordId": "p1-s4-w3",
-        "startMs": 1112,
-        "endMs": 1295
+        "startMs": 990,
+        "endMs": 1154
       },
       {
         "wordId": "p1-s4-w4",
-        "startMs": 1285,
-        "endMs": 1927
+        "startMs": 1144,
+        "endMs": 1714
       },
       {
         "wordId": "p1-s4-w5",
-        "startMs": 1917,
-        "endMs": 2276
+        "startMs": 1704,
+        "endMs": 2026
       },
       {
         "wordId": "p1-s4-w6",
-        "startMs": 2266,
-        "endMs": 2374
+        "startMs": 2016,
+        "endMs": 2114
       },
       {
         "wordId": "p1-s4-w7",
-        "startMs": 2364,
-        "endMs": 3419
+        "startMs": 2104,
+        "endMs": 3040
       },
       {
         "wordId": "p1-s4-w8",
-        "startMs": 3409,
-        "endMs": 3787
+        "startMs": 3202,
+        "endMs": 3526
       },
       {
         "wordId": "p1-s4-w9",
-        "startMs": 3777,
-        "endMs": 4242
+        "startMs": 3516,
+        "endMs": 3940
       },
       {
         "wordId": "p1-s4-w10",
-        "startMs": 4232,
-        "endMs": 4513
+        "startMs": 3930,
+        "endMs": 4162
       },
       {
         "wordId": "p1-s4-w11",
-        "startMs": 4503,
-        "endMs": 4663
+        "startMs": 4152,
+        "endMs": 4289
       },
       {
         "wordId": "p1-s4-w12",
-        "startMs": 4653,
-        "endMs": 4820
+        "startMs": 4279,
+        "endMs": 4427
       },
       {
         "wordId": "p1-s4-w13",
-        "startMs": 4810,
-        "endMs": 4900
+        "startMs": 4417,
+        "endMs": 4498
       },
       {
         "wordId": "p1-s4-w14",
-        "startMs": 4890,
-        "endMs": 5159
+        "startMs": 4488,
+        "endMs": 4730
       },
       {
         "wordId": "p1-s4-w15",
-        "startMs": 5149,
-        "endMs": 5501
+        "startMs": 4720,
+        "endMs": 5038
       },
       {
         "wordId": "p1-s4-w16",
-        "startMs": 5491,
-        "endMs": 5848
+        "startMs": 5028,
+        "endMs": 5355
       },
       {
         "wordId": "p1-s4-w17",
-        "startMs": 5838,
-        "endMs": 5943
+        "startMs": 5345,
+        "endMs": 5442
       },
       {
         "wordId": "p1-s4-w18",
-        "startMs": 5933,
-        "endMs": 6018
+        "startMs": 5432,
+        "endMs": 5509
       },
       {
         "wordId": "p1-s4-w19",
-        "startMs": 6008,
-        "endMs": 6494
+        "startMs": 5499,
+        "endMs": 5909
       },
       {
         "wordId": "p1-s4-w20",
-        "startMs": 6484,
-        "endMs": 6642
+        "startMs": 5899,
+        "endMs": 6036
       },
       {
         "wordId": "p1-s4-w21",
-        "startMs": 6632,
-        "endMs": 6919
+        "startMs": 6026,
+        "endMs": 6281
       },
       {
         "wordId": "p1-s4-w22",
-        "startMs": 6909,
-        "endMs": 7284
+        "startMs": 6271,
+        "endMs": 6608
       },
       {
         "wordId": "p1-s4-w23",
-        "startMs": 7274,
-        "endMs": 8195
+        "startMs": 6598,
+        "endMs": 7415
       },
       {
         "wordId": "p1-s4-w24",
-        "startMs": 8185,
-        "endMs": 8385
+        "startMs": 7577,
+        "endMs": 7757
       },
       {
         "wordId": "p1-s4-w25",
-        "startMs": 8375,
-        "endMs": 8503
+        "startMs": 7747,
+        "endMs": 7863
       },
       {
         "wordId": "p1-s4-w26",
-        "startMs": 8493,
-        "endMs": 8965
+        "startMs": 7853,
+        "endMs": 8279
       },
       {
         "wordId": "p1-s4-w27",
-        "startMs": 8955,
-        "endMs": 9392
+        "startMs": 8269,
+        "endMs": 8648
       },
       {
         "wordId": "p1-s4-w28",
-        "startMs": 9382,
-        "endMs": 9979
+        "startMs": 8638,
+        "endMs": 9153
       },
       {
         "wordId": "p1-s4-w29",
-        "startMs": 9969,
-        "endMs": 10150
+        "startMs": 9143,
+        "endMs": 9303
       },
       {
         "wordId": "p1-s4-w30",
-        "startMs": 10140,
-        "endMs": 10221
+        "startMs": 9293,
+        "endMs": 9367
       },
       {
         "wordId": "p1-s4-w31",
-        "startMs": 10211,
-        "endMs": 10650
+        "startMs": 9357,
+        "endMs": 9779
       },
       {
         "wordId": "p1-s4-w32",
-        "startMs": 10640,
-        "endMs": 11034
+        "startMs": 9769,
+        "endMs": 10137
       },
       {
         "wordId": "p1-s4-w33",
-        "startMs": 11024,
-        "endMs": 11418
+        "startMs": 10127,
+        "endMs": 10460
       },
       {
         "wordId": "p1-s4-w34",
-        "startMs": 11408,
-        "endMs": 11567
+        "startMs": 10450,
+        "endMs": 10585
       },
       {
         "wordId": "p1-s4-w35",
-        "startMs": 11557,
-        "endMs": 11784
+        "startMs": 10575,
+        "endMs": 10777
       },
       {
         "wordId": "p1-s4-w36",
-        "startMs": 11774,
-        "endMs": 12013
+        "startMs": 10767,
+        "endMs": 10980
       },
       {
         "wordId": "p1-s4-w37",
-        "startMs": 12003,
-        "endMs": 13038
+        "startMs": 10970,
+        "endMs": 11886
       }
     ]
   },
   "p1-s5": {
     "audioUrl": "/narration/gatsby-ch3/p1-s5.wav",
-    "durationMs": 10975,
+    "durationMs": 10951,
     "words": [
       {
         "wordId": "p1-s5-w1",
-        "startMs": 450,
-        "endMs": 567
+        "startMs": 407,
+        "endMs": 514
       },
       {
         "wordId": "p1-s5-w2",
-        "startMs": 557,
-        "endMs": 717
+        "startMs": 504,
+        "endMs": 652
       },
       {
         "wordId": "p1-s5-w3",
-        "startMs": 707,
-        "endMs": 1180
+        "startMs": 642,
+        "endMs": 1077
       },
       {
         "wordId": "p1-s5-w4",
-        "startMs": 1170,
-        "endMs": 1425
+        "startMs": 1067,
+        "endMs": 1299
       },
       {
         "wordId": "p1-s5-w5",
-        "startMs": 1415,
-        "endMs": 2156
+        "startMs": 1289,
+        "endMs": 1982
       },
       {
         "wordId": "p1-s5-w6",
-        "startMs": 2146,
-        "endMs": 2622
+        "startMs": 2132,
+        "endMs": 2559
       },
       {
         "wordId": "p1-s5-w7",
-        "startMs": 2612,
-        "endMs": 2728
+        "startMs": 2549,
+        "endMs": 2654
       },
       {
         "wordId": "p1-s5-w8",
-        "startMs": 2718,
-        "endMs": 3119
+        "startMs": 2644,
+        "endMs": 3006
       },
       {
         "wordId": "p1-s5-w9",
-        "startMs": 3109,
-        "endMs": 4015
+        "startMs": 2996,
+        "endMs": 3819
       },
       {
         "wordId": "p1-s5-w10",
-        "startMs": 4005,
-        "endMs": 4434
+        "startMs": 3993,
+        "endMs": 4361
       },
       {
         "wordId": "p1-s5-w11",
-        "startMs": 4424,
-        "endMs": 4695
+        "startMs": 4351,
+        "endMs": 4591
       },
       {
         "wordId": "p1-s5-w12",
-        "startMs": 4685,
-        "endMs": 4987
+        "startMs": 4581,
+        "endMs": 4851
       },
       {
         "wordId": "p1-s5-w13",
-        "startMs": 4977,
-        "endMs": 5161
+        "startMs": 4841,
+        "endMs": 5009
       },
       {
         "wordId": "p1-s5-w14",
-        "startMs": 5151,
-        "endMs": 5588
+        "startMs": 4999,
+        "endMs": 5393
       },
       {
         "wordId": "p1-s5-w15",
-        "startMs": 5578,
-        "endMs": 5712
+        "startMs": 5383,
+        "endMs": 5503
       },
       {
         "wordId": "p1-s5-w16",
-        "startMs": 5702,
-        "endMs": 6573
+        "startMs": 5493,
+        "endMs": 6276
       },
       {
         "wordId": "p1-s5-w17",
-        "startMs": 6563,
-        "endMs": 6716
+        "startMs": 6266,
+        "endMs": 6405
       },
       {
         "wordId": "p1-s5-w18",
-        "startMs": 6706,
-        "endMs": 7212
+        "startMs": 6395,
+        "endMs": 6855
       },
       {
         "wordId": "p1-s5-w19",
-        "startMs": 7202,
-        "endMs": 7337
+        "startMs": 6845,
+        "endMs": 6967
       },
       {
         "wordId": "p1-s5-w20",
-        "startMs": 7327,
-        "endMs": 8501
+        "startMs": 6957,
+        "endMs": 8021
       },
       {
         "wordId": "p1-s5-w21",
-        "startMs": 8491,
-        "endMs": 8982
+        "startMs": 8173,
+        "endMs": 8617
       },
       {
         "wordId": "p1-s5-w22",
-        "startMs": 8972,
-        "endMs": 9071
+        "startMs": 8607,
+        "endMs": 8697
       },
       {
         "wordId": "p1-s5-w23",
-        "startMs": 9061,
-        "endMs": 9608
+        "startMs": 8687,
+        "endMs": 9162
       },
       {
         "wordId": "p1-s5-w24",
-        "startMs": 9598,
-        "endMs": 9694
+        "startMs": 9152,
+        "endMs": 9241
       },
       {
         "wordId": "p1-s5-w25",
-        "startMs": 9684,
-        "endMs": 9770
+        "startMs": 9231,
+        "endMs": 9311
       },
       {
         "wordId": "p1-s5-w26",
-        "startMs": 9760,
-        "endMs": 9992
+        "startMs": 9301,
+        "endMs": 9526
       },
       {
         "wordId": "p1-s5-w27",
-        "startMs": 9982,
-        "endMs": 10966
+        "startMs": 9516,
+        "endMs": 10423
       }
     ]
   },
   "p2-s1": {
     "audioUrl": "/narration/gatsby-ch3/p2-s1.wav",
-    "durationMs": 11500,
+    "durationMs": 10940,
     "words": [
       {
         "wordId": "p2-s1-w1",
-        "startMs": 456,
-        "endMs": 724
+        "startMs": 403,
+        "endMs": 643
       },
       {
         "wordId": "p2-s1-w2",
-        "startMs": 714,
-        "endMs": 1229
+        "startMs": 633,
+        "endMs": 1078
       },
       {
         "wordId": "p2-s1-w3",
-        "startMs": 1219,
-        "endMs": 1609
+        "startMs": 1068,
+        "endMs": 1409
       },
       {
         "wordId": "p2-s1-w4",
-        "startMs": 1599,
-        "endMs": 1913
+        "startMs": 1399,
+        "endMs": 1679
       },
       {
         "wordId": "p2-s1-w5",
-        "startMs": 1903,
-        "endMs": 2003
+        "startMs": 1669,
+        "endMs": 1759
       },
       {
         "wordId": "p2-s1-w6",
-        "startMs": 1993,
-        "endMs": 2894
+        "startMs": 1749,
+        "endMs": 2540
       },
       {
         "wordId": "p2-s1-w7",
-        "startMs": 2884,
-        "endMs": 3076
+        "startMs": 2530,
+        "endMs": 2702
       },
       {
         "wordId": "p2-s1-w8",
-        "startMs": 3066,
-        "endMs": 3473
+        "startMs": 2692,
+        "endMs": 3044
       },
       {
         "wordId": "p2-s1-w9",
-        "startMs": 3463,
-        "endMs": 3893
+        "startMs": 3034,
+        "endMs": 3421
       },
       {
         "wordId": "p2-s1-w10",
-        "startMs": 3883,
-        "endMs": 4040
+        "startMs": 3411,
+        "endMs": 3554
       },
       {
         "wordId": "p2-s1-w11",
-        "startMs": 4030,
-        "endMs": 4105
+        "startMs": 3544,
+        "endMs": 3614
       },
       {
         "wordId": "p2-s1-w12",
-        "startMs": 4095,
-        "endMs": 4600
+        "startMs": 3604,
+        "endMs": 4040
       },
       {
         "wordId": "p2-s1-w13",
-        "startMs": 4590,
-        "endMs": 4721
+        "startMs": 4030,
+        "endMs": 4148
       },
       {
         "wordId": "p2-s1-w14",
-        "startMs": 4711,
-        "endMs": 4842
+        "startMs": 4138,
+        "endMs": 4252
       },
       {
         "wordId": "p2-s1-w15",
-        "startMs": 4832,
-        "endMs": 5684
+        "startMs": 4242,
+        "endMs": 4983
       },
       {
         "wordId": "p2-s1-w16",
-        "startMs": 5674,
-        "endMs": 6015
+        "startMs": 5244,
+        "endMs": 5537
       },
       {
         "wordId": "p2-s1-w17",
-        "startMs": 6005,
-        "endMs": 6393
+        "startMs": 5527,
+        "endMs": 5874
       },
       {
         "wordId": "p2-s1-w18",
-        "startMs": 6383,
-        "endMs": 6633
+        "startMs": 5864,
+        "endMs": 6088
       },
       {
         "wordId": "p2-s1-w19",
-        "startMs": 6623,
-        "endMs": 6906
+        "startMs": 6078,
+        "endMs": 6330
       },
       {
         "wordId": "p2-s1-w20",
-        "startMs": 6896,
-        "endMs": 7784
+        "startMs": 6320,
+        "endMs": 7108
       },
       {
         "wordId": "p2-s1-w21",
-        "startMs": 7774,
-        "endMs": 7972
+        "startMs": 7098,
+        "endMs": 7275
       },
       {
         "wordId": "p2-s1-w22",
-        "startMs": 7962,
-        "endMs": 8397
+        "startMs": 7265,
+        "endMs": 7635
       },
       {
         "wordId": "p2-s1-w23",
-        "startMs": 8387,
-        "endMs": 8653
+        "startMs": 7625,
+        "endMs": 7860
       },
       {
         "wordId": "p2-s1-w24",
-        "startMs": 8643,
-        "endMs": 8816
+        "startMs": 7850,
+        "endMs": 8005
       },
       {
         "wordId": "p2-s1-w25",
-        "startMs": 8806,
-        "endMs": 9097
+        "startMs": 7995,
+        "endMs": 8253
       },
       {
         "wordId": "p2-s1-w26",
-        "startMs": 9087,
-        "endMs": 9356
+        "startMs": 8243,
+        "endMs": 8481
       },
       {
         "wordId": "p2-s1-w27",
-        "startMs": 9346,
-        "endMs": 9470
+        "startMs": 8471,
+        "endMs": 8582
       },
       {
         "wordId": "p2-s1-w28",
-        "startMs": 9460,
-        "endMs": 9536
+        "startMs": 8572,
+        "endMs": 8639
       },
       {
         "wordId": "p2-s1-w29",
-        "startMs": 9526,
-        "endMs": 10001
+        "startMs": 8629,
+        "endMs": 9052
       },
       {
         "wordId": "p2-s1-w30",
-        "startMs": 9991,
-        "endMs": 10109
+        "startMs": 9042,
+        "endMs": 9147
       },
       {
         "wordId": "p2-s1-w31",
-        "startMs": 10099,
-        "endMs": 10547
+        "startMs": 9137,
+        "endMs": 9536
       },
       {
         "wordId": "p2-s1-w32",
-        "startMs": 10537,
-        "endMs": 11480
+        "startMs": 9526,
+        "endMs": 10361
       }
     ]
   },
   "p2-s2": {
     "audioUrl": "/narration/gatsby-ch3/p2-s2.wav",
-    "durationMs": 9575,
+    "durationMs": 8700,
     "words": [
       {
         "wordId": "p2-s2-w1",
-        "startMs": 443,
-        "endMs": 554
+        "startMs": 388,
+        "endMs": 487
       },
       {
         "wordId": "p2-s2-w2",
-        "startMs": 544,
-        "endMs": 676
+        "startMs": 477,
+        "endMs": 594
       },
       {
         "wordId": "p2-s2-w3",
-        "startMs": 666,
-        "endMs": 733
+        "startMs": 584,
+        "endMs": 645
       },
       {
         "wordId": "p2-s2-w4",
-        "startMs": 723,
-        "endMs": 1210
+        "startMs": 635,
+        "endMs": 1064
       },
       {
         "wordId": "p2-s2-w5",
-        "startMs": 1200,
-        "endMs": 1308
+        "startMs": 1054,
+        "endMs": 1150
       },
       {
         "wordId": "p2-s2-w6",
-        "startMs": 1298,
-        "endMs": 1388
+        "startMs": 1140,
+        "endMs": 1220
       },
       {
         "wordId": "p2-s2-w7",
-        "startMs": 1378,
-        "endMs": 2042
+        "startMs": 1210,
+        "endMs": 1796
       },
       {
         "wordId": "p2-s2-w8",
-        "startMs": 2032,
-        "endMs": 2258
+        "startMs": 1786,
+        "endMs": 1986
       },
       {
         "wordId": "p2-s2-w9",
-        "startMs": 2248,
-        "endMs": 2406
+        "startMs": 1976,
+        "endMs": 2116
       },
       {
         "wordId": "p2-s2-w10",
-        "startMs": 2396,
-        "endMs": 2956
+        "startMs": 2106,
+        "endMs": 2600
       },
       {
         "wordId": "p2-s2-w11",
-        "startMs": 2946,
-        "endMs": 3066
+        "startMs": 2590,
+        "endMs": 2696
       },
       {
         "wordId": "p2-s2-w12",
-        "startMs": 3056,
-        "endMs": 3408
+        "startMs": 2686,
+        "endMs": 2998
       },
       {
         "wordId": "p2-s2-w13",
-        "startMs": 3398,
-        "endMs": 3537
+        "startMs": 2988,
+        "endMs": 3111
       },
       {
         "wordId": "p2-s2-w14",
-        "startMs": 3527,
-        "endMs": 3764
+        "startMs": 3101,
+        "endMs": 3310
       },
       {
         "wordId": "p2-s2-w15",
-        "startMs": 3754,
-        "endMs": 4065
+        "startMs": 3300,
+        "endMs": 3575
       },
       {
         "wordId": "p2-s2-w16",
-        "startMs": 4055,
-        "endMs": 4549
+        "startMs": 3565,
+        "endMs": 4001
       },
       {
         "wordId": "p2-s2-w17",
-        "startMs": 4539,
-        "endMs": 4676
+        "startMs": 3991,
+        "endMs": 4113
       },
       {
         "wordId": "p2-s2-w18",
-        "startMs": 4666,
-        "endMs": 4924
+        "startMs": 4103,
+        "endMs": 4330
       },
       {
         "wordId": "p2-s2-w19",
-        "startMs": 4914,
-        "endMs": 5008
+        "startMs": 4320,
+        "endMs": 4404
       },
       {
         "wordId": "p2-s2-w20",
-        "startMs": 4998,
-        "endMs": 5759
+        "startMs": 4394,
+        "endMs": 5065
       },
       {
         "wordId": "p2-s2-w21",
-        "startMs": 5749,
-        "endMs": 5968
+        "startMs": 5055,
+        "endMs": 5249
       },
       {
         "wordId": "p2-s2-w22",
-        "startMs": 5958,
-        "endMs": 6025
+        "startMs": 5239,
+        "endMs": 5299
       },
       {
         "wordId": "p2-s2-w23",
-        "startMs": 6015,
-        "endMs": 6244
+        "startMs": 5289,
+        "endMs": 5492
       },
       {
         "wordId": "p2-s2-w24",
-        "startMs": 6234,
-        "endMs": 6522
+        "startMs": 5482,
+        "endMs": 5736
       },
       {
         "wordId": "p2-s2-w25",
-        "startMs": 6512,
-        "endMs": 6667
+        "startMs": 5726,
+        "endMs": 5864
       },
       {
         "wordId": "p2-s2-w26",
-        "startMs": 6657,
-        "endMs": 7033
+        "startMs": 5854,
+        "endMs": 6186
       },
       {
         "wordId": "p2-s2-w27",
-        "startMs": 7023,
-        "endMs": 7264
+        "startMs": 6176,
+        "endMs": 6389
       },
       {
         "wordId": "p2-s2-w28",
-        "startMs": 7254,
-        "endMs": 7571
+        "startMs": 6379,
+        "endMs": 6659
       },
       {
         "wordId": "p2-s2-w29",
-        "startMs": 7561,
-        "endMs": 8101
+        "startMs": 6649,
+        "endMs": 7124
       },
       {
         "wordId": "p2-s2-w30",
-        "startMs": 8091,
-        "endMs": 8280
+        "startMs": 7114,
+        "endMs": 7283
       },
       {
         "wordId": "p2-s2-w31",
-        "startMs": 8270,
-        "endMs": 8348
+        "startMs": 7273,
+        "endMs": 7342
       },
       {
         "wordId": "p2-s2-w32",
-        "startMs": 8338,
-        "endMs": 8797
+        "startMs": 7332,
+        "endMs": 7737
       },
       {
         "wordId": "p2-s2-w33",
-        "startMs": 8787,
-        "endMs": 9643
+        "startMs": 7727,
+        "endMs": 8481
       }
     ]
   },
   "p3-s1": {
     "audioUrl": "/narration/gatsby-ch3/p3-s1.wav",
-    "durationMs": 10125,
+    "durationMs": 9800,
     "words": [
       {
         "wordId": "p3-s1-w1",
-        "startMs": 439,
-        "endMs": 563
+        "startMs": 405,
+        "endMs": 520
       },
       {
         "wordId": "p3-s1-w2",
-        "startMs": 553,
-        "endMs": 805
+        "startMs": 510,
+        "endMs": 743
       },
       {
         "wordId": "p3-s1-w3",
-        "startMs": 795,
-        "endMs": 1004
+        "startMs": 733,
+        "endMs": 927
       },
       {
         "wordId": "p3-s1-w4",
-        "startMs": 994,
-        "endMs": 1067
+        "startMs": 917,
+        "endMs": 985
       },
       {
         "wordId": "p3-s1-w5",
-        "startMs": 1057,
-        "endMs": 1672
+        "startMs": 975,
+        "endMs": 1544
       },
       {
         "wordId": "p3-s1-w6",
-        "startMs": 1662,
-        "endMs": 1800
+        "startMs": 1534,
+        "endMs": 1662
       },
       {
         "wordId": "p3-s1-w7",
-        "startMs": 1790,
-        "endMs": 2050
+        "startMs": 1652,
+        "endMs": 1893
       },
       {
         "wordId": "p3-s1-w8",
-        "startMs": 2040,
-        "endMs": 2149
+        "startMs": 1883,
+        "endMs": 1984
       },
       {
         "wordId": "p3-s1-w9",
-        "startMs": 2139,
-        "endMs": 2650
+        "startMs": 1974,
+        "endMs": 2447
       },
       {
         "wordId": "p3-s1-w10",
-        "startMs": 2640,
-        "endMs": 2889
+        "startMs": 2437,
+        "endMs": 2668
       },
       {
         "wordId": "p3-s1-w11",
-        "startMs": 2879,
-        "endMs": 3352
+        "startMs": 2658,
+        "endMs": 3095
       },
       {
         "wordId": "p3-s1-w12",
-        "startMs": 3342,
-        "endMs": 3541
+        "startMs": 3085,
+        "endMs": 3270
       },
       {
         "wordId": "p3-s1-w13",
-        "startMs": 3531,
-        "endMs": 3941
+        "startMs": 3260,
+        "endMs": 3639
       },
       {
         "wordId": "p3-s1-w14",
-        "startMs": 3931,
-        "endMs": 4308
+        "startMs": 3629,
+        "endMs": 3978
       },
       {
         "wordId": "p3-s1-w15",
-        "startMs": 4298,
-        "endMs": 4519
+        "startMs": 3968,
+        "endMs": 4172
       },
       {
         "wordId": "p3-s1-w16",
-        "startMs": 4509,
-        "endMs": 4617
+        "startMs": 4162,
+        "endMs": 4263
       },
       {
         "wordId": "p3-s1-w17",
-        "startMs": 4607,
-        "endMs": 5542
+        "startMs": 4253,
+        "endMs": 5117
       },
       {
         "wordId": "p3-s1-w18",
-        "startMs": 5532,
-        "endMs": 5725
+        "startMs": 5107,
+        "endMs": 5286
       },
       {
         "wordId": "p3-s1-w19",
-        "startMs": 5715,
-        "endMs": 6001
+        "startMs": 5276,
+        "endMs": 5541
       },
       {
         "wordId": "p3-s1-w20",
-        "startMs": 5991,
-        "endMs": 6409
+        "startMs": 5531,
+        "endMs": 5918
       },
       {
         "wordId": "p3-s1-w21",
-        "startMs": 6399,
-        "endMs": 6904
+        "startMs": 5908,
+        "endMs": 6375
       },
       {
         "wordId": "p3-s1-w22",
-        "startMs": 6894,
-        "endMs": 7033
+        "startMs": 6365,
+        "endMs": 6494
       },
       {
         "wordId": "p3-s1-w23",
-        "startMs": 7023,
-        "endMs": 7217
+        "startMs": 6484,
+        "endMs": 6664
       },
       {
         "wordId": "p3-s1-w24",
-        "startMs": 7207,
-        "endMs": 7286
+        "startMs": 6654,
+        "endMs": 6728
       },
       {
         "wordId": "p3-s1-w25",
-        "startMs": 7276,
-        "endMs": 7744
+        "startMs": 6718,
+        "endMs": 7150
       },
       {
         "wordId": "p3-s1-w26",
-        "startMs": 7734,
-        "endMs": 8042
+        "startMs": 7140,
+        "endMs": 7426
       },
       {
         "wordId": "p3-s1-w27",
-        "startMs": 8032,
-        "endMs": 8162
+        "startMs": 7416,
+        "endMs": 7537
       },
       {
         "wordId": "p3-s1-w28",
-        "startMs": 8152,
-        "endMs": 8793
+        "startMs": 7527,
+        "endMs": 8119
       },
       {
         "wordId": "p3-s1-w29",
-        "startMs": 8783,
-        "endMs": 9274
+        "startMs": 8109,
+        "endMs": 8564
       },
       {
         "wordId": "p3-s1-w30",
-        "startMs": 9264,
-        "endMs": 10184
+        "startMs": 8554,
+        "endMs": 9404
       }
     ]
   },
   "p3-s2": {
     "audioUrl": "/narration/gatsby-ch3/p3-s2.wav",
-    "durationMs": 10675,
+    "durationMs": 10636,
     "words": [
       {
         "wordId": "p3-s2-w1",
-        "startMs": 457,
-        "endMs": 588
+        "startMs": 429,
+        "endMs": 554
       },
       {
         "wordId": "p3-s2-w2",
-        "startMs": 578,
-        "endMs": 954
+        "startMs": 544,
+        "endMs": 901
       },
       {
         "wordId": "p3-s2-w3",
-        "startMs": 944,
-        "endMs": 1711
+        "startMs": 891,
+        "endMs": 1637
       },
       {
         "wordId": "p3-s2-w4",
-        "startMs": 1701,
-        "endMs": 2167
+        "startMs": 1801,
+        "endMs": 2219
       },
       {
         "wordId": "p3-s2-w5",
-        "startMs": 2157,
-        "endMs": 2320
+        "startMs": 2209,
+        "endMs": 2363
       },
       {
         "wordId": "p3-s2-w6",
-        "startMs": 2310,
-        "endMs": 2751
+        "startMs": 2353,
+        "endMs": 2765
       },
       {
         "wordId": "p3-s2-w7",
-        "startMs": 2741,
-        "endMs": 3623
+        "startMs": 2755,
+        "endMs": 3604
       },
       {
         "wordId": "p3-s2-w8",
-        "startMs": 3613,
-        "endMs": 4055
+        "startMs": 3775,
+        "endMs": 4171
       },
       {
         "wordId": "p3-s2-w9",
-        "startMs": 4045,
-        "endMs": 4378
+        "startMs": 4161,
+        "endMs": 4478
       },
       {
         "wordId": "p3-s2-w10",
-        "startMs": 4368,
-        "endMs": 4809
+        "startMs": 4468,
+        "endMs": 4873
       },
       {
         "wordId": "p3-s2-w11",
-        "startMs": 4799,
-        "endMs": 5181
+        "startMs": 4863,
+        "endMs": 5215
       },
       {
         "wordId": "p3-s2-w12",
-        "startMs": 5171,
-        "endMs": 5509
+        "startMs": 5205,
+        "endMs": 5516
       },
       {
         "wordId": "p3-s2-w13",
-        "startMs": 5499,
-        "endMs": 5938
+        "startMs": 5506,
+        "endMs": 5917
       },
       {
         "wordId": "p3-s2-w14",
-        "startMs": 5928,
-        "endMs": 6029
+        "startMs": 5907,
+        "endMs": 6002
       },
       {
         "wordId": "p3-s2-w15",
-        "startMs": 6019,
-        "endMs": 6496
+        "startMs": 5992,
+        "endMs": 6442
       },
       {
         "wordId": "p3-s2-w16",
-        "startMs": 6486,
-        "endMs": 7381
+        "startMs": 6432,
+        "endMs": 7217
       },
       {
         "wordId": "p3-s2-w17",
-        "startMs": 7371,
-        "endMs": 7559
+        "startMs": 7207,
+        "endMs": 7372
       },
       {
         "wordId": "p3-s2-w18",
-        "startMs": 7549,
-        "endMs": 8023
+        "startMs": 7362,
+        "endMs": 7810
       },
       {
         "wordId": "p3-s2-w19",
-        "startMs": 8013,
-        "endMs": 8381
+        "startMs": 7800,
+        "endMs": 8148
       },
       {
         "wordId": "p3-s2-w20",
-        "startMs": 8371,
-        "endMs": 8491
+        "startMs": 8138,
+        "endMs": 8254
       },
       {
         "wordId": "p3-s2-w21",
-        "startMs": 8481,
-        "endMs": 8961
+        "startMs": 8244,
+        "endMs": 8699
       },
       {
         "wordId": "p3-s2-w22",
-        "startMs": 8951,
-        "endMs": 9387
+        "startMs": 8689,
+        "endMs": 9108
       },
       {
         "wordId": "p3-s2-w23",
-        "startMs": 9377,
-        "endMs": 9503
+        "startMs": 9098,
+        "endMs": 9218
       },
       {
         "wordId": "p3-s2-w24",
-        "startMs": 9493,
-        "endMs": 9572
+        "startMs": 9208,
+        "endMs": 9283
       },
       {
         "wordId": "p3-s2-w25",
-        "startMs": 9562,
-        "endMs": 9855
+        "startMs": 9273,
+        "endMs": 9548
       },
       {
         "wordId": "p3-s2-w26",
-        "startMs": 9845,
-        "endMs": 10708
+        "startMs": 9538,
+        "endMs": 10352
       }
     ]
   },
   "p3-s3": {
     "audioUrl": "/narration/gatsby-ch3/p3-s3.wav",
-    "durationMs": 11525,
+    "durationMs": 11281,
     "words": [
       {
         "wordId": "p3-s3-w1",
-        "startMs": 454,
-        "endMs": 545
+        "startMs": 428,
+        "endMs": 515
       },
       {
         "wordId": "p3-s3-w2",
-        "startMs": 535,
-        "endMs": 620
+        "startMs": 505,
+        "endMs": 586
       },
       {
         "wordId": "p3-s3-w3",
-        "startMs": 610,
-        "endMs": 918
+        "startMs": 576,
+        "endMs": 867
       },
       {
         "wordId": "p3-s3-w4",
-        "startMs": 908,
-        "endMs": 1268
+        "startMs": 857,
+        "endMs": 1199
       },
       {
         "wordId": "p3-s3-w5",
-        "startMs": 1258,
-        "endMs": 1368
+        "startMs": 1189,
+        "endMs": 1294
       },
       {
         "wordId": "p3-s3-w6",
-        "startMs": 1358,
-        "endMs": 1669
+        "startMs": 1284,
+        "endMs": 1584
       },
       {
         "wordId": "p3-s3-w7",
-        "startMs": 1659,
-        "endMs": 1808
+        "startMs": 1574,
+        "endMs": 1717
       },
       {
         "wordId": "p3-s3-w8",
-        "startMs": 1798,
-        "endMs": 1889
+        "startMs": 1707,
+        "endMs": 1793
       },
       {
         "wordId": "p3-s3-w9",
-        "startMs": 1879,
-        "endMs": 2203
+        "startMs": 1783,
+        "endMs": 2091
       },
       {
         "wordId": "p3-s3-w10",
-        "startMs": 2193,
-        "endMs": 2567
+        "startMs": 2081,
+        "endMs": 2439
       },
       {
         "wordId": "p3-s3-w11",
-        "startMs": 2557,
-        "endMs": 2856
+        "startMs": 2429,
+        "endMs": 2711
       },
       {
         "wordId": "p3-s3-w12",
-        "startMs": 2846,
-        "endMs": 2985
+        "startMs": 2701,
+        "endMs": 2832
       },
       {
         "wordId": "p3-s3-w13",
-        "startMs": 2975,
-        "endMs": 3204
+        "startMs": 2822,
+        "endMs": 3040
       },
       {
         "wordId": "p3-s3-w14",
-        "startMs": 3194,
-        "endMs": 3853
+        "startMs": 3030,
+        "endMs": 3660
       },
       {
         "wordId": "p3-s3-w15",
-        "startMs": 3843,
-        "endMs": 3991
+        "startMs": 3801,
+        "endMs": 3939
       },
       {
         "wordId": "p3-s3-w16",
-        "startMs": 3981,
-        "endMs": 4400
+        "startMs": 3929,
+        "endMs": 4327
       },
       {
         "wordId": "p3-s3-w17",
-        "startMs": 4390,
-        "endMs": 4563
+        "startMs": 4317,
+        "endMs": 4482
       },
       {
         "wordId": "p3-s3-w18",
-        "startMs": 4553,
-        "endMs": 4967
+        "startMs": 4472,
+        "endMs": 4862
       },
       {
         "wordId": "p3-s3-w19",
-        "startMs": 4957,
-        "endMs": 5095
+        "startMs": 4852,
+        "endMs": 4984
       },
       {
         "wordId": "p3-s3-w20",
-        "startMs": 5085,
-        "endMs": 5866
+        "startMs": 4974,
+        "endMs": 5706
       },
       {
         "wordId": "p3-s3-w21",
-        "startMs": 5856,
-        "endMs": 6034
+        "startMs": 5696,
+        "endMs": 5865
       },
       {
         "wordId": "p3-s3-w22",
-        "startMs": 6024,
-        "endMs": 6184
+        "startMs": 5855,
+        "endMs": 6007
       },
       {
         "wordId": "p3-s3-w23",
-        "startMs": 6174,
-        "endMs": 6629
+        "startMs": 5997,
+        "endMs": 6430
       },
       {
         "wordId": "p3-s3-w24",
-        "startMs": 6619,
-        "endMs": 6888
+        "startMs": 6420,
+        "endMs": 6675
       },
       {
         "wordId": "p3-s3-w25",
-        "startMs": 6878,
-        "endMs": 7156
+        "startMs": 6665,
+        "endMs": 6924
       },
       {
         "wordId": "p3-s3-w26",
-        "startMs": 7146,
-        "endMs": 7863
+        "startMs": 6914,
+        "endMs": 7580
       },
       {
         "wordId": "p3-s3-w27",
-        "startMs": 7853,
-        "endMs": 8086
+        "startMs": 7570,
+        "endMs": 7784
       },
       {
         "wordId": "p3-s3-w28",
-        "startMs": 8076,
-        "endMs": 8361
+        "startMs": 7774,
+        "endMs": 8044
       },
       {
         "wordId": "p3-s3-w29",
-        "startMs": 8351,
-        "endMs": 8436
+        "startMs": 8034,
+        "endMs": 8115
       },
       {
         "wordId": "p3-s3-w30",
-        "startMs": 8426,
-        "endMs": 8588
+        "startMs": 8105,
+        "endMs": 8259
       },
       {
         "wordId": "p3-s3-w31",
-        "startMs": 8578,
-        "endMs": 8994
+        "startMs": 8249,
+        "endMs": 8642
       },
       {
         "wordId": "p3-s3-w32",
-        "startMs": 8984,
-        "endMs": 9370
+        "startMs": 8632,
+        "endMs": 8998
       },
       {
         "wordId": "p3-s3-w33",
-        "startMs": 9360,
-        "endMs": 9489
+        "startMs": 8988,
+        "endMs": 9110
       },
       {
         "wordId": "p3-s3-w34",
-        "startMs": 9479,
-        "endMs": 9712
+        "startMs": 9100,
+        "endMs": 9321
       },
       {
         "wordId": "p3-s3-w35",
-        "startMs": 9702,
-        "endMs": 10001
+        "startMs": 9311,
+        "endMs": 9591
       },
       {
         "wordId": "p3-s3-w36",
-        "startMs": 9991,
-        "endMs": 10112
+        "startMs": 9581,
+        "endMs": 9696
       },
       {
         "wordId": "p3-s3-w37",
-        "startMs": 10102,
-        "endMs": 10288
+        "startMs": 9686,
+        "endMs": 9863
       },
       {
         "wordId": "p3-s3-w38",
-        "startMs": 10278,
-        "endMs": 10460
+        "startMs": 9853,
+        "endMs": 10023
       },
       {
         "wordId": "p3-s3-w39",
-        "startMs": 10450,
-        "endMs": 10613
+        "startMs": 10013,
+        "endMs": 10168
       },
       {
         "wordId": "p3-s3-w40",
-        "startMs": 10603,
-        "endMs": 11513
+        "startMs": 10158,
+        "endMs": 11011
       }
     ]
   },
   "p4-s1": {
     "audioUrl": "/narration/gatsby-ch3/p4-s1.wav",
-    "durationMs": 12600,
+    "durationMs": 12319,
     "words": [
       {
         "wordId": "p4-s1-w1",
-        "startMs": 446,
-        "endMs": 643
+        "startMs": 412,
+        "endMs": 595
       },
       {
         "wordId": "p4-s1-w2",
-        "startMs": 633,
-        "endMs": 945
+        "startMs": 585,
+        "endMs": 872
       },
       {
         "wordId": "p4-s1-w3",
-        "startMs": 935,
-        "endMs": 1363
+        "startMs": 862,
+        "endMs": 1254
       },
       {
         "wordId": "p4-s1-w4",
-        "startMs": 1353,
-        "endMs": 1476
+        "startMs": 1244,
+        "endMs": 1356
       },
       {
         "wordId": "p4-s1-w5",
-        "startMs": 1466,
-        "endMs": 1967
+        "startMs": 1346,
+        "endMs": 1808
       },
       {
         "wordId": "p4-s1-w6",
-        "startMs": 1957,
-        "endMs": 2166
+        "startMs": 1798,
+        "endMs": 1992
       },
       {
         "wordId": "p4-s1-w7",
-        "startMs": 2156,
-        "endMs": 3078
+        "startMs": 1982,
+        "endMs": 2830
       },
       {
         "wordId": "p4-s1-w8",
-        "startMs": 3068,
-        "endMs": 3356
+        "startMs": 2996,
+        "endMs": 3247
       },
       {
         "wordId": "p4-s1-w9",
-        "startMs": 3346,
-        "endMs": 3625
+        "startMs": 3237,
+        "endMs": 3491
       },
       {
         "wordId": "p4-s1-w10",
-        "startMs": 3615,
-        "endMs": 4126
+        "startMs": 3481,
+        "endMs": 3947
       },
       {
         "wordId": "p4-s1-w11",
-        "startMs": 4116,
-        "endMs": 4912
+        "startMs": 3937,
+        "endMs": 4694
       },
       {
         "wordId": "p4-s1-w12",
-        "startMs": 4902,
-        "endMs": 5061
+        "startMs": 4842,
+        "endMs": 4986
       },
       {
         "wordId": "p4-s1-w13",
-        "startMs": 5051,
-        "endMs": 5123
+        "startMs": 4976,
+        "endMs": 5040
       },
       {
         "wordId": "p4-s1-w14",
-        "startMs": 5113,
-        "endMs": 5401
+        "startMs": 5030,
+        "endMs": 5286
       },
       {
         "wordId": "p4-s1-w15",
-        "startMs": 5391,
-        "endMs": 5813
+        "startMs": 5276,
+        "endMs": 5660
       },
       {
         "wordId": "p4-s1-w16",
-        "startMs": 5803,
-        "endMs": 5942
+        "startMs": 5650,
+        "endMs": 5777
       },
       {
         "wordId": "p4-s1-w17",
-        "startMs": 5932,
-        "endMs": 6450
+        "startMs": 5767,
+        "endMs": 6249
       },
       {
         "wordId": "p4-s1-w18",
-        "startMs": 6440,
-        "endMs": 6568
+        "startMs": 6239,
+        "endMs": 6358
       },
       {
         "wordId": "p4-s1-w19",
-        "startMs": 6558,
-        "endMs": 7267
+        "startMs": 6348,
+        "endMs": 7003
       },
       {
         "wordId": "p4-s1-w20",
-        "startMs": 7257,
-        "endMs": 7384
+        "startMs": 6993,
+        "endMs": 7111
       },
       {
         "wordId": "p4-s1-w21",
-        "startMs": 7374,
-        "endMs": 8177
+        "startMs": 7101,
+        "endMs": 7844
       },
       {
         "wordId": "p4-s1-w22",
-        "startMs": 8167,
-        "endMs": 8301
+        "startMs": 7834,
+        "endMs": 7959
       },
       {
         "wordId": "p4-s1-w23",
-        "startMs": 8291,
-        "endMs": 8804
+        "startMs": 7949,
+        "endMs": 8408
       },
       {
         "wordId": "p4-s1-w24",
-        "startMs": 8794,
-        "endMs": 8934
+        "startMs": 8398,
+        "endMs": 8524
       },
       {
         "wordId": "p4-s1-w25",
-        "startMs": 8924,
-        "endMs": 9439
+        "startMs": 8514,
+        "endMs": 8987
       },
       {
         "wordId": "p4-s1-w26",
-        "startMs": 9429,
-        "endMs": 9555
+        "startMs": 8977,
+        "endMs": 9092
       },
       {
         "wordId": "p4-s1-w27",
-        "startMs": 9545,
-        "endMs": 10574
+        "startMs": 9082,
+        "endMs": 10043
       },
       {
         "wordId": "p4-s1-w28",
-        "startMs": 10564,
-        "endMs": 10729
+        "startMs": 10202,
+        "endMs": 10347
       },
       {
         "wordId": "p4-s1-w29",
-        "startMs": 10719,
-        "endMs": 11124
+        "startMs": 10337,
+        "endMs": 10715
       },
       {
         "wordId": "p4-s1-w30",
-        "startMs": 11114,
-        "endMs": 11266
+        "startMs": 10705,
+        "endMs": 10848
       },
       {
         "wordId": "p4-s1-w31",
-        "startMs": 11256,
-        "endMs": 11500
+        "startMs": 10838,
+        "endMs": 11064
       },
       {
         "wordId": "p4-s1-w32",
-        "startMs": 11490,
-        "endMs": 12474
+        "startMs": 11054,
+        "endMs": 11959
       }
     ]
   },
   "p4-s2": {
     "audioUrl": "/narration/gatsby-ch3/p4-s2.wav",
-    "durationMs": 16575,
+    "durationMs": 16067,
     "words": [
       {
         "wordId": "p4-s2-w1",
-        "startMs": 432,
-        "endMs": 506
+        "startMs": 382,
+        "endMs": 449
       },
       {
         "wordId": "p4-s2-w2",
-        "startMs": 496,
-        "endMs": 800
+        "startMs": 439,
+        "endMs": 709
       },
       {
         "wordId": "p4-s2-w3",
-        "startMs": 790,
-        "endMs": 1170
+        "startMs": 699,
+        "endMs": 1037
       },
       {
         "wordId": "p4-s2-w4",
-        "startMs": 1160,
-        "endMs": 1294
+        "startMs": 1027,
+        "endMs": 1147
       },
       {
         "wordId": "p4-s2-w5",
-        "startMs": 1284,
-        "endMs": 1491
+        "startMs": 1137,
+        "endMs": 1322
       },
       {
         "wordId": "p4-s2-w6",
-        "startMs": 1481,
-        "endMs": 1621
+        "startMs": 1312,
+        "endMs": 1437
       },
       {
         "wordId": "p4-s2-w7",
-        "startMs": 1611,
-        "endMs": 1773
+        "startMs": 1427,
+        "endMs": 1572
       },
       {
         "wordId": "p4-s2-w8",
-        "startMs": 1763,
-        "endMs": 1848
+        "startMs": 1562,
+        "endMs": 1639
       },
       {
         "wordId": "p4-s2-w9",
-        "startMs": 1838,
-        "endMs": 2106
+        "startMs": 1629,
+        "endMs": 1868
       },
       {
         "wordId": "p4-s2-w10",
-        "startMs": 2096,
-        "endMs": 2413
+        "startMs": 1858,
+        "endMs": 2131
       },
       {
         "wordId": "p4-s2-w11",
-        "startMs": 2403,
-        "endMs": 2547
+        "startMs": 2121,
+        "endMs": 2247
       },
       {
         "wordId": "p4-s2-w12",
-        "startMs": 2537,
-        "endMs": 2623
+        "startMs": 2237,
+        "endMs": 2315
       },
       {
         "wordId": "p4-s2-w13",
-        "startMs": 2613,
-        "endMs": 3005
+        "startMs": 2305,
+        "endMs": 2653
       },
       {
         "wordId": "p4-s2-w14",
-        "startMs": 2995,
-        "endMs": 4141
+        "startMs": 2643,
+        "endMs": 3655
       },
       {
         "wordId": "p4-s2-w15",
-        "startMs": 4131,
-        "endMs": 4248
+        "startMs": 3898,
+        "endMs": 3997
       },
       {
         "wordId": "p4-s2-w16",
-        "startMs": 4238,
-        "endMs": 4582
+        "startMs": 3987,
+        "endMs": 4291
       },
       {
         "wordId": "p4-s2-w17",
-        "startMs": 4572,
-        "endMs": 4738
+        "startMs": 4281,
+        "endMs": 4428
       },
       {
         "wordId": "p4-s2-w18",
-        "startMs": 4728,
-        "endMs": 4861
+        "startMs": 4418,
+        "endMs": 4533
       },
       {
         "wordId": "p4-s2-w19",
-        "startMs": 4851,
-        "endMs": 5114
+        "startMs": 4523,
+        "endMs": 4755
       },
       {
         "wordId": "p4-s2-w20",
-        "startMs": 5104,
-        "endMs": 5207
+        "startMs": 4745,
+        "endMs": 4837
       },
       {
         "wordId": "p4-s2-w21",
-        "startMs": 5197,
-        "endMs": 5560
+        "startMs": 4827,
+        "endMs": 5151
       },
       {
         "wordId": "p4-s2-w22",
-        "startMs": 5550,
-        "endMs": 5945
+        "startMs": 5141,
+        "endMs": 5494
       },
       {
         "wordId": "p4-s2-w23",
-        "startMs": 5935,
-        "endMs": 6186
+        "startMs": 5484,
+        "endMs": 5710
       },
       {
         "wordId": "p4-s2-w24",
-        "startMs": 6176,
-        "endMs": 6270
+        "startMs": 5700,
+        "endMs": 5785
       },
       {
         "wordId": "p4-s2-w25",
-        "startMs": 6260,
-        "endMs": 6345
+        "startMs": 5775,
+        "endMs": 5852
       },
       {
         "wordId": "p4-s2-w26",
-        "startMs": 6335,
-        "endMs": 7242
+        "startMs": 5842,
+        "endMs": 6629
       },
       {
         "wordId": "p4-s2-w27",
-        "startMs": 7232,
-        "endMs": 7372
+        "startMs": 6754,
+        "endMs": 6874
       },
       {
         "wordId": "p4-s2-w28",
-        "startMs": 7362,
-        "endMs": 7732
+        "startMs": 6864,
+        "endMs": 7188
       },
       {
         "wordId": "p4-s2-w29",
-        "startMs": 7722,
-        "endMs": 7841
+        "startMs": 7178,
+        "endMs": 7280
       },
       {
         "wordId": "p4-s2-w30",
-        "startMs": 7831,
-        "endMs": 8263
+        "startMs": 7270,
+        "endMs": 7649
       },
       {
         "wordId": "p4-s2-w31",
-        "startMs": 8253,
-        "endMs": 8382
+        "startMs": 7639,
+        "endMs": 7755
       },
       {
         "wordId": "p4-s2-w32",
-        "startMs": 8372,
-        "endMs": 8908
+        "startMs": 7745,
+        "endMs": 8232
       },
       {
         "wordId": "p4-s2-w33",
-        "startMs": 8898,
-        "endMs": 9011
+        "startMs": 8222,
+        "endMs": 8324
       },
       {
         "wordId": "p4-s2-w34",
-        "startMs": 9001,
-        "endMs": 9537
+        "startMs": 8314,
+        "endMs": 8805
       },
       {
         "wordId": "p4-s2-w35",
-        "startMs": 9527,
-        "endMs": 9677
+        "startMs": 8795,
+        "endMs": 8936
       },
       {
         "wordId": "p4-s2-w36",
-        "startMs": 9667,
-        "endMs": 10052
+        "startMs": 8926,
+        "endMs": 9271
       },
       {
         "wordId": "p4-s2-w37",
-        "startMs": 10042,
-        "endMs": 10211
+        "startMs": 9261,
+        "endMs": 9413
       },
       {
         "wordId": "p4-s2-w38",
-        "startMs": 10201,
-        "endMs": 10694
+        "startMs": 9403,
+        "endMs": 9835
       },
       {
         "wordId": "p4-s2-w39",
-        "startMs": 10684,
-        "endMs": 11651
+        "startMs": 9825,
+        "endMs": 10681
       },
       {
         "wordId": "p4-s2-w40",
-        "startMs": 11641,
-        "endMs": 11788
+        "startMs": 10832,
+        "endMs": 10966
       },
       {
         "wordId": "p4-s2-w41",
-        "startMs": 11778,
-        "endMs": 12115
+        "startMs": 10956,
+        "endMs": 11275
       },
       {
         "wordId": "p4-s2-w42",
-        "startMs": 12105,
-        "endMs": 12528
+        "startMs": 11265,
+        "endMs": 11636
       },
       {
         "wordId": "p4-s2-w43",
-        "startMs": 12518,
-        "endMs": 12675
+        "startMs": 11626,
+        "endMs": 11766
       },
       {
         "wordId": "p4-s2-w44",
-        "startMs": 12665,
-        "endMs": 13153
+        "startMs": 11756,
+        "endMs": 12190
       },
       {
         "wordId": "p4-s2-w45",
-        "startMs": 13143,
-        "endMs": 13327
+        "startMs": 12180,
+        "endMs": 12344
       },
       {
         "wordId": "p4-s2-w46",
-        "startMs": 13317,
-        "endMs": 14075
+        "startMs": 12334,
+        "endMs": 13034
       },
       {
         "wordId": "p4-s2-w47",
-        "startMs": 14065,
-        "endMs": 14211
+        "startMs": 13162,
+        "endMs": 13292
       },
       {
         "wordId": "p4-s2-w48",
-        "startMs": 14201,
-        "endMs": 14646
+        "startMs": 13282,
+        "endMs": 13669
       },
       {
         "wordId": "p4-s2-w49",
-        "startMs": 14636,
-        "endMs": 15019
+        "startMs": 13659,
+        "endMs": 13997
       },
       {
         "wordId": "p4-s2-w50",
-        "startMs": 15009,
-        "endMs": 15094
+        "startMs": 13987,
+        "endMs": 14064
       },
       {
         "wordId": "p4-s2-w51",
-        "startMs": 15084,
-        "endMs": 15460
+        "startMs": 14054,
+        "endMs": 14388
       },
       {
         "wordId": "p4-s2-w52",
-        "startMs": 15450,
-        "endMs": 15549
+        "startMs": 14378,
+        "endMs": 14465
       },
       {
         "wordId": "p4-s2-w53",
-        "startMs": 15539,
-        "endMs": 16617
+        "startMs": 14455,
+        "endMs": 15415
       }
     ]
   },
   "p4-s3": {
     "audioUrl": "/narration/gatsby-ch3/p4-s3.wav",
-    "durationMs": 16425,
+    "durationMs": 16453,
     "words": [
       {
         "wordId": "p4-s3-w1",
-        "startMs": 442,
-        "endMs": 513
+        "startMs": 411,
+        "endMs": 478
       },
       {
         "wordId": "p4-s3-w2",
-        "startMs": 503,
-        "endMs": 813
+        "startMs": 468,
+        "endMs": 761
       },
       {
         "wordId": "p4-s3-w3",
-        "startMs": 803,
-        "endMs": 949
+        "startMs": 751,
+        "endMs": 888
       },
       {
         "wordId": "p4-s3-w4",
-        "startMs": 939,
-        "endMs": 1097
+        "startMs": 878,
+        "endMs": 1026
       },
       {
         "wordId": "p4-s3-w5",
-        "startMs": 1087,
-        "endMs": 1393
+        "startMs": 1016,
+        "endMs": 1299
       },
       {
         "wordId": "p4-s3-w6",
-        "startMs": 1383,
-        "endMs": 2215
+        "startMs": 1289,
+        "endMs": 2098
       },
       {
         "wordId": "p4-s3-w7",
-        "startMs": 2205,
-        "endMs": 2349
+        "startMs": 2233,
+        "endMs": 2364
       },
       {
         "wordId": "p4-s3-w8",
-        "startMs": 2339,
-        "endMs": 2741
+        "startMs": 2354,
+        "endMs": 2732
       },
       {
         "wordId": "p4-s3-w9",
-        "startMs": 2731,
-        "endMs": 3049
+        "startMs": 2722,
+        "endMs": 3018
       },
       {
         "wordId": "p4-s3-w10",
-        "startMs": 3039,
-        "endMs": 3132
+        "startMs": 3008,
+        "endMs": 3096
       },
       {
         "wordId": "p4-s3-w11",
-        "startMs": 3122,
-        "endMs": 3730
+        "startMs": 3086,
+        "endMs": 3652
       },
       {
         "wordId": "p4-s3-w12",
-        "startMs": 3720,
-        "endMs": 4179
+        "startMs": 3642,
+        "endMs": 4073
       },
       {
         "wordId": "p4-s3-w13",
-        "startMs": 4169,
-        "endMs": 4259
+        "startMs": 4063,
+        "endMs": 4148
       },
       {
         "wordId": "p4-s3-w14",
-        "startMs": 4249,
-        "endMs": 4582
+        "startMs": 4138,
+        "endMs": 4450
       },
       {
         "wordId": "p4-s3-w15",
-        "startMs": 4572,
-        "endMs": 5651
+        "startMs": 4440,
+        "endMs": 5428
       },
       {
         "wordId": "p4-s3-w16",
-        "startMs": 5641,
-        "endMs": 5946
+        "startMs": 5552,
+        "endMs": 5835
       },
       {
         "wordId": "p4-s3-w17",
-        "startMs": 5936,
-        "endMs": 6063
+        "startMs": 5825,
+        "endMs": 5943
       },
       {
         "wordId": "p4-s3-w18",
-        "startMs": 6053,
-        "endMs": 6322
+        "startMs": 5933,
+        "endMs": 6178
       },
       {
         "wordId": "p4-s3-w19",
-        "startMs": 6312,
-        "endMs": 6451
+        "startMs": 6168,
+        "endMs": 6294
       },
       {
         "wordId": "p4-s3-w20",
-        "startMs": 6441,
-        "endMs": 6868
+        "startMs": 6284,
+        "endMs": 6681
       },
       {
         "wordId": "p4-s3-w21",
-        "startMs": 6858,
-        "endMs": 7025
+        "startMs": 6671,
+        "endMs": 6827
       },
       {
         "wordId": "p4-s3-w22",
-        "startMs": 7015,
-        "endMs": 7431
+        "startMs": 6817,
+        "endMs": 7209
       },
       {
         "wordId": "p4-s3-w23",
-        "startMs": 7421,
-        "endMs": 7556
+        "startMs": 7199,
+        "endMs": 7327
       },
       {
         "wordId": "p4-s3-w24",
-        "startMs": 7546,
-        "endMs": 8577
+        "startMs": 7317,
+        "endMs": 8257
       },
       {
         "wordId": "p4-s3-w25",
-        "startMs": 8567,
-        "endMs": 8720
+        "startMs": 8428,
+        "endMs": 8564
       },
       {
         "wordId": "p4-s3-w26",
-        "startMs": 8710,
-        "endMs": 9217
+        "startMs": 8554,
+        "endMs": 9030
       },
       {
         "wordId": "p4-s3-w27",
-        "startMs": 9207,
-        "endMs": 9865
+        "startMs": 9020,
+        "endMs": 9640
       },
       {
         "wordId": "p4-s3-w28",
-        "startMs": 9855,
-        "endMs": 9994
+        "startMs": 9630,
+        "endMs": 9762
       },
       {
         "wordId": "p4-s3-w29",
-        "startMs": 9984,
-        "endMs": 10725
+        "startMs": 9752,
+        "endMs": 10442
       },
       {
         "wordId": "p4-s3-w30",
-        "startMs": 10715,
-        "endMs": 11117
+        "startMs": 10432,
+        "endMs": 10807
       },
       {
         "wordId": "p4-s3-w31",
-        "startMs": 11107,
-        "endMs": 11218
+        "startMs": 10797,
+        "endMs": 10901
       },
       {
         "wordId": "p4-s3-w32",
-        "startMs": 11208,
-        "endMs": 11294
+        "startMs": 10891,
+        "endMs": 10972
       },
       {
         "wordId": "p4-s3-w33",
-        "startMs": 11284,
-        "endMs": 12190
+        "startMs": 10962,
+        "endMs": 11801
       },
       {
         "wordId": "p4-s3-w34",
-        "startMs": 12180,
-        "endMs": 12329
+        "startMs": 11968,
+        "endMs": 12104
       },
       {
         "wordId": "p4-s3-w35",
-        "startMs": 12319,
-        "endMs": 13197
+        "startMs": 12094,
+        "endMs": 12923
       },
       {
         "wordId": "p4-s3-w36",
-        "startMs": 13187,
-        "endMs": 13628
+        "startMs": 12913,
+        "endMs": 13335
       },
       {
         "wordId": "p4-s3-w37",
-        "startMs": 13618,
-        "endMs": 13996
+        "startMs": 13325,
+        "endMs": 13682
       },
       {
         "wordId": "p4-s3-w38",
-        "startMs": 13986,
-        "endMs": 14387
+        "startMs": 13672,
+        "endMs": 13990
       },
       {
         "wordId": "p4-s3-w39",
-        "startMs": 14377,
-        "endMs": 14542
+        "startMs": 13980,
+        "endMs": 14130
       },
       {
         "wordId": "p4-s3-w40",
-        "startMs": 14532,
-        "endMs": 14864
+        "startMs": 14120,
+        "endMs": 14413
       },
       {
         "wordId": "p4-s3-w41",
-        "startMs": 14854,
-        "endMs": 15040
+        "startMs": 14403,
+        "endMs": 14577
       },
       {
         "wordId": "p4-s3-w42",
-        "startMs": 15030,
-        "endMs": 15223
+        "startMs": 14567,
+        "endMs": 14777
       },
       {
         "wordId": "p4-s3-w43",
-        "startMs": 15213,
-        "endMs": 15503
+        "startMs": 14767,
+        "endMs": 15058
       },
       {
         "wordId": "p4-s3-w44",
-        "startMs": 15493,
-        "endMs": 16432
+        "startMs": 15048,
+        "endMs": 15927
       }
     ]
   },
   "p5-s1": {
     "audioUrl": "/narration/gatsby-ch3/p5-s1.wav",
-    "durationMs": 9700,
+    "durationMs": 9417,
     "words": [
       {
         "wordId": "p5-s1-w1",
-        "startMs": 440,
-        "endMs": 523
+        "startMs": 393,
+        "endMs": 469
       },
       {
         "wordId": "p5-s1-w2",
-        "startMs": 513,
-        "endMs": 861
+        "startMs": 459,
+        "endMs": 773
       },
       {
         "wordId": "p5-s1-w3",
-        "startMs": 851,
-        "endMs": 1114
+        "startMs": 763,
+        "endMs": 1004
       },
       {
         "wordId": "p5-s1-w4",
-        "startMs": 1104,
-        "endMs": 1557
+        "startMs": 994,
+        "endMs": 1403
       },
       {
         "wordId": "p5-s1-w5",
-        "startMs": 1547,
-        "endMs": 1713
+        "startMs": 1393,
+        "endMs": 1543
       },
       {
         "wordId": "p5-s1-w6",
-        "startMs": 1703,
-        "endMs": 1830
+        "startMs": 1533,
+        "endMs": 1648
       },
       {
         "wordId": "p5-s1-w7",
-        "startMs": 1820,
-        "endMs": 2112
+        "startMs": 1638,
+        "endMs": 1901
       },
       {
         "wordId": "p5-s1-w8",
-        "startMs": 2102,
-        "endMs": 2475
+        "startMs": 1891,
+        "endMs": 2228
       },
       {
         "wordId": "p5-s1-w9",
-        "startMs": 2465,
-        "endMs": 2724
+        "startMs": 2218,
+        "endMs": 2454
       },
       {
         "wordId": "p5-s1-w10",
-        "startMs": 2714,
-        "endMs": 2882
+        "startMs": 2444,
+        "endMs": 2594
       },
       {
         "wordId": "p5-s1-w11",
-        "startMs": 2872,
-        "endMs": 2965
+        "startMs": 2584,
+        "endMs": 2669
       },
       {
         "wordId": "p5-s1-w12",
-        "startMs": 2955,
-        "endMs": 3807
+        "startMs": 2659,
+        "endMs": 3412
       },
       {
         "wordId": "p5-s1-w13",
-        "startMs": 3797,
-        "endMs": 3946
+        "startMs": 3586,
+        "endMs": 3714
       },
       {
         "wordId": "p5-s1-w14",
-        "startMs": 3936,
-        "endMs": 4189
+        "startMs": 3704,
+        "endMs": 3921
       },
       {
         "wordId": "p5-s1-w15",
-        "startMs": 4179,
-        "endMs": 4306
+        "startMs": 3911,
+        "endMs": 4026
       },
       {
         "wordId": "p5-s1-w16",
-        "startMs": 4296,
-        "endMs": 4842
+        "startMs": 4016,
+        "endMs": 4512
       },
       {
         "wordId": "p5-s1-w17",
-        "startMs": 4832,
-        "endMs": 4996
+        "startMs": 4502,
+        "endMs": 4650
       },
       {
         "wordId": "p5-s1-w18",
-        "startMs": 4986,
-        "endMs": 5385
+        "startMs": 4640,
+        "endMs": 4997
       },
       {
         "wordId": "p5-s1-w19",
-        "startMs": 5375,
-        "endMs": 5739
+        "startMs": 4987,
+        "endMs": 5314
       },
       {
         "wordId": "p5-s1-w20",
-        "startMs": 5729,
-        "endMs": 6234
+        "startMs": 5304,
+        "endMs": 5756
       },
       {
         "wordId": "p5-s1-w21",
-        "startMs": 6224,
-        "endMs": 7051
+        "startMs": 5746,
+        "endMs": 6491
       },
       {
         "wordId": "p5-s1-w22",
-        "startMs": 7041,
-        "endMs": 7178
+        "startMs": 6629,
+        "endMs": 6750
       },
       {
         "wordId": "p5-s1-w23",
-        "startMs": 7168,
-        "endMs": 7277
+        "startMs": 6740,
+        "endMs": 6837
       },
       {
         "wordId": "p5-s1-w24",
-        "startMs": 7267,
-        "endMs": 7675
+        "startMs": 6827,
+        "endMs": 7196
       },
       {
         "wordId": "p5-s1-w25",
-        "startMs": 7665,
-        "endMs": 7771
+        "startMs": 7186,
+        "endMs": 7282
       },
       {
         "wordId": "p5-s1-w26",
-        "startMs": 7761,
-        "endMs": 8244
+        "startMs": 7272,
+        "endMs": 7703
       },
       {
         "wordId": "p5-s1-w27",
-        "startMs": 8234,
-        "endMs": 8574
+        "startMs": 7693,
+        "endMs": 8011
       },
       {
         "wordId": "p5-s1-w28",
-        "startMs": 8564,
-        "endMs": 8653
+        "startMs": 8001,
+        "endMs": 8081
       },
       {
         "wordId": "p5-s1-w29",
-        "startMs": 8643,
-        "endMs": 8900
+        "startMs": 8071,
+        "endMs": 8302
       },
       {
         "wordId": "p5-s1-w30",
-        "startMs": 8890,
-        "endMs": 9798
+        "startMs": 8292,
+        "endMs": 9105
       }
     ]
   },
   "p5-s2": {
     "audioUrl": "/narration/gatsby-ch3/p5-s2.wav",
-    "durationMs": 5875,
+    "durationMs": 5838,
     "words": [
       {
         "wordId": "p5-s2-w1",
-        "startMs": 487,
-        "endMs": 894
+        "startMs": 439,
+        "endMs": 805
       },
       {
         "wordId": "p5-s2-w2",
-        "startMs": 884,
-        "endMs": 1059
+        "startMs": 795,
+        "endMs": 949
       },
       {
         "wordId": "p5-s2-w3",
-        "startMs": 1049,
-        "endMs": 1468
+        "startMs": 939,
+        "endMs": 1314
       },
       {
         "wordId": "p5-s2-w4",
-        "startMs": 1458,
-        "endMs": 1724
+        "startMs": 1304,
+        "endMs": 1541
       },
       {
         "wordId": "p5-s2-w5",
-        "startMs": 1714,
-        "endMs": 1894
+        "startMs": 1531,
+        "endMs": 1692
       },
       {
         "wordId": "p5-s2-w6",
-        "startMs": 1884,
-        "endMs": 2440
+        "startMs": 1682,
+        "endMs": 2218
       },
       {
         "wordId": "p5-s2-w7",
-        "startMs": 2430,
-        "endMs": 2851
+        "startMs": 2384,
+        "endMs": 2755
       },
       {
         "wordId": "p5-s2-w8",
-        "startMs": 2841,
-        "endMs": 2995
+        "startMs": 2745,
+        "endMs": 2882
       },
       {
         "wordId": "p5-s2-w9",
-        "startMs": 2985,
-        "endMs": 3971
+        "startMs": 2872,
+        "endMs": 3753
       },
       {
         "wordId": "p5-s2-w10",
-        "startMs": 3961,
-        "endMs": 4246
+        "startMs": 3898,
+        "endMs": 4141
       },
       {
         "wordId": "p5-s2-w11",
-        "startMs": 4236,
-        "endMs": 4448
+        "startMs": 4131,
+        "endMs": 4318
       },
       {
         "wordId": "p5-s2-w12",
-        "startMs": 4438,
-        "endMs": 4541
+        "startMs": 4308,
+        "endMs": 4399
       },
       {
         "wordId": "p5-s2-w13",
-        "startMs": 4531,
-        "endMs": 4600
+        "startMs": 4389,
+        "endMs": 4453
       },
       {
         "wordId": "p5-s2-w14",
-        "startMs": 4590,
-        "endMs": 5022
+        "startMs": 4443,
+        "endMs": 4833
       },
       {
         "wordId": "p5-s2-w15",
-        "startMs": 5012,
-        "endMs": 5845
+        "startMs": 4823,
+        "endMs": 5577
       }
     ]
   },
   "p5-s3": {
     "audioUrl": "/narration/gatsby-ch3/p5-s3.wav",
-    "durationMs": 20575,
+    "durationMs": 20626,
     "words": [
       {
         "wordId": "p5-s3-w1",
-        "startMs": 425,
-        "endMs": 489
+        "startMs": 377,
+        "endMs": 435
       },
       {
         "wordId": "p5-s3-w2",
-        "startMs": 479,
-        "endMs": 813
+        "startMs": 425,
+        "endMs": 724
       },
       {
         "wordId": "p5-s3-w3",
-        "startMs": 803,
-        "endMs": 1155
+        "startMs": 714,
+        "endMs": 1025
       },
       {
         "wordId": "p5-s3-w4",
-        "startMs": 1145,
-        "endMs": 1378
+        "startMs": 1015,
+        "endMs": 1225
       },
       {
         "wordId": "p5-s3-w5",
-        "startMs": 1368,
-        "endMs": 2217
+        "startMs": 1215,
+        "endMs": 1960
       },
       {
         "wordId": "p5-s3-w6",
-        "startMs": 2207,
-        "endMs": 2552
+        "startMs": 2089,
+        "endMs": 2379
       },
       {
         "wordId": "p5-s3-w7",
-        "startMs": 2542,
-        "endMs": 2713
+        "startMs": 2369,
+        "endMs": 2522
       },
       {
         "wordId": "p5-s3-w8",
-        "startMs": 2703,
-        "endMs": 2912
+        "startMs": 2512,
+        "endMs": 2693
       },
       {
         "wordId": "p5-s3-w9",
-        "startMs": 2902,
-        "endMs": 3663
+        "startMs": 2683,
+        "endMs": 3376
       },
       {
         "wordId": "p5-s3-w10",
-        "startMs": 3653,
-        "endMs": 4140
+        "startMs": 3540,
+        "endMs": 3965
       },
       {
         "wordId": "p5-s3-w11",
-        "startMs": 4130,
-        "endMs": 4248
+        "startMs": 3955,
+        "endMs": 4060
       },
       {
         "wordId": "p5-s3-w12",
-        "startMs": 4238,
-        "endMs": 4573
+        "startMs": 4050,
+        "endMs": 4349
       },
       {
         "wordId": "p5-s3-w13",
-        "startMs": 4563,
-        "endMs": 4650
+        "startMs": 4339,
+        "endMs": 4418
       },
       {
         "wordId": "p5-s3-w14",
-        "startMs": 4640,
-        "endMs": 4727
+        "startMs": 4408,
+        "endMs": 4486
       },
       {
         "wordId": "p5-s3-w15",
-        "startMs": 4717,
-        "endMs": 5003
+        "startMs": 4476,
+        "endMs": 4729
       },
       {
         "wordId": "p5-s3-w16",
-        "startMs": 4993,
-        "endMs": 5819
+        "startMs": 4719,
+        "endMs": 5451
       },
       {
         "wordId": "p5-s3-w17",
-        "startMs": 5809,
-        "endMs": 6217
+        "startMs": 5682,
+        "endMs": 6034
       },
       {
         "wordId": "p5-s3-w18",
-        "startMs": 6207,
-        "endMs": 6351
+        "startMs": 6024,
+        "endMs": 6157
       },
       {
         "wordId": "p5-s3-w19",
-        "startMs": 6341,
-        "endMs": 6477
+        "startMs": 6147,
+        "endMs": 6264
       },
       {
         "wordId": "p5-s3-w20",
-        "startMs": 6467,
-        "endMs": 7311
+        "startMs": 6254,
+        "endMs": 6954
       },
       {
         "wordId": "p5-s3-w21",
-        "startMs": 7301,
-        "endMs": 7794
+        "startMs": 7109,
+        "endMs": 7528
       },
       {
         "wordId": "p5-s3-w22",
-        "startMs": 7784,
-        "endMs": 8110
+        "startMs": 7518,
+        "endMs": 7805
       },
       {
         "wordId": "p5-s3-w23",
-        "startMs": 8100,
-        "endMs": 8221
+        "startMs": 7795,
+        "endMs": 7900
       },
       {
         "wordId": "p5-s3-w24",
-        "startMs": 8211,
-        "endMs": 8444
+        "startMs": 7890,
+        "endMs": 8089
       },
       {
         "wordId": "p5-s3-w25",
-        "startMs": 8434,
-        "endMs": 8667
+        "startMs": 8079,
+        "endMs": 8288
       },
       {
         "wordId": "p5-s3-w26",
-        "startMs": 8657,
-        "endMs": 8784
+        "startMs": 8278,
+        "endMs": 8396
       },
       {
         "wordId": "p5-s3-w27",
-        "startMs": 8774,
-        "endMs": 8959
+        "startMs": 8386,
+        "endMs": 8568
       },
       {
         "wordId": "p5-s3-w28",
-        "startMs": 8949,
-        "endMs": 9210
+        "startMs": 8558,
+        "endMs": 8791
       },
       {
         "wordId": "p5-s3-w29",
-        "startMs": 9200,
-        "endMs": 9287
+        "startMs": 8781,
+        "endMs": 8860
       },
       {
         "wordId": "p5-s3-w30",
-        "startMs": 9277,
-        "endMs": 9692
+        "startMs": 8850,
+        "endMs": 9223
       },
       {
         "wordId": "p5-s3-w31",
-        "startMs": 9682,
-        "endMs": 9812
+        "startMs": 9213,
+        "endMs": 9325
       },
       {
         "wordId": "p5-s3-w32",
-        "startMs": 9802,
-        "endMs": 10017
+        "startMs": 9315,
+        "endMs": 9506
       },
       {
         "wordId": "p5-s3-w33",
-        "startMs": 10007,
-        "endMs": 10850
+        "startMs": 9496,
+        "endMs": 10234
       },
       {
         "wordId": "p5-s3-w34",
-        "startMs": 10840,
-        "endMs": 11217
+        "startMs": 10364,
+        "endMs": 10689
       },
       {
         "wordId": "p5-s3-w35",
-        "startMs": 11207,
-        "endMs": 11346
+        "startMs": 10679,
+        "endMs": 10804
       },
       {
         "wordId": "p5-s3-w36",
-        "startMs": 11336,
-        "endMs": 11426
+        "startMs": 10794,
+        "endMs": 10873
       },
       {
         "wordId": "p5-s3-w37",
-        "startMs": 11416,
-        "endMs": 11907
+        "startMs": 10863,
+        "endMs": 11311
       },
       {
         "wordId": "p5-s3-w38",
-        "startMs": 11897,
-        "endMs": 12304
+        "startMs": 11447,
+        "endMs": 11816
       },
       {
         "wordId": "p5-s3-w39",
-        "startMs": 12294,
-        "endMs": 12613
+        "startMs": 11806,
+        "endMs": 12095
       },
       {
         "wordId": "p5-s3-w40",
-        "startMs": 12603,
-        "endMs": 12695
+        "startMs": 12085,
+        "endMs": 12167
       },
       {
         "wordId": "p5-s3-w41",
-        "startMs": 12685,
-        "endMs": 13013
+        "startMs": 12157,
+        "endMs": 12457
       },
       {
         "wordId": "p5-s3-w42",
-        "startMs": 13003,
-        "endMs": 13088
+        "startMs": 12447,
+        "endMs": 12525
       },
       {
         "wordId": "p5-s3-w43",
-        "startMs": 13078,
-        "endMs": 13140
+        "startMs": 12515,
+        "endMs": 12570
       },
       {
         "wordId": "p5-s3-w44",
-        "startMs": 13130,
-        "endMs": 13920
+        "startMs": 12560,
+        "endMs": 13237
       },
       {
         "wordId": "p5-s3-w45",
-        "startMs": 13910,
-        "endMs": 14061
+        "startMs": 13376,
+        "endMs": 13503
       },
       {
         "wordId": "p5-s3-w46",
-        "startMs": 14051,
-        "endMs": 14298
+        "startMs": 13493,
+        "endMs": 13772
       },
       {
         "wordId": "p5-s3-w47",
-        "startMs": 14288,
-        "endMs": 14729
+        "startMs": 13918,
+        "endMs": 14319
       },
       {
         "wordId": "p5-s3-w48",
-        "startMs": 14719,
-        "endMs": 14867
+        "startMs": 14309,
+        "endMs": 14443
       },
       {
         "wordId": "p5-s3-w49",
-        "startMs": 14857,
-        "endMs": 15518
+        "startMs": 14433,
+        "endMs": 14994
       },
       {
         "wordId": "p5-s3-w50",
-        "startMs": 15508,
-        "endMs": 15832
+        "startMs": 15147,
+        "endMs": 15428
       },
       {
         "wordId": "p5-s3-w51",
-        "startMs": 15822,
-        "endMs": 16035
+        "startMs": 15418,
+        "endMs": 15605
       },
       {
         "wordId": "p5-s3-w52",
-        "startMs": 16025,
-        "endMs": 16173
+        "startMs": 15595,
+        "endMs": 15729
       },
       {
         "wordId": "p5-s3-w53",
-        "startMs": 16163,
-        "endMs": 16263
+        "startMs": 15719,
+        "endMs": 15810
       },
       {
         "wordId": "p5-s3-w54",
-        "startMs": 16253,
-        "endMs": 16775
+        "startMs": 15800,
+        "endMs": 16272
       },
       {
         "wordId": "p5-s3-w55",
-        "startMs": 16765,
-        "endMs": 16864
+        "startMs": 16262,
+        "endMs": 16356
       },
       {
         "wordId": "p5-s3-w56",
-        "startMs": 16854,
-        "endMs": 17346
+        "startMs": 16346,
+        "endMs": 16798
       },
       {
         "wordId": "p5-s3-w57",
-        "startMs": 17336,
-        "endMs": 17476
+        "startMs": 16788,
+        "endMs": 16912
       },
       {
         "wordId": "p5-s3-w58",
-        "startMs": 17466,
-        "endMs": 17965
+        "startMs": 16902,
+        "endMs": 17336
       },
       {
         "wordId": "p5-s3-w59",
-        "startMs": 17955,
-        "endMs": 18097
+        "startMs": 17326,
+        "endMs": 17450
       },
       {
         "wordId": "p5-s3-w60",
-        "startMs": 18087,
-        "endMs": 18557
+        "startMs": 17440,
+        "endMs": 17856
       },
       {
         "wordId": "p5-s3-w61",
-        "startMs": 18547,
-        "endMs": 18766
+        "startMs": 17846,
+        "endMs": 18042
       },
       {
         "wordId": "p5-s3-w62",
-        "startMs": 18756,
-        "endMs": 18849
+        "startMs": 18032,
+        "endMs": 18119
       },
       {
         "wordId": "p5-s3-w63",
-        "startMs": 18839,
-        "endMs": 19438
+        "startMs": 18109,
+        "endMs": 18646
       },
       {
         "wordId": "p5-s3-w64",
-        "startMs": 19428,
-        "endMs": 19864
+        "startMs": 18636,
+        "endMs": 19024
       },
       {
         "wordId": "p5-s3-w65",
-        "startMs": 19854,
-        "endMs": 20628
+        "startMs": 19014,
+        "endMs": 19704
       }
     ]
   },
   "p6-s1": {
     "audioUrl": "/narration/gatsby-ch3/p6-s1.wav",
-    "durationMs": 11225,
+    "durationMs": 10998,
     "words": [
       {
         "wordId": "p6-s1-w1",
-        "startMs": 473,
-        "endMs": 840
+        "startMs": 415,
+        "endMs": 739
       },
       {
         "wordId": "p6-s1-w2",
-        "startMs": 830,
-        "endMs": 994
+        "startMs": 729,
+        "endMs": 875
       },
       {
         "wordId": "p6-s1-w3",
-        "startMs": 984,
-        "endMs": 1069
+        "startMs": 865,
+        "endMs": 941
       },
       {
         "wordId": "p6-s1-w4",
-        "startMs": 1059,
-        "endMs": 1277
+        "startMs": 931,
+        "endMs": 1123
       },
       {
         "wordId": "p6-s1-w5",
-        "startMs": 1267,
-        "endMs": 1908
+        "startMs": 1113,
+        "endMs": 1677
       },
       {
         "wordId": "p6-s1-w6",
-        "startMs": 1898,
-        "endMs": 2052
+        "startMs": 1828,
+        "endMs": 1960
       },
       {
         "wordId": "p6-s1-w7",
-        "startMs": 2042,
-        "endMs": 2527
+        "startMs": 1950,
+        "endMs": 2373
       },
       {
         "wordId": "p6-s1-w8",
-        "startMs": 2517,
-        "endMs": 3273
+        "startMs": 2363,
+        "endMs": 2996
       },
       {
         "wordId": "p6-s1-w9",
-        "startMs": 3263,
-        "endMs": 3658
+        "startMs": 3150,
+        "endMs": 3480
       },
       {
         "wordId": "p6-s1-w10",
-        "startMs": 3648,
-        "endMs": 3722
+        "startMs": 3470,
+        "endMs": 3536
       },
       {
         "wordId": "p6-s1-w11",
-        "startMs": 3712,
-        "endMs": 4245
+        "startMs": 3526,
+        "endMs": 3994
       },
       {
         "wordId": "p6-s1-w12",
-        "startMs": 4235,
-        "endMs": 4380
+        "startMs": 3984,
+        "endMs": 4113
       },
       {
         "wordId": "p6-s1-w13",
-        "startMs": 4370,
-        "endMs": 4455
+        "startMs": 4103,
+        "endMs": 4179
       },
       {
         "wordId": "p6-s1-w14",
-        "startMs": 4445,
-        "endMs": 4573
+        "startMs": 4169,
+        "endMs": 4283
       },
       {
         "wordId": "p6-s1-w15",
-        "startMs": 4563,
-        "endMs": 5214
+        "startMs": 4273,
+        "endMs": 4860
       },
       {
         "wordId": "p6-s1-w16",
-        "startMs": 5204,
-        "endMs": 5529
+        "startMs": 5005,
+        "endMs": 5270
       },
       {
         "wordId": "p6-s1-w17",
-        "startMs": 5519,
-        "endMs": 5626
+        "startMs": 5260,
+        "endMs": 5355
       },
       {
         "wordId": "p6-s1-w18",
-        "startMs": 5616,
-        "endMs": 5899
+        "startMs": 5345,
+        "endMs": 5593
       },
       {
         "wordId": "p6-s1-w19",
-        "startMs": 5889,
-        "endMs": 6041
+        "startMs": 5583,
+        "endMs": 5716
       },
       {
         "wordId": "p6-s1-w20",
-        "startMs": 6031,
-        "endMs": 6544
+        "startMs": 5706,
+        "endMs": 6127
       },
       {
         "wordId": "p6-s1-w21",
-        "startMs": 6534,
-        "endMs": 6796
+        "startMs": 6117,
+        "endMs": 6363
       },
       {
         "wordId": "p6-s1-w22",
-        "startMs": 6786,
-        "endMs": 7098
+        "startMs": 6487,
+        "endMs": 6764
       },
       {
         "wordId": "p6-s1-w23",
-        "startMs": 7088,
-        "endMs": 7213
+        "startMs": 6754,
+        "endMs": 6865
       },
       {
         "wordId": "p6-s1-w24",
-        "startMs": 7203,
-        "endMs": 7530
+        "startMs": 6855,
+        "endMs": 7142
       },
       {
         "wordId": "p6-s1-w25",
-        "startMs": 7520,
-        "endMs": 7739
+        "startMs": 7132,
+        "endMs": 7326
       },
       {
         "wordId": "p6-s1-w26",
-        "startMs": 7729,
-        "endMs": 8539
+        "startMs": 7316,
+        "endMs": 8015
       },
       {
         "wordId": "p6-s1-w27",
-        "startMs": 8529,
-        "endMs": 8982
+        "startMs": 8167,
+        "endMs": 8549
       },
       {
         "wordId": "p6-s1-w28",
-        "startMs": 8972,
-        "endMs": 9159
+        "startMs": 8539,
+        "endMs": 8704
       },
       {
         "wordId": "p6-s1-w29",
-        "startMs": 9149,
-        "endMs": 9550
+        "startMs": 8694,
+        "endMs": 9049
       },
       {
         "wordId": "p6-s1-w30",
-        "startMs": 9540,
-        "endMs": 9660
+        "startMs": 9039,
+        "endMs": 9145
       },
       {
         "wordId": "p6-s1-w31",
-        "startMs": 9650,
-        "endMs": 9736
+        "startMs": 9135,
+        "endMs": 9212
       },
       {
         "wordId": "p6-s1-w32",
-        "startMs": 9726,
-        "endMs": 10156
+        "startMs": 9202,
+        "endMs": 9583
       },
       {
         "wordId": "p6-s1-w33",
-        "startMs": 10146,
-        "endMs": 11257
+        "startMs": 9573,
+        "endMs": 10540
       }
     ]
   },
   "p6-s2": {
     "audioUrl": "/narration/gatsby-ch3/p6-s2.wav",
-    "durationMs": 11725,
+    "durationMs": 11315,
     "words": [
       {
         "wordId": "p6-s2-w1",
-        "startMs": 469,
-        "endMs": 530
+        "startMs": 433,
+        "endMs": 490
       },
       {
         "wordId": "p6-s2-w2",
-        "startMs": 520,
-        "endMs": 1202
+        "startMs": 480,
+        "endMs": 1107
       },
       {
         "wordId": "p6-s2-w3",
-        "startMs": 1192,
-        "endMs": 1997
+        "startMs": 1097,
+        "endMs": 1853
       },
       {
         "wordId": "p6-s2-w4",
-        "startMs": 1987,
-        "endMs": 2116
+        "startMs": 2055,
+        "endMs": 2168
       },
       {
         "wordId": "p6-s2-w5",
-        "startMs": 2106,
-        "endMs": 2599
+        "startMs": 2158,
+        "endMs": 2613
       },
       {
         "wordId": "p6-s2-w6",
-        "startMs": 2589,
-        "endMs": 2924
+        "startMs": 2603,
+        "endMs": 2915
       },
       {
         "wordId": "p6-s2-w7",
-        "startMs": 2914,
-        "endMs": 3314
+        "startMs": 2905,
+        "endMs": 3279
       },
       {
         "wordId": "p6-s2-w8",
-        "startMs": 3304,
-        "endMs": 3490
+        "startMs": 3269,
+        "endMs": 3443
       },
       {
         "wordId": "p6-s2-w9",
-        "startMs": 3480,
-        "endMs": 3809
+        "startMs": 3433,
+        "endMs": 3734
       },
       {
         "wordId": "p6-s2-w10",
-        "startMs": 3799,
-        "endMs": 4423
+        "startMs": 3724,
+        "endMs": 4298
       },
       {
         "wordId": "p6-s2-w11",
-        "startMs": 4413,
-        "endMs": 4594
+        "startMs": 4288,
+        "endMs": 4458
       },
       {
         "wordId": "p6-s2-w12",
-        "startMs": 4584,
-        "endMs": 5302
+        "startMs": 4448,
+        "endMs": 5092
       },
       {
         "wordId": "p6-s2-w13",
-        "startMs": 5292,
-        "endMs": 5439
+        "startMs": 5251,
+        "endMs": 5381
       },
       {
         "wordId": "p6-s2-w14",
-        "startMs": 5429,
-        "endMs": 5585
+        "startMs": 5371,
+        "endMs": 5515
       },
       {
         "wordId": "p6-s2-w15",
-        "startMs": 5575,
-        "endMs": 5691
+        "startMs": 5505,
+        "endMs": 5613
       },
       {
         "wordId": "p6-s2-w16",
-        "startMs": 5681,
-        "endMs": 5757
+        "startMs": 5603,
+        "endMs": 5675
       },
       {
         "wordId": "p6-s2-w17",
-        "startMs": 5747,
-        "endMs": 6078
+        "startMs": 5665,
+        "endMs": 5971
       },
       {
         "wordId": "p6-s2-w18",
-        "startMs": 6068,
-        "endMs": 6188
+        "startMs": 5961,
+        "endMs": 6072
       },
       {
         "wordId": "p6-s2-w19",
-        "startMs": 6178,
-        "endMs": 6703
+        "startMs": 6062,
+        "endMs": 6519
       },
       {
         "wordId": "p6-s2-w20",
-        "startMs": 6693,
-        "endMs": 6879
+        "startMs": 6509,
+        "endMs": 6678
       },
       {
         "wordId": "p6-s2-w21",
-        "startMs": 6869,
-        "endMs": 6982
+        "startMs": 6668,
+        "endMs": 6772
       },
       {
         "wordId": "p6-s2-w22",
-        "startMs": 6972,
-        "endMs": 7587
+        "startMs": 6762,
+        "endMs": 7325
       },
       {
         "wordId": "p6-s2-w23",
-        "startMs": 7577,
-        "endMs": 7974
+        "startMs": 7315,
+        "endMs": 7723
       },
       {
         "wordId": "p6-s2-w24",
-        "startMs": 7964,
-        "endMs": 8263
+        "startMs": 7713,
+        "endMs": 7994
       },
       {
         "wordId": "p6-s2-w25",
-        "startMs": 8253,
-        "endMs": 8666
+        "startMs": 7984,
+        "endMs": 8346
       },
       {
         "wordId": "p6-s2-w26",
-        "startMs": 8656,
-        "endMs": 8869
+        "startMs": 8336,
+        "endMs": 8525
       },
       {
         "wordId": "p6-s2-w27",
-        "startMs": 8859,
-        "endMs": 9049
+        "startMs": 8515,
+        "endMs": 8690
       },
       {
         "wordId": "p6-s2-w28",
-        "startMs": 9039,
-        "endMs": 9216
+        "startMs": 8680,
+        "endMs": 8846
       },
       {
         "wordId": "p6-s2-w29",
-        "startMs": 9206,
-        "endMs": 9605
+        "startMs": 8836,
+        "endMs": 9201
       },
       {
         "wordId": "p6-s2-w30",
-        "startMs": 9595,
-        "endMs": 9953
+        "startMs": 9191,
+        "endMs": 9517
       },
       {
         "wordId": "p6-s2-w31",
-        "startMs": 9943,
-        "endMs": 10491
+        "startMs": 9507,
+        "endMs": 10020
       },
       {
         "wordId": "p6-s2-w32",
-        "startMs": 10481,
-        "endMs": 10648
+        "startMs": 10010,
+        "endMs": 10166
       },
       {
         "wordId": "p6-s2-w33",
-        "startMs": 10638,
-        "endMs": 10726
+        "startMs": 10156,
+        "endMs": 10238
       },
       {
         "wordId": "p6-s2-w34",
-        "startMs": 10716,
-        "endMs": 11745
+        "startMs": 10228,
+        "endMs": 11177
       }
     ]
   },
   "p6-s3": {
     "audioUrl": "/narration/gatsby-ch3/p6-s3.wav",
-    "durationMs": 2150,
+    "durationMs": 1975,
     "words": [
       {
         "wordId": "p6-s3-w1",
-        "startMs": 418,
-        "endMs": 513
+        "startMs": 372,
+        "endMs": 458
       },
       {
         "wordId": "p6-s3-w2",
-        "startMs": 503,
-        "endMs": 998
+        "startMs": 448,
+        "endMs": 892
       },
       {
         "wordId": "p6-s3-w3",
-        "startMs": 988,
-        "endMs": 1202
+        "startMs": 882,
+        "endMs": 1074
       },
       {
         "wordId": "p6-s3-w4",
-        "startMs": 1192,
-        "endMs": 2127
+        "startMs": 1064,
+        "endMs": 1901
       }
     ]
   }

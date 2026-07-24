@@ -1,7 +1,22 @@
-import { Fragment, useCallback, useEffect, useRef, type RefObject } from 'react'
+import { Fragment, useCallback, useEffect, useRef, type CSSProperties, type RefObject } from 'react'
 import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
 import { useReadingStore } from '../store/readingStore'
-import type { Passage } from '../types'
+import type { Passage, SceneBeat } from '../types'
+import sceneBeatsData from '../data/scene-beats.json'
+
+/**
+ * `id -> palette.accent` lookup, built the same way `MotifEffects.tsx` builds
+ * its `Motif` lookup from `motifs.json` -- imported directly as static
+ * content data (not injected via the store/deps) since this is read-only
+ * reference data, not narration-position state. Ties the sentence-wash
+ * highlight's hue to the currently active scene beat's mood instead of a
+ * fixed color, so the text pane's highlight shifts with the world's mood.
+ */
+const SCENE_BEAT_ACCENTS: Record<string, string> = Object.fromEntries(
+  (sceneBeatsData as SceneBeat[]).map((beat) => [beat.id, beat.palette.accent]),
+)
+/** Fallback accent when `activeSceneBeatId` doesn't (yet) match a known beat -- keeps the original amber look. */
+const DEFAULT_SENTENCE_ACCENT = '#fbbf24' // Tailwind's amber-400, matching the pre-existing bg-amber-400/10 wash
 
 /**
  * Local demo fixture — richer than the trivial `data/gatsby-ch3.ts` stub
@@ -171,6 +186,10 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
   const currentSentenceIndex = useReadingStore((s) => s.currentSentenceIndex)
   const currentWordId = useReadingStore((s) => s.currentWordId)
   const playbackState = useReadingStore((s) => s.playbackState)
+  const activeSceneBeatId = useReadingStore((s) => s.activeSceneBeatId)
+
+  const sentenceAccent =
+    (activeSceneBeatId && SCENE_BEAT_ACCENTS[activeSceneBeatId]) || DEFAULT_SENTENCE_ACCENT
 
   const rootRef = useRef<HTMLDivElement>(null)
   const scrollToActive = useAutoScroll(rootRef)
@@ -249,8 +268,21 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
                     data-sentence-index={sentenceIndex}
                     aria-current={isActiveSentence ? 'true' : undefined}
                     onClick={() => seekToSentence(sentenceIndex)}
+                    // The sentence wash's tint is set via the `--sentence-accent`
+                    // custom property (only when active) instead of a fixed
+                    // Tailwind color, so its hue tracks the currently active
+                    // scene beat's palette.accent -- the world's mood bleeding
+                    // into the text pane's own highlight.
+                    style={
+                      isActiveSentence
+                        ? ({
+                            '--sentence-accent': sentenceAccent,
+                            backgroundColor: 'color-mix(in srgb, var(--sentence-accent) 12%, transparent)',
+                          } as CSSProperties)
+                        : undefined
+                    }
                     className={`m-0 inline appearance-none rounded border-0 bg-transparent px-0.5 py-0.5 text-left font-serif text-inherit cursor-pointer transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 ${
-                      isActiveSentence ? 'bg-amber-400/10 text-neutral-50' : 'text-neutral-200 hover:bg-neutral-800/60'
+                      isActiveSentence ? 'text-neutral-50' : 'text-neutral-200 hover:bg-neutral-800/60'
                     }`}
                   >
                     {sentence.words.map((word, wordIndex) => {
@@ -259,7 +291,14 @@ export default function TextPane({ passage = fallbackPassage }: TextPaneProps) {
                         <Fragment key={word.id}>
                           <span
                             data-word-id={word.id}
-                            className={isActiveWord ? 'rounded bg-amber-400/80 text-neutral-900' : undefined}
+                            // Always carries the transition classes (even when
+                            // inactive) so the highlight fades in *and* out
+                            // instead of hard-cutting on/off.
+                            className={`rounded transition-all duration-200 ease-out ${
+                              isActiveWord
+                                ? 'bg-amber-400/80 text-neutral-900 shadow-[0_0_0_3px_rgba(251,191,36,0.35)]'
+                                : 'shadow-[0_0_0_0px_rgba(251,191,36,0)]'
+                            }`}
                           >
                             {word.text}
                           </span>

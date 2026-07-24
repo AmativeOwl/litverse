@@ -103,7 +103,18 @@ const TRIAL_SENTENCE_IDS = ['p1-s1', 'p3-s1', 'p4-s3']
 
 const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX-timestamped'
 const VOICE_NAME = cliArgs.voice ?? 'af_sky'
-const SPEED = cliArgs.speed ?? 1
+/**
+ * Base speed. Was `1` (the model's default) until a trial-harness A/B pass
+ * (`--voice af_sky --speed <n>` for a few values around 1.08-1.15, output to
+ * scripts/output/voice-trials/ -- see this file's own CLI harness above)
+ * confirmed a slightly faster pace reads noticeably less monotonous/robotic:
+ * higher speed compresses the inter-syllable gaps that were making every
+ * syllable sound equally emphasized. 1.1 landed as the chosen default; a
+ * human should still spot-check this against the full regenerated passage
+ * and adjust if needed -- this was picked from the trial output, not by ear
+ * in real time.
+ */
+const SPEED = cliArgs.speed ?? 1.1
 const VOICE_PATH = resolve(__dirname, 'tts-voices')
 const DICTIONARY_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts/dictionaries')
 const WORKER_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts/modules/worker-tts.mjs')
@@ -138,6 +149,19 @@ interface PhoneticInputItem {
   type: 'phonetic'
   value: string
   subtitles: string
+}
+
+/**
+ * A mid-sentence pause, interspersed with `PhoneticInputItem`s by
+ * `insertPauseBreaks` below. `value` is silence duration in milliseconds --
+ * HeadTTS's language.mjs sets `part.silence = part.value` for a `break`-type
+ * input part and later shifts every downstream word's start/end time by that
+ * many ms (see worker-tts.mjs's `updateTimestamps`), so the real audio gap
+ * and the word-timing manifest stay in sync automatically.
+ */
+interface BreakInputItem {
+  type: 'break'
+  value: number
 }
 
 interface MisakiToken {
@@ -188,6 +212,21 @@ function wavDurationMs(audio: ArrayBuffer, sampleRate: number): number {
  * agree. Returns null (caller must treat as a hard failure, not silently
  * mis-map) if the sequences don't match exactly.
  *
+ * `inputItems` is the exact (phonetic + break) array sent to the worker for
+ * this sentence (see `insertPauseBreaks`). HeadTTS's `language.mjs` pushes
+ * one entry into `metadata.words`/`wtimes`/`wdurations` per *input part*,
+ * unconditionally -- including `break` parts (confirmed by reading
+ * `generate()`'s part-processing loop directly: `metadata.words.push(
+ * part.subtitles)` runs for every part with no `type !== 'break'` guard).
+ * This contradicts an earlier assumption (recorded in this repo's working
+ * plan) that break parts produce no `metadata.words` entry at all -- they do,
+ * just with an empty `subtitles` string, since `partSetText`'s `break` case
+ * never sets one. So `metadata.words.length` is `inputItems.length`, not
+ * `sentence.words.length`, whenever any breaks were inserted; this function
+ * filters those break-position entries back out (by their known index in
+ * `inputItems`, not by guessing from the empty-string value) before doing
+ * the real per-word comparison against `sentence.words`.
+ *
  * Known upstream quirk: worker-tts.mjs's updateTimestamps() occasionally
  * reads one index past the end of its internal per-frame `times` array when
  * computing a word's end boundary -- observed specifically on a sentence's
@@ -198,24 +237,113 @@ function wavDurationMs(audio: ArrayBuffer, sampleRate: number): number {
  * back to the sentence's actual total audio duration -- a safe, always-
  * correct upper bound for where the last word's speech actually ends.
  */
-function alignWordTimings(sentence: Sentence, metadata: TtsMetadata, totalDurationMs: number): WordTiming[] | null {
-  if (metadata.words.length !== sentence.words.length) return null
+function alignWordTimings(
+  sentence: Sentence,
+  metadata: TtsMetadata,
+  totalDurationMs: number,
+  inputItems: (PhoneticInputItem | BreakInputItem)[],
+): WordTiming[] | null {
+  if (metadata.words.length !== inputItems.length) return null // HeadTTS echoed a different item count than we sent -- sanity check
+
+  const words: string[] = []
+  const wtimes: number[] = []
+  const wdurations: number[] = []
+  for (let i = 0; i < inputItems.length; i++) {
+    if (inputItems[i]?.type === 'break') continue // this entry belongs to an inserted pause, not one of our words
+    words.push(metadata.words[i] ?? '')
+    wtimes.push(metadata.wtimes[i] ?? 0)
+    wdurations.push(metadata.wdurations[i] ?? 0)
+  }
+
+  if (words.length !== sentence.words.length) return null
 
   const timings: WordTiming[] = []
   for (let i = 0; i < sentence.words.length; i++) {
     const ours = sentence.words[i]
-    const theirs = metadata.words[i]
+    const theirs = words[i]
     if (!ours || theirs === undefined) return null
     if (normalizeForComparison(theirs) !== ours.normalized) return null
 
-    const start = metadata.wtimes[i] ?? 0
+    const start = wtimes[i] ?? 0
     if (Number.isNaN(start)) return null // no sane fallback for a NaN start
 
-    const duration = metadata.wdurations[i] ?? 0
+    const duration = wdurations[i] ?? 0
     const end = Number.isNaN(duration) ? totalDurationMs : start + duration
     timings.push({ wordId: ours.id, startMs: start, endMs: Math.max(start, end) })
   }
   return timings
+}
+
+/**
+ * Small self-contained FNV-1a-style string hash -- deliberately not imported
+ * from src/seededRandom.ts (this script stays isolated from src/, same rule
+ * as everywhere else in the build pipeline; see this file's own module
+ * header). Used only to derive deterministic, non-metronomic variety below
+ * (speed micro-jitter, pause-duration variety) -- not a source of real
+ * randomness, and not security-sensitive.
+ */
+function hashString(input: string): number {
+  let h = 0x811c9dc5
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i)
+    h = Math.imul(h, 0x01000193)
+  }
+  return h >>> 0
+}
+
+/** Deterministic pseudo-random value in [0, 1) derived from a string key. */
+function hashToUnit(key: string): number {
+  return (hashString(key) % 100000) / 100000
+}
+
+/**
+ * Per-sentence speed micro-jitter: a deterministic +/-0.04 offset from the
+ * base speed, keyed by sentence id, so cadence isn't perfectly metronomic
+ * sentence-to-sentence (a real narrator doesn't speak every sentence at
+ * exactly the same rate).
+ */
+function speedJitterFor(sentenceId: string, baseSpeed: number): number {
+  const offset = (hashToUnit(`${sentenceId}:speed`) - 0.5) * 0.08 // +/-0.04
+  return Math.round((baseSpeed + offset) * 1000) / 1000
+}
+
+/**
+ * Trailing punctuation this script inserts a mid-sentence pause after, and
+ * the [min, max] ms range for that punctuation's pause -- heavier
+ * punctuation gets a longer pause, mirroring how a human reader actually
+ * paces these differently (a comma is a breath, a semicolon/colon/dash is
+ * closer to a full stop).
+ */
+const PAUSE_PUNCTUATION: { pattern: RegExp; rangeMs: [number, number] }[] = [
+  { pattern: /[;:—–]$/, rangeMs: [150, 220] },
+  { pattern: /,$/, rangeMs: [90, 140] },
+]
+
+/**
+ * Interleaves `{ type: 'break', value: ms }` items after words whose
+ * original text (trailing punctuation intact) ends in a comma, semicolon,
+ * colon, or em/en-dash, so mid-sentence narration isn't a monotone run-on.
+ * Pause duration is deterministic per (sentence, word) via `hashToUnit`, not
+ * fixed, so repeated punctuation across the passage doesn't all pause for
+ * the exact same length. Safe against HeadTTS's own word-count bookkeeping
+ * -- see `alignWordTimings`'s own comment for why that isn't automatic and
+ * how it's handled.
+ */
+function insertPauseBreaks(items: PhoneticInputItem[], sentence: Sentence): (PhoneticInputItem | BreakInputItem)[] {
+  const result: (PhoneticInputItem | BreakInputItem)[] = []
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+    const word = sentence.words[i]
+    if (!item) continue
+    result.push(item)
+    if (!word) continue
+    const rule = PAUSE_PUNCTUATION.find((r) => r.pattern.test(word.text))
+    if (!rule) continue
+    const [min, max] = rule.rangeMs
+    const ms = Math.round(min + hashToUnit(`${sentence.id}:${word.id}:pause`) * (max - min))
+    result.push({ type: 'break', value: ms })
+  }
+  return result
 }
 
 /** Minimal WAV header rewrite of the sample rate is unnecessary -- HeadTTS's encodeAudio already writes a correct self-contained WAV file. */
@@ -304,7 +432,7 @@ function buildPhoneticInputItems(sentence: Sentence, tokens: MisakiToken[]): Pho
 
 async function synthesizeSentence(
   worker: Worker,
-  input: PhoneticInputItem[],
+  input: (PhoneticInputItem | BreakInputItem)[],
   speed: number,
 ): Promise<{ metadata: TtsMetadata }> {
   return new Promise((resolveResult, reject) => {
@@ -424,10 +552,13 @@ async function main() {
       continue
     }
 
-    const { metadata } = await synthesizeSentence(worker, input, SPEED)
+    const inputWithPauses = insertPauseBreaks(input, sentence)
+    const sentenceSpeed = speedJitterFor(sentence.id, SPEED)
+
+    const { metadata } = await synthesizeSentence(worker, inputWithPauses, sentenceSpeed)
     const audioDurationMs = wavDurationMs(metadata.audio, SAMPLE_RATE)
 
-    const words = alignWordTimings(sentence, metadata, audioDurationMs)
+    const words = alignWordTimings(sentence, metadata, audioDurationMs, inputWithPauses)
     if (!words) {
       failures.push(
         `${sentence.id}: word-count/text mismatch (ours=${sentence.words.length}, theirs=${metadata.words.length}). ` +
