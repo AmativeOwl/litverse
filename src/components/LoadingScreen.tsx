@@ -64,20 +64,28 @@ export default function LoadingScreen({ entry, onReady }: LoadingScreenProps) {
   }, [entry, onReady])
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-neutral-950 text-neutral-100">
+    // continues the landing's title-card idiom (aged paper, navy/gold) so
+    // landing -> loading -> the dark painted reader reads as one sequence:
+    // poster, projector spin-up, film.
+    <div className="flex h-screen w-screen items-center justify-center bg-[#efe4c9]">
       <div className="w-full max-w-md px-8 text-center">
-        <h1 className="font-serif text-3xl italic text-neutral-100">{entry.title}</h1>
-        <p className="mt-2 font-sans text-xs uppercase tracking-[0.25em] text-neutral-500">
+        <h1
+          className="text-3xl uppercase text-[#221a12]"
+          style={{ fontFamily: 'var(--font-display)', textShadow: '2px 2px 0 rgba(168,128,44,0.3)' }}
+        >
+          {entry.title}
+        </h1>
+        <p className="mt-3 font-sans text-[11px] uppercase tracking-[0.3em] text-[#6b5836]">
           {entry.author} · {entry.chapter}
         </p>
-        {/* a single hairline that fills -- the whole progress UI */}
-        <div className="mx-auto mt-10 h-px w-64 overflow-hidden bg-neutral-800">
+        {/* a single rule that fills gold -- the whole progress UI */}
+        <div className="mx-auto mt-10 h-[3px] w-64 overflow-hidden border border-[#22304f] bg-[#e4d5b0]">
           <div
-            className="h-full bg-amber-300/80 transition-[width] duration-300 ease-out"
+            className="h-full bg-[#a8802c] transition-[width] duration-300 ease-out"
             style={{ width: `${Math.round(progress * 100)}%` }}
           />
         </div>
-        <p className="mt-4 font-sans text-[11px] uppercase tracking-[0.3em] text-neutral-600">
+        <p className="mt-4 font-sans text-[10px] uppercase tracking-[0.3em] text-[#8a7450]">
           {label}
         </p>
       </div>

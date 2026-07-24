@@ -2,6 +2,8 @@
 
 @theme {
   --font-serif: 'Lora', 'EB Garamond', ui-serif, Georgia, serif;
+  /* the 1930s marquee face for title-card lettering (landing/loading only) */
+  --font-display: 'Limelight', 'Lora', ui-serif, Georgia, serif;
 }
 
 html,
