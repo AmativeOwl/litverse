@@ -5,6 +5,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import type { SceneBeat } from '../../types'
 import type { LerpedSceneBeat } from './beatMath'
 import { createSeededRandom, hashStringToSeed } from './seededRandom'
+import { getToonGradientMap } from './toonGradientTexture'
 
 interface SilhouettesProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -101,7 +102,7 @@ function buildLayout(): Layout[] {
  */
 export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null)
-  const materialRef = useRef<THREE.MeshStandardMaterial>(null)
+  const materialRef = useRef<THREE.MeshToonMaterial>(null)
   const layout = useMemo(buildLayout, [])
   const dummy = useMemo(() => new THREE.Object3D(), [])
   const geometry = useMemo(buildFigureGeometry, [])
@@ -149,7 +150,7 @@ export function Silhouettes({ lerpedRef, animation }: SilhouettesProps) {
       frustumCulled={false}
     >
       <primitive object={geometry} attach="geometry" />
-      <meshStandardMaterial ref={materialRef} color="#2a2436" roughness={0.85} metalness={0.05} />
+      <meshToonMaterial ref={materialRef} color="#2a2436" gradientMap={getToonGradientMap()} />
     </instancedMesh>
   )
 }
