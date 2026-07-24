@@ -45,6 +45,9 @@ export interface MotionTransform {
   rot: number
   alpha: number
   scale: number
+  /** Cartoon squash-and-stretch: non-uniform scale about the element's base (1 = none). */
+  squashX?: number
+  squashY?: number
   /** For phased verbs (dive, burst): 0..1 progress through the cycle, else undefined. */
   cycle?: number
 }
@@ -115,6 +118,19 @@ export function motionTransform(motion: MotionSpec | undefined, t: number): Moti
       const u = ((t * speed) / (loop * 0.4) + phase) % 1
       return { ...IDENTITY, scale: 0.3 + u * 1.4, alpha: 1 - u, cycle: u }
     }
+    case 'bounce': {
+      // rubber-hose hop: airborne on |sin|, squashing wide at each impact
+      // and stretching tall at the top of the arc
+      const cyclePos = tt * 2.2
+      const air = Math.abs(Math.sin(cyclePos))
+      const impact = Math.max(0, 1 - air * 6) // spikes briefly around touchdown
+      return {
+        ...IDENTITY,
+        dy: -air * 0.02 * amp,
+        squashX: 1 + impact * 0.35 * amp - (air - 0.5) * 0.08 * amp,
+        squashY: 1 - impact * 0.3 * amp + (air - 0.5) * 0.12 * amp,
+      }
+    }
     default:
       return IDENTITY
   }
@@ -165,6 +181,13 @@ function drawElement(
   if (m.rot !== 0) {
     ctx.translate(x, y)
     ctx.rotate(m.rot)
+    ctx.translate(-x, -y)
+  }
+  // squash-and-stretch about the element's base point (cartoon physics:
+  // volume shifts, the feet stay planted)
+  if ((m.squashX !== undefined && m.squashX !== 1) || (m.squashY !== undefined && m.squashY !== 1)) {
+    ctx.translate(x, y)
+    ctx.scale(m.squashX ?? 1, m.squashY ?? 1)
     ctx.translate(-x, -y)
   }
   switch (el.noun) {

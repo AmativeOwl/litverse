@@ -101,6 +101,7 @@ export type MotionVerb =
   | 'orbit' // small elliptical loop around the anchor point
   | 'burst' // radial expansion cycle: appear, expand, fade (splash, sparkle)
   | 'glide' // travel a slow sine path across the frame (the weaving dancer)
+  | 'bounce' // cartoon hop with squash-and-stretch at the impact (rubber-hose era)
 
 export interface MotionSpec {
   verb: MotionVerb

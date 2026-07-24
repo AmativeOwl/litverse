@@ -14,7 +14,7 @@ describe('motionTransform (the verb library)', () => {
   it('every verb stays deterministic: same t, same transform', () => {
     const verbs: MotionSpec['verb'][] = [
       'sway', 'bob', 'weave', 'cross', 'pace', 'scrub', 'dive',
-      'rise', 'fall', 'twinkle', 'breathe', 'flutter', 'orbit', 'burst', 'glide',
+      'rise', 'fall', 'twinkle', 'breathe', 'flutter', 'orbit', 'burst', 'glide', 'bounce',
     ]
     for (const verb of verbs) {
       const a = at(verb, 3.7)
@@ -68,6 +68,21 @@ describe('motionTransform (the verb library)', () => {
       expect(later.scale).toBeGreaterThan(early.scale)
       expect(later.alpha).toBeLessThan(early.alpha)
     }
+  })
+
+  it('bounce squashes at impact and stretches in the air, conserving cartoon volume', () => {
+    // sample a full cycle; find the most-squashed and most-stretched moments
+    let minY = Infinity
+    let maxY = -Infinity
+    for (let t = 0; t < 3; t += 0.02) {
+      const m = at('bounce', t)
+      minY = Math.min(minY, m.squashY ?? 1)
+      maxY = Math.max(maxY, m.squashY ?? 1)
+      // squash axes oppose: wide when short, narrow when tall
+      if ((m.squashY ?? 1) < 0.85) expect(m.squashX ?? 1).toBeGreaterThan(1)
+    }
+    expect(minY).toBeLessThan(0.9)
+    expect(maxY).toBeGreaterThan(1.0)
   })
 
   it('phase offsets desynchronize identical verbs', () => {

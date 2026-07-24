@@ -165,6 +165,7 @@ const MOTION_VERBS = [
   'orbit',
   'burst (expand and fade)',
   'glide (slow sine path across)',
+  'bounce (cartoon hop with squash-and-stretch)',
 ] as const
 
 function buildPrompt(

@@ -111,6 +111,77 @@ export function vignetteVisibility(
 }
 
 // ---------------------------------------------------------------------------
+// The cartoon ink layer (Fleischer/Cuphead-era): objects get bold ink
+// outlines whose width "boils" -- jitters slightly per animation tick, the
+// hand-inked wobble of real cel animation. The boil phase is module-scope
+// state set once per repaint tick by the renderer (setInkBoilPhase), so
+// every drawing helper picks it up without threading a parameter through
+// forty call sites. Quantized to the ~12fps repaint cadence, deterministic.
+// ---------------------------------------------------------------------------
+
+/** The ink: warm near-black, the color of every 1930s cel outline. */
+export const INK = '#17100d'
+
+let inkBoilTick = 0
+
+/** Called once per repaint tick (and once at build with t=0) before painting a plate. */
+export function setInkBoilPhase(timeSeconds: number): void {
+  inkBoilTick = Math.floor(timeSeconds * 12)
+}
+
+/** Deterministic per-tick wobble in [-1, 1], varied by a salt so different strokes boil independently. */
+function boil(salt: number): number {
+  const n = Math.sin((inkBoilTick + salt) * 127.1) * 43758.5453
+  return (n - Math.floor(n)) * 2 - 1
+}
+
+/** Outline width for an object of the given scale, boiling. */
+function inkWidth(base: number, salt: number): number {
+  return Math.max(0.8, base * (1 + boil(salt) * 0.22))
+}
+
+/**
+ * Film-and-cel overlay: animated grain specks + a soft vignette, applied
+ * over a finished plate painting. Grain positions re-roll each boil tick --
+ * the flicker of projected film.
+ */
+export function drawCelOverlay(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  ctx.save()
+  // grain
+  ctx.globalAlpha = 0.05
+  ctx.fillStyle = '#ffffff'
+  for (let i = 0; i < 90; i++) {
+    const n1 = Math.sin((inkBoilTick * 91 + i) * 12.9898) * 43758.5453
+    const n2 = Math.sin((inkBoilTick * 47 + i) * 78.233) * 24634.6345
+    const gx = (n1 - Math.floor(n1)) * width
+    const gy = (n2 - Math.floor(n2)) * height
+    ctx.fillRect(gx, gy, 1.4, 1.4)
+  }
+  ctx.globalAlpha = 0.035
+  ctx.fillStyle = INK
+  for (let i = 0; i < 40; i++) {
+    const n1 = Math.sin((inkBoilTick * 53 + i) * 39.425) * 15731.743
+    const n2 = Math.sin((inkBoilTick * 67 + i) * 57.585) * 36913.331
+    ctx.fillRect((n1 - Math.floor(n1)) * width, (n2 - Math.floor(n2)) * height, 1.8, 1.8)
+  }
+  // vignette
+  ctx.globalAlpha = 1
+  const vignette = ctx.createRadialGradient(
+    width / 2,
+    height / 2,
+    height * 0.42,
+    width / 2,
+    height / 2,
+    height * 0.95,
+  )
+  vignette.addColorStop(0, 'rgba(0,0,0,0)')
+  vignette.addColorStop(1, 'rgba(12,8,6,0.26)')
+  ctx.fillStyle = vignette
+  ctx.fillRect(0, 0, width, height)
+  ctx.restore()
+}
+
+// ---------------------------------------------------------------------------
 // ctx-drawing wrappers (thin; visually verified)
 // ---------------------------------------------------------------------------
 
@@ -264,13 +335,28 @@ export function drawSilhouetteFigure(
   ctx.quadraticCurveTo(9, -46, 13, 0)
   ctx.closePath()
   ctx.fill()
+  // cel ink: bold boiling outline around the body...
+  ctx.strokeStyle = INK
+  ctx.lineJoin = 'round'
+  ctx.lineWidth = inkWidth(3.2, x * 0.7)
+  ctx.stroke()
   ctx.beginPath()
   ctx.arc(0, -84, 8.5, 0, Math.PI * 2)
   ctx.fill()
-  ctx.lineWidth = 5
-  ctx.strokeStyle = color
+  // ...and the head
+  ctx.lineWidth = inkWidth(3.2, x * 0.7 + 5)
+  ctx.stroke()
   ctx.lineCap = 'round'
   const arm = (x0: number, y0: number, x1: number, y1: number) => {
+    // rubber-hose arm: ink pass under, color pass over
+    ctx.strokeStyle = INK
+    ctx.lineWidth = inkWidth(9, x0 + x1)
+    ctx.beginPath()
+    ctx.moveTo(x0, y0)
+    ctx.lineTo(x1, y1)
+    ctx.stroke()
+    ctx.strokeStyle = color
+    ctx.lineWidth = 5
     ctx.beginPath()
     ctx.moveTo(x0, y0)
     ctx.lineTo(x1, y1)
@@ -323,12 +409,19 @@ export function drawCarProfile(
 ): void {
   const height = length * 0.26
   ctx.fillStyle = color
+  ctx.strokeStyle = INK
+  ctx.lineJoin = 'round'
+  ctx.lineWidth = inkWidth(length * 0.02, centerX)
   ctx.fillRect(centerX - length / 2, baseY - height * 0.55, length, height * 0.55)
+  ctx.strokeRect(centerX - length / 2, baseY - height * 0.55, length, height * 0.55)
   ctx.fillRect(centerX - length * 0.16, baseY - height, length * 0.42, height * 0.5)
+  ctx.strokeRect(centerX - length * 0.16, baseY - height, length * 0.42, height * 0.5)
   for (const dx of [-0.3, 0.3]) {
     ctx.beginPath()
     ctx.arc(centerX + dx * length, baseY, length * 0.085, 0, Math.PI * 2)
     ctx.fill()
+    ctx.lineWidth = inkWidth(length * 0.018, centerX + dx)
+    ctx.stroke()
   }
   if (headlightColor) {
     ctx.fillStyle = headlightColor
@@ -450,8 +543,12 @@ export function drawGlazedHam(
   ctx.beginPath()
   ctx.ellipse(centerX, centerY, width / 2, height / 2, -0.15, 0, Math.PI * 2)
   ctx.fill()
+  ctx.strokeStyle = INK
+  ctx.lineWidth = inkWidth(width * 0.035, centerX)
+  ctx.stroke()
   // bone nub
   ctx.fillRect(centerX + width * 0.38, centerY - height * 0.14, width * 0.16, height * 0.24)
+  ctx.strokeRect(centerX + width * 0.38, centerY - height * 0.14, width * 0.16, height * 0.24)
   // glaze shine band
   ctx.strokeStyle = shineColor
   ctx.lineWidth = Math.max(1.2, width * 0.05)
@@ -475,6 +572,9 @@ export function drawTurkey(
   ctx.beginPath()
   ctx.ellipse(centerX, centerY, width / 2, height / 2, 0, 0, Math.PI * 2)
   ctx.fill()
+  ctx.strokeStyle = INK
+  ctx.lineWidth = inkWidth(width * 0.035, centerX)
+  ctx.stroke()
   // drumsticks
   for (const side of [-1, 1]) {
     ctx.beginPath()
@@ -532,7 +632,11 @@ export function drawJuiceMachine(
   const width = height * 0.56
   // body
   ctx.fillStyle = bodyColor
+  ctx.strokeStyle = INK
+  ctx.lineJoin = 'round'
+  ctx.lineWidth = inkWidth(height * 0.018, centerX)
   ctx.fillRect(centerX - width / 2, baseY - height * 0.72, width, height * 0.72)
+  ctx.strokeRect(centerX - width / 2, baseY - height * 0.72, width, height * 0.72)
   // hopper funnel on top
   ctx.beginPath()
   ctx.moveTo(centerX - width * 0.42, baseY - height)
@@ -541,6 +645,7 @@ export function drawJuiceMachine(
   ctx.lineTo(centerX - width * 0.16, baseY - height * 0.72)
   ctx.closePath()
   ctx.fill()
+  ctx.stroke()
   // fluted deco ribs
   ctx.strokeStyle = accent
   ctx.lineWidth = Math.max(1, height * 0.014)
