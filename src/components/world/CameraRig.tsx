@@ -40,9 +40,12 @@ const ZOOM_DWELL = 1
 const ZOOM_PULSE = 0.35
 /** Seconds the pulse holds before re-approaching. */
 const PULSE_SECONDS = 1.1
-/** Damping rates (per second): the approach is a slow cinematic settle, the retreat is brisker. */
-const APPROACH_RATE = 0.8
-const RETREAT_RATE = 2.4
+/** Damping rates (per second): the approach is a slow cinematic settle
+ * (~95% in roughly 7s -- most of a sentence's narration, so the push-in
+ * itself is part of the shot, per user feedback that faster zooms rushed
+ * it), the retreat brisker but still unhurried. */
+const APPROACH_RATE = 0.45
+const RETREAT_RATE = 1.8
 
 function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: string): number {
   const deg = azimuthByBeatDeg[beatId]

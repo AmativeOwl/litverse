@@ -573,7 +573,7 @@ export function drawJuiceMachine(
   ctx.fillRect(centerX - width * 0.14, baseY - height * 0.16, width * 0.28, height * 0.16)
 }
 
-/** One ruled sine wave band -- stylized water. */
+/** One ruled sine wave band -- stylized water. Pass `phase` (radians) to make the swell travel. */
 export function drawWaveBand(
   ctx: CanvasRenderingContext2D,
   y: number,
@@ -582,12 +582,13 @@ export function drawWaveBand(
   wavelength: number,
   color: string,
   lineWidth: number,
+  phase = 0,
 ): void {
   ctx.strokeStyle = color
   ctx.lineWidth = lineWidth
   ctx.beginPath()
   for (let px = 0; px <= width; px += 2) {
-    const py = y + Math.sin((px / wavelength) * Math.PI * 2) * amplitude
+    const py = y + Math.sin((px / wavelength) * Math.PI * 2 + phase) * amplitude
     if (px === 0) ctx.moveTo(px, py)
     else ctx.lineTo(px, py)
   }

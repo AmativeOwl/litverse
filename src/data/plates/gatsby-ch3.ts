@@ -104,8 +104,8 @@ function paintDaySkyFar(ctx: CanvasRenderingContext2D, w: number, h: number, p: 
 // mid plates: framed poster compositions (from the approved concept board)
 // ---------------------------------------------------------------------------
 
-/** daytime-leisure: sun, the Sound, diving tower and raft, motorboat wake fans. */
-function paintDaytimeMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+/** daytime-leisure: sun, the Sound, diving tower and raft, the dive-and-splash cycle, a motorboat crossing. */
+function paintDaytimeMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.55, [
     lightenHex(p.background, 0.25),
     mixHex(p.background, p.primary, 0.4),
@@ -129,6 +129,7 @@ function paintDaytimeMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
       w * 0.12,
       lightenHex(p.primary, 0.2 + i * 0.1),
       Math.max(1, h * 0.006),
+      t * (0.7 + i * 0.2),
     )
   }
   withMirrorSymmetry(ctx, w, () => {
@@ -138,23 +139,67 @@ function paintDaytimeMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
     ctx.fillRect(w * 0.12, h * 0.3, w * 0.11, h * 0.018)
     drawSilhouetteFigure(ctx, w * 0.3, h * 0.62, h * 0.16, 'stand', darkenHex(p.background, 0.4))
   })
-  // diver arc
-  ctx.strokeStyle = darkenHex(p.background, 0.5)
-  ctx.lineWidth = h * 0.012
-  ctx.lineCap = 'round'
-  ctx.beginPath()
-  ctx.arc(w * 0.35, h * 0.42, h * 0.09, -Math.PI * 0.1, Math.PI * 0.6)
-  ctx.stroke()
-  // motorboat + wake fan
+  // --- the act of diving and splashing, on a ~6.5s loop ---------------------
+  const diveT = (t / 6.5) % 1
+  const diverColor = darkenHex(p.background, 0.5)
+  const towerX = w * 0.17
+  const towerTopY = h * 0.285
+  const entryX = w * 0.37
+  const entryY = h * 0.63
+  if (diveT < 0.3) {
+    // poised on the platform, a small anticipatory crouch just before the leap
+    const crouch = diveT > 0.24 ? Math.sin(((diveT - 0.24) / 0.06) * Math.PI) * h * 0.008 : 0
+    drawSilhouetteFigure(ctx, towerX, towerTopY + crouch, h * 0.075, 'stand', diverColor)
+  } else if (diveT < 0.62) {
+    // the flight: a headfirst arc from platform to water
+    const u = (diveT - 0.3) / 0.32
+    const dx = towerX + (entryX - towerX) * u
+    const dy = towerTopY + (-0.35 * u + 1.35 * u * u) * (entryY - towerTopY)
+    const angle = -0.4 + u * 2.0 // rotates from near-horizontal leap to vertical entry
+    ctx.save()
+    ctx.translate(dx, dy)
+    ctx.rotate(angle)
+    ctx.strokeStyle = diverColor
+    ctx.lineWidth = h * 0.016
+    ctx.lineCap = 'round'
+    ctx.beginPath()
+    ctx.moveTo(0, -h * 0.028)
+    ctx.lineTo(0, h * 0.028)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.arc(0, -h * 0.038, h * 0.011, 0, Math.PI * 2)
+    ctx.fillStyle = diverColor
+    ctx.fill()
+    ctx.restore()
+  } else if (diveT < 0.78) {
+    // the splash: a white fan bursting up from the entry point
+    const v = (diveT - 0.62) / 0.16
+    drawSunburst(ctx, entryX, entryY, h * 0.01, h * (0.03 + v * 0.07), 7, lightenHex(p.primary, 0.5), Math.PI * 1.15, Math.PI * 1.85, 1 - v * 0.6)
+  }
+  if (diveT >= 0.62) {
+    // ripples widening from the entry, fading as the loop closes
+    const r = (diveT - 0.62) / 0.38
+    ctx.strokeStyle = lightenHex(p.primary, 0.4)
+    ctx.lineWidth = Math.max(1, h * 0.005)
+    ctx.globalAlpha = 1 - r
+    for (const ring of [0.6, 1]) {
+      ctx.beginPath()
+      ctx.ellipse(entryX, entryY, w * 0.05 * r * ring, h * 0.012 * r * ring, 0, 0, Math.PI * 2)
+      ctx.stroke()
+    }
+    ctx.globalAlpha = 1
+  }
+  // motorboat crossing the Sound, wake trailing behind
+  const boatX = w * (0.85 - ((t * 0.022) % 0.5))
   ctx.fillStyle = darkenHex(p.background, 0.55)
-  ctx.fillRect(w * 0.58, h * 0.72, w * 0.14, h * 0.03)
-  ctx.fillRect(w * 0.66, h * 0.69, w * 0.03, h * 0.03)
-  drawSunburst(ctx, w * 0.58, h * 0.735, w * 0.01, w * 0.13, 6, lightenHex(p.primary, 0.35), Math.PI * 0.85, Math.PI * 1.15, 0.9)
+  ctx.fillRect(boatX - w * 0.07, h * 0.72, w * 0.14, h * 0.03)
+  ctx.fillRect(boatX + w * 0.01, h * 0.69, w * 0.03, h * 0.03)
+  drawSunburst(ctx, boatX + w * 0.07, h * 0.735, w * 0.01, w * 0.11, 6, lightenHex(p.primary, 0.35), -Math.PI * 0.15, Math.PI * 0.15, 0.9)
   drawDecoFrame(ctx, w, h, mixHex(p.accent, '#b98a3a', 0.5))
 }
 
-/** weekend-traffic: gate ziggurats, the car queue, headlight beam cones, the brisk yellow bug. */
-function paintWeekendMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+/** weekend-traffic: gate ziggurats, the car queue, headlight beam cones, the brisk yellow bug scampering through. */
+function paintWeekendMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.6, [
     darkenHex(p.background, 0.2),
     p.background,
@@ -169,18 +214,26 @@ function paintWeekendMid(ctx: CanvasRenderingContext2D, w: number, h: number, p:
   for (let i = 0; i < 5; i++) {
     ctx.fillRect(w * 0.5 - w * 0.006, h * (0.64 + (i / 5) * 0.3), w * 0.012, h * 0.04)
   }
+  // the stately queue, bearing parties to and from the city
   drawCarProfile(ctx, w * 0.5, h * 0.88, w * 0.3, darkenHex(p.background, 0.6), p.accent)
   drawCarProfile(ctx, w * 0.28, h * 0.76, w * 0.18, darkenHex(p.background, 0.5), p.accent)
-  drawCarProfile(ctx, w * 0.72, h * 0.76, w * 0.18, mixHex(p.accent, '#c9a227', 0.55))
+  drawCarProfile(ctx, w * 0.72, h * 0.76, w * 0.18, darkenHex(p.background, 0.5), p.accent)
   drawCarProfile(ctx, w * 0.4, h * 0.68, w * 0.11, darkenHex(p.background, 0.42), p.accent)
   drawCarProfile(ctx, w * 0.6, h * 0.68, w * 0.11, darkenHex(p.background, 0.42), p.accent)
   drawBeamCone(ctx, w * 0.35, h * 0.85, w * 0.22, h * 0.05, mixHex(p.accent, '#ffffff', 0.15))
   drawBeamCone(ctx, w * 0.2, h * 0.74, w * 0.15, h * 0.035, p.accent)
+  // the brisk yellow bug, scampering through the queue on a weaving line
+  const bugT = ((t * 0.055) % 1.2) - 0.1
+  const bugX = w * bugT
+  const bugY = h * (0.815 - 0.055 * Math.sin(bugT * 9))
+  const bugLen = w * 0.13
+  drawBeamCone(ctx, bugX + bugLen * 0.45, bugY - bugLen * 0.09, w * 0.12, h * 0.03, mixHex(p.accent, '#ffffff', 0.3))
+  drawCarProfile(ctx, bugX, bugY, bugLen, mixHex(p.accent, '#c9a227', 0.55), lightenHex(p.accent, 0.3))
   drawDecoFrame(ctx, w, h, p.accent)
 }
 
-/** monday-lull: the pale morning colonnade, servants with mops, the orange pyramid by the door. */
-function paintMondayMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette): void {
+/** monday-lull: the pale morning colonnade, servants scrubbing at the ravages, the orange pyramid by the door. */
+function paintMondayMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: Palette, t = 0): void {
   drawBandedSky(ctx, 0, w, h * 0.62, [
     lightenHex(p.background, 0.2),
     p.background,
@@ -203,9 +256,15 @@ function paintMondayMid(ctx: CanvasRenderingContext2D, w: number, h: number, p: 
     ctx.closePath()
     ctx.fill()
   })
-  drawSilhouetteFigure(ctx, w * 0.3, h * 0.9, h * 0.17, 'mop', darkenHex(p.background, 0.35))
-  drawSilhouetteFigure(ctx, w * 0.5, h * 0.88, h * 0.15, 'serve', darkenHex(p.background, 0.3))
-  drawSilhouetteFigure(ctx, w * 0.68, h * 0.9, h * 0.17, 'mop', darkenHex(p.background, 0.35))
+  // the servants at work: moppers scrub in short strokes, the third paces
+  // the veranda with a tray of gathered glasses
+  const scrubA = Math.sin(t * 3.1) * w * 0.007
+  const scrubB = Math.sin(t * 2.7 + 2) * w * 0.007
+  drawSilhouetteFigure(ctx, w * 0.3 + scrubA, h * 0.9, h * 0.17, 'mop', darkenHex(p.background, 0.35))
+  drawSilhouetteFigure(ctx, w * 0.68 + scrubB, h * 0.9, h * 0.17, 'mop', darkenHex(p.background, 0.35))
+  const paceX = w * (0.5 + 0.16 * Math.sin(t * 0.35))
+  const paceBob = Math.abs(Math.sin(t * 2.4)) * h * 0.004
+  drawSilhouetteFigure(ctx, paceX, h * 0.88 + paceBob, h * 0.15, 'serve', darkenHex(p.background, 0.3))
   // the pyramid of pulpless halves
   ctx.fillStyle = mixHex(p.accent, '#d98324', 0.5)
   for (let row = 0; row < 3; row++) {
@@ -1062,6 +1121,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 28,
       memberBeatIds: ['daytime-leisure'],
+      animated: true,
       source: { kind: 'paint', paint: paintDaytimeMid },
     },
     // --- weekend-traffic (the drive, 280) ---
@@ -1077,6 +1137,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 280,
       memberBeatIds: ['weekend-traffic'],
+      animated: true,
       source: { kind: 'paint', paint: paintWeekendMid },
     },
     // --- monday-lull (the estate, 140) ---
@@ -1092,6 +1153,7 @@ export const GATSBY_PLATES: ScenePlateSet = {
       layer: 'mid',
       azimuthDeg: 140,
       memberBeatIds: ['monday-lull'],
+      animated: true,
       source: { kind: 'paint', paint: paintMondayMid },
     },
     // --- evening-bar-setup (hall & buffet, 222) ---
