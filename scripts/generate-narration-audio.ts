@@ -53,7 +53,9 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Worker } from 'node:worker_threads'
 
+import { aliceWonderland } from '../src/data/alice.ts'
 import { gatsbyCh3 } from '../src/data/gatsby-ch3.ts'
+import { twentyThousandLeagues } from '../src/data/leagues.ts'
 import { masqueRedDeath } from '../src/data/masque.ts'
 import type { Passage, Sentence } from '../src/types.ts'
 
@@ -65,6 +67,8 @@ import type { Passage, Sentence } from '../src/types.ts'
 const PASSAGES: Record<string, Passage> = {
   [gatsbyCh3.id]: gatsbyCh3,
   [masqueRedDeath.id]: masqueRedDeath,
+  [aliceWonderland.id]: aliceWonderland,
+  [twentyThousandLeagues.id]: twentyThousandLeagues,
 }
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -536,15 +540,26 @@ function reduceFunctionWords(tokens: MisakiToken[]): MisakiToken[] {
 function buildPhoneticInputItems(sentence: Sentence, tokens: MisakiToken[]): PhoneticInputItem[] | null {
   const merged: { value: string; subtitles: string }[] = []
   let current: { value: string; subtitles: string } | null = null
+  // Punctuation tokens BEFORE the first word (Misaki splits a sentence-
+  // initial quotation mark into its own token: '“I must...' -> '“' + 'I').
+  // A trailing-punctuation run folds into the preceding word below; a
+  // leading run has no preceding word, so it buffers here and folds
+  // FORWARD into the first word instead. Found by Alice's quoted-dialogue
+  // sentences -- gatsby/masque never open a sentence with a quote.
+  let leadingPrefix = ''
 
   for (const token of tokens) {
     if (normalizeForComparison(token.text) === '') {
-      if (!current) return null
+      if (!current) {
+        leadingPrefix += token.text
+        continue
+      }
       current.value += token.phonemes ?? ''
       current.subtitles += token.text
     } else {
       if (current) merged.push(current)
-      current = { value: token.phonemes ?? '', subtitles: token.text }
+      current = { value: token.phonemes ?? '', subtitles: `${leadingPrefix}${token.text}` }
+      leadingPrefix = ''
     }
   }
   if (current) merged.push(current)

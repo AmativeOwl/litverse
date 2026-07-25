@@ -1,9 +1,15 @@
 import type { Passage, SceneBeat } from '../types'
 import type { ScenePlateSet } from '../types-plates'
+import { aliceWonderland } from './alice'
+import { ALICE_BEATS } from './beats/alice'
+import { LEAGUES_BEATS } from './beats/leagues'
 import { MASQUE_BEATS } from './beats/masque'
 import { gatsbyCh3 } from './gatsby-ch3'
+import { twentyThousandLeagues } from './leagues'
 import { masqueRedDeath } from './masque'
+import { ALICE_PLATES } from './plates/alice'
 import { GATSBY_PLATES } from './plates/gatsby-ch3'
+import { LEAGUES_PLATES } from './plates/leagues'
 import { MASQUE_PLATES } from './plates/masque'
 import sceneBeatsData from './scene-beats.json'
 
@@ -67,6 +73,32 @@ export const LIBRARY: readonly LibraryEntry[] = [
     passage: masqueRedDeath,
     beats: MASQUE_BEATS,
     plateSet: MASQUE_PLATES,
+  },
+  {
+    id: 'alice',
+    title: 'Alice’s Adventures in Wonderland',
+    author: 'Lewis Carroll',
+    chapter: 'Down the Rabbit-Hole',
+    stylePackId: 'storybook',
+    tagline: 'The White Rabbit and the long fall',
+    openingLine: 'Alice was beginning to get very tired of sitting by her sister on the bank.',
+    category: 'Storybook & Whimsy',
+    passage: aliceWonderland,
+    beats: ALICE_BEATS,
+    plateSet: ALICE_PLATES,
+  },
+  {
+    id: 'leagues',
+    title: 'Twenty Thousand Leagues Under the Seas',
+    author: 'Jules Verne',
+    chapter: 'The Man of the Seas',
+    stylePackId: 'victorian',
+    tagline: 'Nemo’s hymn to the sea, and liquid light',
+    openingLine: '“You like the sea, Captain?”',
+    category: 'Voyages & Adventure',
+    passage: twentyThousandLeagues,
+    beats: LEAGUES_BEATS,
+    plateSet: LEAGUES_PLATES,
   },
 ]
 

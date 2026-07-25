@@ -1,0 +1,2490 @@
+{
+  "lg-p1-s1": {
+    "audioUrl": "/narration/leagues/lg-p1-s1.wav",
+    "durationMs": 1684,
+    "words": [
+      {
+        "wordId": "lg-p1-s1-w1",
+        "startMs": 322,
+        "endMs": 423
+      },
+      {
+        "wordId": "lg-p1-s1-w2",
+        "startMs": 413,
+        "endMs": 608
+      },
+      {
+        "wordId": "lg-p1-s1-w3",
+        "startMs": 598,
+        "endMs": 695
+      },
+      {
+        "wordId": "lg-p1-s1-w4",
+        "startMs": 685,
+        "endMs": 939
+      },
+      {
+        "wordId": "lg-p1-s1-w5",
+        "startMs": 1082,
+        "endMs": 1684
+      }
+    ]
+  },
+  "lg-p2-s1": {
+    "audioUrl": "/narration/leagues/lg-p2-s1.wav",
+    "durationMs": 1447,
+    "words": [
+      {
+        "wordId": "lg-p2-s1-w1",
+        "startMs": 336,
+        "endMs": 588
+      },
+      {
+        "wordId": "lg-p2-s1-w2",
+        "startMs": 773,
+        "endMs": 887
+      },
+      {
+        "wordId": "lg-p2-s1-w3",
+        "startMs": 877,
+        "endMs": 1086
+      },
+      {
+        "wordId": "lg-p2-s1-w4",
+        "startMs": 1076,
+        "endMs": 1447
+      }
+    ]
+  },
+  "lg-p2-s2": {
+    "audioUrl": "/narration/leagues/lg-p2-s2.wav",
+    "durationMs": 1525,
+    "words": [
+      {
+        "wordId": "lg-p2-s2-w1",
+        "startMs": 298,
+        "endMs": 371
+      },
+      {
+        "wordId": "lg-p2-s2-w2",
+        "startMs": 361,
+        "endMs": 648
+      },
+      {
+        "wordId": "lg-p2-s2-w3",
+        "startMs": 638,
+        "endMs": 820
+      },
+      {
+        "wordId": "lg-p2-s2-w4",
+        "startMs": 810,
+        "endMs": 1525
+      }
+    ]
+  },
+  "lg-p2-s3": {
+    "audioUrl": "/narration/leagues/lg-p2-s3.wav",
+    "durationMs": 2550,
+    "words": [
+      {
+        "wordId": "lg-p2-s3-w1",
+        "startMs": 317,
+        "endMs": 427
+      },
+      {
+        "wordId": "lg-p2-s3-w2",
+        "startMs": 417,
+        "endMs": 819
+      },
+      {
+        "wordId": "lg-p2-s3-w3",
+        "startMs": 809,
+        "endMs": 1452
+      },
+      {
+        "wordId": "lg-p2-s3-w4",
+        "startMs": 1442,
+        "endMs": 1533
+      },
+      {
+        "wordId": "lg-p2-s3-w5",
+        "startMs": 1523,
+        "endMs": 1593
+      },
+      {
+        "wordId": "lg-p2-s3-w6",
+        "startMs": 1583,
+        "endMs": 2041
+      },
+      {
+        "wordId": "lg-p2-s3-w7",
+        "startMs": 2031,
+        "endMs": 2550
+      }
+    ]
+  },
+  "lg-p2-s4": {
+    "audioUrl": "/narration/leagues/lg-p2-s4.wav",
+    "durationMs": 1800,
+    "words": [
+      {
+        "wordId": "lg-p2-s4-w1",
+        "startMs": 286,
+        "endMs": 433
+      },
+      {
+        "wordId": "lg-p2-s4-w2",
+        "startMs": 423,
+        "endMs": 674
+      },
+      {
+        "wordId": "lg-p2-s4-w3",
+        "startMs": 664,
+        "endMs": 791
+      },
+      {
+        "wordId": "lg-p2-s4-w4",
+        "startMs": 781,
+        "endMs": 1054
+      },
+      {
+        "wordId": "lg-p2-s4-w5",
+        "startMs": 1044,
+        "endMs": 1135
+      },
+      {
+        "wordId": "lg-p2-s4-w6",
+        "startMs": 1125,
+        "endMs": 1798
+      }
+    ]
+  },
+  "lg-p2-s5": {
+    "audioUrl": "/narration/leagues/lg-p2-s5.wav",
+    "durationMs": 5936,
+    "words": [
+      {
+        "wordId": "lg-p2-s5-w1",
+        "startMs": 395,
+        "endMs": 507
+      },
+      {
+        "wordId": "lg-p2-s5-w2",
+        "startMs": 497,
+        "endMs": 633
+      },
+      {
+        "wordId": "lg-p2-s5-w3",
+        "startMs": 623,
+        "endMs": 719
+      },
+      {
+        "wordId": "lg-p2-s5-w4",
+        "startMs": 709,
+        "endMs": 1117
+      },
+      {
+        "wordId": "lg-p2-s5-w5",
+        "startMs": 1107,
+        "endMs": 1670
+      },
+      {
+        "wordId": "lg-p2-s5-w6",
+        "startMs": 2030,
+        "endMs": 2182
+      },
+      {
+        "wordId": "lg-p2-s5-w7",
+        "startMs": 2172,
+        "endMs": 2452
+      },
+      {
+        "wordId": "lg-p2-s5-w8",
+        "startMs": 2442,
+        "endMs": 2580
+      },
+      {
+        "wordId": "lg-p2-s5-w9",
+        "startMs": 2570,
+        "endMs": 2823
+      },
+      {
+        "wordId": "lg-p2-s5-w10",
+        "startMs": 3333,
+        "endMs": 4072
+      },
+      {
+        "wordId": "lg-p2-s5-w11",
+        "startMs": 4244,
+        "endMs": 4367
+      },
+      {
+        "wordId": "lg-p2-s5-w12",
+        "startMs": 4357,
+        "endMs": 4472
+      },
+      {
+        "wordId": "lg-p2-s5-w13",
+        "startMs": 4462,
+        "endMs": 4752
+      },
+      {
+        "wordId": "lg-p2-s5-w14",
+        "startMs": 4742,
+        "endMs": 5018
+      },
+      {
+        "wordId": "lg-p2-s5-w15",
+        "startMs": 5008,
+        "endMs": 5339
+      },
+      {
+        "wordId": "lg-p2-s5-w16",
+        "startMs": 5329,
+        "endMs": 5460
+      },
+      {
+        "wordId": "lg-p2-s5-w17",
+        "startMs": 5450,
+        "endMs": 5675
+      },
+      {
+        "wordId": "lg-p2-s5-w18",
+        "startMs": 5665,
+        "endMs": 5936
+      }
+    ]
+  },
+  "lg-p2-s6": {
+    "audioUrl": "/narration/leagues/lg-p2-s6.wav",
+    "durationMs": 5050,
+    "words": [
+      {
+        "wordId": "lg-p2-s6-w1",
+        "startMs": 409,
+        "endMs": 494
+      },
+      {
+        "wordId": "lg-p2-s6-w2",
+        "startMs": 484,
+        "endMs": 943
+      },
+      {
+        "wordId": "lg-p2-s6-w3",
+        "startMs": 933,
+        "endMs": 1122
+      },
+      {
+        "wordId": "lg-p2-s6-w4",
+        "startMs": 1112,
+        "endMs": 1433
+      },
+      {
+        "wordId": "lg-p2-s6-w5",
+        "startMs": 1423,
+        "endMs": 1535
+      },
+      {
+        "wordId": "lg-p2-s6-w6",
+        "startMs": 1525,
+        "endMs": 2112
+      },
+      {
+        "wordId": "lg-p2-s6-w7",
+        "startMs": 2102,
+        "endMs": 2212
+      },
+      {
+        "wordId": "lg-p2-s6-w8",
+        "startMs": 2202,
+        "endMs": 2280
+      },
+      {
+        "wordId": "lg-p2-s6-w9",
+        "startMs": 2270,
+        "endMs": 3241
+      },
+      {
+        "wordId": "lg-p2-s6-w10",
+        "startMs": 3231,
+        "endMs": 3410
+      },
+      {
+        "wordId": "lg-p2-s6-w11",
+        "startMs": 3400,
+        "endMs": 3829
+      },
+      {
+        "wordId": "lg-p2-s6-w12",
+        "startMs": 3819,
+        "endMs": 4868
+      }
+    ]
+  },
+  "lg-p2-s7": {
+    "audioUrl": "/narration/leagues/lg-p2-s7.wav",
+    "durationMs": 5975,
+    "words": [
+      {
+        "wordId": "lg-p2-s7-w1",
+        "startMs": 384,
+        "endMs": 488
+      },
+      {
+        "wordId": "lg-p2-s7-w2",
+        "startMs": 478,
+        "endMs": 617
+      },
+      {
+        "wordId": "lg-p2-s7-w3",
+        "startMs": 607,
+        "endMs": 998
+      },
+      {
+        "wordId": "lg-p2-s7-w4",
+        "startMs": 988,
+        "endMs": 1191
+      },
+      {
+        "wordId": "lg-p2-s7-w5",
+        "startMs": 1181,
+        "endMs": 1521
+      },
+      {
+        "wordId": "lg-p2-s7-w6",
+        "startMs": 1511,
+        "endMs": 1619
+      },
+      {
+        "wordId": "lg-p2-s7-w7",
+        "startMs": 1609,
+        "endMs": 2470
+      },
+      {
+        "wordId": "lg-p2-s7-w8",
+        "startMs": 2950,
+        "endMs": 3091
+      },
+      {
+        "wordId": "lg-p2-s7-w9",
+        "startMs": 3081,
+        "endMs": 3267
+      },
+      {
+        "wordId": "lg-p2-s7-w10",
+        "startMs": 3257,
+        "endMs": 3454
+      },
+      {
+        "wordId": "lg-p2-s7-w11",
+        "startMs": 3444,
+        "endMs": 3783
+      },
+      {
+        "wordId": "lg-p2-s7-w12",
+        "startMs": 3773,
+        "endMs": 4472
+      },
+      {
+        "wordId": "lg-p2-s7-w13",
+        "startMs": 4462,
+        "endMs": 4636
+      },
+      {
+        "wordId": "lg-p2-s7-w14",
+        "startMs": 4626,
+        "endMs": 4771
+      },
+      {
+        "wordId": "lg-p2-s7-w15",
+        "startMs": 4761,
+        "endMs": 4839
+      },
+      {
+        "wordId": "lg-p2-s7-w16",
+        "startMs": 4829,
+        "endMs": 4952
+      },
+      {
+        "wordId": "lg-p2-s7-w17",
+        "startMs": 4942,
+        "endMs": 5314
+      },
+      {
+        "wordId": "lg-p2-s7-w18",
+        "startMs": 5304,
+        "endMs": 5450
+      },
+      {
+        "wordId": "lg-p2-s7-w19",
+        "startMs": 5440,
+        "endMs": 5975
+      }
+    ]
+  },
+  "lg-p2-s8": {
+    "audioUrl": "/narration/leagues/lg-p2-s8.wav",
+    "durationMs": 7302,
+    "words": [
+      {
+        "wordId": "lg-p2-s8-w1",
+        "startMs": 423,
+        "endMs": 522
+      },
+      {
+        "wordId": "lg-p2-s8-w2",
+        "startMs": 512,
+        "endMs": 847
+      },
+      {
+        "wordId": "lg-p2-s8-w3",
+        "startMs": 1127,
+        "endMs": 1777
+      },
+      {
+        "wordId": "lg-p2-s8-w4",
+        "startMs": 2037,
+        "endMs": 2367
+      },
+      {
+        "wordId": "lg-p2-s8-w5",
+        "startMs": 2357,
+        "endMs": 2865
+      },
+      {
+        "wordId": "lg-p2-s8-w6",
+        "startMs": 2855,
+        "endMs": 3198
+      },
+      {
+        "wordId": "lg-p2-s8-w7",
+        "startMs": 3188,
+        "endMs": 3271
+      },
+      {
+        "wordId": "lg-p2-s8-w8",
+        "startMs": 3261,
+        "endMs": 3372
+      },
+      {
+        "wordId": "lg-p2-s8-w9",
+        "startMs": 3362,
+        "endMs": 3504
+      },
+      {
+        "wordId": "lg-p2-s8-w10",
+        "startMs": 3494,
+        "endMs": 3633
+      },
+      {
+        "wordId": "lg-p2-s8-w11",
+        "startMs": 3623,
+        "endMs": 3860
+      },
+      {
+        "wordId": "lg-p2-s8-w12",
+        "startMs": 4370,
+        "endMs": 5246
+      },
+      {
+        "wordId": "lg-p2-s8-w13",
+        "startMs": 5410,
+        "endMs": 5978
+      },
+      {
+        "wordId": "lg-p2-s8-w14",
+        "startMs": 6144,
+        "endMs": 6729
+      },
+      {
+        "wordId": "lg-p2-s8-w15",
+        "startMs": 6845,
+        "endMs": 6970
+      },
+      {
+        "wordId": "lg-p2-s8-w16",
+        "startMs": 6960,
+        "endMs": 7302
+      }
+    ]
+  },
+  "lg-p2-s9": {
+    "audioUrl": "/narration/leagues/lg-p2-s9.wav",
+    "durationMs": 2675,
+    "words": [
+      {
+        "wordId": "lg-p2-s9-w1",
+        "startMs": 327,
+        "endMs": 401
+      },
+      {
+        "wordId": "lg-p2-s9-w2",
+        "startMs": 391,
+        "endMs": 767
+      },
+      {
+        "wordId": "lg-p2-s9-w3",
+        "startMs": 757,
+        "endMs": 917
+      },
+      {
+        "wordId": "lg-p2-s9-w4",
+        "startMs": 907,
+        "endMs": 1008
+      },
+      {
+        "wordId": "lg-p2-s9-w5",
+        "startMs": 998,
+        "endMs": 1343
+      },
+      {
+        "wordId": "lg-p2-s9-w6",
+        "startMs": 1333,
+        "endMs": 1762
+      },
+      {
+        "wordId": "lg-p2-s9-w7",
+        "startMs": 1752,
+        "endMs": 1832
+      },
+      {
+        "wordId": "lg-p2-s9-w8",
+        "startMs": 1822,
+        "endMs": 2535
+      }
+    ]
+  },
+  "lg-p2-s10": {
+    "audioUrl": "/narration/leagues/lg-p2-s10.wav",
+    "durationMs": 4522,
+    "words": [
+      {
+        "wordId": "lg-p2-s10-w1",
+        "startMs": 337,
+        "endMs": 397
+      },
+      {
+        "wordId": "lg-p2-s10-w2",
+        "startMs": 387,
+        "endMs": 678
+      },
+      {
+        "wordId": "lg-p2-s10-w3",
+        "startMs": 668,
+        "endMs": 979
+      },
+      {
+        "wordId": "lg-p2-s10-w4",
+        "startMs": 969,
+        "endMs": 1108
+      },
+      {
+        "wordId": "lg-p2-s10-w5",
+        "startMs": 1098,
+        "endMs": 1392
+      },
+      {
+        "wordId": "lg-p2-s10-w6",
+        "startMs": 1541,
+        "endMs": 1702
+      },
+      {
+        "wordId": "lg-p2-s10-w7",
+        "startMs": 1692,
+        "endMs": 1787
+      },
+      {
+        "wordId": "lg-p2-s10-w8",
+        "startMs": 1777,
+        "endMs": 2386
+      },
+      {
+        "wordId": "lg-p2-s10-w9",
+        "startMs": 2906,
+        "endMs": 3043
+      },
+      {
+        "wordId": "lg-p2-s10-w10",
+        "startMs": 3033,
+        "endMs": 3156
+      },
+      {
+        "wordId": "lg-p2-s10-w11",
+        "startMs": 3146,
+        "endMs": 3413
+      },
+      {
+        "wordId": "lg-p2-s10-w12",
+        "startMs": 3403,
+        "endMs": 3510
+      },
+      {
+        "wordId": "lg-p2-s10-w13",
+        "startMs": 3500,
+        "endMs": 3572
+      },
+      {
+        "wordId": "lg-p2-s10-w14",
+        "startMs": 3562,
+        "endMs": 3668
+      },
+      {
+        "wordId": "lg-p2-s10-w15",
+        "startMs": 3658,
+        "endMs": 3830
+      },
+      {
+        "wordId": "lg-p2-s10-w16",
+        "startMs": 3820,
+        "endMs": 4003
+      },
+      {
+        "wordId": "lg-p2-s10-w17",
+        "startMs": 3993,
+        "endMs": 4121
+      },
+      {
+        "wordId": "lg-p2-s10-w18",
+        "startMs": 4111,
+        "endMs": 4522
+      }
+    ]
+  },
+  "lg-p2-s11": {
+    "audioUrl": "/narration/leagues/lg-p2-s11.wav",
+    "durationMs": 2375,
+    "words": [
+      {
+        "wordId": "lg-p2-s11-w1",
+        "startMs": 381,
+        "endMs": 480
+      },
+      {
+        "wordId": "lg-p2-s11-w2",
+        "startMs": 470,
+        "endMs": 660
+      },
+      {
+        "wordId": "lg-p2-s11-w3",
+        "startMs": 650,
+        "endMs": 841
+      },
+      {
+        "wordId": "lg-p2-s11-w4",
+        "startMs": 831,
+        "endMs": 1271
+      },
+      {
+        "wordId": "lg-p2-s11-w5",
+        "startMs": 1261,
+        "endMs": 2234
+      }
+    ]
+  },
+  "lg-p2-s12": {
+    "audioUrl": "/narration/leagues/lg-p2-s12.wav",
+    "durationMs": 1950,
+    "words": [
+      {
+        "wordId": "lg-p2-s12-w1",
+        "startMs": 293,
+        "endMs": 363
+      },
+      {
+        "wordId": "lg-p2-s12-w2",
+        "startMs": 353,
+        "endMs": 664
+      },
+      {
+        "wordId": "lg-p2-s12-w3",
+        "startMs": 654,
+        "endMs": 828
+      },
+      {
+        "wordId": "lg-p2-s12-w4",
+        "startMs": 818,
+        "endMs": 995
+      },
+      {
+        "wordId": "lg-p2-s12-w5",
+        "startMs": 985,
+        "endMs": 1264
+      },
+      {
+        "wordId": "lg-p2-s12-w6",
+        "startMs": 1254,
+        "endMs": 1348
+      },
+      {
+        "wordId": "lg-p2-s12-w7",
+        "startMs": 1338,
+        "endMs": 1950
+      }
+    ]
+  },
+  "lg-p2-s13": {
+    "audioUrl": "/narration/leagues/lg-p2-s13.wav",
+    "durationMs": 8313,
+    "words": [
+      {
+        "wordId": "lg-p2-s13-w1",
+        "startMs": 365,
+        "endMs": 610
+      },
+      {
+        "wordId": "lg-p2-s13-w2",
+        "startMs": 600,
+        "endMs": 723
+      },
+      {
+        "wordId": "lg-p2-s13-w3",
+        "startMs": 713,
+        "endMs": 1005
+      },
+      {
+        "wordId": "lg-p2-s13-w4",
+        "startMs": 995,
+        "endMs": 1212
+      },
+      {
+        "wordId": "lg-p2-s13-w5",
+        "startMs": 1202,
+        "endMs": 1350
+      },
+      {
+        "wordId": "lg-p2-s13-w6",
+        "startMs": 1340,
+        "endMs": 1569
+      },
+      {
+        "wordId": "lg-p2-s13-w7",
+        "startMs": 1559,
+        "endMs": 2129
+      },
+      {
+        "wordId": "lg-p2-s13-w8",
+        "startMs": 2119,
+        "endMs": 2547
+      },
+      {
+        "wordId": "lg-p2-s13-w9",
+        "startMs": 2537,
+        "endMs": 3250
+      },
+      {
+        "wordId": "lg-p2-s13-w10",
+        "startMs": 3810,
+        "endMs": 4358
+      },
+      {
+        "wordId": "lg-p2-s13-w11",
+        "startMs": 4798,
+        "endMs": 5036
+      },
+      {
+        "wordId": "lg-p2-s13-w12",
+        "startMs": 5026,
+        "endMs": 5167
+      },
+      {
+        "wordId": "lg-p2-s13-w13",
+        "startMs": 5157,
+        "endMs": 5418
+      },
+      {
+        "wordId": "lg-p2-s13-w14",
+        "startMs": 5408,
+        "endMs": 5514
+      },
+      {
+        "wordId": "lg-p2-s13-w15",
+        "startMs": 5964,
+        "endMs": 6692
+      },
+      {
+        "wordId": "lg-p2-s13-w16",
+        "startMs": 6848,
+        "endMs": 6961
+      },
+      {
+        "wordId": "lg-p2-s13-w17",
+        "startMs": 6951,
+        "endMs": 7058
+      },
+      {
+        "wordId": "lg-p2-s13-w18",
+        "startMs": 7048,
+        "endMs": 7345
+      },
+      {
+        "wordId": "lg-p2-s13-w19",
+        "startMs": 7335,
+        "endMs": 7575
+      },
+      {
+        "wordId": "lg-p2-s13-w20",
+        "startMs": 7565,
+        "endMs": 7706
+      },
+      {
+        "wordId": "lg-p2-s13-w21",
+        "startMs": 7696,
+        "endMs": 8198
+      },
+      {
+        "wordId": "lg-p2-s13-w22",
+        "startMs": 8188,
+        "endMs": 8313
+      }
+    ]
+  },
+  "lg-p2-s14": {
+    "audioUrl": "/narration/leagues/lg-p2-s14.wav",
+    "durationMs": 6138,
+    "words": [
+      {
+        "wordId": "lg-p2-s14-w1",
+        "startMs": 335,
+        "endMs": 427
+      },
+      {
+        "wordId": "lg-p2-s14-w2",
+        "startMs": 417,
+        "endMs": 542
+      },
+      {
+        "wordId": "lg-p2-s14-w3",
+        "startMs": 532,
+        "endMs": 816
+      },
+      {
+        "wordId": "lg-p2-s14-w4",
+        "startMs": 806,
+        "endMs": 1022
+      },
+      {
+        "wordId": "lg-p2-s14-w5",
+        "startMs": 1012,
+        "endMs": 1292
+      },
+      {
+        "wordId": "lg-p2-s14-w6",
+        "startMs": 1282,
+        "endMs": 1423
+      },
+      {
+        "wordId": "lg-p2-s14-w7",
+        "startMs": 1413,
+        "endMs": 1938
+      },
+      {
+        "wordId": "lg-p2-s14-w8",
+        "startMs": 2298,
+        "endMs": 2444
+      },
+      {
+        "wordId": "lg-p2-s14-w9",
+        "startMs": 2434,
+        "endMs": 2681
+      },
+      {
+        "wordId": "lg-p2-s14-w10",
+        "startMs": 2671,
+        "endMs": 3122
+      },
+      {
+        "wordId": "lg-p2-s14-w11",
+        "startMs": 3235,
+        "endMs": 3384
+      },
+      {
+        "wordId": "lg-p2-s14-w12",
+        "startMs": 3374,
+        "endMs": 3827
+      },
+      {
+        "wordId": "lg-p2-s14-w13",
+        "startMs": 3817,
+        "endMs": 3948
+      },
+      {
+        "wordId": "lg-p2-s14-w14",
+        "startMs": 3938,
+        "endMs": 4523
+      },
+      {
+        "wordId": "lg-p2-s14-w15",
+        "startMs": 4651,
+        "endMs": 4761
+      },
+      {
+        "wordId": "lg-p2-s14-w16",
+        "startMs": 4751,
+        "endMs": 4876
+      },
+      {
+        "wordId": "lg-p2-s14-w17",
+        "startMs": 4866,
+        "endMs": 5159
+      },
+      {
+        "wordId": "lg-p2-s14-w18",
+        "startMs": 5149,
+        "endMs": 6099
+      }
+    ]
+  },
+  "lg-p2-s15": {
+    "audioUrl": "/narration/leagues/lg-p2-s15.wav",
+    "durationMs": 800,
+    "words": [
+      {
+        "wordId": "lg-p2-s15-w1",
+        "startMs": 321,
+        "endMs": 753
+      }
+    ]
+  },
+  "lg-p2-s16": {
+    "audioUrl": "/narration/leagues/lg-p2-s16.wav",
+    "durationMs": 3255,
+    "words": [
+      {
+        "wordId": "lg-p2-s16-w1",
+        "startMs": 405,
+        "endMs": 699
+      },
+      {
+        "wordId": "lg-p2-s16-w2",
+        "startMs": 824,
+        "endMs": 1281
+      },
+      {
+        "wordId": "lg-p2-s16-w3",
+        "startMs": 1601,
+        "endMs": 1817
+      },
+      {
+        "wordId": "lg-p2-s16-w4",
+        "startMs": 1807,
+        "endMs": 1886
+      },
+      {
+        "wordId": "lg-p2-s16-w5",
+        "startMs": 1876,
+        "endMs": 1953
+      },
+      {
+        "wordId": "lg-p2-s16-w6",
+        "startMs": 1943,
+        "endMs": 2245
+      },
+      {
+        "wordId": "lg-p2-s16-w7",
+        "startMs": 2235,
+        "endMs": 2314
+      },
+      {
+        "wordId": "lg-p2-s16-w8",
+        "startMs": 2304,
+        "endMs": 2385
+      },
+      {
+        "wordId": "lg-p2-s16-w9",
+        "startMs": 2375,
+        "endMs": 3247
+      }
+    ]
+  },
+  "lg-p2-s17": {
+    "audioUrl": "/narration/leagues/lg-p2-s17.wav",
+    "durationMs": 2250,
+    "words": [
+      {
+        "wordId": "lg-p2-s17-w1",
+        "startMs": 366,
+        "endMs": 526
+      },
+      {
+        "wordId": "lg-p2-s17-w2",
+        "startMs": 516,
+        "endMs": 909
+      },
+      {
+        "wordId": "lg-p2-s17-w3",
+        "startMs": 899,
+        "endMs": 1149
+      },
+      {
+        "wordId": "lg-p2-s17-w4",
+        "startMs": 1139,
+        "endMs": 2226
+      }
+    ]
+  },
+  "lg-p2-s18": {
+    "audioUrl": "/narration/leagues/lg-p2-s18.wav",
+    "durationMs": 2325,
+    "words": [
+      {
+        "wordId": "lg-p2-s18-w1",
+        "startMs": 354,
+        "endMs": 581
+      },
+      {
+        "wordId": "lg-p2-s18-w2",
+        "startMs": 571,
+        "endMs": 712
+      },
+      {
+        "wordId": "lg-p2-s18-w3",
+        "startMs": 702,
+        "endMs": 1204
+      },
+      {
+        "wordId": "lg-p2-s18-w4",
+        "startMs": 1194,
+        "endMs": 1370
+      },
+      {
+        "wordId": "lg-p2-s18-w5",
+        "startMs": 1360,
+        "endMs": 2209
+      }
+    ]
+  },
+  "lg-p2-s19": {
+    "audioUrl": "/narration/leagues/lg-p2-s19.wav",
+    "durationMs": 1450,
+    "words": [
+      {
+        "wordId": "lg-p2-s19-w1",
+        "startMs": 325,
+        "endMs": 559
+      },
+      {
+        "wordId": "lg-p2-s19-w2",
+        "startMs": 549,
+        "endMs": 729
+      },
+      {
+        "wordId": "lg-p2-s19-w3",
+        "startMs": 719,
+        "endMs": 880
+      },
+      {
+        "wordId": "lg-p2-s19-w4",
+        "startMs": 870,
+        "endMs": 1450
+      }
+    ]
+  },
+  "lg-p3-s1": {
+    "audioUrl": "/narration/leagues/lg-p3-s1.wav",
+    "durationMs": 6350,
+    "words": [
+      {
+        "wordId": "lg-p3-s1-w1",
+        "startMs": 370,
+        "endMs": 681
+      },
+      {
+        "wordId": "lg-p3-s1-w2",
+        "startMs": 671,
+        "endMs": 1080
+      },
+      {
+        "wordId": "lg-p3-s1-w3",
+        "startMs": 1070,
+        "endMs": 1487
+      },
+      {
+        "wordId": "lg-p3-s1-w4",
+        "startMs": 1477,
+        "endMs": 1831
+      },
+      {
+        "wordId": "lg-p3-s1-w5",
+        "startMs": 1821,
+        "endMs": 2296
+      },
+      {
+        "wordId": "lg-p3-s1-w6",
+        "startMs": 2286,
+        "endMs": 2393
+      },
+      {
+        "wordId": "lg-p3-s1-w7",
+        "startMs": 2383,
+        "endMs": 2461
+      },
+      {
+        "wordId": "lg-p3-s1-w8",
+        "startMs": 2451,
+        "endMs": 2724
+      },
+      {
+        "wordId": "lg-p3-s1-w9",
+        "startMs": 2714,
+        "endMs": 2798
+      },
+      {
+        "wordId": "lg-p3-s1-w10",
+        "startMs": 2788,
+        "endMs": 2970
+      },
+      {
+        "wordId": "lg-p3-s1-w11",
+        "startMs": 2960,
+        "endMs": 4057
+      },
+      {
+        "wordId": "lg-p3-s1-w12",
+        "startMs": 4557,
+        "endMs": 4711
+      },
+      {
+        "wordId": "lg-p3-s1-w13",
+        "startMs": 4701,
+        "endMs": 4859
+      },
+      {
+        "wordId": "lg-p3-s1-w14",
+        "startMs": 4849,
+        "endMs": 4939
+      },
+      {
+        "wordId": "lg-p3-s1-w15",
+        "startMs": 4929,
+        "endMs": 5066
+      },
+      {
+        "wordId": "lg-p3-s1-w16",
+        "startMs": 5056,
+        "endMs": 5312
+      },
+      {
+        "wordId": "lg-p3-s1-w17",
+        "startMs": 5302,
+        "endMs": 5621
+      },
+      {
+        "wordId": "lg-p3-s1-w18",
+        "startMs": 5611,
+        "endMs": 6350
+      }
+    ]
+  },
+  "lg-p3-s2": {
+    "audioUrl": "/narration/leagues/lg-p3-s2.wav",
+    "durationMs": 3558,
+    "words": [
+      {
+        "wordId": "lg-p3-s2-w1",
+        "startMs": 356,
+        "endMs": 450
+      },
+      {
+        "wordId": "lg-p3-s2-w2",
+        "startMs": 440,
+        "endMs": 495
+      },
+      {
+        "wordId": "lg-p3-s2-w3",
+        "startMs": 485,
+        "endMs": 658
+      },
+      {
+        "wordId": "lg-p3-s2-w4",
+        "startMs": 648,
+        "endMs": 957
+      },
+      {
+        "wordId": "lg-p3-s2-w5",
+        "startMs": 947,
+        "endMs": 1066
+      },
+      {
+        "wordId": "lg-p3-s2-w6",
+        "startMs": 1056,
+        "endMs": 1357
+      },
+      {
+        "wordId": "lg-p3-s2-w7",
+        "startMs": 1347,
+        "endMs": 1503
+      },
+      {
+        "wordId": "lg-p3-s2-w8",
+        "startMs": 1493,
+        "endMs": 1593
+      },
+      {
+        "wordId": "lg-p3-s2-w9",
+        "startMs": 1583,
+        "endMs": 2096
+      },
+      {
+        "wordId": "lg-p3-s2-w10",
+        "startMs": 2376,
+        "endMs": 2594
+      },
+      {
+        "wordId": "lg-p3-s2-w11",
+        "startMs": 2584,
+        "endMs": 3558
+      }
+    ]
+  },
+  "lg-p3-s3": {
+    "audioUrl": "/narration/leagues/lg-p3-s3.wav",
+    "durationMs": 5085,
+    "words": [
+      {
+        "wordId": "lg-p3-s3-w1",
+        "startMs": 416,
+        "endMs": 587
+      },
+      {
+        "wordId": "lg-p3-s3-w2",
+        "startMs": 577,
+        "endMs": 697
+      },
+      {
+        "wordId": "lg-p3-s3-w3",
+        "startMs": 687,
+        "endMs": 1063
+      },
+      {
+        "wordId": "lg-p3-s3-w4",
+        "startMs": 1053,
+        "endMs": 1268
+      },
+      {
+        "wordId": "lg-p3-s3-w5",
+        "startMs": 1258,
+        "endMs": 1960
+      },
+      {
+        "wordId": "lg-p3-s3-w6",
+        "startMs": 2380,
+        "endMs": 2507
+      },
+      {
+        "wordId": "lg-p3-s3-w7",
+        "startMs": 2497,
+        "endMs": 2939
+      },
+      {
+        "wordId": "lg-p3-s3-w8",
+        "startMs": 2929,
+        "endMs": 3074
+      },
+      {
+        "wordId": "lg-p3-s3-w9",
+        "startMs": 3064,
+        "endMs": 3598
+      },
+      {
+        "wordId": "lg-p3-s3-w10",
+        "startMs": 3588,
+        "endMs": 4057
+      },
+      {
+        "wordId": "lg-p3-s3-w11",
+        "startMs": 4047,
+        "endMs": 4139
+      },
+      {
+        "wordId": "lg-p3-s3-w12",
+        "startMs": 4129,
+        "endMs": 5085
+      }
+    ]
+  },
+  "lg-p4-s1": {
+    "audioUrl": "/narration/leagues/lg-p4-s1.wav",
+    "durationMs": 4325,
+    "words": [
+      {
+        "wordId": "lg-p4-s1-w1",
+        "startMs": 387,
+        "endMs": 548
+      },
+      {
+        "wordId": "lg-p4-s1-w2",
+        "startMs": 538,
+        "endMs": 828
+      },
+      {
+        "wordId": "lg-p4-s1-w3",
+        "startMs": 818,
+        "endMs": 970
+      },
+      {
+        "wordId": "lg-p4-s1-w4",
+        "startMs": 960,
+        "endMs": 1395
+      },
+      {
+        "wordId": "lg-p4-s1-w5",
+        "startMs": 1385,
+        "endMs": 1765
+      },
+      {
+        "wordId": "lg-p4-s1-w6",
+        "startMs": 1755,
+        "endMs": 1939
+      },
+      {
+        "wordId": "lg-p4-s1-w7",
+        "startMs": 1929,
+        "endMs": 2426
+      },
+      {
+        "wordId": "lg-p4-s1-w8",
+        "startMs": 2676,
+        "endMs": 2854
+      },
+      {
+        "wordId": "lg-p4-s1-w9",
+        "startMs": 2844,
+        "endMs": 3071
+      },
+      {
+        "wordId": "lg-p4-s1-w10",
+        "startMs": 3061,
+        "endMs": 3174
+      },
+      {
+        "wordId": "lg-p4-s1-w11",
+        "startMs": 3164,
+        "endMs": 3477
+      },
+      {
+        "wordId": "lg-p4-s1-w12",
+        "startMs": 3467,
+        "endMs": 4324
+      }
+    ]
+  },
+  "lg-p4-s2": {
+    "audioUrl": "/narration/leagues/lg-p4-s2.wav",
+    "durationMs": 5475,
+    "words": [
+      {
+        "wordId": "lg-p4-s2-w1",
+        "startMs": 369,
+        "endMs": 444
+      },
+      {
+        "wordId": "lg-p4-s2-w2",
+        "startMs": 434,
+        "endMs": 813
+      },
+      {
+        "wordId": "lg-p4-s2-w3",
+        "startMs": 803,
+        "endMs": 1151
+      },
+      {
+        "wordId": "lg-p4-s2-w4",
+        "startMs": 1141,
+        "endMs": 1291
+      },
+      {
+        "wordId": "lg-p4-s2-w5",
+        "startMs": 1281,
+        "endMs": 1975
+      },
+      {
+        "wordId": "lg-p4-s2-w6",
+        "startMs": 2455,
+        "endMs": 2589
+      },
+      {
+        "wordId": "lg-p4-s2-w7",
+        "startMs": 2579,
+        "endMs": 2824
+      },
+      {
+        "wordId": "lg-p4-s2-w8",
+        "startMs": 2814,
+        "endMs": 3325
+      },
+      {
+        "wordId": "lg-p4-s2-w9",
+        "startMs": 3315,
+        "endMs": 3468
+      },
+      {
+        "wordId": "lg-p4-s2-w10",
+        "startMs": 3458,
+        "endMs": 3631
+      },
+      {
+        "wordId": "lg-p4-s2-w11",
+        "startMs": 3621,
+        "endMs": 3945
+      },
+      {
+        "wordId": "lg-p4-s2-w12",
+        "startMs": 3935,
+        "endMs": 4283
+      },
+      {
+        "wordId": "lg-p4-s2-w13",
+        "startMs": 4273,
+        "endMs": 4336
+      },
+      {
+        "wordId": "lg-p4-s2-w14",
+        "startMs": 4326,
+        "endMs": 4708
+      },
+      {
+        "wordId": "lg-p4-s2-w15",
+        "startMs": 4698,
+        "endMs": 5475
+      }
+    ]
+  },
+  "lg-p5-s1": {
+    "audioUrl": "/narration/leagues/lg-p5-s1.wav",
+    "durationMs": 6843,
+    "words": [
+      {
+        "wordId": "lg-p5-s1-w1",
+        "startMs": 406,
+        "endMs": 515
+      },
+      {
+        "wordId": "lg-p5-s1-w2",
+        "startMs": 505,
+        "endMs": 926
+      },
+      {
+        "wordId": "lg-p5-s1-w3",
+        "startMs": 916,
+        "endMs": 1417
+      },
+      {
+        "wordId": "lg-p5-s1-w4",
+        "startMs": 1797,
+        "endMs": 2026
+      },
+      {
+        "wordId": "lg-p5-s1-w5",
+        "startMs": 2336,
+        "endMs": 2921
+      },
+      {
+        "wordId": "lg-p5-s1-w6",
+        "startMs": 3092,
+        "endMs": 3214
+      },
+      {
+        "wordId": "lg-p5-s1-w7",
+        "startMs": 3204,
+        "endMs": 3394
+      },
+      {
+        "wordId": "lg-p5-s1-w8",
+        "startMs": 3384,
+        "endMs": 3680
+      },
+      {
+        "wordId": "lg-p5-s1-w9",
+        "startMs": 3670,
+        "endMs": 3825
+      },
+      {
+        "wordId": "lg-p5-s1-w10",
+        "startMs": 3815,
+        "endMs": 4248
+      },
+      {
+        "wordId": "lg-p5-s1-w11",
+        "startMs": 4238,
+        "endMs": 4606
+      },
+      {
+        "wordId": "lg-p5-s1-w12",
+        "startMs": 4936,
+        "endMs": 5398
+      },
+      {
+        "wordId": "lg-p5-s1-w13",
+        "startMs": 5559,
+        "endMs": 5841
+      },
+      {
+        "wordId": "lg-p5-s1-w14",
+        "startMs": 5831,
+        "endMs": 6332
+      },
+      {
+        "wordId": "lg-p5-s1-w15",
+        "startMs": 6322,
+        "endMs": 6468
+      },
+      {
+        "wordId": "lg-p5-s1-w16",
+        "startMs": 6458,
+        "endMs": 6843
+      }
+    ]
+  },
+  "lg-p5-s2": {
+    "audioUrl": "/narration/leagues/lg-p5-s2.wav",
+    "durationMs": 6077,
+    "words": [
+      {
+        "wordId": "lg-p5-s2-w1",
+        "startMs": 440,
+        "endMs": 499
+      },
+      {
+        "wordId": "lg-p5-s2-w2",
+        "startMs": 489,
+        "endMs": 1002
+      },
+      {
+        "wordId": "lg-p5-s2-w3",
+        "startMs": 992,
+        "endMs": 1354
+      },
+      {
+        "wordId": "lg-p5-s2-w4",
+        "startMs": 1344,
+        "endMs": 1517
+      },
+      {
+        "wordId": "lg-p5-s2-w5",
+        "startMs": 1507,
+        "endMs": 2228
+      },
+      {
+        "wordId": "lg-p5-s2-w6",
+        "startMs": 2828,
+        "endMs": 3038
+      },
+      {
+        "wordId": "lg-p5-s2-w7",
+        "startMs": 3028,
+        "endMs": 3143
+      },
+      {
+        "wordId": "lg-p5-s2-w8",
+        "startMs": 3133,
+        "endMs": 3251
+      },
+      {
+        "wordId": "lg-p5-s2-w9",
+        "startMs": 3241,
+        "endMs": 3479
+      },
+      {
+        "wordId": "lg-p5-s2-w10",
+        "startMs": 3469,
+        "endMs": 3631
+      },
+      {
+        "wordId": "lg-p5-s2-w11",
+        "startMs": 3621,
+        "endMs": 4078
+      },
+      {
+        "wordId": "lg-p5-s2-w12",
+        "startMs": 4068,
+        "endMs": 4212
+      },
+      {
+        "wordId": "lg-p5-s2-w13",
+        "startMs": 4202,
+        "endMs": 4589
+      },
+      {
+        "wordId": "lg-p5-s2-w14",
+        "startMs": 4579,
+        "endMs": 4680
+      },
+      {
+        "wordId": "lg-p5-s2-w15",
+        "startMs": 4670,
+        "endMs": 4772
+      },
+      {
+        "wordId": "lg-p5-s2-w16",
+        "startMs": 4762,
+        "endMs": 5185
+      },
+      {
+        "wordId": "lg-p5-s2-w17",
+        "startMs": 5175,
+        "endMs": 5260
+      },
+      {
+        "wordId": "lg-p5-s2-w18",
+        "startMs": 5250,
+        "endMs": 5336
+      },
+      {
+        "wordId": "lg-p5-s2-w19",
+        "startMs": 5326,
+        "endMs": 6077
+      }
+    ]
+  },
+  "lg-p6-s1": {
+    "audioUrl": "/narration/leagues/lg-p6-s1.wav",
+    "durationMs": 4556,
+    "words": [
+      {
+        "wordId": "lg-p6-s1-w1",
+        "startMs": 392,
+        "endMs": 689
+      },
+      {
+        "wordId": "lg-p6-s1-w2",
+        "startMs": 679,
+        "endMs": 918
+      },
+      {
+        "wordId": "lg-p6-s1-w3",
+        "startMs": 908,
+        "endMs": 1176
+      },
+      {
+        "wordId": "lg-p6-s1-w4",
+        "startMs": 1166,
+        "endMs": 1266
+      },
+      {
+        "wordId": "lg-p6-s1-w5",
+        "startMs": 1256,
+        "endMs": 1447
+      },
+      {
+        "wordId": "lg-p6-s1-w6",
+        "startMs": 1437,
+        "endMs": 1650
+      },
+      {
+        "wordId": "lg-p6-s1-w7",
+        "startMs": 1640,
+        "endMs": 1714
+      },
+      {
+        "wordId": "lg-p6-s1-w8",
+        "startMs": 1704,
+        "endMs": 1783
+      },
+      {
+        "wordId": "lg-p6-s1-w9",
+        "startMs": 1773,
+        "endMs": 2445
+      },
+      {
+        "wordId": "lg-p6-s1-w10",
+        "startMs": 2865,
+        "endMs": 3060
+      },
+      {
+        "wordId": "lg-p6-s1-w11",
+        "startMs": 3050,
+        "endMs": 3329
+      },
+      {
+        "wordId": "lg-p6-s1-w12",
+        "startMs": 3319,
+        "endMs": 3777
+      },
+      {
+        "wordId": "lg-p6-s1-w13",
+        "startMs": 3767,
+        "endMs": 4556
+      }
+    ]
+  },
+  "lg-p6-s2": {
+    "audioUrl": "/narration/leagues/lg-p6-s2.wav",
+    "durationMs": 3875,
+    "words": [
+      {
+        "wordId": "lg-p6-s2-w1",
+        "startMs": 362,
+        "endMs": 434
+      },
+      {
+        "wordId": "lg-p6-s2-w2",
+        "startMs": 424,
+        "endMs": 737
+      },
+      {
+        "wordId": "lg-p6-s2-w3",
+        "startMs": 727,
+        "endMs": 1091
+      },
+      {
+        "wordId": "lg-p6-s2-w4",
+        "startMs": 1081,
+        "endMs": 1459
+      },
+      {
+        "wordId": "lg-p6-s2-w5",
+        "startMs": 1449,
+        "endMs": 1890
+      },
+      {
+        "wordId": "lg-p6-s2-w6",
+        "startMs": 1880,
+        "endMs": 2062
+      },
+      {
+        "wordId": "lg-p6-s2-w7",
+        "startMs": 2052,
+        "endMs": 2223
+      },
+      {
+        "wordId": "lg-p6-s2-w8",
+        "startMs": 2213,
+        "endMs": 2368
+      },
+      {
+        "wordId": "lg-p6-s2-w9",
+        "startMs": 2358,
+        "endMs": 2479
+      },
+      {
+        "wordId": "lg-p6-s2-w10",
+        "startMs": 2469,
+        "endMs": 2894
+      },
+      {
+        "wordId": "lg-p6-s2-w11",
+        "startMs": 2884,
+        "endMs": 3666
+      }
+    ]
+  },
+  "lg-p6-s3": {
+    "audioUrl": "/narration/leagues/lg-p6-s3.wav",
+    "durationMs": 2975,
+    "words": [
+      {
+        "wordId": "lg-p6-s3-w1",
+        "startMs": 354,
+        "endMs": 555
+      },
+      {
+        "wordId": "lg-p6-s3-w2",
+        "startMs": 545,
+        "endMs": 912
+      },
+      {
+        "wordId": "lg-p6-s3-w3",
+        "startMs": 902,
+        "endMs": 1253
+      },
+      {
+        "wordId": "lg-p6-s3-w4",
+        "startMs": 1243,
+        "endMs": 1725
+      },
+      {
+        "wordId": "lg-p6-s3-w5",
+        "startMs": 1715,
+        "endMs": 1856
+      },
+      {
+        "wordId": "lg-p6-s3-w6",
+        "startMs": 1846,
+        "endMs": 1986
+      },
+      {
+        "wordId": "lg-p6-s3-w7",
+        "startMs": 1976,
+        "endMs": 2059
+      },
+      {
+        "wordId": "lg-p6-s3-w8",
+        "startMs": 2049,
+        "endMs": 2744
+      }
+    ]
+  },
+  "lg-p6-s4": {
+    "audioUrl": "/narration/leagues/lg-p6-s4.wav",
+    "durationMs": 8270,
+    "words": [
+      {
+        "wordId": "lg-p6-s4-w1",
+        "startMs": 358,
+        "endMs": 489
+      },
+      {
+        "wordId": "lg-p6-s4-w2",
+        "startMs": 479,
+        "endMs": 729
+      },
+      {
+        "wordId": "lg-p6-s4-w3",
+        "startMs": 719,
+        "endMs": 836
+      },
+      {
+        "wordId": "lg-p6-s4-w4",
+        "startMs": 826,
+        "endMs": 1216
+      },
+      {
+        "wordId": "lg-p6-s4-w5",
+        "startMs": 1206,
+        "endMs": 1283
+      },
+      {
+        "wordId": "lg-p6-s4-w6",
+        "startMs": 1273,
+        "endMs": 1359
+      },
+      {
+        "wordId": "lg-p6-s4-w7",
+        "startMs": 1349,
+        "endMs": 1631
+      },
+      {
+        "wordId": "lg-p6-s4-w8",
+        "startMs": 1621,
+        "endMs": 1747
+      },
+      {
+        "wordId": "lg-p6-s4-w9",
+        "startMs": 1737,
+        "endMs": 1919
+      },
+      {
+        "wordId": "lg-p6-s4-w10",
+        "startMs": 1909,
+        "endMs": 2214
+      },
+      {
+        "wordId": "lg-p6-s4-w11",
+        "startMs": 2204,
+        "endMs": 2630
+      },
+      {
+        "wordId": "lg-p6-s4-w12",
+        "startMs": 2620,
+        "endMs": 2797
+      },
+      {
+        "wordId": "lg-p6-s4-w13",
+        "startMs": 2787,
+        "endMs": 3445
+      },
+      {
+        "wordId": "lg-p6-s4-w14",
+        "startMs": 3965,
+        "endMs": 4120
+      },
+      {
+        "wordId": "lg-p6-s4-w15",
+        "startMs": 4110,
+        "endMs": 4479
+      },
+      {
+        "wordId": "lg-p6-s4-w16",
+        "startMs": 4469,
+        "endMs": 4740
+      },
+      {
+        "wordId": "lg-p6-s4-w17",
+        "startMs": 4730,
+        "endMs": 4815
+      },
+      {
+        "wordId": "lg-p6-s4-w18",
+        "startMs": 4805,
+        "endMs": 5127
+      },
+      {
+        "wordId": "lg-p6-s4-w19",
+        "startMs": 5117,
+        "endMs": 5382
+      },
+      {
+        "wordId": "lg-p6-s4-w20",
+        "startMs": 5832,
+        "endMs": 6320
+      },
+      {
+        "wordId": "lg-p6-s4-w21",
+        "startMs": 6446,
+        "endMs": 6668
+      },
+      {
+        "wordId": "lg-p6-s4-w22",
+        "startMs": 6658,
+        "endMs": 6732
+      },
+      {
+        "wordId": "lg-p6-s4-w23",
+        "startMs": 6722,
+        "endMs": 7087
+      },
+      {
+        "wordId": "lg-p6-s4-w24",
+        "startMs": 7077,
+        "endMs": 7471
+      },
+      {
+        "wordId": "lg-p6-s4-w25",
+        "startMs": 7461,
+        "endMs": 7785
+      },
+      {
+        "wordId": "lg-p6-s4-w26",
+        "startMs": 7775,
+        "endMs": 7865
+      },
+      {
+        "wordId": "lg-p6-s4-w27",
+        "startMs": 7855,
+        "endMs": 8270
+      }
+    ]
+  },
+  "lg-p7-s1": {
+    "audioUrl": "/narration/leagues/lg-p7-s1.wav",
+    "durationMs": 4125,
+    "words": [
+      {
+        "wordId": "lg-p7-s1-w1",
+        "startMs": 378,
+        "endMs": 457
+      },
+      {
+        "wordId": "lg-p7-s1-w2",
+        "startMs": 447,
+        "endMs": 762
+      },
+      {
+        "wordId": "lg-p7-s1-w3",
+        "startMs": 752,
+        "endMs": 933
+      },
+      {
+        "wordId": "lg-p7-s1-w4",
+        "startMs": 923,
+        "endMs": 1474
+      },
+      {
+        "wordId": "lg-p7-s1-w5",
+        "startMs": 1464,
+        "endMs": 1826
+      },
+      {
+        "wordId": "lg-p7-s1-w6",
+        "startMs": 1816,
+        "endMs": 1946
+      },
+      {
+        "wordId": "lg-p7-s1-w7",
+        "startMs": 1936,
+        "endMs": 2000
+      },
+      {
+        "wordId": "lg-p7-s1-w8",
+        "startMs": 1990,
+        "endMs": 2430
+      },
+      {
+        "wordId": "lg-p7-s1-w9",
+        "startMs": 2420,
+        "endMs": 2683
+      },
+      {
+        "wordId": "lg-p7-s1-w10",
+        "startMs": 2673,
+        "endMs": 2901
+      },
+      {
+        "wordId": "lg-p7-s1-w11",
+        "startMs": 2891,
+        "endMs": 2965
+      },
+      {
+        "wordId": "lg-p7-s1-w12",
+        "startMs": 2955,
+        "endMs": 3861
+      }
+    ]
+  },
+  "lg-p7-s2": {
+    "audioUrl": "/narration/leagues/lg-p7-s2.wav",
+    "durationMs": 1225,
+    "words": [
+      {
+        "wordId": "lg-p7-s2-w1",
+        "startMs": 321,
+        "endMs": 442
+      },
+      {
+        "wordId": "lg-p7-s2-w2",
+        "startMs": 432,
+        "endMs": 489
+      },
+      {
+        "wordId": "lg-p7-s2-w3",
+        "startMs": 479,
+        "endMs": 1225
+      }
+    ]
+  },
+  "lg-p7-s3": {
+    "audioUrl": "/narration/leagues/lg-p7-s3.wav",
+    "durationMs": 1575,
+    "words": [
+      {
+        "wordId": "lg-p7-s3-w1",
+        "startMs": 329,
+        "endMs": 484
+      },
+      {
+        "wordId": "lg-p7-s3-w2",
+        "startMs": 474,
+        "endMs": 705
+      },
+      {
+        "wordId": "lg-p7-s3-w3",
+        "startMs": 695,
+        "endMs": 811
+      },
+      {
+        "wordId": "lg-p7-s3-w4",
+        "startMs": 801,
+        "endMs": 1187
+      },
+      {
+        "wordId": "lg-p7-s3-w5",
+        "startMs": 1177,
+        "endMs": 1575
+      }
+    ]
+  },
+  "lg-p7-s4": {
+    "audioUrl": "/narration/leagues/lg-p7-s4.wav",
+    "durationMs": 9687,
+    "words": [
+      {
+        "wordId": "lg-p7-s4-w1",
+        "startMs": 387,
+        "endMs": 488
+      },
+      {
+        "wordId": "lg-p7-s4-w2",
+        "startMs": 478,
+        "endMs": 638
+      },
+      {
+        "wordId": "lg-p7-s4-w3",
+        "startMs": 628,
+        "endMs": 894
+      },
+      {
+        "wordId": "lg-p7-s4-w4",
+        "startMs": 884,
+        "endMs": 992
+      },
+      {
+        "wordId": "lg-p7-s4-w5",
+        "startMs": 982,
+        "endMs": 1353
+      },
+      {
+        "wordId": "lg-p7-s4-w6",
+        "startMs": 1343,
+        "endMs": 1427
+      },
+      {
+        "wordId": "lg-p7-s4-w7",
+        "startMs": 1417,
+        "endMs": 1510
+      },
+      {
+        "wordId": "lg-p7-s4-w8",
+        "startMs": 1500,
+        "endMs": 1827
+      },
+      {
+        "wordId": "lg-p7-s4-w9",
+        "startMs": 1817,
+        "endMs": 2024
+      },
+      {
+        "wordId": "lg-p7-s4-w10",
+        "startMs": 2014,
+        "endMs": 2249
+      },
+      {
+        "wordId": "lg-p7-s4-w11",
+        "startMs": 2239,
+        "endMs": 2828
+      },
+      {
+        "wordId": "lg-p7-s4-w12",
+        "startMs": 2818,
+        "endMs": 3087
+      },
+      {
+        "wordId": "lg-p7-s4-w13",
+        "startMs": 3077,
+        "endMs": 3177
+      },
+      {
+        "wordId": "lg-p7-s4-w14",
+        "startMs": 3167,
+        "endMs": 4004
+      },
+      {
+        "wordId": "lg-p7-s4-w15",
+        "startMs": 4624,
+        "endMs": 4763
+      },
+      {
+        "wordId": "lg-p7-s4-w16",
+        "startMs": 4753,
+        "endMs": 4837
+      },
+      {
+        "wordId": "lg-p7-s4-w17",
+        "startMs": 4827,
+        "endMs": 5378
+      },
+      {
+        "wordId": "lg-p7-s4-w18",
+        "startMs": 5368,
+        "endMs": 5475
+      },
+      {
+        "wordId": "lg-p7-s4-w19",
+        "startMs": 5465,
+        "endMs": 5555
+      },
+      {
+        "wordId": "lg-p7-s4-w20",
+        "startMs": 5545,
+        "endMs": 6052
+      },
+      {
+        "wordId": "lg-p7-s4-w21",
+        "startMs": 6042,
+        "endMs": 6854
+      },
+      {
+        "wordId": "lg-p7-s4-w22",
+        "startMs": 6844,
+        "endMs": 7026
+      },
+      {
+        "wordId": "lg-p7-s4-w23",
+        "startMs": 7016,
+        "endMs": 7114
+      },
+      {
+        "wordId": "lg-p7-s4-w24",
+        "startMs": 7444,
+        "endMs": 8135
+      },
+      {
+        "wordId": "lg-p7-s4-w25",
+        "startMs": 8125,
+        "endMs": 8285
+      },
+      {
+        "wordId": "lg-p7-s4-w26",
+        "startMs": 8275,
+        "endMs": 8372
+      },
+      {
+        "wordId": "lg-p7-s4-w27",
+        "startMs": 8362,
+        "endMs": 8881
+      },
+      {
+        "wordId": "lg-p7-s4-w28",
+        "startMs": 8871,
+        "endMs": 9227
+      },
+      {
+        "wordId": "lg-p7-s4-w29",
+        "startMs": 9217,
+        "endMs": 9312
+      },
+      {
+        "wordId": "lg-p7-s4-w30",
+        "startMs": 9302,
+        "endMs": 9410
+      },
+      {
+        "wordId": "lg-p7-s4-w31",
+        "startMs": 9400,
+        "endMs": 9687
+      }
+    ]
+  },
+  "lg-p8-s1": {
+    "audioUrl": "/narration/leagues/lg-p8-s1.wav",
+    "durationMs": 3224,
+    "words": [
+      {
+        "wordId": "lg-p8-s1-w1",
+        "startMs": 334,
+        "endMs": 425
+      },
+      {
+        "wordId": "lg-p8-s1-w2",
+        "startMs": 415,
+        "endMs": 544
+      },
+      {
+        "wordId": "lg-p8-s1-w3",
+        "startMs": 534,
+        "endMs": 721
+      },
+      {
+        "wordId": "lg-p8-s1-w4",
+        "startMs": 711,
+        "endMs": 1041
+      },
+      {
+        "wordId": "lg-p8-s1-w5",
+        "startMs": 1031,
+        "endMs": 1410
+      },
+      {
+        "wordId": "lg-p8-s1-w6",
+        "startMs": 1400,
+        "endMs": 1860
+      },
+      {
+        "wordId": "lg-p8-s1-w7",
+        "startMs": 2005,
+        "endMs": 2152
+      },
+      {
+        "wordId": "lg-p8-s1-w8",
+        "startMs": 2142,
+        "endMs": 2424
+      },
+      {
+        "wordId": "lg-p8-s1-w9",
+        "startMs": 2414,
+        "endMs": 3062
+      }
+    ]
+  },
+  "lg-p9-s1": {
+    "audioUrl": "/narration/leagues/lg-p9-s1.wav",
+    "durationMs": 4000,
+    "words": [
+      {
+        "wordId": "lg-p9-s1-w1",
+        "startMs": 403,
+        "endMs": 526
+      },
+      {
+        "wordId": "lg-p9-s1-w2",
+        "startMs": 516,
+        "endMs": 728
+      },
+      {
+        "wordId": "lg-p9-s1-w3",
+        "startMs": 718,
+        "endMs": 1194
+      },
+      {
+        "wordId": "lg-p9-s1-w4",
+        "startMs": 1184,
+        "endMs": 1318
+      },
+      {
+        "wordId": "lg-p9-s1-w5",
+        "startMs": 1308,
+        "endMs": 1759
+      },
+      {
+        "wordId": "lg-p9-s1-w6",
+        "startMs": 1749,
+        "endMs": 2134
+      },
+      {
+        "wordId": "lg-p9-s1-w7",
+        "startMs": 2124,
+        "endMs": 2326
+      },
+      {
+        "wordId": "lg-p9-s1-w8",
+        "startMs": 2316,
+        "endMs": 2520
+      },
+      {
+        "wordId": "lg-p9-s1-w9",
+        "startMs": 2510,
+        "endMs": 3094
+      },
+      {
+        "wordId": "lg-p9-s1-w10",
+        "startMs": 3084,
+        "endMs": 3886
+      }
+    ]
+  },
+  "lg-p9-s2": {
+    "audioUrl": "/narration/leagues/lg-p9-s2.wav",
+    "durationMs": 9068,
+    "words": [
+      {
+        "wordId": "lg-p9-s2-w1",
+        "startMs": 409,
+        "endMs": 512
+      },
+      {
+        "wordId": "lg-p9-s2-w2",
+        "startMs": 502,
+        "endMs": 1090
+      },
+      {
+        "wordId": "lg-p9-s2-w3",
+        "startMs": 1080,
+        "endMs": 1184
+      },
+      {
+        "wordId": "lg-p9-s2-w4",
+        "startMs": 1174,
+        "endMs": 1275
+      },
+      {
+        "wordId": "lg-p9-s2-w5",
+        "startMs": 1265,
+        "endMs": 1879
+      },
+      {
+        "wordId": "lg-p9-s2-w6",
+        "startMs": 1869,
+        "endMs": 2185
+      },
+      {
+        "wordId": "lg-p9-s2-w7",
+        "startMs": 2175,
+        "endMs": 2300
+      },
+      {
+        "wordId": "lg-p9-s2-w8",
+        "startMs": 2290,
+        "endMs": 2840
+      },
+      {
+        "wordId": "lg-p9-s2-w9",
+        "startMs": 2830,
+        "endMs": 2941
+      },
+      {
+        "wordId": "lg-p9-s2-w10",
+        "startMs": 2931,
+        "endMs": 3380
+      },
+      {
+        "wordId": "lg-p9-s2-w11",
+        "startMs": 3370,
+        "endMs": 4421
+      },
+      {
+        "wordId": "lg-p9-s2-w12",
+        "startMs": 5041,
+        "endMs": 5176
+      },
+      {
+        "wordId": "lg-p9-s2-w13",
+        "startMs": 5166,
+        "endMs": 5279
+      },
+      {
+        "wordId": "lg-p9-s2-w14",
+        "startMs": 5269,
+        "endMs": 5504
+      },
+      {
+        "wordId": "lg-p9-s2-w15",
+        "startMs": 5494,
+        "endMs": 5732
+      },
+      {
+        "wordId": "lg-p9-s2-w16",
+        "startMs": 5722,
+        "endMs": 5870
+      },
+      {
+        "wordId": "lg-p9-s2-w17",
+        "startMs": 5860,
+        "endMs": 6010
+      },
+      {
+        "wordId": "lg-p9-s2-w18",
+        "startMs": 6000,
+        "endMs": 6219
+      },
+      {
+        "wordId": "lg-p9-s2-w19",
+        "startMs": 6209,
+        "endMs": 6514
+      },
+      {
+        "wordId": "lg-p9-s2-w20",
+        "startMs": 6504,
+        "endMs": 7007
+      },
+      {
+        "wordId": "lg-p9-s2-w21",
+        "startMs": 6997,
+        "endMs": 7147
+      },
+      {
+        "wordId": "lg-p9-s2-w22",
+        "startMs": 7137,
+        "endMs": 7298
+      },
+      {
+        "wordId": "lg-p9-s2-w23",
+        "startMs": 7288,
+        "endMs": 7374
+      },
+      {
+        "wordId": "lg-p9-s2-w24",
+        "startMs": 7364,
+        "endMs": 7816
+      },
+      {
+        "wordId": "lg-p9-s2-w25",
+        "startMs": 7806,
+        "endMs": 7931
+      },
+      {
+        "wordId": "lg-p9-s2-w26",
+        "startMs": 7921,
+        "endMs": 8008
+      },
+      {
+        "wordId": "lg-p9-s2-w27",
+        "startMs": 7998,
+        "endMs": 8377
+      },
+      {
+        "wordId": "lg-p9-s2-w28",
+        "startMs": 8367,
+        "endMs": 9068
+      }
+    ]
+  }
+}
