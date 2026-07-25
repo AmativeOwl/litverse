@@ -41,9 +41,14 @@ export function WorldTurntable({ lerpedRef, plateSet, children }: WorldTurntable
   const groupRef = useRef<Group>(null)
   const angleRef = useRef<number | null>(null)
 
+  // Same derivation as PaintedPlates, narrative-first (cameraAzimuthDeg key
+  // order is the beat sequence): consecutive story beats sit in adjacent
+  // slots, so this turntable advances one frame per beat -- sequential,
+  // never sweeping across unrelated scenes to reach a far one.
   const slotByAuthoredDeg = useMemo(
     () =>
       tileSlotAzimuths([
+        ...Object.values(plateSet.cameraAzimuthDeg),
         ...plateSet.plates.map((def) => def.azimuthDeg),
         ...(plateSet.windows ?? []).map((window) => window.plate.azimuthDeg),
       ]),

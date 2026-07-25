@@ -130,15 +130,25 @@ describe('shellArc', () => {
 })
 
 describe('tileSlotAzimuths', () => {
-  it('retiles N distinct azimuths onto an even 360/N circle, first azimuth anchored', () => {
-    const gatsby = [28, 80, 140, 222, 235, 280, 325]
+  it('retiles N distinct azimuths onto an even 360/N circle in INPUT (narrative) order', () => {
+    // Gatsby's beats in story order -- dancing repeats orchestra's 80
+    const gatsby = [325, 28, 280, 140, 222, 80, 235, 80]
     const slots = tileSlotAzimuths(gatsby)
     expect(slots.size).toBe(7)
-    expect(slots.get(28)).toBeCloseTo(28, 6)
+    expect(slots.get(325)).toBeCloseTo(325, 6)
     const step = 360 / 7
-    gatsby.forEach((az, i) => {
-      expect(slots.get(az)).toBeCloseTo((28 + i * step) % 360, 6)
+    const narrative = [325, 28, 280, 140, 222, 80, 235]
+    narrative.forEach((az, i) => {
+      expect(slots.get(az)).toBeCloseTo((325 + i * step) % 360, 6)
     })
+    // consecutive story beats hang exactly one slot apart -- the drum
+    // advances a single frame per beat, never sweeping across others
+    for (let i = 1; i < narrative.length; i++) {
+      const prev = slots.get(narrative[i - 1] ?? 0) ?? 0
+      const curr = slots.get(narrative[i] ?? 0) ?? 0
+      const delta = ((curr - prev) % 360 + 360) % 360
+      expect(delta).toBeCloseTo(step, 6)
+    }
   })
 
   it('leaves an already-even ring unchanged (Masque: nine sectors at 40 degrees)', () => {

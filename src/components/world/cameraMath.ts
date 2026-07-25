@@ -34,15 +34,16 @@ const LOOKAT_HEIGHT = 1
 const CARD_RADIUS = 20
 /**
  * How far from the origin, toward the sector, the camera stands while
- * inside the card -- the "you are IN the painting" lever, tuned twice by
- * user feedback: 4 read as watching a screen from a seat; 13 (7 units off
- * the wall) overflowed the frame so much the composition couldn't be read
- * whole. 9 is the split: ~11 units off the mid shell, the painting's full
- * 10-unit height just fills the frame at the ~51-degree half-pane lens, so
- * you see the whole scene while its neighbors connect at the frame edges
- * and the surround stays painted in every direction.
+ * inside the card -- the "you are IN the painting" lever, tuned three
+ * times by user feedback: 4 read as watching a screen from a seat; 13 (7
+ * off the wall) overflowed the frame so the composition couldn't be read
+ * whole; 9 still felt a touch too close. 7 stands ~13 units off the mid
+ * shell -- paired with the narrower dwell lens below, the frame shows the
+ * same painting coverage as before but with calmer perspective and a
+ * little breathing room, while still staying inside the painted surface
+ * (no backdrop ever peeks through as whitespace).
  */
-const DWELL_RADIUS = 9
+const DWELL_RADIUS = 7
 const CARD_CENTER_Y = 4.0
 /** Travel arc: a gentle crane lift over the scene center during the crossing
  * -- pure axial travel read as flat; the lift gives the threshold a small
@@ -61,12 +62,13 @@ const ZOOMED_MOTION_SCALE = 0
 // does have arc edges. So the dwell derives a vertical fov from a target
 // horizontal field via the standard hfov/vfov relation, clamped so extreme
 // panes can neither tunnel-vision nor fisheye.
-// 54 rather than the initial 60: at the half-pane aspect (~1.2) this
-// derives ~46 degrees vertical, which keeps the frame's vertical span
-// (y 4 +/- 11*tan(23deg) = -0.7..8.7) just inside the mid card's painted
-// -0.8..9.2 -- at 60 the lens overshot the card's edges and the backdrop
-// ring showed through as a horizontal bar cutting across compositions.
-const DWELL_TARGET_HFOV_DEG = 54
+// Tuned in step with DWELL_RADIUS (initially 60, then 54 at radius 9, now
+// 46 at radius 7): the invariant is that the frame's vertical span stays
+// just inside the mid card's painted -0.8..9.2 -- at 13 units off the
+// wall, ~39 degrees vertical gives y 4 +/- 13*tan(19.4deg) = -0.6..8.6.
+// Overshooting lets the backdrop ring show through as a horizontal bar
+// cutting across compositions (the earlier whitespace bug).
+const DWELL_TARGET_HFOV_DEG = 46
 const DWELL_FOV_MIN_DEG = 34
 const DWELL_FOV_MAX_DEG = 60
 

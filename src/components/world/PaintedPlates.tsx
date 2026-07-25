@@ -231,7 +231,14 @@ const HAZE_DRUM_CENTER_Y = 5
 
 export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: PaintedPlatesProps) {
   const { built, builtWindows, midGroups } = useMemo(() => {
+    // Narrative order first: cameraAzimuthDeg's key order is the scene's
+    // beat sequence (both registries declare beats in story order), so
+    // consecutive story beats land in adjacent drum slots -- every beat
+    // transition advances the drum exactly one frame. Plate/window
+    // azimuths follow only as a safety net for sectors missing from the
+    // beat map (dedup keeps the narrative position for shared ones).
     const allAzimuths = [
+      ...Object.values(plateSet.cameraAzimuthDeg),
       ...plateSet.plates.map((def) => def.azimuthDeg),
       ...(plateSet.windows ?? []).map((window) => window.plate.azimuthDeg),
     ]

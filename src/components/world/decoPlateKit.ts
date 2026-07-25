@@ -249,15 +249,22 @@ export function shellArcFromTheta(
 
 /**
  * The seamless-drum spacing rule: N distinct sector azimuths retile onto an
- * even 360/N-degree circle (ascending order preserved, first azimuth kept
- * as the anchor), so sector shells cut to exactly one slot each abut their
- * neighbors with no gap -- the zoetrope-drum look where paintings connect
- * edge-to-edge and a turn slides image-into-image. Authored azimuths stay
- * the *identity* of a sector (data files and camera map are untouched);
- * this is purely the hanging position. Pure and exported for tests.
+ * even 360/N-degree circle so sector shells cut to exactly one slot each
+ * abut their neighbors with no gap -- the zoetrope-drum look where
+ * paintings connect edge-to-edge and a turn slides image-into-image.
+ *
+ * Slot order is the INPUT order (first appearance wins, duplicates
+ * deduped), NOT sorted azimuth: callers pass azimuths in the scene's
+ * narrative beat order, so consecutive story beats hang in physically
+ * adjacent slots and every beat transition is a single one-frame advance
+ * of the drum -- scene 1 slides into scene 2 slides into scene 3, never
+ * sweeping across unrelated frames to reach a far sector (user direction:
+ * sequential, no "spinning all over the place"). Authored azimuths stay
+ * the *identity* of a sector (data files and camera map untouched); this
+ * is purely the hanging position. Pure and exported for tests.
  */
 export function tileSlotAzimuths(azimuthsDeg: readonly number[]): Map<number, number> {
-  const unique = [...new Set(azimuthsDeg)].sort((a, b) => a - b)
+  const unique = [...new Set(azimuthsDeg)]
   const slots = new Map<number, number>()
   const count = unique.length
   if (count === 0) return slots

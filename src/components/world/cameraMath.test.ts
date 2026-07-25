@@ -101,13 +101,13 @@ describe('computeCameraPose', () => {
   it('zoom=1 crosses the threshold: camera stands IN the painting, close to the shell surface', () => {
     const azimuth = degToRad(80)
     const pose = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1)
-    // camera stands DWELL_RADIUS (9) out from the origin toward the sector
-    // -- ~11 units off the mid shell at radius 20: the whole painting fills
-    // the frame, neighbors connecting at its edges (the "in the frame"
-    // dwell, twice-tuned by user feedback)
+    // camera stands DWELL_RADIUS (7) out from the origin toward the sector
+    // -- ~13 units off the mid shell at radius 20: the whole painting fills
+    // the frame with a little breathing room, neighbors connecting at its
+    // edges (the "in the frame" dwell, thrice-tuned by user feedback)
     expect(azimuthOf(pose.position)).toBeCloseTo(azimuth, 3)
     const radius = Math.hypot(pose.position[0], pose.position[2])
-    expect(radius).toBeCloseTo(9, 1)
+    expect(radius).toBeCloseTo(7, 1)
     // gazing at the shell surface at its center height, in the sector direction
     expect(azimuthOf(pose.lookAt)).toBeCloseTo(azimuth, 3)
     expect(pose.lookAt[1]).toBeCloseTo(4.0, 1)
