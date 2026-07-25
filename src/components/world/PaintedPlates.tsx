@@ -79,6 +79,17 @@ interface BuiltPlate {
   thetaStart: number
   thetaLength: number
   fogTint: number
+  /**
+   * Explicit transparent-pass ordering. Distance sorting CANNOT be trusted
+   * here: a full-circle far ring's bounding-sphere center is the scene
+   * origin, which sits closer to the interior camera than a mid arc's
+   * centroid -- so by distance the backdrop ring drew ON TOP of the mid
+   * cards (and, at renderOrder 0, over the motif layer), hiding every
+   * painted detail behind sky. Negative orders keep all shells beneath the
+   * default-0 effects (motifs, particles): far -30, mid -20, window -10,
+   * near -5.
+   */
+  renderOrder: number
   /** Present on animated paint-source plates: everything needed to repaint per tick. */
   repaint?: {
     canvas: HTMLCanvasElement
@@ -125,11 +136,15 @@ function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): Buil
   return { texture, repaint }
 }
 
+const LAYER_RENDER_ORDER: Record<PlateLayer, number> = { far: -30, mid: -20, near: -5 }
+const WINDOW_RENDER_ORDER = -10
+
 function buildPlate(
   def: PlateDef,
   beatsById: Record<string, SceneBeat>,
   slotAzimuthDeg: number,
   slotThetaRad: number,
+  renderOrder?: number,
 ): BuiltPlate {
   const radius = def.radius ?? LAYER_RADIUS[def.layer]
   const size = def.size ?? LAYER_SIZE[def.layer]
@@ -168,6 +183,7 @@ function buildPlate(
     thetaStart,
     thetaLength,
     fogTint: LAYER_FOG_TINT[def.layer],
+    renderOrder: renderOrder ?? LAYER_RENDER_ORDER[def.layer],
     repaint,
   }
 }
@@ -183,7 +199,7 @@ const workingColor = new THREE.Color()
  */
 function PlateMesh({ plate }: { plate: BuiltPlate }) {
   return (
-    <mesh position={[0, plate.centerY, 0]} material={plate.material}>
+    <mesh position={[0, plate.centerY, 0]} material={plate.material} renderOrder={plate.renderOrder}>
       <cylinderGeometry
         args={[
           plate.radius,
@@ -226,7 +242,13 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
       buildPlate(def, beatsById, slotOf(def.azimuthDeg), slotThetaRad),
     )
     const windows: BuiltWindow[] = (plateSet.windows ?? []).map((window) => ({
-      built: buildPlate(window.plate, beatsById, slotOf(window.plate.azimuthDeg), slotThetaRad),
+      built: buildPlate(
+        window.plate,
+        beatsById,
+        slotOf(window.plate.azimuthDeg),
+        slotThetaRad,
+        WINDOW_RENDER_ORDER,
+      ),
       sentenceIdSet: new Set(window.sentenceIds),
       opacity: 0,
     }))

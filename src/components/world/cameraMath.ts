@@ -61,7 +61,12 @@ const ZOOMED_MOTION_SCALE = 0
 // does have arc edges. So the dwell derives a vertical fov from a target
 // horizontal field via the standard hfov/vfov relation, clamped so extreme
 // panes can neither tunnel-vision nor fisheye.
-const DWELL_TARGET_HFOV_DEG = 60
+// 54 rather than the initial 60: at the half-pane aspect (~1.2) this
+// derives ~46 degrees vertical, which keeps the frame's vertical span
+// (y 4 +/- 11*tan(23deg) = -0.7..8.7) just inside the mid card's painted
+// -0.8..9.2 -- at 60 the lens overshot the card's edges and the backdrop
+// ring showed through as a horizontal bar cutting across compositions.
+const DWELL_TARGET_HFOV_DEG = 54
 const DWELL_FOV_MIN_DEG = 34
 const DWELL_FOV_MAX_DEG = 60
 
