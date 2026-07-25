@@ -5,6 +5,7 @@ import {
   fogTintHex,
   lightenHex,
   mixHex,
+  shellArc,
   sunburstRayAngles,
   vignetteVisibility,
   zigguratSteps,
@@ -99,5 +100,30 @@ describe('vignetteVisibility (kit home after relocation)', () => {
     expect(vignetteVisibility('x', 'a', 1, BEATS)).toBe(1)
     expect(vignetteVisibility('a', 'x', 1, BEATS)).toBe(0)
     expect(vignetteVisibility('x', 'y', 0.5, BEATS)).toBe(0)
+  })
+})
+
+describe('shellArc', () => {
+  it('spans the arc length as angle: thetaLength = arcLength / radius', () => {
+    const { thetaLength } = shellArc(80, 18, 20)
+    expect(thetaLength).toBeCloseTo(0.9, 6)
+  })
+
+  it('centers the arc on the scene azimuth under the cylinder theta convention', () => {
+    // Cylinder verts: x = r*sin(theta), z = r*cos(theta). The arc's midpoint
+    // theta must land on the scene-polar direction (x = cos(az), z = sin(az)).
+    const azimuthDeg = 80
+    const radius = 20
+    const { thetaStart, thetaLength } = shellArc(azimuthDeg, 18, radius)
+    const thetaMid = thetaStart + thetaLength / 2
+    const azimuthRad = (azimuthDeg * Math.PI) / 180
+    expect(radius * Math.sin(thetaMid)).toBeCloseTo(Math.cos(azimuthRad) * radius, 6)
+    expect(radius * Math.cos(thetaMid)).toBeCloseTo(Math.sin(azimuthRad) * radius, 6)
+  })
+
+  it('wider layers at larger radii keep sane angular spans (far plate under a half circle)', () => {
+    const far = shellArc(0, 42, 26)
+    expect(far.thetaLength).toBeGreaterThan(1.2)
+    expect(far.thetaLength).toBeLessThan(Math.PI)
   })
 })

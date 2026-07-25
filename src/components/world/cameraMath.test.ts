@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computeCameraPose, DEFAULT_CAMERA_AZIMUTH_RAD, lerpAngleRad } from './cameraMath'
+import { computeCameraPose, DEFAULT_CAMERA_AZIMUTH_RAD, dwellFovForAspect, lerpAngleRad } from './cameraMath'
 
 const degToRad = (deg: number) => (deg * Math.PI) / 180
 
@@ -98,19 +98,41 @@ describe('computeCameraPose', () => {
     expect(explicit.lookAt).toEqual(omitted.lookAt)
   })
 
-  it('zoom=1 dollies the camera onto the SECTOR side, framing the whole card', () => {
+  it('zoom=1 crosses the threshold: camera stands INSIDE the shell embrace on the sector side', () => {
     const azimuth = degToRad(80)
     const pose = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1)
-    // camera sits between origin and the card (radius 20), 18 units from it
-    // -- the photocard framing: the full plate + gold frame in view with a
-    // margin, dwell fov normalized to CARD_FOV
+    // camera stands DWELL_RADIUS (4) out from the origin toward the sector,
+    // well inside the mid shell at radius 20 -- the cyclorama dwell
     expect(azimuthOf(pose.position)).toBeCloseTo(azimuth, 3)
     const radius = Math.hypot(pose.position[0], pose.position[2])
-    expect(radius).toBeCloseTo(2, 1)
-    // looking at the card's center height, in the sector direction
+    expect(radius).toBeCloseTo(4, 1)
+    // gazing at the shell surface at its center height, in the sector direction
     expect(azimuthOf(pose.lookAt)).toBeCloseTo(azimuth, 3)
     expect(pose.lookAt[1]).toBeCloseTo(4.0, 1)
-    expect(pose.fov).toBeCloseTo(55, 5)
+    // dwell lens derives from the aspect (default 1.2 pane)
+    expect(pose.fov).toBeCloseTo(dwellFovForAspect(1.2), 5)
+  })
+
+  it('dwell fov holds a constant horizontal field: wider aspect => narrower vertical fov, clamped', () => {
+    const half = dwellFovForAspect(1.2)
+    const wide = dwellFovForAspect(16 / 9)
+    const ultrawide = dwellFovForAspect(3.6)
+    const tall = dwellFovForAspect(0.5)
+    expect(wide).toBeLessThan(half)
+    expect(ultrawide).toBeLessThanOrEqual(wide)
+    expect(ultrawide).toBeGreaterThanOrEqual(34) // clamp floor
+    expect(tall).toBeLessThanOrEqual(60) // clamp ceiling
+    expect(dwellFovForAspect(Number.NaN)).toBeCloseTo(dwellFovForAspect(1.2), 5)
+  })
+
+  it('dwellYawRad sweeps the zoomed gaze around the shell without moving the camera', () => {
+    const azimuth = degToRad(80)
+    const centered = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1, 1.2, 0)
+    const swept = computeCameraPose('static-drift', 0, 50, 0, azimuth, 1, 1.2, 0.2)
+    expect(swept.position).toEqual(centered.position)
+    expect(azimuthOf(swept.lookAt)).toBeCloseTo(azimuth + 0.2, 3)
+    // gaze target stays on the shell surface (radius 20)
+    expect(Math.hypot(swept.lookAt[0], swept.lookAt[2])).toBeCloseTo(20, 3)
   })
 
   it('zoom clamps out-of-range and non-finite values safely', () => {

@@ -22,31 +22,53 @@ const DOLLY_HEIGHT = 2
 const LOOKAT_BIAS = 2.2
 const LOOKAT_HEIGHT = 1
 
-// --- "inside the card" framing (zoom = 1) -----------------------------------
-// Mid plates hang at radius ~19-20, sized ~18x10 with center ~4.2 up. A
-// camera ~11 units in front of one fills the frame with the painting. That
-// puts the zoomed camera at radius ~9 on the SECTOR side of the origin
-// (the dolly crosses the scene), so the crane arc below lifts the travel
-// over the crowd's heads instead of through them.
+// --- "inside the card" framing (zoom = 1): the cyclorama dwell --------------
+// Since the cyclorama pivot (see CLAUDE.md "immersive cyclorama + cinema
+// mode"), cards are curved cylindrical shells wrapped around the scene
+// origin, painted on their INSIDE face. The push is no longer a photocard
+// standoff -- it is a THRESHOLD CROSSING: the camera travels across the
+// origin to stand inside the shell's embrace on the sector side, where the
+// painting wraps into peripheral vision. The dwell then looks slowly around
+// (`dwellYawRad`, driven by CameraRig) instead of holding a locked frame --
+// the camera still never moves *positionally* within a frame.
 const CARD_RADIUS = 20
-// The dwell frames the WHOLE card -- gold frame included -- like a
-// photocard pressed on a table: the card comfortably inside the frame with
-// its surroundings visible. Two levers make that reliable: distance (the
-// pane is roughly square-ish, so the card's 18-unit WIDTH is the binding
-// constraint, needing ~18 units of standoff) and a normalized dwell fov
-// (each beat's lens, 45-56, is blended toward CARD_FOV as zoom settles, so
-// the framing stops depending on which beat we arrived from).
-const CARD_NEAR_DISTANCE = 18
-const CARD_FOV = 55
+/** How far from the origin, toward the sector, the camera stands while inside the card. */
+const DWELL_RADIUS = 4
 const CARD_CENTER_Y = 4.0
-/** Travel arc: the push-in stays a centered axial dolly (the "scale match"
- * read), but with enough lift that the path glides above the crowd -- near
- * objects whipping past the lens mid-move were amplifying the felt speed. */
+/** Travel arc: a gentle crane lift over the scene center during the crossing
+ * -- pure axial travel read as flat; the lift gives the threshold a small
+ * "stepping over" cadence. */
 const CRANE_ARC = 1.2
-/** Behavior motion fully dies at zoom=1: the dwell frame is LOCKED -- the
- * camera moves between frames, never within them; all motion during a dwell
- * belongs to the painting itself (user feedback). */
+/** Behavior motion fully dies at zoom=1: the dwell position is LOCKED -- the
+ * camera's only in-frame motion is the slow look-around yaw; positional
+ * motion belongs to the travel between frames (user feedback). */
 const ZOOMED_MOTION_SCALE = 0
+
+// --- aspect-aware dwell lens -------------------------------------------------
+// The one real math task of the cinema-mode pivot: the old CARD_FOV=55
+// constant assumed the ~1.2 half-pane aspect. Inside the shell, what must
+// stay constant across aspects is the HORIZONTAL field -- how much of the
+// arc wraps the view -- because the shell has no hard top/bottom story but
+// does have arc edges. So the dwell derives a vertical fov from a target
+// horizontal field via the standard hfov/vfov relation, clamped so extreme
+// panes can neither tunnel-vision nor fisheye.
+const DWELL_TARGET_HFOV_DEG = 60
+const DWELL_FOV_MIN_DEG = 34
+const DWELL_FOV_MAX_DEG = 60
+
+/**
+ * Vertical fov (degrees) that yields DWELL_TARGET_HFOV_DEG of horizontal
+ * field at the given viewport aspect (width/height). Wider panes get a
+ * narrower vertical fov so the horizontal wrap stays constant; the clamp
+ * keeps tall/narrow panes from blowing past the comfortable wide-angle
+ * range. Pure and exported for tests.
+ */
+export function dwellFovForAspect(aspect: number): number {
+  const safeAspect = Number.isFinite(aspect) && aspect > 0 ? aspect : 1.2
+  const halfHfovRad = ((DWELL_TARGET_HFOV_DEG / 2) * Math.PI) / 180
+  const vfovDeg = (2 * Math.atan(Math.tan(halfHfovRad) / safeAspect) * 180) / Math.PI
+  return Math.min(DWELL_FOV_MAX_DEG, Math.max(DWELL_FOV_MIN_DEG, vfovDeg))
+}
 
 /**
  * The azimuth every pose faced before per-beat anchoring existed: the camera
@@ -106,6 +128,8 @@ export function computeCameraPose(
   elapsedSeconds: number,
   azimuthRad: number = DEFAULT_CAMERA_AZIMUTH_RAD,
   zoom = 0,
+  aspect = 1.2,
+  dwellYawRad = 0,
 ): CameraPose {
   const safeSpeed = Number.isFinite(speed) ? Math.max(speed, 0) : 0
   const safeAzimuth = Number.isFinite(azimuthRad) ? azimuthRad : DEFAULT_CAMERA_AZIMUTH_RAD
@@ -160,13 +184,17 @@ export function computeCameraPose(
 
   if (safeZoom === 0) return basePose
 
-  // --- blend toward the "inside the card" framing ---------------------------
-  // Zoomed position sits on the SECTOR side of the origin, CARD_NEAR_DISTANCE
-  // in front of the mid plate; the crane arc lifts the travel over the crowd.
+  // --- blend toward the interior (cyclorama) dwell ---------------------------
+  // Zoomed position stands INSIDE the shell's embrace, DWELL_RADIUS out from
+  // the origin on the sector side -- the threshold crossing travels across
+  // the scene center with a gentle crane lift. The dwell gaze aims at the
+  // shell surface, swept by `dwellYawRad` for the slow look-around (yaw only
+  // reaches full strength as the crossing completes, so mid-travel frames
+  // stay aimed at the destination).
   const eased = easeInOutCubicLocal(safeZoom)
-  const [nearX, nearZ] = polar(safeAzimuth, CARD_RADIUS - CARD_NEAR_DISTANCE)
+  const [nearX, nearZ] = polar(safeAzimuth, DWELL_RADIUS)
   const crane = Math.sin(Math.PI * eased) * CRANE_ARC
-  const [cardLookX, cardLookZ] = polar(safeAzimuth, CARD_RADIUS)
+  const [cardLookX, cardLookZ] = polar(safeAzimuth + dwellYawRad * eased, CARD_RADIUS)
   return {
     position: [
       lerp(basePose.position[0], nearX, eased),
@@ -178,6 +206,6 @@ export function computeCameraPose(
       lerp(basePose.lookAt[1], CARD_CENTER_Y, eased),
       lerp(basePose.lookAt[2], cardLookZ, eased),
     ],
-    fov: lerp(fov, CARD_FOV, eased),
+    fov: lerp(fov, dwellFovForAspect(aspect), eased),
   }
 }

@@ -207,6 +207,39 @@ export function withMirrorSymmetry(
   ctx.restore()
 }
 
+/**
+ * Cyclorama-mode switch for the poster frame: when the painted cards became
+ * curved shells the viewer stands INSIDE (see CLAUDE.md "immersive cyclorama
+ * + cinema mode"), the gold frame stopped making sense -- you don't see a
+ * picture frame from inside the picture. Every existing paint function
+ * calls drawDecoFrame unconditionally, so rather than editing dozens of
+ * compositions across every registry, the frame is disabled here at the
+ * single choke point. Flip back to true (or delete these three lines) to
+ * restore the framed-photocard look wholesale.
+ */
+let decoFrameEnabled = false
+export function setDecoFrameEnabled(enabled: boolean): void {
+  decoFrameEnabled = enabled
+}
+
+/**
+ * Pure geometry for hanging a plate as a curved cylindrical shell segment
+ * around the scene origin: converts the plate's scene azimuth (degrees,
+ * x=cos/z=sin convention) and its flat width (now an ARC length, so
+ * compositions keep their aspect) into three.js CylinderGeometry theta
+ * parameters (whose convention is x=sin/z=cos). Exported for tests.
+ */
+export function shellArc(
+  azimuthDeg: number,
+  arcLength: number,
+  radius: number,
+): { thetaStart: number; thetaLength: number } {
+  const azimuthRad = (azimuthDeg * Math.PI) / 180
+  const thetaLength = arcLength / radius
+  const thetaCenter = Math.PI / 2 - azimuthRad
+  return { thetaStart: thetaCenter - thetaLength / 2, thetaLength }
+}
+
 /** Double-ruled gold border with quarter-fan corners -- the plate's poster frame. */
 export function drawDecoFrame(
   ctx: CanvasRenderingContext2D,
@@ -214,6 +247,7 @@ export function drawDecoFrame(
   height: number,
   gold: string,
 ): void {
+  if (!decoFrameEnabled) return
   const margin = width * 0.028
   ctx.strokeStyle = gold
   ctx.lineWidth = Math.max(1.5, width * 0.004)

@@ -5,7 +5,7 @@ import type { SceneBeat } from '../../types'
 import type { PlateDef, PlateLayer, ScenePlateSet } from '../../types-plates'
 import { useReadingStore } from '../../store/readingStore'
 import type { LerpedSceneBeat } from './beatMath'
-import { vignetteVisibility } from './decoPlateKit'
+import { shellArc, vignetteVisibility } from './decoPlateKit'
 
 interface PaintedPlatesProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -21,12 +21,14 @@ interface PaintedPlatesProps {
 }
 
 /**
- * Generic renderer of the painted-world pivot (see CLAUDE.md): flat 2D
- * Art-Deco plates hung in the beats' angular sectors, which the
- * azimuth-anchored CameraRig turns to face -- multiplane-camera staging.
- * Scene-agnostic: everything Gatsby-specific arrives via `plateSet`
- * (src/data/plates/<sceneId>.ts); pointing this at another text's registry
- * requires zero changes here.
+ * Generic renderer of the painted world (see CLAUDE.md): since the
+ * cyclorama pivot, each 2D Art-Deco painting hangs as a CURVED CYLINDRICAL
+ * SHELL segment around the scene origin (inside face painted), in the
+ * beats' angular sectors, which the azimuth-anchored CameraRig turns to
+ * face and then crosses into -- the multiplane camera evolved into a
+ * cyclorama the viewer stands inside. Scene-agnostic: everything
+ * book-specific arrives via `plateSet` (src/data/plates/<sceneId>.ts);
+ * pointing this at another text's registry requires zero changes here.
  *
  * Two visibility tracks:
  * - BEAT plates crossfade with the shared vignetteVisibility over the beat
@@ -70,9 +72,12 @@ interface BuiltPlate {
   memberSet: ReadonlySet<string>
   texture: THREE.Texture
   material: THREE.MeshBasicMaterial
-  position: readonly [number, number, number]
-  rotationY: number
-  size: readonly [number, number]
+  /** Shell geometry: cylinder arc segment around the scene origin, painted on its inside face. */
+  radius: number
+  height: number
+  centerY: number
+  thetaStart: number
+  thetaLength: number
   fogTint: number
   /** Present on animated paint-source plates: everything needed to repaint per tick. */
   repaint?: {
@@ -123,10 +128,13 @@ function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): Buil
 function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltPlate {
   const radius = def.radius ?? LAYER_RADIUS[def.layer]
   const size = def.size ?? LAYER_SIZE[def.layer]
-  const angleRad = (def.azimuthDeg * Math.PI) / 180
-  const x = Math.cos(angleRad) * radius
-  const z = Math.sin(angleRad) * radius
+  const { thetaStart, thetaLength } = shellArc(def.azimuthDeg, size[0], radius)
   const { texture, repaint } = buildTexture(def, beatsById)
+  // The shell is viewed from INSIDE (BackSide): that flips the horizontal
+  // read of the texture, so mirror U to keep compositions un-mirrored --
+  // the spectrum corridor must still recede left-to-right.
+  texture.wrapS = THREE.RepeatWrapping
+  texture.repeat.x = -1
   return {
     def,
     memberSet: new Set(def.memberBeatIds),
@@ -137,10 +145,13 @@ function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltP
       fog: false,
       depthWrite: false,
       opacity: 0,
+      side: THREE.BackSide,
     }),
-    position: [x, size[1] * CENTER_Y_FACTOR, z] as const,
-    rotationY: Math.atan2(-x, -z),
-    size,
+    radius,
+    height: size[1],
+    centerY: size[1] * CENTER_Y_FACTOR,
+    thetaStart,
+    thetaLength,
     fogTint: LAYER_FOG_TINT[def.layer],
     repaint,
   }
@@ -148,14 +159,28 @@ function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltP
 
 const workingColor = new THREE.Color()
 
+/**
+ * One cyclorama shell: an open-ended cylinder arc segment centered on the
+ * scene origin, its painting on the inside face -- the golden-age multiplane
+ * flattened into curved theatrical backcloths the camera can stand among.
+ * Concentric layers (far r26 / mid r20 / near r13.5) give the look-around
+ * dwell real parallax in every direction.
+ */
 function PlateMesh({ plate }: { plate: BuiltPlate }) {
   return (
-    <mesh
-      position={[plate.position[0], plate.position[1], plate.position[2]]}
-      rotation={[0, plate.rotationY, 0]}
-      material={plate.material}
-    >
-      <planeGeometry args={[plate.size[0], plate.size[1]]} />
+    <mesh position={[0, plate.centerY, 0]} material={plate.material}>
+      <cylinderGeometry
+        args={[
+          plate.radius,
+          plate.radius,
+          plate.height,
+          48,
+          1,
+          true,
+          plate.thetaStart,
+          plate.thetaLength,
+        ]}
+      />
     </mesh>
   )
 }

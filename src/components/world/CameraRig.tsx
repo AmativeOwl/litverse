@@ -51,6 +51,13 @@ const PUSH_SECONDS = 5.0
 const RETREAT_RATE = 1.4
 const PAN_RATE = 0.5
 const PAN_SETTLED_RAD = 0.15
+/** Look-around inside the shell: a slow pendulum sweep of the gaze. One full
+ * left-right period ~17s; +/- ~14 degrees -- enough to visit the arc's
+ * flanks without ever showing its edge as the frame's center. */
+const DWELL_YAW_SPEED = 0.37
+const DWELL_YAW_AMPLITUDE_RAD = 0.24
+/** The yaw eases in over this many seconds after the crossing lands. */
+const DWELL_YAW_RAMP_SECONDS = 3
 
 type ShotPhase = 'wide' | 'focus' | 'push' | 'dwell' | 'retreat'
 
@@ -76,13 +83,16 @@ function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: str
  * from one vignette to the next instead of snapping.
  */
 export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
-  const { camera } = useThree()
+  const { camera, size } = useThree()
   const lookAtTarget = useRef(new THREE.Vector3())
   // shot-choreography state -- mutated per frame, never React state
   const zoomRef = useRef(0)
   const azimuthRef = useRef<number | null>(null)
   const phaseRef = useRef<ShotPhase>('wide')
   const pushStartRef = useRef(0)
+  const dwellStartRef = useRef(0)
+  const aspectRef = useRef(size.width / Math.max(1, size.height))
+  aspectRef.current = size.width / Math.max(1, size.height)
 
   useFrame(({ clock }, delta) => {
     const lerped = lerpedRef.current
@@ -133,6 +143,7 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
         if (u >= 1) {
           zoomRef.current = ZOOM_DWELL
           phaseRef.current = 'dwell'
+          dwellStartRef.current = clock.elapsedTime
         }
         break
       }
@@ -150,8 +161,16 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
     }
 
     // The wide pose is fully static (speed 0 -- no drift, no bob): the only
-    // camera movement is the slow smooth pan between walls and the single
-    // committed push. (Beat data's named behaviors are superseded.)
+    // camera movement is the slow smooth pan between walls, the single
+    // committed threshold crossing, and -- inside the shell -- the slow
+    // look-around yaw below. (Beat data's named behaviors are superseded.)
+    // The yaw is a gentle pendulum that ramps in over its first swing
+    // (sin(t)*sin envelope keeps the dwell entry seamless: zero yaw, zero
+    // yaw-velocity at the moment the crossing lands).
+    const dwellSeconds = phaseRef.current === 'dwell' ? clock.elapsedTime - dwellStartRef.current : 0
+    const yawEnvelope = Math.min(1, dwellSeconds / DWELL_YAW_RAMP_SECONDS)
+    const dwellYawRad =
+      Math.sin(dwellSeconds * DWELL_YAW_SPEED) * DWELL_YAW_AMPLITUDE_RAD * yawEnvelope * yawEnvelope
     const pose = computeCameraPose(
       'static-drift',
       0,
@@ -159,6 +178,8 @@ export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
       clock.elapsedTime,
       azimuthRad,
       zoomRef.current,
+      aspectRef.current,
+      dwellYawRad,
     )
 
     camera.position.set(pose.position[0], pose.position[1], pose.position[2])

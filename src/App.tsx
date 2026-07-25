@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import CaptionBar from './components/CaptionBar'
 import LandingPage from './components/LandingPage'
 import LoadingScreen from './components/LoadingScreen'
 import TextPane from './components/TextPane'
@@ -11,6 +12,13 @@ import { destroy, loadPassage } from './lib/narrationController'
  * landing (pick a compiled text from the library) -> loading (honest
  * prefetch of the pre-compiled narration assets) -> reading (the two-pane
  * experience). No router -- a single state machine is all this needs.
+ *
+ * Within the reading stage, CINEMA MODE (the cyclorama feature) expands the
+ * world pane over the full viewport with a word-synced caption bar at the
+ * bottom; Esc (or the exit control) returns to the two-pane reader. The
+ * world pane's element stays mounted in the same tree position either way
+ * -- only its classes change -- so the WebGL canvas, camera choreography,
+ * and narration all carry across the toggle untouched.
  */
 type Stage =
   | { phase: 'landing' }
@@ -19,6 +27,7 @@ type Stage =
 
 function App() {
   const [stage, setStage] = useState<Stage>({ phase: 'landing' })
+  const [cinema, setCinema] = useState(false)
 
   // Register the passage with the narration controller only once the reader
   // opens. loadPassage resets store position to the first sentence but does
@@ -32,6 +41,16 @@ function App() {
     loadPassage(readingEntry.passage)
     return () => destroy()
   }, [readingEntry])
+
+  // Esc leaves cinema mode (listener only lives while cinema is up).
+  useEffect(() => {
+    if (!cinema) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setCinema(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [cinema])
 
   const handleSelect = useCallback((entry: LibraryEntry) => {
     setStage({ phase: 'loading', entry })
@@ -49,11 +68,32 @@ function App() {
   }
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-neutral-950 text-neutral-100">
-      <div className="h-full w-1/2 overflow-y-auto border-r border-neutral-800">
+      <div className={cinema ? 'hidden' : 'h-full w-1/2 overflow-y-auto border-r border-neutral-800'}>
         <TextPane passage={stage.entry.passage} beats={stage.entry.beats} />
       </div>
-      <div className="h-full w-1/2">
+      <div className={cinema ? 'fixed inset-0 z-40' : 'relative h-full w-1/2'}>
         <WorldScene entry={stage.entry} />
+        {cinema ? (
+          <>
+            <CaptionBar passage={stage.entry.passage} />
+            <button
+              type="button"
+              className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300 backdrop-blur-sm hover:border-amber-400/60 hover:text-neutral-100"
+              onClick={() => setCinema(false)}
+            >
+              ✕ Exit cinema
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300 backdrop-blur-sm hover:border-amber-400/60 hover:text-neutral-100"
+            onClick={() => setCinema(true)}
+            title="Fullscreen world with narrated captions"
+          >
+            ⛶ Cinema
+          </button>
+        )}
       </div>
     </div>
   )

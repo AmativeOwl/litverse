@@ -12,8 +12,6 @@ import { MotifEffects } from './world/MotifEffects'
 import { PaintedPlates } from './world/PaintedPlates'
 import { Particles } from './world/Particles'
 import { PostProcessing } from './world/PostProcessing'
-import { Silhouettes } from './world/Silhouettes'
-import { StringLights } from './world/StringLights'
 import { useLerpedSceneBeat } from './world/useLerpedSceneBeat'
 
 /**
@@ -69,10 +67,13 @@ function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: Scen
   return (
     <>
       {/* The eight 3D Deco set-pieces that used to render here are unmounted
-          as of the painted-world pivot (their files are kept -- see CLAUDE.md
-          "Painted-world pivot"); PaintedPlates below is the scenery now. */}
+          as of the painted-world pivot, and Silhouettes + StringLights
+          followed in the cyclorama pivot (all files kept -- see CLAUDE.md):
+          the shells' painted in-card inhabitants do the crowd's job now
+          under the figures-are-never-statues rule, and a 3D crowd standing
+          BETWEEN the viewer and a shell they live inside would break the
+          illusion. Particles stay as in-world dust. */}
       <Atmosphere lerpedRef={lerpedRef} />
-      <StringLights lerpedRef={lerpedRef} />
       <PaintedPlates
         lerpedRef={lerpedRef}
         plateSet={entry.plateSet}
@@ -81,7 +82,6 @@ function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: Scen
       />
       <Lighting lerpedRef={lerpedRef} />
       <Floor lerpedRef={lerpedRef} />
-      <Silhouettes lerpedRef={lerpedRef} animation={targetBeat.silhouettes?.animation ?? 'still'} />
       <Particles lerpedRef={lerpedRef} />
       <CameraRig lerpedRef={lerpedRef} azimuthByBeatDeg={entry.plateSet.cameraAzimuthDeg} />
       <MotifEffects />
@@ -91,11 +91,11 @@ function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: Scen
 }
 
 /**
- * Right-pane 3D world: a scripted, mood-reactive backdrop driven entirely by
- * `SceneBeat` data. Per the design constraints this is NOT a free-roam
- * scene -- there is no `OrbitControls` here, only the scripted `CameraRig`
- * -- and there are no rigged/animated character models, only the abstract
- * instanced-silhouette crowd built in `Silhouettes.tsx`.
+ * Right-pane 3D world: a scripted, mood-reactive painted cyclorama driven
+ * entirely by `SceneBeat` data. Per the design constraints this is NOT a
+ * free-roam scene -- there is no `OrbitControls` here, only the scripted
+ * `CameraRig` (cinema mode included) -- and there are no rigged/animated
+ * character models; all figures are painted inhabitants of the shells.
  */
 export default function WorldScene({ entry }: WorldSceneProps) {
   const scene = useMemo(() => buildSceneData(entry), [entry])
