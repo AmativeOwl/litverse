@@ -176,9 +176,15 @@ export interface TextPaneProps {
    * keeps the original fixed-amber wash.
    */
   beats?: readonly SceneBeat[]
+  /**
+   * Closes the book and returns to the bookcase home. Optional so fixtures
+   * and tests can render the pane standalone; the control only appears when
+   * provided.
+   */
+  onExitBook?: () => void
 }
 
-export default function TextPane({ passage = fallbackPassage, beats }: TextPaneProps) {
+export default function TextPane({ passage = fallbackPassage, beats, onExitBook }: TextPaneProps) {
   const currentSentenceIndex = useReadingStore((s) => s.currentSentenceIndex)
   const currentWordId = useReadingStore((s) => s.currentWordId)
   const playbackState = useReadingStore((s) => s.playbackState)
@@ -228,6 +234,16 @@ export default function TextPane({ passage = fallbackPassage, beats }: TextPaneP
           scrolled -- floats as a pill over the text (backdrop blur + a solid
           enough tint to stay legible over the serif type beneath). */}
       <div className="sticky top-4 z-20 mb-8 flex flex-wrap items-center gap-3 rounded-full border border-neutral-700/80 bg-neutral-900/85 py-1.5 pl-2 pr-4 font-sans text-xs text-neutral-400 shadow-lg shadow-black/40 backdrop-blur-md">
+        {onExitBook && (
+          <button
+            type="button"
+            title="Close the book and return to the library"
+            onClick={onExitBook}
+            className="inline-flex h-7 shrink-0 items-center gap-1 rounded-full border border-neutral-700/80 bg-neutral-900/60 px-3 text-[11px] uppercase tracking-[0.18em] text-neutral-400 transition-colors hover:border-amber-400/70 hover:text-amber-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+          >
+            <span aria-hidden="true">←</span> Library
+          </button>
+        )}
         <PlaybackControls
           playing={playbackState === 'playing'}
           onPrev={() => seekToSentence(Math.max(0, currentSentenceIndex - 1))}

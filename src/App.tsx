@@ -70,6 +70,15 @@ function App() {
 
   const backToBookcase = useCallback(() => setStage({ phase: 'bookcase' }), [])
 
+  // Close the current book and return home. Narration teardown is free:
+  // leaving the reading stage flips readingEntry to null, so the loadPassage
+  // effect's cleanup calls destroy(). Cinema must reset too, or the next
+  // book would open fullscreen.
+  const exitBook = useCallback(() => {
+    setCinema(false)
+    setStage({ phase: 'bookcase' })
+  }, [])
+
   // Esc returns from the carousel to the bookcase.
   const inCarousel = stage.phase === 'carousel'
   useEffect(() => {
@@ -123,7 +132,7 @@ function App() {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-neutral-950 text-neutral-100">
       <div className={cinema ? 'hidden' : 'h-full w-1/2 overflow-y-auto border-r border-neutral-800'}>
-        <TextPane passage={stage.entry.passage} beats={stage.entry.beats} />
+        <TextPane passage={stage.entry.passage} beats={stage.entry.beats} onExitBook={exitBook} />
       </div>
       <div className={cinema ? 'fixed inset-0 z-40' : 'relative h-full w-1/2'}>
         <WorldScene entry={stage.entry} />
@@ -132,7 +141,7 @@ function App() {
             <CaptionBar passage={stage.entry.passage} />
             <button
               type="button"
-              className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300 backdrop-blur-sm hover:border-amber-400/60 hover:text-neutral-100"
+              className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700/80 bg-neutral-900/70 px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-neutral-300 shadow-lg shadow-black/30 backdrop-blur-md transition-colors hover:border-amber-400/70 hover:text-amber-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
               onClick={() => setCinema(false)}
             >
               ✕ Exit cinema
@@ -141,7 +150,7 @@ function App() {
         ) : (
           <button
             type="button"
-            className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 text-xs text-neutral-300 backdrop-blur-sm hover:border-amber-400/60 hover:text-neutral-100"
+            className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700/80 bg-neutral-900/70 px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-neutral-300 shadow-lg shadow-black/30 backdrop-blur-md transition-colors hover:border-amber-400/70 hover:text-amber-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
             onClick={() => setCinema(true)}
             title="Fullscreen world with narrated captions"
           >
