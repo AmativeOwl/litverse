@@ -3,6 +3,13 @@ import { LIBRARY, sentenceCountOf, type LibraryEntry } from '../data/library'
 
 interface LandingPageProps {
   onSelect: (entry: LibraryEntry) => void
+  /**
+   * Returns to the bookcase home. Rendered as a quiet footer link in the
+   * pack's own colors (bottom-left, on the dots' baseline) rather than the
+   * old fixed top-left overlay, which sat awkwardly on the card's corner
+   * ornament.
+   */
+  onExit?: () => void
 }
 
 /**
@@ -13,8 +20,10 @@ interface LandingPageProps {
  * shipped Deco card exactly (aged paper, rotating sunburst, deco border);
  * the Masque of the Red Death gets the Gothic/Memento Mori card -- seven
  * pointed-arch windows in Poe's own room-color order ending in the black
- * room's scarlet, an ebony clock a minute from midnight, candlelight golds
- * on near-black.
+ * room's scarlet, candlelight golds on near-black. (An ebony clock
+ * medallion originally hung top-center; it was cut -- it competed with the
+ * "Litverse presents" kicker for the card's scarcest space, per user
+ * direction that nothing should sit above the masthead.)
  *
  * Program changes between bills fade through the house lights going down
  * (a short content fade while the ground color crossfades underneath) --
@@ -280,46 +289,8 @@ const GOTHIC_PAINTER: CardPainter = {
     ctx.fillStyle = scrim
     ctx.fillRect(safe.x, safe.y, safe.w, safe.h)
 
-    // the ebony clock, a small medallion a minute from midnight -- hung
-    // from the safe rect's top so its full dial (ring stroke included)
-    // clears the frame (it used to cross the top rule), and sized down so
-    // it also clears the DOM kicker line below on short viewports
-    const ccx = w / 2
-    const cr = Math.min(w, h) * 0.028
-    const ccy = safe.y + cr * 1.14 + 3
-    ctx.fillStyle = EBONY_LIFT
-    ctx.beginPath()
-    ctx.arc(ccx, ccy, cr * 1.14, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.strokeStyle = CANDLE
-    ctx.lineWidth = 2.4
-    ctx.stroke()
-    ctx.strokeStyle = BONE
-    ctx.lineWidth = 1.8
-    for (let i = 0; i < 12; i++) {
-      const an = (i * Math.PI) / 6
-      ctx.beginPath()
-      ctx.moveTo(ccx + Math.sin(an) * cr * 0.82, ccy - Math.cos(an) * cr * 0.82)
-      ctx.lineTo(ccx + Math.sin(an) * cr * 0.95, ccy - Math.cos(an) * cr * 0.95)
-      ctx.stroke()
-    }
-    // hands at 11:59
-    ctx.strokeStyle = SCARLET
-    ctx.lineWidth = 3
-    const minuteAngle = -Math.PI / 30
-    ctx.beginPath()
-    ctx.moveTo(ccx, ccy)
-    ctx.lineTo(ccx + Math.sin(minuteAngle) * cr * 0.75, ccy - Math.cos(minuteAngle) * cr * 0.75)
-    ctx.stroke()
-    ctx.lineWidth = 4
-    ctx.beginPath()
-    ctx.moveTo(ccx, ccy)
-    ctx.lineTo(ccx + Math.sin(-0.02) * cr * 0.45, ccy - Math.cos(-0.02) * cr * 0.45)
-    ctx.stroke()
-    ctx.fillStyle = SCARLET
-    ctx.beginPath()
-    ctx.arc(ccx, ccy, cr * 0.07, 0, Math.PI * 2)
-    ctx.fill()
+    // (the ebony clock medallion that hung here was cut -- see the module
+    // header: nothing competes with the masthead for the top-center space)
   },
 
   frame: (ctx, w, h) => {
@@ -485,7 +456,7 @@ function TitleCardCanvas({ pack, reduced }: { pack: StylePack; reduced: boolean 
 /** Content-fade duration for the program change between bills (ms). */
 const FADE_MS = 280
 
-export default function LandingPage({ onSelect }: LandingPageProps) {
+export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
   const [index, setIndex] = useState(0)
   const [fading, setFading] = useState(false)
   const fadeTimerRef = useRef<number | null>(null)
@@ -631,14 +602,27 @@ export default function LandingPage({ onSelect }: LandingPageProps) {
         </main>
       </div>
 
+      {onExit && (
+        <button
+          type="button"
+          onClick={onExit}
+          className="absolute bottom-6 left-6 z-10 cursor-pointer font-sans text-[10px] uppercase tracking-[0.3em] opacity-70 transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 sm:left-8"
+          style={{ color: pack.meta, outlineColor: pack.rule }}
+        >
+          ← The library
+        </button>
+      )}
+
       {many && (
         <>
+          {/* Bare pack-colored chevrons (no box/border, per user direction):
+              the arrow itself is the whole control, nudging outward on hover. */}
           <button
             type="button"
             aria-label="Previous book"
             onClick={() => goTo(index - 1)}
-            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer border px-3 py-4 text-2xl leading-none transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:left-8"
-            style={{ color: pack.rule, borderColor: pack.rule, opacity: 0.75, outlineColor: pack.rule }}
+            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 cursor-pointer rounded-full px-3 py-2 text-6xl leading-none opacity-60 transition-all duration-200 hover:-translate-x-1 hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:left-7"
+            style={{ color: pack.rule, outlineColor: pack.rule }}
           >
             ‹
           </button>
@@ -646,8 +630,8 @@ export default function LandingPage({ onSelect }: LandingPageProps) {
             type="button"
             aria-label="Next book"
             onClick={() => goTo(index + 1)}
-            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer border px-3 py-4 text-2xl leading-none transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:right-8"
-            style={{ color: pack.rule, borderColor: pack.rule, opacity: 0.75, outlineColor: pack.rule }}
+            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 cursor-pointer rounded-full px-3 py-2 text-6xl leading-none opacity-60 transition-all duration-200 hover:translate-x-1 hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:right-7"
+            style={{ color: pack.rule, outlineColor: pack.rule }}
           >
             ›
           </button>

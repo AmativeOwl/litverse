@@ -112,19 +112,10 @@ function App() {
     )
   }
   if (stage.phase === 'carousel') {
-    return (
-      // LandingPage untouched: the return-to-bookcase control overlays it.
-      <div className="relative">
-        <LandingPage onSelect={handleSelect} />
-        <button
-          type="button"
-          onClick={backToBookcase}
-          className="fixed left-4 top-4 z-50 border border-[#a8802c]/60 bg-[#efe4c9]/85 px-3 py-1.5 text-[0.65rem] uppercase tracking-[0.25em] text-[#22304f] backdrop-blur-sm transition-colors hover:bg-[#22304f] hover:text-[#efe4c9]"
-        >
-          ← The library
-        </button>
-      </div>
-    )
+    // The return-to-bookcase control lives inside LandingPage now (pack-
+    // colored footer link) -- the old fixed top-left overlay sat awkwardly
+    // on the card's corner ornament.
+    return <LandingPage onSelect={handleSelect} onExit={backToBookcase} />
   }
   if (stage.phase === 'loading') {
     return <LoadingScreen entry={stage.entry} onReady={handleReady} />
