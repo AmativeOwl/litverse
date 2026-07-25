@@ -180,6 +180,7 @@ function createHarness(
     narrationAvailable: true,
     activeMotifId: null,
     activeMotifNonce: 0,
+    playbackRate: 1,
   }
 
   const audios: FakeAudio[] = []

@@ -1,6 +1,12 @@
 import { useMemo } from 'react'
 import type { Passage, Sentence } from '../types'
-import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
+import {
+  pause as narrationPause,
+  play as narrationPlay,
+  seekToSentence,
+  setPlaybackRate,
+} from '../lib/narrationController'
+import { storeRate } from '../lib/readerPrefs'
 import { useReadingStore } from '../store/readingStore'
 import PlaybackControls from './PlaybackControls'
 
@@ -26,6 +32,7 @@ export default function CaptionBar({ passage }: CaptionBarProps) {
   const currentWordId = useReadingStore((state) => state.currentWordId)
   const playbackState = useReadingStore((state) => state.playbackState)
   const narrationAvailable = useReadingStore((state) => state.narrationAvailable)
+  const playbackRate = useReadingStore((state) => state.playbackRate)
 
   const sentence = sentences[currentSentenceIndex]
   if (!sentence) return null
@@ -60,6 +67,15 @@ export default function CaptionBar({ passage }: CaptionBarProps) {
           onNext={() => seekToSentence(Math.min(sentences.length - 1, currentSentenceIndex + 1))}
           playDisabled={!narrationAvailable}
           playDisabledTitle="This book has no pre-rendered narration — click sentences to read through it."
+          rate={narrationAvailable ? playbackRate : undefined}
+          onRateChange={
+            narrationAvailable
+              ? (rate) => {
+                  setPlaybackRate(rate)
+                  storeRate(rate)
+                }
+              : undefined
+          }
         />
         <span className="select-none text-[11px] uppercase tracking-[0.18em] opacity-70">Esc to return</span>
       </div>

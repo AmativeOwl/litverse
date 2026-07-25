@@ -17,6 +17,11 @@ vi.mock('../lib/narrationController', () => ({
   play: vi.fn(),
   pause: vi.fn(),
   seekToSentence: vi.fn(),
+  setPlaybackRate: vi.fn(),
+  // Real constants, not fn stubs: PlaybackControls imports these for its
+  // rate-stepper bounds.
+  PLAYBACK_RATE_MIN: 0.25,
+  PLAYBACK_RATE_MAX: 2,
 }))
 
 // jsdom does not implement scrollIntoView.

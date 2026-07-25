@@ -26,6 +26,12 @@ interface ReadingState {
    * honestly instead of no-opping.
    */
   narrationAvailable: boolean
+  /**
+   * Narration playback speed multiplier (0.25-2, quarter steps). Written
+   * only by narrationController.setPlaybackRate (the sole owner of
+   * playback); UI components read it to display the current rate.
+   */
+  playbackRate: number
 
   play: () => void
   pause: () => void
@@ -41,6 +47,7 @@ export const useReadingStore = create<ReadingState>((set) => ({
   activeMotifId: null,
   activeMotifNonce: 0,
   narrationAvailable: true,
+  playbackRate: 1,
 
   play: () => set({ playbackState: 'playing' }),
   pause: () => set({ playbackState: 'paused' }),

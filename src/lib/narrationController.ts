@@ -78,6 +78,9 @@ export interface AudioLike {
   src: string
   currentTime: number
   paused: boolean
+  /** Optional so existing minimal test fakes stay valid; real HTMLAudioElement always has both. */
+  playbackRate?: number
+  preservesPitch?: boolean
   play: () => Promise<void>
   pause: () => void
   onended: ((ev: Event) => void) | null
@@ -92,6 +95,10 @@ export interface AudioLike {
 const SENTENCE_PAUSE_MS = 260
 /** Longer beat between paragraphs — how a narrator actually marks a paragraph break. */
 const PARAGRAPH_PAUSE_MS = 650
+
+/** Playback-rate bounds (quarter steps between them, enforced by the UI; the controller only clamps). */
+export const PLAYBACK_RATE_MIN = 0.25
+export const PLAYBACK_RATE_MAX = 2
 
 /**
  * The narration-position slice of the reading store's state that this module
@@ -112,6 +119,8 @@ export interface NarrationPositionState {
   activeMotifNonce: number
   /** False when the loaded passage has no narration manifest (silent painted reading). */
   narrationAvailable: boolean
+  /** Narration speed multiplier -- written only by setPlaybackRate below. */
+  playbackRate: number
 }
 
 /** The store surface this module reads/writes. Narrow enough to fake in tests without satisfying Zustand's full overloaded `setState`. */
@@ -162,6 +171,14 @@ export interface NarrationController {
   pause: () => void
   /** Cancels current playback and starts playing from `sentenceIndex`. */
   seekToSentence: (sentenceIndex: number) => void
+  /**
+   * Sets the narration speed multiplier (clamped to [0.25, 2]). Applies to
+   * the currently playing clip immediately and to every clip after it; the
+   * word-highlight rAF loop needs no adjustment since it reads
+   * `audio.currentTime`, which already advances at the new rate. Survives
+   * loadPassage (a listener's pace preference isn't per-book).
+   */
+  setPlaybackRate: (rate: number) => void
   /** Cancels playback, detaches listeners, and clears internal state. Call on unmount. */
   destroy: () => void
 }
@@ -199,6 +216,8 @@ interface ControllerState {
   hasStartedPlaying: boolean
   visibilityListenerAttached: boolean
   hasWarnedMissingAudio: boolean
+  /** Narration speed multiplier -- preserved across loadPassage (a listener preference, not per-book state). */
+  playbackRate: number
   /** Last wordId a motif was fired for -- guards against re-firing on every rAF tick while that same word stays current (the tracking loop runs once per frame, not once per word). */
   lastMotifWordId: string | null
 }
@@ -219,6 +238,7 @@ function createInitialState(): ControllerState {
     hasStartedPlaying: false,
     visibilityListenerAttached: false,
     hasWarnedMissingAudio: false,
+    playbackRate: 1,
     lastMotifWordId: null,
   }
 }
@@ -389,6 +409,10 @@ export function createNarrationController(overrides: Partial<NarrationController
 
     const audio = deps.createAudio()
     audio.src = resolveAudioSrc(entry.audioUrl)
+    audio.playbackRate = state.playbackRate
+    // Rate-shift without pitch-shift: at 0.75x the voice should read slower,
+    // not deeper. Default-true in modern browsers, set explicitly anyway.
+    audio.preservesPitch = true
 
     const advanceToNextSentence = () => {
       if (myEpoch !== state.epoch) return
@@ -397,7 +421,11 @@ export function createNarrationController(overrides: Partial<NarrationController
       // what makes it read as mechanical. cancelPlaybackDefensively (on
       // start/seek/pause/unmount) clears this via clearInterSentenceTimer,
       // and the epoch check guards against a stale fire either way.
-      const pauseMs = state.paragraphEndIndices.has(state.sentenceIndex) ? PARAGRAPH_PAUSE_MS : SENTENCE_PAUSE_MS
+      // Scaled by the playback rate so the narrator's breaths slow down and
+      // speed up with the voice instead of staying fixed-length.
+      const pauseMs =
+        (state.paragraphEndIndices.has(state.sentenceIndex) ? PARAGRAPH_PAUSE_MS : SENTENCE_PAUSE_MS) /
+        state.playbackRate
       state.sentenceIndex += 1
       state.interSentenceTimerId = setTimeout(() => {
         state.interSentenceTimerId = null
@@ -465,6 +493,7 @@ export function createNarrationController(overrides: Partial<NarrationController
     state = {
       ...createInitialState(),
       visibilityListenerAttached: state.visibilityListenerAttached,
+      playbackRate: state.playbackRate,
     }
     // Re-attach if a prior destroy() detached it (e.g. the controller is
     // reused across an unmount/remount, such as React StrictMode's
@@ -583,6 +612,13 @@ export function createNarrationController(overrides: Partial<NarrationController
     })
   }
 
+  function setPlaybackRate(rate: number): void {
+    const clamped = Math.min(PLAYBACK_RATE_MAX, Math.max(PLAYBACK_RATE_MIN, rate))
+    state.playbackRate = clamped
+    if (state.currentAudio) state.currentAudio.playbackRate = clamped
+    deps.store.setState({ playbackRate: clamped })
+  }
+
   function destroy(): void {
     cancelPlaybackDefensively()
     detachVisibilityListener()
@@ -591,7 +627,7 @@ export function createNarrationController(overrides: Partial<NarrationController
 
   attachVisibilityListener()
 
-  return { loadPassage, play, pause, seekToSentence, destroy }
+  return { loadPassage, play, pause, seekToSentence, setPlaybackRate, destroy }
 }
 
 // ---------------------------------------------------------------------------
@@ -630,4 +666,5 @@ export const loadPassage = defaultController.loadPassage
 export const play = defaultController.play
 export const pause = defaultController.pause
 export const seekToSentence = defaultController.seekToSentence
+export const setPlaybackRate = defaultController.setPlaybackRate
 export const destroy = defaultController.destroy

@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { PLAYBACK_RATE_MAX, PLAYBACK_RATE_MIN } from '../lib/narrationController'
+import { normalizeRate, PLAYBACK_RATE_STEP } from '../lib/readerPrefs'
 
 /**
  * Shared playback-control cluster (prev / play-pause / next) used by both
@@ -8,7 +10,8 @@ import type { ReactNode } from 'react'
  * play/pause echoing the active-word highlight block.
  */
 
-const SKIP_BUTTON =
+/** Also reused by TextPane's font-size stepper so every small circular control in the pill matches. */
+export const SKIP_BUTTON =
   'inline-flex shrink-0 items-center justify-center rounded-full border border-neutral-700/80 bg-neutral-900/60 text-neutral-400 transition-colors hover:border-amber-400/70 hover:text-amber-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400'
 
 const PLAY_BUTTON =
@@ -37,6 +40,13 @@ export interface PlaybackControlsProps {
   /** Disables play/pause (e.g. a reader-added book with no pre-rendered narration). */
   playDisabled?: boolean
   playDisabledTitle?: string
+  /**
+   * Current narration speed multiplier. Providing both `rate` and
+   * `onRateChange` appends a -/+ speed stepper (0.25x-2x in quarter steps)
+   * after the transport buttons; omit them to render transport only.
+   */
+  rate?: number
+  onRateChange?: (rate: number) => void
   size?: keyof typeof SIZES
 }
 
@@ -47,9 +57,12 @@ export default function PlaybackControls({
   onNext,
   playDisabled = false,
   playDisabledTitle,
+  rate,
+  onRateChange,
   size = 'sm',
 }: PlaybackControlsProps) {
   const s = SIZES[size]
+  const showRate = rate !== undefined && onRateChange !== undefined
 
   return (
     <div className="flex items-center gap-2">
@@ -92,6 +105,37 @@ export default function PlaybackControls({
           <path d="M14.8 6H17v12h-2.2zM6.2 6l8 6-8 6z" />
         </Icon>
       </button>
+
+      {showRate && (
+        <div className="ml-1 flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="Slower narration"
+            title="Slower narration"
+            disabled={rate <= PLAYBACK_RATE_MIN}
+            className={`${SKIP_BUTTON} ${s.skip} text-sm disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-700/80 disabled:hover:text-neutral-400`}
+            onClick={() => onRateChange(normalizeRate(rate - PLAYBACK_RATE_STEP))}
+          >
+            −
+          </button>
+          <span
+            aria-live="polite"
+            className="min-w-[3.25rem] text-center font-sans text-[11px] tabular-nums tracking-wide text-neutral-400"
+          >
+            {rate}×
+          </span>
+          <button
+            type="button"
+            aria-label="Faster narration"
+            title="Faster narration"
+            disabled={rate >= PLAYBACK_RATE_MAX}
+            className={`${SKIP_BUTTON} ${s.skip} text-sm disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-700/80 disabled:hover:text-neutral-400`}
+            onClick={() => onRateChange(normalizeRate(rate + PLAYBACK_RATE_STEP))}
+          >
+            +
+          </button>
+        </div>
+      )}
     </div>
   )
 }

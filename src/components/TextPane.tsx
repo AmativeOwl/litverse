@@ -1,7 +1,19 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, type CSSProperties, type RefObject } from 'react'
-import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react'
+import {
+  pause as narrationPause,
+  play as narrationPlay,
+  seekToSentence,
+  setPlaybackRate,
+} from '../lib/narrationController'
+import {
+  FONT_SCALES,
+  loadStoredFontScaleIndex,
+  loadStoredRate,
+  storeFontScaleIndex,
+  storeRate,
+} from '../lib/readerPrefs'
 import { useReadingStore } from '../store/readingStore'
-import PlaybackControls from './PlaybackControls'
+import PlaybackControls, { SKIP_BUTTON } from './PlaybackControls'
 import type { Passage, SceneBeat } from '../types'
 
 /** Fallback accent when `activeSceneBeatId` doesn't (yet) match a known beat -- keeps the original amber look. */
@@ -190,6 +202,31 @@ export default function TextPane({ passage = fallbackPassage, beats, onExitBook 
   const playbackState = useReadingStore((s) => s.playbackState)
   const narrationAvailable = useReadingStore((s) => s.narrationAvailable)
   const activeSceneBeatId = useReadingStore((s) => s.activeSceneBeatId)
+  const playbackRate = useReadingStore((s) => s.playbackRate)
+
+  // Text-size accessibility stepper: an index into FONT_SCALES applied as an
+  // inline font-size on the article (rem-based, so line-height and the
+  // word/sentence highlights scale with it). Persisted so the preference
+  // survives book changes and sessions.
+  const [fontScaleIndex, setFontScaleIndex] = useState(() => loadStoredFontScaleIndex())
+  const adjustFontScale = useCallback((delta: number) => {
+    setFontScaleIndex((current) => {
+      const next = Math.max(0, Math.min(FONT_SCALES.length - 1, current + delta))
+      storeFontScaleIndex(next)
+      return next
+    })
+  }, [])
+
+  // Re-apply the stored narration speed on mount: the controller preserves
+  // its rate across loadPassage, but a fresh page load starts at 1x.
+  useEffect(() => {
+    setPlaybackRate(loadStoredRate())
+  }, [])
+
+  const handleRateChange = useCallback((rate: number) => {
+    setPlaybackRate(rate)
+    storeRate(rate)
+  }, [])
 
   // `id -> palette.accent`, so the sentence wash's hue shifts with the
   // world's mood (falls back to amber for unknown/absent beats).
@@ -251,7 +288,31 @@ export default function TextPane({ passage = fallbackPassage, beats, onExitBook 
           onNext={() => seekToSentence(Math.min(totalSentences - 1, currentSentenceIndex + 1))}
           playDisabled={!narrationAvailable}
           playDisabledTitle="This book has no pre-rendered narration — click sentences to read through it."
+          rate={narrationAvailable ? playbackRate : undefined}
+          onRateChange={narrationAvailable ? handleRateChange : undefined}
         />
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="Decrease text size"
+            title="Decrease text size"
+            disabled={fontScaleIndex === 0}
+            className={`${SKIP_BUTTON} h-7 w-7 text-[11px] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-700/80 disabled:hover:text-neutral-400`}
+            onClick={() => adjustFontScale(-1)}
+          >
+            A−
+          </button>
+          <button
+            type="button"
+            aria-label="Increase text size"
+            title="Increase text size"
+            disabled={fontScaleIndex === FONT_SCALES.length - 1}
+            className={`${SKIP_BUTTON} h-7 w-7 text-[13px] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-700/80 disabled:hover:text-neutral-400`}
+            onClick={() => adjustFontScale(1)}
+          >
+            A+
+          </button>
+        </div>
         <span className="ml-auto text-[11px] uppercase tracking-[0.18em] text-neutral-500">
           {narrationAvailable ? `sentence ${currentSentenceIndex} · ${playbackState}` : `sentence ${currentSentenceIndex} · silent reading`}
         </span>
@@ -261,7 +322,13 @@ export default function TextPane({ passage = fallbackPassage, beats, onExitBook 
         {passage.title}
       </h2>
 
-      <article className="max-w-prose font-serif text-lg leading-relaxed text-neutral-200 sm:text-xl">
+      {/* Font size set inline from the stepper (replaces the old fixed
+          text-lg sm:text-xl); leading-relaxed is relative, so line-height
+          and the word/sentence highlight blocks scale along with it. */}
+      <article
+        className="max-w-prose font-serif leading-relaxed text-neutral-200"
+        style={{ fontSize: `${(1.25 * (FONT_SCALES[fontScaleIndex] ?? 1)).toFixed(4)}rem` }}
+      >
         {passage.paragraphs.map((paragraph) => (
           <p key={paragraph.id} className="mb-6">
             {paragraph.sentences.map((sentence, sentenceInParagraphIndex) => {
