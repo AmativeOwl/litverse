@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { LibraryEntry } from '../data/library'
+import { registerNarrationAudio } from '../lib/narrationController'
 
 interface LoadingScreenProps {
   entry: LibraryEntry
@@ -39,11 +40,19 @@ export default function LoadingScreen({ entry, onReady }: LoadingScreenProps) {
         const urls = Object.values(manifest).map((sentence) => sentence.audioUrl)
         if (!cancelled) setLabel('Preparing the narration…')
         let done = 0
+        // Keep the downloaded bytes as object URLs, not just an HTTP-cache
+        // warm-up: <audio> streams its src via range requests that don't
+        // reliably hit the cache, and a mid-sentence `stalled` pauses the
+        // voice (observed on the passage's longest WAV). Registered below;
+        // any sentence that fails here simply falls back to its plain URL.
+        const objectUrls = new Map<string, string>()
         await Promise.all(
           urls.map(async (url) => {
             try {
-              // warms the HTTP cache; the reader's own <audio> loads hit it
-              await fetch(url, { cache: 'force-cache' }).then((r) => r.arrayBuffer())
+              const response = await fetch(url, { cache: 'force-cache' })
+              if (response.ok) {
+                objectUrls.set(url, URL.createObjectURL(await response.blob()))
+              }
             } catch {
               // per-sentence degradation is the reader's job; keep going
             }
@@ -51,6 +60,7 @@ export default function LoadingScreen({ entry, onReady }: LoadingScreenProps) {
             if (!cancelled) setProgress(done / urls.length)
           }),
         )
+        registerNarrationAudio(objectUrls)
       } catch {
         // manifest unreachable: the reader degrades gracefully, proceed
       }

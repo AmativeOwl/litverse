@@ -141,33 +141,33 @@
       },
       {
         "wordId": "p1-s2-w16",
-        "startMs": 4436,
-        "endMs": 4616
+        "startMs": 4776,
+        "endMs": 4956
       },
       {
         "wordId": "p1-s2-w17",
-        "startMs": 4606,
-        "endMs": 4685
+        "startMs": 4946,
+        "endMs": 5025
       },
       {
         "wordId": "p1-s2-w18",
-        "startMs": 4675,
-        "endMs": 5243
+        "startMs": 5015,
+        "endMs": 5583
       },
       {
         "wordId": "p1-s2-w19",
-        "startMs": 5233,
-        "endMs": 5350
+        "startMs": 5573,
+        "endMs": 5690
       },
       {
         "wordId": "p1-s2-w20",
-        "startMs": 5340,
-        "endMs": 5417
+        "startMs": 5680,
+        "endMs": 5757
       },
       {
         "wordId": "p1-s2-w21",
-        "startMs": 5407,
-        "endMs": 6323
+        "startMs": 5747,
+        "endMs": 6650
       }
     ]
   },
@@ -262,138 +262,138 @@
       },
       {
         "wordId": "p1-s3-w18",
-        "startMs": 4765,
-        "endMs": 4906
+        "startMs": 5218,
+        "endMs": 5359
       },
       {
         "wordId": "p1-s3-w19",
-        "startMs": 4896,
-        "endMs": 5187
+        "startMs": 5349,
+        "endMs": 5640
       },
       {
         "wordId": "p1-s3-w20",
-        "startMs": 5177,
-        "endMs": 5262
+        "startMs": 5630,
+        "endMs": 5715
       },
       {
         "wordId": "p1-s3-w21",
-        "startMs": 5252,
-        "endMs": 5522
+        "startMs": 5705,
+        "endMs": 5975
       },
       {
         "wordId": "p1-s3-w22",
-        "startMs": 5512,
-        "endMs": 5617
+        "startMs": 5965,
+        "endMs": 6070
       },
       {
         "wordId": "p1-s3-w23",
-        "startMs": 5607,
-        "endMs": 5686
+        "startMs": 6060,
+        "endMs": 6139
       },
       {
         "wordId": "p1-s3-w24",
-        "startMs": 5676,
-        "endMs": 5952
+        "startMs": 6129,
+        "endMs": 6405
       },
       {
         "wordId": "p1-s3-w25",
-        "startMs": 5942,
-        "endMs": 6238
+        "startMs": 6395,
+        "endMs": 6691
       },
       {
         "wordId": "p1-s3-w26",
-        "startMs": 6228,
-        "endMs": 6304
+        "startMs": 6681,
+        "endMs": 6757
       },
       {
         "wordId": "p1-s3-w27",
-        "startMs": 6294,
-        "endMs": 6435
+        "startMs": 6747,
+        "endMs": 6888
       },
       {
         "wordId": "p1-s3-w28",
-        "startMs": 6425,
-        "endMs": 6987
+        "startMs": 7158,
+        "endMs": 7720
       },
       {
         "wordId": "p1-s3-w29",
-        "startMs": 6977,
-        "endMs": 7178
+        "startMs": 7710,
+        "endMs": 7911
       },
       {
         "wordId": "p1-s3-w30",
-        "startMs": 7168,
-        "endMs": 7312
+        "startMs": 7901,
+        "endMs": 8045
       },
       {
         "wordId": "p1-s3-w31",
-        "startMs": 7302,
-        "endMs": 7509
+        "startMs": 8035,
+        "endMs": 8242
       },
       {
         "wordId": "p1-s3-w32",
-        "startMs": 7499,
-        "endMs": 7987
+        "startMs": 8232,
+        "endMs": 8720
       },
       {
         "wordId": "p1-s3-w33",
-        "startMs": 7977,
-        "endMs": 8271
+        "startMs": 8710,
+        "endMs": 9004
       },
       {
         "wordId": "p1-s3-w34",
-        "startMs": 8261,
-        "endMs": 8371
+        "startMs": 8994,
+        "endMs": 9104
       },
       {
         "wordId": "p1-s3-w35",
-        "startMs": 8361,
-        "endMs": 8735
+        "startMs": 9094,
+        "endMs": 9468
       },
       {
         "wordId": "p1-s3-w36",
-        "startMs": 8725,
-        "endMs": 8806
+        "startMs": 9458,
+        "endMs": 9539
       },
       {
         "wordId": "p1-s3-w37",
-        "startMs": 8796,
-        "endMs": 8883
+        "startMs": 9529,
+        "endMs": 9616
       },
       {
         "wordId": "p1-s3-w38",
-        "startMs": 8873,
-        "endMs": 9687
+        "startMs": 10066,
+        "endMs": 10880
       },
       {
         "wordId": "p1-s3-w39",
-        "startMs": 9837,
-        "endMs": 10175
+        "startMs": 11030,
+        "endMs": 11368
       },
       {
         "wordId": "p1-s3-w40",
-        "startMs": 10165,
-        "endMs": 10770
+        "startMs": 11358,
+        "endMs": 11963
       },
       {
         "wordId": "p1-s3-w41",
-        "startMs": 10760,
-        "endMs": 10949
+        "startMs": 11953,
+        "endMs": 12142
       },
       {
         "wordId": "p1-s3-w42",
-        "startMs": 10939,
-        "endMs": 11448
+        "startMs": 12132,
+        "endMs": 12641
       },
       {
         "wordId": "p1-s3-w43",
-        "startMs": 11438,
-        "endMs": 11522
+        "startMs": 12631,
+        "endMs": 12715
       },
       {
         "wordId": "p1-s3-w44",
-        "startMs": 11512,
-        "endMs": 12301
+        "startMs": 12705,
+        "endMs": 12823
       }
     ]
   },
@@ -438,153 +438,153 @@
       },
       {
         "wordId": "p1-s4-w8",
-        "startMs": 3202,
-        "endMs": 3526
+        "startMs": 3561,
+        "endMs": 3885
       },
       {
         "wordId": "p1-s4-w9",
-        "startMs": 3516,
-        "endMs": 3925
+        "startMs": 3875,
+        "endMs": 4284
       },
       {
         "wordId": "p1-s4-w10",
-        "startMs": 3915,
-        "endMs": 4173
+        "startMs": 4274,
+        "endMs": 4532
       },
       {
         "wordId": "p1-s4-w11",
-        "startMs": 4163,
-        "endMs": 4356
+        "startMs": 4522,
+        "endMs": 4715
       },
       {
         "wordId": "p1-s4-w12",
-        "startMs": 4346,
-        "endMs": 4494
+        "startMs": 4705,
+        "endMs": 4853
       },
       {
         "wordId": "p1-s4-w13",
-        "startMs": 4484,
-        "endMs": 4569
+        "startMs": 4843,
+        "endMs": 4928
       },
       {
         "wordId": "p1-s4-w14",
-        "startMs": 4559,
-        "endMs": 4834
+        "startMs": 4918,
+        "endMs": 5193
       },
       {
         "wordId": "p1-s4-w15",
-        "startMs": 4824,
-        "endMs": 5138
+        "startMs": 5183,
+        "endMs": 5497
       },
       {
         "wordId": "p1-s4-w16",
-        "startMs": 5128,
-        "endMs": 5425
+        "startMs": 5487,
+        "endMs": 5784
       },
       {
         "wordId": "p1-s4-w17",
-        "startMs": 5415,
-        "endMs": 5501
+        "startMs": 5774,
+        "endMs": 5860
       },
       {
         "wordId": "p1-s4-w18",
-        "startMs": 5491,
-        "endMs": 5568
+        "startMs": 5850,
+        "endMs": 5927
       },
       {
         "wordId": "p1-s4-w19",
-        "startMs": 5558,
-        "endMs": 5941
+        "startMs": 5917,
+        "endMs": 6300
       },
       {
         "wordId": "p1-s4-w20",
-        "startMs": 5931,
-        "endMs": 6062
+        "startMs": 6290,
+        "endMs": 6421
       },
       {
         "wordId": "p1-s4-w21",
-        "startMs": 6052,
-        "endMs": 6304
+        "startMs": 6411,
+        "endMs": 6663
       },
       {
         "wordId": "p1-s4-w22",
-        "startMs": 6294,
-        "endMs": 6635
+        "startMs": 6653,
+        "endMs": 6994
       },
       {
         "wordId": "p1-s4-w23",
-        "startMs": 6625,
-        "endMs": 7448
+        "startMs": 7644,
+        "endMs": 8467
       },
       {
         "wordId": "p1-s4-w24",
-        "startMs": 7610,
-        "endMs": 7790
+        "startMs": 8629,
+        "endMs": 8809
       },
       {
         "wordId": "p1-s4-w25",
-        "startMs": 7780,
-        "endMs": 7897
+        "startMs": 8799,
+        "endMs": 8916
       },
       {
         "wordId": "p1-s4-w26",
-        "startMs": 7887,
-        "endMs": 8315
+        "startMs": 8906,
+        "endMs": 9334
       },
       {
         "wordId": "p1-s4-w27",
-        "startMs": 8305,
-        "endMs": 8684
+        "startMs": 9324,
+        "endMs": 9703
       },
       {
         "wordId": "p1-s4-w28",
-        "startMs": 8674,
-        "endMs": 9190
+        "startMs": 9693,
+        "endMs": 10209
       },
       {
         "wordId": "p1-s4-w29",
-        "startMs": 9180,
-        "endMs": 9340
+        "startMs": 10199,
+        "endMs": 10359
       },
       {
         "wordId": "p1-s4-w30",
-        "startMs": 9330,
-        "endMs": 9403
+        "startMs": 10349,
+        "endMs": 10422
       },
       {
         "wordId": "p1-s4-w31",
-        "startMs": 9393,
-        "endMs": 9819
+        "startMs": 10412,
+        "endMs": 10838
       },
       {
         "wordId": "p1-s4-w32",
-        "startMs": 9809,
-        "endMs": 10184
+        "startMs": 10828,
+        "endMs": 11203
       },
       {
         "wordId": "p1-s4-w33",
-        "startMs": 10174,
-        "endMs": 10508
+        "startMs": 11193,
+        "endMs": 11527
       },
       {
         "wordId": "p1-s4-w34",
-        "startMs": 10498,
-        "endMs": 10633
+        "startMs": 11517,
+        "endMs": 11652
       },
       {
         "wordId": "p1-s4-w35",
-        "startMs": 10623,
-        "endMs": 10826
+        "startMs": 11642,
+        "endMs": 11845
       },
       {
         "wordId": "p1-s4-w36",
-        "startMs": 10816,
-        "endMs": 11028
+        "startMs": 11835,
+        "endMs": 12047
       },
       {
         "wordId": "p1-s4-w37",
-        "startMs": 11018,
-        "endMs": 11933
+        "startMs": 12037,
+        "endMs": 12605
       }
     ]
   },
@@ -619,113 +619,113 @@
       },
       {
         "wordId": "p1-s5-w6",
-        "startMs": 2144,
-        "endMs": 2571
+        "startMs": 2293,
+        "endMs": 2720
       },
       {
         "wordId": "p1-s5-w7",
-        "startMs": 2561,
-        "endMs": 2667
+        "startMs": 2710,
+        "endMs": 2816
       },
       {
         "wordId": "p1-s5-w8",
-        "startMs": 2657,
-        "endMs": 3021
+        "startMs": 2806,
+        "endMs": 3170
       },
       {
         "wordId": "p1-s5-w9",
-        "startMs": 3011,
-        "endMs": 3835
+        "startMs": 3160,
+        "endMs": 3984
       },
       {
         "wordId": "p1-s5-w10",
-        "startMs": 4008,
-        "endMs": 4380
+        "startMs": 4544,
+        "endMs": 4916
       },
       {
         "wordId": "p1-s5-w11",
-        "startMs": 4370,
-        "endMs": 4607
+        "startMs": 4906,
+        "endMs": 5143
       },
       {
         "wordId": "p1-s5-w12",
-        "startMs": 4597,
-        "endMs": 4874
+        "startMs": 5133,
+        "endMs": 5410
       },
       {
         "wordId": "p1-s5-w13",
-        "startMs": 4864,
-        "endMs": 5033
+        "startMs": 5400,
+        "endMs": 5569
       },
       {
         "wordId": "p1-s5-w14",
-        "startMs": 5023,
-        "endMs": 5405
+        "startMs": 5559,
+        "endMs": 5941
       },
       {
         "wordId": "p1-s5-w15",
-        "startMs": 5395,
-        "endMs": 5511
+        "startMs": 5931,
+        "endMs": 6047
       },
       {
         "wordId": "p1-s5-w16",
-        "startMs": 5501,
-        "endMs": 6265
+        "startMs": 6037,
+        "endMs": 6801
       },
       {
         "wordId": "p1-s5-w17",
-        "startMs": 6255,
-        "endMs": 6386
+        "startMs": 6791,
+        "endMs": 6922
       },
       {
         "wordId": "p1-s5-w18",
-        "startMs": 6376,
-        "endMs": 6813
+        "startMs": 6912,
+        "endMs": 7349
       },
       {
         "wordId": "p1-s5-w19",
-        "startMs": 6803,
-        "endMs": 6921
+        "startMs": 7339,
+        "endMs": 7457
       },
       {
         "wordId": "p1-s5-w20",
-        "startMs": 6911,
-        "endMs": 7973
+        "startMs": 7447,
+        "endMs": 8509
       },
       {
         "wordId": "p1-s5-w21",
-        "startMs": 8125,
-        "endMs": 8568
+        "startMs": 8929,
+        "endMs": 9372
       },
       {
         "wordId": "p1-s5-w22",
-        "startMs": 8558,
-        "endMs": 8649
+        "startMs": 9362,
+        "endMs": 9453
       },
       {
         "wordId": "p1-s5-w23",
-        "startMs": 8639,
-        "endMs": 9113
+        "startMs": 9443,
+        "endMs": 9917
       },
       {
         "wordId": "p1-s5-w24",
-        "startMs": 9103,
-        "endMs": 9192
+        "startMs": 9907,
+        "endMs": 9996
       },
       {
         "wordId": "p1-s5-w25",
-        "startMs": 9182,
-        "endMs": 9262
+        "startMs": 9986,
+        "endMs": 10066
       },
       {
         "wordId": "p1-s5-w26",
-        "startMs": 9252,
-        "endMs": 9480
+        "startMs": 10056,
+        "endMs": 10284
       },
       {
         "wordId": "p1-s5-w27",
-        "startMs": 9470,
-        "endMs": 10375
+        "startMs": 10274,
+        "endMs": 10876
       }
     ]
   },
@@ -775,123 +775,123 @@
       },
       {
         "wordId": "p2-s1-w9",
-        "startMs": 3075,
-        "endMs": 3525
+        "startMs": 3395,
+        "endMs": 3845
       },
       {
         "wordId": "p2-s1-w10",
-        "startMs": 3515,
-        "endMs": 3657
+        "startMs": 3835,
+        "endMs": 3977
       },
       {
         "wordId": "p2-s1-w11",
-        "startMs": 3647,
-        "endMs": 3714
+        "startMs": 3967,
+        "endMs": 4034
       },
       {
         "wordId": "p2-s1-w12",
-        "startMs": 3704,
-        "endMs": 4146
+        "startMs": 4024,
+        "endMs": 4466
       },
       {
         "wordId": "p2-s1-w13",
-        "startMs": 4136,
-        "endMs": 4243
+        "startMs": 4456,
+        "endMs": 4563
       },
       {
         "wordId": "p2-s1-w14",
-        "startMs": 4233,
-        "endMs": 4346
+        "startMs": 4553,
+        "endMs": 4666
       },
       {
         "wordId": "p2-s1-w15",
-        "startMs": 4336,
-        "endMs": 5080
+        "startMs": 5456,
+        "endMs": 6200
       },
       {
         "wordId": "p2-s1-w16",
-        "startMs": 5340,
-        "endMs": 5633
+        "startMs": 6460,
+        "endMs": 6753
       },
       {
         "wordId": "p2-s1-w17",
-        "startMs": 5623,
-        "endMs": 5985
+        "startMs": 6743,
+        "endMs": 7105
       },
       {
         "wordId": "p2-s1-w18",
-        "startMs": 5975,
-        "endMs": 6143
+        "startMs": 7095,
+        "endMs": 7263
       },
       {
         "wordId": "p2-s1-w19",
-        "startMs": 6133,
-        "endMs": 6419
+        "startMs": 7253,
+        "endMs": 7539
       },
       {
         "wordId": "p2-s1-w20",
-        "startMs": 6409,
-        "endMs": 6835
+        "startMs": 7809,
+        "endMs": 8235
       },
       {
         "wordId": "p2-s1-w21",
-        "startMs": 6825,
-        "endMs": 6946
+        "startMs": 8225,
+        "endMs": 8346
       },
       {
         "wordId": "p2-s1-w22",
-        "startMs": 6936,
-        "endMs": 7566
+        "startMs": 8336,
+        "endMs": 8966
       },
       {
         "wordId": "p2-s1-w23",
-        "startMs": 7556,
-        "endMs": 7848
+        "startMs": 8956,
+        "endMs": 9248
       },
       {
         "wordId": "p2-s1-w24",
-        "startMs": 7838,
-        "endMs": 7980
+        "startMs": 9238,
+        "endMs": 9380
       },
       {
         "wordId": "p2-s1-w25",
-        "startMs": 7970,
-        "endMs": 8227
+        "startMs": 9370,
+        "endMs": 9627
       },
       {
         "wordId": "p2-s1-w26",
-        "startMs": 8217,
-        "endMs": 8508
+        "startMs": 9617,
+        "endMs": 9908
       },
       {
         "wordId": "p2-s1-w27",
-        "startMs": 8498,
-        "endMs": 8612
+        "startMs": 9898,
+        "endMs": 10012
       },
       {
         "wordId": "p2-s1-w28",
-        "startMs": 8602,
-        "endMs": 8673
+        "startMs": 10002,
+        "endMs": 10073
       },
       {
         "wordId": "p2-s1-w29",
-        "startMs": 8663,
-        "endMs": 9092
+        "startMs": 10063,
+        "endMs": 10492
       },
       {
         "wordId": "p2-s1-w30",
-        "startMs": 9082,
-        "endMs": 9189
+        "startMs": 10482,
+        "endMs": 10589
       },
       {
         "wordId": "p2-s1-w31",
-        "startMs": 9179,
-        "endMs": 9575
+        "startMs": 10579,
+        "endMs": 10840
       },
       {
         "wordId": "p2-s1-w32",
-        "startMs": 9565,
-        "endMs": 10398
+        "startMs": 10840,
+        "endMs": 10840
       }
     ]
   },
@@ -1001,68 +1001,68 @@
       },
       {
         "wordId": "p2-s2-w21",
-        "startMs": 5039,
-        "endMs": 5233
+        "startMs": 5479,
+        "endMs": 5673
       },
       {
         "wordId": "p2-s2-w22",
-        "startMs": 5223,
-        "endMs": 5285
+        "startMs": 5663,
+        "endMs": 5725
       },
       {
         "wordId": "p2-s2-w23",
-        "startMs": 5275,
-        "endMs": 5486
+        "startMs": 5715,
+        "endMs": 5926
       },
       {
         "wordId": "p2-s2-w24",
-        "startMs": 5476,
-        "endMs": 5736
+        "startMs": 5916,
+        "endMs": 6176
       },
       {
         "wordId": "p2-s2-w25",
-        "startMs": 5726,
-        "endMs": 5865
+        "startMs": 6166,
+        "endMs": 6305
       },
       {
         "wordId": "p2-s2-w26",
-        "startMs": 5855,
-        "endMs": 6184
+        "startMs": 6295,
+        "endMs": 6624
       },
       {
         "wordId": "p2-s2-w27",
-        "startMs": 6174,
-        "endMs": 6387
+        "startMs": 6614,
+        "endMs": 6827
       },
       {
         "wordId": "p2-s2-w28",
-        "startMs": 6377,
-        "endMs": 6657
+        "startMs": 6817,
+        "endMs": 7097
       },
       {
         "wordId": "p2-s2-w29",
-        "startMs": 6647,
-        "endMs": 7124
+        "startMs": 7087,
+        "endMs": 7564
       },
       {
         "wordId": "p2-s2-w30",
-        "startMs": 7114,
-        "endMs": 7283
+        "startMs": 7554,
+        "endMs": 7723
       },
       {
         "wordId": "p2-s2-w31",
-        "startMs": 7273,
-        "endMs": 7343
+        "startMs": 7713,
+        "endMs": 7783
       },
       {
         "wordId": "p2-s2-w32",
-        "startMs": 7333,
-        "endMs": 7737
+        "startMs": 7773,
+        "endMs": 8177
       },
       {
         "wordId": "p2-s2-w33",
-        "startMs": 7727,
-        "endMs": 8481
+        "startMs": 8167,
+        "endMs": 8700
       }
     ]
   },
@@ -1157,68 +1157,68 @@
       },
       {
         "wordId": "p3-s1-w18",
-        "startMs": 5125,
-        "endMs": 5304
+        "startMs": 5545,
+        "endMs": 5724
       },
       {
         "wordId": "p3-s1-w19",
-        "startMs": 5294,
-        "endMs": 5559
+        "startMs": 5714,
+        "endMs": 5979
       },
       {
         "wordId": "p3-s1-w20",
-        "startMs": 5549,
-        "endMs": 5940
+        "startMs": 5969,
+        "endMs": 6360
       },
       {
         "wordId": "p3-s1-w21",
-        "startMs": 5930,
-        "endMs": 6363
+        "startMs": 6350,
+        "endMs": 6783
       },
       {
         "wordId": "p3-s1-w22",
-        "startMs": 6353,
-        "endMs": 6479
+        "startMs": 6773,
+        "endMs": 6899
       },
       {
         "wordId": "p3-s1-w23",
-        "startMs": 6469,
-        "endMs": 6649
+        "startMs": 6889,
+        "endMs": 7069
       },
       {
         "wordId": "p3-s1-w24",
-        "startMs": 6639,
-        "endMs": 6714
+        "startMs": 7059,
+        "endMs": 7134
       },
       {
         "wordId": "p3-s1-w25",
-        "startMs": 6704,
-        "endMs": 7137
+        "startMs": 7124,
+        "endMs": 7557
       },
       {
         "wordId": "p3-s1-w26",
-        "startMs": 7127,
-        "endMs": 7406
+        "startMs": 7547,
+        "endMs": 7826
       },
       {
         "wordId": "p3-s1-w27",
-        "startMs": 7396,
-        "endMs": 7514
+        "startMs": 7816,
+        "endMs": 7934
       },
       {
         "wordId": "p3-s1-w28",
-        "startMs": 7504,
-        "endMs": 8129
+        "startMs": 7924,
+        "endMs": 8549
       },
       {
         "wordId": "p3-s1-w29",
-        "startMs": 8119,
-        "endMs": 8581
+        "startMs": 8539,
+        "endMs": 9001
       },
       {
         "wordId": "p3-s1-w30",
-        "startMs": 8571,
-        "endMs": 9421
+        "startMs": 8991,
+        "endMs": 9700
       }
     ]
   },
@@ -1243,118 +1243,118 @@
       },
       {
         "wordId": "p3-s2-w4",
-        "startMs": 1806,
-        "endMs": 2225
+        "startMs": 2022,
+        "endMs": 2441
       },
       {
         "wordId": "p3-s2-w5",
-        "startMs": 2215,
-        "endMs": 2369
+        "startMs": 2431,
+        "endMs": 2585
       },
       {
         "wordId": "p3-s2-w6",
-        "startMs": 2359,
-        "endMs": 2771
+        "startMs": 2575,
+        "endMs": 2987
       },
       {
         "wordId": "p3-s2-w7",
-        "startMs": 2761,
-        "endMs": 3612
+        "startMs": 3537,
+        "endMs": 4388
       },
       {
         "wordId": "p3-s2-w8",
-        "startMs": 3783,
-        "endMs": 4181
+        "startMs": 4559,
+        "endMs": 4957
       },
       {
         "wordId": "p3-s2-w9",
-        "startMs": 4171,
-        "endMs": 4487
+        "startMs": 4947,
+        "endMs": 5263
       },
       {
         "wordId": "p3-s2-w10",
-        "startMs": 4477,
-        "endMs": 4888
+        "startMs": 5253,
+        "endMs": 5664
       },
       {
         "wordId": "p3-s2-w11",
-        "startMs": 4878,
-        "endMs": 5231
+        "startMs": 5654,
+        "endMs": 6007
       },
       {
         "wordId": "p3-s2-w12",
-        "startMs": 5221,
-        "endMs": 5532
+        "startMs": 5997,
+        "endMs": 6308
       },
       {
         "wordId": "p3-s2-w13",
-        "startMs": 5522,
-        "endMs": 5934
+        "startMs": 6298,
+        "endMs": 6710
       },
       {
         "wordId": "p3-s2-w14",
-        "startMs": 5924,
-        "endMs": 6019
+        "startMs": 6700,
+        "endMs": 6795
       },
       {
         "wordId": "p3-s2-w15",
-        "startMs": 6009,
-        "endMs": 6458
+        "startMs": 6785,
+        "endMs": 7234
       },
       {
         "wordId": "p3-s2-w16",
-        "startMs": 6448,
-        "endMs": 7089
+        "startMs": 7224,
+        "endMs": 7865
       },
       {
         "wordId": "p3-s2-w17",
-        "startMs": 7079,
-        "endMs": 7226
+        "startMs": 7855,
+        "endMs": 8002
       },
       {
         "wordId": "p3-s2-w18",
-        "startMs": 7216,
-        "endMs": 7667
+        "startMs": 7992,
+        "endMs": 8443
       },
       {
         "wordId": "p3-s2-w19",
-        "startMs": 7657,
-        "endMs": 8015
+        "startMs": 8433,
+        "endMs": 8791
       },
       {
         "wordId": "p3-s2-w20",
-        "startMs": 8005,
-        "endMs": 8126
+        "startMs": 8781,
+        "endMs": 8902
       },
       {
         "wordId": "p3-s2-w21",
-        "startMs": 8116,
-        "endMs": 8615
+        "startMs": 8892,
+        "endMs": 9391
       },
       {
         "wordId": "p3-s2-w22",
-        "startMs": 8605,
-        "endMs": 9036
+        "startMs": 9381,
+        "endMs": 9812
       },
       {
         "wordId": "p3-s2-w23",
-        "startMs": 9026,
-        "endMs": 9146
+        "startMs": 9802,
+        "endMs": 9922
       },
       {
         "wordId": "p3-s2-w24",
-        "startMs": 9136,
-        "endMs": 9211
+        "startMs": 9912,
+        "endMs": 9987
       },
       {
         "wordId": "p3-s2-w25",
-        "startMs": 9201,
-        "endMs": 9475
+        "startMs": 9977,
+        "endMs": 10251
       },
       {
         "wordId": "p3-s2-w26",
-        "startMs": 9465,
-        "endMs": 10284
+        "startMs": 10241,
+        "endMs": 10536
       }
     ]
   },
@@ -1429,138 +1429,138 @@
       },
       {
         "wordId": "p3-s3-w14",
-        "startMs": 3024,
-        "endMs": 3646
+        "startMs": 3704,
+        "endMs": 4326
       },
       {
         "wordId": "p3-s3-w15",
-        "startMs": 3787,
-        "endMs": 3926
+        "startMs": 4467,
+        "endMs": 4606
       },
       {
         "wordId": "p3-s3-w16",
-        "startMs": 3916,
-        "endMs": 4318
+        "startMs": 4596,
+        "endMs": 4998
       },
       {
         "wordId": "p3-s3-w17",
-        "startMs": 4308,
-        "endMs": 4475
+        "startMs": 4988,
+        "endMs": 5155
       },
       {
         "wordId": "p3-s3-w18",
-        "startMs": 4465,
-        "endMs": 4853
+        "startMs": 5145,
+        "endMs": 5533
       },
       {
         "wordId": "p3-s3-w19",
-        "startMs": 4843,
-        "endMs": 4977
+        "startMs": 5883,
+        "endMs": 6017
       },
       {
         "wordId": "p3-s3-w20",
-        "startMs": 4967,
-        "endMs": 5711
+        "startMs": 6007,
+        "endMs": 6751
       },
       {
         "wordId": "p3-s3-w21",
-        "startMs": 5701,
-        "endMs": 5886
+        "startMs": 6741,
+        "endMs": 6926
       },
       {
         "wordId": "p3-s3-w22",
-        "startMs": 5876,
-        "endMs": 6034
+        "startMs": 6916,
+        "endMs": 7074
       },
       {
         "wordId": "p3-s3-w23",
-        "startMs": 6024,
-        "endMs": 6448
+        "startMs": 7064,
+        "endMs": 7488
       },
       {
         "wordId": "p3-s3-w24",
-        "startMs": 6438,
-        "endMs": 6686
+        "startMs": 7798,
+        "endMs": 8046
       },
       {
         "wordId": "p3-s3-w25",
-        "startMs": 6676,
-        "endMs": 6943
+        "startMs": 8036,
+        "endMs": 8303
       },
       {
         "wordId": "p3-s3-w26",
-        "startMs": 6933,
-        "endMs": 7660
+        "startMs": 8293,
+        "endMs": 9020
       },
       {
         "wordId": "p3-s3-w27",
-        "startMs": 7650,
-        "endMs": 7887
+        "startMs": 9010,
+        "endMs": 9247
       },
       {
         "wordId": "p3-s3-w28",
-        "startMs": 7877,
-        "endMs": 8139
+        "startMs": 9237,
+        "endMs": 9499
       },
       {
         "wordId": "p3-s3-w29",
-        "startMs": 8129,
-        "endMs": 8210
+        "startMs": 9489,
+        "endMs": 9570
       },
       {
         "wordId": "p3-s3-w30",
-        "startMs": 8200,
-        "endMs": 8353
+        "startMs": 9560,
+        "endMs": 9713
       },
       {
         "wordId": "p3-s3-w31",
-        "startMs": 8343,
-        "endMs": 8732
+        "startMs": 9703,
+        "endMs": 10092
       },
       {
         "wordId": "p3-s3-w32",
-        "startMs": 8722,
-        "endMs": 9086
+        "startMs": 10082,
+        "endMs": 10446
       },
       {
         "wordId": "p3-s3-w33",
-        "startMs": 9076,
-        "endMs": 9200
+        "startMs": 10436,
+        "endMs": 10560
       },
       {
         "wordId": "p3-s3-w34",
-        "startMs": 9190,
-        "endMs": 9411
+        "startMs": 10550,
+        "endMs": 10771
       },
       {
         "wordId": "p3-s3-w35",
-        "startMs": 9401,
-        "endMs": 9680
+        "startMs": 10761,
+        "endMs": 11040
       },
       {
         "wordId": "p3-s3-w36",
-        "startMs": 9670,
-        "endMs": 9785
+        "startMs": 11030,
+        "endMs": 11145
       },
       {
         "wordId": "p3-s3-w37",
-        "startMs": 9775,
-        "endMs": 9952
+        "startMs": 11135,
+        "endMs": 11312
       },
       {
         "wordId": "p3-s3-w38",
-        "startMs": 9942,
-        "endMs": 10115
+        "startMs": 11302,
+        "endMs": 11356
       },
       {
         "wordId": "p3-s3-w39",
-        "startMs": 10105,
-        "endMs": 10259
+        "startMs": 11356,
+        "endMs": 11356
       },
       {
         "wordId": "p3-s3-w40",
-        "startMs": 10249,
-        "endMs": 11106
+        "startMs": 11356,
+        "endMs": 11356
       }
     ]
   },
@@ -1605,128 +1605,128 @@
       },
       {
         "wordId": "p4-s1-w8",
-        "startMs": 2847,
-        "endMs": 3099
+        "startMs": 3181,
+        "endMs": 3433
       },
       {
         "wordId": "p4-s1-w9",
-        "startMs": 3089,
-        "endMs": 3346
+        "startMs": 3423,
+        "endMs": 3680
       },
       {
         "wordId": "p4-s1-w10",
-        "startMs": 3336,
-        "endMs": 3805
+        "startMs": 3670,
+        "endMs": 4139
       },
       {
         "wordId": "p4-s1-w11",
-        "startMs": 3795,
-        "endMs": 4551
+        "startMs": 4669,
+        "endMs": 5425
       },
       {
         "wordId": "p4-s1-w12",
-        "startMs": 4698,
-        "endMs": 4842
+        "startMs": 5572,
+        "endMs": 5716
       },
       {
         "wordId": "p4-s1-w13",
-        "startMs": 4832,
-        "endMs": 4898
+        "startMs": 5706,
+        "endMs": 5772
       },
       {
         "wordId": "p4-s1-w14",
-        "startMs": 4888,
-        "endMs": 5154
+        "startMs": 5762,
+        "endMs": 6028
       },
       {
         "wordId": "p4-s1-w15",
-        "startMs": 5144,
-        "endMs": 5534
+        "startMs": 6018,
+        "endMs": 6408
       },
       {
         "wordId": "p4-s1-w16",
-        "startMs": 5524,
-        "endMs": 5649
+        "startMs": 6398,
+        "endMs": 6523
       },
       {
         "wordId": "p4-s1-w17",
-        "startMs": 5639,
-        "endMs": 6120
+        "startMs": 6513,
+        "endMs": 6994
       },
       {
         "wordId": "p4-s1-w18",
-        "startMs": 6110,
-        "endMs": 6228
+        "startMs": 6984,
+        "endMs": 7102
       },
       {
         "wordId": "p4-s1-w19",
-        "startMs": 6218,
-        "endMs": 6866
+        "startMs": 7092,
+        "endMs": 7740
       },
       {
         "wordId": "p4-s1-w20",
-        "startMs": 6856,
-        "endMs": 6973
+        "startMs": 7730,
+        "endMs": 7847
       },
       {
         "wordId": "p4-s1-w21",
-        "startMs": 6963,
-        "endMs": 7698
+        "startMs": 7837,
+        "endMs": 8572
       },
       {
         "wordId": "p4-s1-w22",
-        "startMs": 7688,
-        "endMs": 7811
+        "startMs": 8562,
+        "endMs": 8685
       },
       {
         "wordId": "p4-s1-w23",
-        "startMs": 7801,
-        "endMs": 8257
+        "startMs": 8675,
+        "endMs": 9131
       },
       {
         "wordId": "p4-s1-w24",
-        "startMs": 8247,
-        "endMs": 8375
+        "startMs": 9121,
+        "endMs": 9249
       },
       {
         "wordId": "p4-s1-w25",
-        "startMs": 8365,
-        "endMs": 8837
+        "startMs": 9239,
+        "endMs": 9711
       },
       {
         "wordId": "p4-s1-w26",
-        "startMs": 8827,
-        "endMs": 8939
+        "startMs": 9701,
+        "endMs": 9813
       },
       {
         "wordId": "p4-s1-w27",
-        "startMs": 8929,
-        "endMs": 9908
+        "startMs": 10383,
+        "endMs": 11362
       },
       {
         "wordId": "p4-s1-w28",
-        "startMs": 10067,
-        "endMs": 10228
+        "startMs": 11521,
+        "endMs": 11682
       },
       {
         "wordId": "p4-s1-w29",
-        "startMs": 10218,
-        "endMs": 10605
+        "startMs": 11672,
+        "endMs": 12059
       },
       {
         "wordId": "p4-s1-w30",
-        "startMs": 10595,
-        "endMs": 10735
+        "startMs": 12049,
+        "endMs": 12189
       },
       {
         "wordId": "p4-s1-w31",
-        "startMs": 10725,
-        "endMs": 10956
+        "startMs": 12179,
+        "endMs": 12194
       },
       {
         "wordId": "p4-s1-w32",
-        "startMs": 10946,
-        "endMs": 11849
+        "startMs": 12194,
+        "endMs": 12194
       }
     ]
   },
@@ -1806,198 +1806,198 @@
       },
       {
         "wordId": "p4-s2-w15",
-        "startMs": 3910,
-        "endMs": 4009
+        "startMs": 4367,
+        "endMs": 4466
       },
       {
         "wordId": "p4-s2-w16",
-        "startMs": 3999,
-        "endMs": 4306
+        "startMs": 4456,
+        "endMs": 4763
       },
       {
         "wordId": "p4-s2-w17",
-        "startMs": 4296,
-        "endMs": 4444
+        "startMs": 4753,
+        "endMs": 4901
       },
       {
         "wordId": "p4-s2-w18",
-        "startMs": 4434,
-        "endMs": 4552
+        "startMs": 4891,
+        "endMs": 5009
       },
       {
         "wordId": "p4-s2-w19",
-        "startMs": 4542,
-        "endMs": 4776
+        "startMs": 4999,
+        "endMs": 5233
       },
       {
         "wordId": "p4-s2-w20",
-        "startMs": 4766,
-        "endMs": 4859
+        "startMs": 5223,
+        "endMs": 5316
       },
       {
         "wordId": "p4-s2-w21",
-        "startMs": 4849,
-        "endMs": 5172
+        "startMs": 5306,
+        "endMs": 5629
       },
       {
         "wordId": "p4-s2-w22",
-        "startMs": 5162,
-        "endMs": 5514
+        "startMs": 5619,
+        "endMs": 5971
       },
       {
         "wordId": "p4-s2-w23",
-        "startMs": 5504,
-        "endMs": 5730
+        "startMs": 5961,
+        "endMs": 6187
       },
       {
         "wordId": "p4-s2-w24",
-        "startMs": 5720,
-        "endMs": 5805
+        "startMs": 6177,
+        "endMs": 6262
       },
       {
         "wordId": "p4-s2-w25",
-        "startMs": 5795,
-        "endMs": 5872
+        "startMs": 6252,
+        "endMs": 6329
       },
       {
         "wordId": "p4-s2-w26",
-        "startMs": 5862,
-        "endMs": 6652
+        "startMs": 6899,
+        "endMs": 7689
       },
       {
         "wordId": "p4-s2-w27",
-        "startMs": 6777,
-        "endMs": 6898
+        "startMs": 7814,
+        "endMs": 7935
       },
       {
         "wordId": "p4-s2-w28",
-        "startMs": 6888,
-        "endMs": 7222
+        "startMs": 7925,
+        "endMs": 8259
       },
       {
         "wordId": "p4-s2-w29",
-        "startMs": 7212,
-        "endMs": 7310
+        "startMs": 8249,
+        "endMs": 8347
       },
       {
         "wordId": "p4-s2-w30",
-        "startMs": 7300,
-        "endMs": 7647
+        "startMs": 8337,
+        "endMs": 8684
       },
       {
         "wordId": "p4-s2-w31",
-        "startMs": 7637,
-        "endMs": 7745
+        "startMs": 8674,
+        "endMs": 8782
       },
       {
         "wordId": "p4-s2-w32",
-        "startMs": 7735,
-        "endMs": 8228
+        "startMs": 8772,
+        "endMs": 9265
       },
       {
         "wordId": "p4-s2-w33",
-        "startMs": 8218,
-        "endMs": 8323
+        "startMs": 9255,
+        "endMs": 9360
       },
       {
         "wordId": "p4-s2-w34",
-        "startMs": 8313,
-        "endMs": 8805
+        "startMs": 9350,
+        "endMs": 9842
       },
       {
         "wordId": "p4-s2-w35",
-        "startMs": 8795,
-        "endMs": 8936
+        "startMs": 9832,
+        "endMs": 9973
       },
       {
         "wordId": "p4-s2-w36",
-        "startMs": 8926,
-        "endMs": 9269
+        "startMs": 9963,
+        "endMs": 10306
       },
       {
         "wordId": "p4-s2-w37",
-        "startMs": 9259,
-        "endMs": 9413
+        "startMs": 10296,
+        "endMs": 10450
       },
       {
         "wordId": "p4-s2-w38",
-        "startMs": 9403,
-        "endMs": 9839
+        "startMs": 10440,
+        "endMs": 10876
       },
       {
         "wordId": "p4-s2-w39",
-        "startMs": 9829,
-        "endMs": 10688
+        "startMs": 11326,
+        "endMs": 12185
       },
       {
         "wordId": "p4-s2-w40",
-        "startMs": 10838,
-        "endMs": 10965
+        "startMs": 12335,
+        "endMs": 12462
       },
       {
         "wordId": "p4-s2-w41",
-        "startMs": 10955,
-        "endMs": 11228
+        "startMs": 12452,
+        "endMs": 12725
       },
       {
         "wordId": "p4-s2-w42",
-        "startMs": 11218,
-        "endMs": 11594
+        "startMs": 12715,
+        "endMs": 13091
       },
       {
         "wordId": "p4-s2-w43",
-        "startMs": 11584,
-        "endMs": 11727
+        "startMs": 13081,
+        "endMs": 13224
       },
       {
         "wordId": "p4-s2-w44",
-        "startMs": 11717,
-        "endMs": 12163
+        "startMs": 13554,
+        "endMs": 14000
       },
       {
         "wordId": "p4-s2-w45",
-        "startMs": 12153,
-        "endMs": 12321
+        "startMs": 13990,
+        "endMs": 14158
       },
       {
         "wordId": "p4-s2-w46",
-        "startMs": 12311,
-        "endMs": 13015
+        "startMs": 14148,
+        "endMs": 14852
       },
       {
         "wordId": "p4-s2-w47",
-        "startMs": 13143,
-        "endMs": 13279
+        "startMs": 14980,
+        "endMs": 15116
       },
       {
         "wordId": "p4-s2-w48",
-        "startMs": 13269,
-        "endMs": 13658
+        "startMs": 15106,
+        "endMs": 15495
       },
       {
         "wordId": "p4-s2-w49",
-        "startMs": 13648,
-        "endMs": 13985
+        "startMs": 15485,
+        "endMs": 15822
       },
       {
         "wordId": "p4-s2-w50",
-        "startMs": 13975,
-        "endMs": 14052
+        "startMs": 15812,
+        "endMs": 15889
       },
       {
         "wordId": "p4-s2-w51",
-        "startMs": 14042,
-        "endMs": 14373
+        "startMs": 15879,
+        "endMs": 16067
       },
       {
         "wordId": "p4-s2-w52",
-        "startMs": 14363,
-        "endMs": 14449
+        "startMs": 16067,
+        "endMs": 16067
       },
       {
         "wordId": "p4-s2-w53",
-        "startMs": 14439,
-        "endMs": 15395
+        "startMs": 16067,
+        "endMs": 16067
       }
     ]
   },
@@ -2037,193 +2037,193 @@
       },
       {
         "wordId": "p4-s3-w7",
-        "startMs": 2232,
-        "endMs": 2365
+        "startMs": 2597,
+        "endMs": 2730
       },
       {
         "wordId": "p4-s3-w8",
-        "startMs": 2355,
-        "endMs": 2737
+        "startMs": 2720,
+        "endMs": 3102
       },
       {
         "wordId": "p4-s3-w9",
-        "startMs": 2727,
-        "endMs": 3029
+        "startMs": 3092,
+        "endMs": 3394
       },
       {
         "wordId": "p4-s3-w10",
-        "startMs": 3019,
-        "endMs": 3107
+        "startMs": 3384,
+        "endMs": 3472
       },
       {
         "wordId": "p4-s3-w11",
-        "startMs": 3097,
-        "endMs": 3669
+        "startMs": 3462,
+        "endMs": 4034
       },
       {
         "wordId": "p4-s3-w12",
-        "startMs": 3659,
-        "endMs": 4098
+        "startMs": 4024,
+        "endMs": 4463
       },
       {
         "wordId": "p4-s3-w13",
-        "startMs": 4088,
-        "endMs": 4173
+        "startMs": 4453,
+        "endMs": 4538
       },
       {
         "wordId": "p4-s3-w14",
-        "startMs": 4163,
-        "endMs": 4479
+        "startMs": 4528,
+        "endMs": 4844
       },
       {
         "wordId": "p4-s3-w15",
-        "startMs": 4469,
-        "endMs": 5451
+        "startMs": 5414,
+        "endMs": 6396
       },
       {
         "wordId": "p4-s3-w16",
-        "startMs": 5576,
-        "endMs": 5842
+        "startMs": 6521,
+        "endMs": 6787
       },
       {
         "wordId": "p4-s3-w17",
-        "startMs": 5832,
-        "endMs": 5951
+        "startMs": 6777,
+        "endMs": 6896
       },
       {
         "wordId": "p4-s3-w18",
-        "startMs": 5941,
-        "endMs": 6193
+        "startMs": 6886,
+        "endMs": 7138
       },
       {
         "wordId": "p4-s3-w19",
-        "startMs": 6183,
-        "endMs": 6312
+        "startMs": 7128,
+        "endMs": 7257
       },
       {
         "wordId": "p4-s3-w20",
-        "startMs": 6302,
-        "endMs": 6695
+        "startMs": 7247,
+        "endMs": 7640
       },
       {
         "wordId": "p4-s3-w21",
-        "startMs": 6685,
-        "endMs": 6839
+        "startMs": 7630,
+        "endMs": 7784
       },
       {
         "wordId": "p4-s3-w22",
-        "startMs": 6829,
-        "endMs": 7210
+        "startMs": 7774,
+        "endMs": 8155
       },
       {
         "wordId": "p4-s3-w23",
-        "startMs": 7200,
-        "endMs": 7326
+        "startMs": 8785,
+        "endMs": 8911
       },
       {
         "wordId": "p4-s3-w24",
-        "startMs": 7316,
-        "endMs": 8261
+        "startMs": 8901,
+        "endMs": 9846
       },
       {
         "wordId": "p4-s3-w25",
-        "startMs": 8432,
-        "endMs": 8574
+        "startMs": 10017,
+        "endMs": 10159
       },
       {
         "wordId": "p4-s3-w26",
-        "startMs": 8564,
-        "endMs": 9049
+        "startMs": 10149,
+        "endMs": 10634
       },
       {
         "wordId": "p4-s3-w27",
-        "startMs": 9039,
-        "endMs": 9653
+        "startMs": 10624,
+        "endMs": 11238
       },
       {
         "wordId": "p4-s3-w28",
-        "startMs": 9643,
-        "endMs": 9767
+        "startMs": 11228,
+        "endMs": 11352
       },
       {
         "wordId": "p4-s3-w29",
-        "startMs": 9757,
-        "endMs": 10440
+        "startMs": 12002,
+        "endMs": 12685
       },
       {
         "wordId": "p4-s3-w30",
-        "startMs": 10430,
-        "endMs": 10809
+        "startMs": 12675,
+        "endMs": 13054
       },
       {
         "wordId": "p4-s3-w31",
-        "startMs": 10799,
-        "endMs": 10904
+        "startMs": 13044,
+        "endMs": 13149
       },
       {
         "wordId": "p4-s3-w32",
-        "startMs": 10894,
-        "endMs": 10974
+        "startMs": 13139,
+        "endMs": 13219
       },
       {
         "wordId": "p4-s3-w33",
-        "startMs": 10964,
-        "endMs": 11805
+        "startMs": 13209,
+        "endMs": 14050
       },
       {
         "wordId": "p4-s3-w34",
-        "startMs": 11973,
-        "endMs": 12120
+        "startMs": 14218,
+        "endMs": 14365
       },
       {
         "wordId": "p4-s3-w35",
-        "startMs": 12110,
-        "endMs": 12954
+        "startMs": 14355,
+        "endMs": 15199
       },
       {
         "wordId": "p4-s3-w36",
-        "startMs": 12944,
-        "endMs": 13332
+        "startMs": 15189,
+        "endMs": 15577
       },
       {
         "wordId": "p4-s3-w37",
-        "startMs": 13322,
-        "endMs": 13675
+        "startMs": 15567,
+        "endMs": 15920
       },
       {
         "wordId": "p4-s3-w38",
-        "startMs": 13665,
-        "endMs": 13992
+        "startMs": 15910,
+        "endMs": 16237
       },
       {
         "wordId": "p4-s3-w39",
-        "startMs": 13982,
-        "endMs": 14134
+        "startMs": 16227,
+        "endMs": 16379
       },
       {
         "wordId": "p4-s3-w40",
-        "startMs": 14124,
-        "endMs": 14418
+        "startMs": 16369,
+        "endMs": 16403
       },
       {
         "wordId": "p4-s3-w41",
-        "startMs": 14408,
-        "endMs": 14582
+        "startMs": 16403,
+        "endMs": 16403
       },
       {
         "wordId": "p4-s3-w42",
-        "startMs": 14572,
-        "endMs": 14778
+        "startMs": 16403,
+        "endMs": 16403
       },
       {
         "wordId": "p4-s3-w43",
-        "startMs": 14768,
-        "endMs": 15058
+        "startMs": 16403,
+        "endMs": 16403
       },
       {
         "wordId": "p4-s3-w44",
-        "startMs": 15048,
-        "endMs": 15929
+        "startMs": 16403,
+        "endMs": 16403
       }
     ]
   },
@@ -2293,93 +2293,93 @@
       },
       {
         "wordId": "p5-s1-w13",
-        "startMs": 3591,
-        "endMs": 3721
+        "startMs": 3977,
+        "endMs": 4107
       },
       {
         "wordId": "p5-s1-w14",
-        "startMs": 3711,
-        "endMs": 3930
+        "startMs": 4097,
+        "endMs": 4316
       },
       {
         "wordId": "p5-s1-w15",
-        "startMs": 3920,
-        "endMs": 4035
+        "startMs": 4306,
+        "endMs": 4421
       },
       {
         "wordId": "p5-s1-w16",
-        "startMs": 4025,
-        "endMs": 4508
+        "startMs": 4411,
+        "endMs": 4894
       },
       {
         "wordId": "p5-s1-w17",
-        "startMs": 4498,
-        "endMs": 4644
+        "startMs": 4884,
+        "endMs": 5030
       },
       {
         "wordId": "p5-s1-w18",
-        "startMs": 4634,
-        "endMs": 4991
+        "startMs": 5020,
+        "endMs": 5377
       },
       {
         "wordId": "p5-s1-w19",
-        "startMs": 4981,
-        "endMs": 5308
+        "startMs": 5367,
+        "endMs": 5694
       },
       {
         "wordId": "p5-s1-w20",
-        "startMs": 5298,
-        "endMs": 5751
+        "startMs": 5684,
+        "endMs": 6137
       },
       {
         "wordId": "p5-s1-w21",
-        "startMs": 5741,
-        "endMs": 6485
+        "startMs": 6627,
+        "endMs": 7371
       },
       {
         "wordId": "p5-s1-w22",
-        "startMs": 6622,
-        "endMs": 6743
+        "startMs": 7508,
+        "endMs": 7629
       },
       {
         "wordId": "p5-s1-w23",
-        "startMs": 6733,
-        "endMs": 6831
+        "startMs": 7619,
+        "endMs": 7717
       },
       {
         "wordId": "p5-s1-w24",
-        "startMs": 6821,
-        "endMs": 7192
+        "startMs": 7707,
+        "endMs": 8078
       },
       {
         "wordId": "p5-s1-w25",
-        "startMs": 7182,
-        "endMs": 7281
+        "startMs": 8068,
+        "endMs": 8167
       },
       {
         "wordId": "p5-s1-w26",
-        "startMs": 7271,
-        "endMs": 7704
+        "startMs": 8157,
+        "endMs": 8590
       },
       {
         "wordId": "p5-s1-w27",
-        "startMs": 7694,
-        "endMs": 8009
+        "startMs": 8580,
+        "endMs": 8895
       },
       {
         "wordId": "p5-s1-w28",
-        "startMs": 7999,
-        "endMs": 8079
+        "startMs": 8885,
+        "endMs": 8965
       },
       {
         "wordId": "p5-s1-w29",
-        "startMs": 8069,
-        "endMs": 8300
+        "startMs": 8955,
+        "endMs": 9186
       },
       {
         "wordId": "p5-s1-w30",
-        "startMs": 8290,
-        "endMs": 9101
+        "startMs": 9176,
+        "endMs": 9367
       }
     ]
   },
@@ -2419,48 +2419,48 @@
       },
       {
         "wordId": "p5-s2-w7",
-        "startMs": 2388,
-        "endMs": 2761
+        "startMs": 2642,
+        "endMs": 3015
       },
       {
         "wordId": "p5-s2-w8",
-        "startMs": 2751,
-        "endMs": 2891
+        "startMs": 3005,
+        "endMs": 3145
       },
       {
         "wordId": "p5-s2-w9",
-        "startMs": 2881,
-        "endMs": 3763
+        "startMs": 3135,
+        "endMs": 4017
       },
       {
         "wordId": "p5-s2-w10",
-        "startMs": 3909,
-        "endMs": 4155
+        "startMs": 4163,
+        "endMs": 4409
       },
       {
         "wordId": "p5-s2-w11",
-        "startMs": 4145,
-        "endMs": 4334
+        "startMs": 4399,
+        "endMs": 4588
       },
       {
         "wordId": "p5-s2-w12",
-        "startMs": 4324,
-        "endMs": 4416
+        "startMs": 4578,
+        "endMs": 4670
       },
       {
         "wordId": "p5-s2-w13",
-        "startMs": 4406,
-        "endMs": 4470
+        "startMs": 4660,
+        "endMs": 4724
       },
       {
         "wordId": "p5-s2-w14",
-        "startMs": 4460,
-        "endMs": 4847
+        "startMs": 4714,
+        "endMs": 5101
       },
       {
         "wordId": "p5-s2-w15",
-        "startMs": 4837,
-        "endMs": 5589
+        "startMs": 5091,
+        "endMs": 5813
       }
     ]
   },
@@ -2495,303 +2495,303 @@
       },
       {
         "wordId": "p5-s3-w6",
-        "startMs": 2107,
-        "endMs": 2394
+        "startMs": 2358,
+        "endMs": 2645
       },
       {
         "wordId": "p5-s3-w7",
-        "startMs": 2384,
-        "endMs": 2537
+        "startMs": 2635,
+        "endMs": 2788
       },
       {
         "wordId": "p5-s3-w8",
-        "startMs": 2527,
-        "endMs": 2706
+        "startMs": 2778,
+        "endMs": 2957
       },
       {
         "wordId": "p5-s3-w9",
-        "startMs": 2696,
-        "endMs": 3383
+        "startMs": 2947,
+        "endMs": 3634
       },
       {
         "wordId": "p5-s3-w10",
-        "startMs": 3547,
-        "endMs": 3958
+        "startMs": 3798,
+        "endMs": 4209
       },
       {
         "wordId": "p5-s3-w11",
-        "startMs": 3948,
-        "endMs": 4052
+        "startMs": 4199,
+        "endMs": 4303
       },
       {
         "wordId": "p5-s3-w12",
-        "startMs": 4042,
-        "endMs": 4336
+        "startMs": 4293,
+        "endMs": 4587
       },
       {
         "wordId": "p5-s3-w13",
-        "startMs": 4326,
-        "endMs": 4405
+        "startMs": 4577,
+        "endMs": 4656
       },
       {
         "wordId": "p5-s3-w14",
-        "startMs": 4395,
-        "endMs": 4473
+        "startMs": 4646,
+        "endMs": 4724
       },
       {
         "wordId": "p5-s3-w15",
-        "startMs": 4463,
-        "endMs": 4718
+        "startMs": 4714,
+        "endMs": 4969
       },
       {
         "wordId": "p5-s3-w16",
-        "startMs": 4708,
-        "endMs": 5441
+        "startMs": 5739,
+        "endMs": 6472
       },
       {
         "wordId": "p5-s3-w17",
-        "startMs": 5673,
-        "endMs": 6025
+        "startMs": 6704,
+        "endMs": 7056
       },
       {
         "wordId": "p5-s3-w18",
-        "startMs": 6015,
-        "endMs": 6150
+        "startMs": 7046,
+        "endMs": 7181
       },
       {
         "wordId": "p5-s3-w19",
-        "startMs": 6140,
-        "endMs": 6259
+        "startMs": 7171,
+        "endMs": 7290
       },
       {
         "wordId": "p5-s3-w20",
-        "startMs": 6249,
-        "endMs": 6944
+        "startMs": 7280,
+        "endMs": 7975
       },
       {
         "wordId": "p5-s3-w21",
-        "startMs": 7100,
-        "endMs": 7522
+        "startMs": 8131,
+        "endMs": 8553
       },
       {
         "wordId": "p5-s3-w22",
-        "startMs": 7512,
-        "endMs": 7800
-      },
-      {
-        "wordId": "p5-s3-w23",
-        "startMs": 7790,
-        "endMs": 7896
-      },
-      {
-        "wordId": "p5-s3-w24",
-        "startMs": 7886,
-        "endMs": 8084
-      },
-      {
-        "wordId": "p5-s3-w25",
-        "startMs": 8074,
-        "endMs": 8281
-      },
-      {
-        "wordId": "p5-s3-w26",
-        "startMs": 8271,
-        "endMs": 8383
-      },
-      {
-        "wordId": "p5-s3-w27",
-        "startMs": 8373,
-        "endMs": 8548
-      },
-      {
-        "wordId": "p5-s3-w28",
-        "startMs": 8538,
-        "endMs": 8763
-      },
-      {
-        "wordId": "p5-s3-w29",
-        "startMs": 8753,
+        "startMs": 8543,
         "endMs": 8831
       },
       {
-        "wordId": "p5-s3-w30",
+        "wordId": "p5-s3-w23",
         "startMs": 8821,
-        "endMs": 9173
+        "endMs": 8927
+      },
+      {
+        "wordId": "p5-s3-w24",
+        "startMs": 8917,
+        "endMs": 9115
+      },
+      {
+        "wordId": "p5-s3-w25",
+        "startMs": 9105,
+        "endMs": 9312
+      },
+      {
+        "wordId": "p5-s3-w26",
+        "startMs": 9302,
+        "endMs": 9414
+      },
+      {
+        "wordId": "p5-s3-w27",
+        "startMs": 9404,
+        "endMs": 9579
+      },
+      {
+        "wordId": "p5-s3-w28",
+        "startMs": 9569,
+        "endMs": 9794
+      },
+      {
+        "wordId": "p5-s3-w29",
+        "startMs": 9784,
+        "endMs": 9862
+      },
+      {
+        "wordId": "p5-s3-w30",
+        "startMs": 9852,
+        "endMs": 10204
       },
       {
         "wordId": "p5-s3-w31",
-        "startMs": 9163,
-        "endMs": 9267
+        "startMs": 10194,
+        "endMs": 10298
       },
       {
         "wordId": "p5-s3-w32",
-        "startMs": 9257,
-        "endMs": 9442
+        "startMs": 10288,
+        "endMs": 10473
       },
       {
         "wordId": "p5-s3-w33",
-        "startMs": 9432,
-        "endMs": 10152
+        "startMs": 10843,
+        "endMs": 11563
       },
       {
         "wordId": "p5-s3-w34",
-        "startMs": 10282,
-        "endMs": 10606
+        "startMs": 11803,
+        "endMs": 12127
       },
       {
         "wordId": "p5-s3-w35",
-        "startMs": 10596,
-        "endMs": 10719
+        "startMs": 12117,
+        "endMs": 12240
       },
       {
         "wordId": "p5-s3-w36",
-        "startMs": 10709,
-        "endMs": 10791
+        "startMs": 12230,
+        "endMs": 12312
       },
       {
         "wordId": "p5-s3-w37",
-        "startMs": 10781,
-        "endMs": 11235
+        "startMs": 12302,
+        "endMs": 12756
       },
       {
         "wordId": "p5-s3-w38",
-        "startMs": 11372,
-        "endMs": 11742
+        "startMs": 12893,
+        "endMs": 13263
       },
       {
         "wordId": "p5-s3-w39",
-        "startMs": 11732,
-        "endMs": 12022
+        "startMs": 13253,
+        "endMs": 13543
       },
       {
         "wordId": "p5-s3-w40",
-        "startMs": 12012,
-        "endMs": 12095
+        "startMs": 14173,
+        "endMs": 14256
       },
       {
         "wordId": "p5-s3-w41",
-        "startMs": 12085,
-        "endMs": 12394
+        "startMs": 14246,
+        "endMs": 14555
       },
       {
         "wordId": "p5-s3-w42",
-        "startMs": 12384,
-        "endMs": 12462
+        "startMs": 14545,
+        "endMs": 14623
       },
       {
         "wordId": "p5-s3-w43",
-        "startMs": 12452,
-        "endMs": 12508
+        "startMs": 14613,
+        "endMs": 14669
       },
       {
         "wordId": "p5-s3-w44",
-        "startMs": 12498,
-        "endMs": 13195
+        "startMs": 14659,
+        "endMs": 15356
       },
       {
         "wordId": "p5-s3-w45",
-        "startMs": 13334,
-        "endMs": 13461
+        "startMs": 15495,
+        "endMs": 15622
       },
       {
         "wordId": "p5-s3-w46",
-        "startMs": 13451,
-        "endMs": 13743
+        "startMs": 15892,
+        "endMs": 16184
       },
       {
         "wordId": "p5-s3-w47",
-        "startMs": 13889,
-        "endMs": 14299
+        "startMs": 16330,
+        "endMs": 16740
       },
       {
         "wordId": "p5-s3-w48",
-        "startMs": 14289,
-        "endMs": 14422
+        "startMs": 16730,
+        "endMs": 16863
       },
       {
         "wordId": "p5-s3-w49",
-        "startMs": 14412,
-        "endMs": 14977
+        "startMs": 16853,
+        "endMs": 17418
       },
       {
         "wordId": "p5-s3-w50",
-        "startMs": 15130,
-        "endMs": 15418
+        "startMs": 17571,
+        "endMs": 17859
       },
       {
         "wordId": "p5-s3-w51",
-        "startMs": 15408,
-        "endMs": 15598
+        "startMs": 17849,
+        "endMs": 18039
       },
       {
         "wordId": "p5-s3-w52",
-        "startMs": 15588,
-        "endMs": 15725
+        "startMs": 18029,
+        "endMs": 18166
       },
       {
         "wordId": "p5-s3-w53",
-        "startMs": 15715,
-        "endMs": 15806
+        "startMs": 18156,
+        "endMs": 18247
       },
       {
         "wordId": "p5-s3-w54",
-        "startMs": 15796,
-        "endMs": 16267
+        "startMs": 18237,
+        "endMs": 18708
       },
       {
         "wordId": "p5-s3-w55",
-        "startMs": 16257,
-        "endMs": 16347
+        "startMs": 18698,
+        "endMs": 18788
       },
       {
         "wordId": "p5-s3-w56",
-        "startMs": 16337,
-        "endMs": 16748
+        "startMs": 18778,
+        "endMs": 19189
       },
       {
         "wordId": "p5-s3-w57",
-        "startMs": 16738,
-        "endMs": 16854
+        "startMs": 19179,
+        "endMs": 19295
       },
       {
         "wordId": "p5-s3-w58",
-        "startMs": 16844,
-        "endMs": 17242
+        "startMs": 19285,
+        "endMs": 19683
       },
       {
         "wordId": "p5-s3-w59",
-        "startMs": 17232,
-        "endMs": 17350
+        "startMs": 19673,
+        "endMs": 19791
       },
       {
         "wordId": "p5-s3-w60",
-        "startMs": 17340,
-        "endMs": 17764
+        "startMs": 19781,
+        "endMs": 20205
       },
       {
         "wordId": "p5-s3-w61",
-        "startMs": 17754,
-        "endMs": 17951
+        "startMs": 20195,
+        "endMs": 20392
       },
       {
         "wordId": "p5-s3-w62",
-        "startMs": 17941,
-        "endMs": 18029
+        "startMs": 20382,
+        "endMs": 20470
       },
       {
         "wordId": "p5-s3-w63",
-        "startMs": 18019,
-        "endMs": 18557
+        "startMs": 20460,
+        "endMs": 20576
       },
       {
         "wordId": "p5-s3-w64",
-        "startMs": 18547,
-        "endMs": 18935
+        "startMs": 20576,
+        "endMs": 20576
       },
       {
         "wordId": "p5-s3-w65",
-        "startMs": 18925,
-        "endMs": 19617
+        "startMs": 20576,
+        "endMs": 20576
       }
     ]
   },
@@ -2841,128 +2841,128 @@
       },
       {
         "wordId": "p6-s1-w9",
-        "startMs": 3150,
-        "endMs": 3478
+        "startMs": 3417,
+        "endMs": 3745
       },
       {
         "wordId": "p6-s1-w10",
-        "startMs": 3468,
-        "endMs": 3534
+        "startMs": 3735,
+        "endMs": 3801
       },
       {
         "wordId": "p6-s1-w11",
-        "startMs": 3524,
-        "endMs": 3996
+        "startMs": 3791,
+        "endMs": 4263
       },
       {
         "wordId": "p6-s1-w12",
-        "startMs": 3986,
-        "endMs": 4120
+        "startMs": 4253,
+        "endMs": 4387
       },
       {
         "wordId": "p6-s1-w13",
-        "startMs": 4110,
-        "endMs": 4186
+        "startMs": 4377,
+        "endMs": 4453
       },
       {
         "wordId": "p6-s1-w14",
-        "startMs": 4176,
-        "endMs": 4292
+        "startMs": 4443,
+        "endMs": 4559
       },
       {
         "wordId": "p6-s1-w15",
-        "startMs": 4282,
-        "endMs": 4873
+        "startMs": 5049,
+        "endMs": 5640
       },
       {
         "wordId": "p6-s1-w16",
-        "startMs": 5018,
-        "endMs": 5283
+        "startMs": 5785,
+        "endMs": 6050
       },
       {
         "wordId": "p6-s1-w17",
-        "startMs": 5273,
-        "endMs": 5368
+        "startMs": 6040,
+        "endMs": 6135
       },
       {
         "wordId": "p6-s1-w18",
-        "startMs": 5358,
-        "endMs": 5607
+        "startMs": 6125,
+        "endMs": 6374
       },
       {
         "wordId": "p6-s1-w19",
-        "startMs": 5597,
-        "endMs": 5732
+        "startMs": 6364,
+        "endMs": 6499
       },
       {
         "wordId": "p6-s1-w20",
-        "startMs": 5722,
-        "endMs": 6142
+        "startMs": 6489,
+        "endMs": 6909
       },
       {
         "wordId": "p6-s1-w21",
-        "startMs": 6132,
-        "endMs": 6376
+        "startMs": 6899,
+        "endMs": 7143
       },
       {
         "wordId": "p6-s1-w22",
-        "startMs": 6501,
-        "endMs": 6781
+        "startMs": 7268,
+        "endMs": 7548
       },
       {
         "wordId": "p6-s1-w23",
-        "startMs": 6771,
-        "endMs": 6880
+        "startMs": 7538,
+        "endMs": 7647
       },
       {
         "wordId": "p6-s1-w24",
-        "startMs": 6870,
-        "endMs": 7157
+        "startMs": 7637,
+        "endMs": 7924
       },
       {
         "wordId": "p6-s1-w25",
-        "startMs": 7147,
-        "endMs": 7340
+        "startMs": 7914,
+        "endMs": 8107
       },
       {
         "wordId": "p6-s1-w26",
-        "startMs": 7330,
-        "endMs": 8031
+        "startMs": 8437,
+        "endMs": 9138
       },
       {
         "wordId": "p6-s1-w27",
-        "startMs": 8183,
-        "endMs": 8565
+        "startMs": 9290,
+        "endMs": 9672
       },
       {
         "wordId": "p6-s1-w28",
-        "startMs": 8555,
-        "endMs": 8720
+        "startMs": 9662,
+        "endMs": 9827
       },
       {
         "wordId": "p6-s1-w29",
-        "startMs": 8710,
-        "endMs": 9062
+        "startMs": 9817,
+        "endMs": 10169
       },
       {
         "wordId": "p6-s1-w30",
-        "startMs": 9052,
-        "endMs": 9157
+        "startMs": 10159,
+        "endMs": 10264
       },
       {
         "wordId": "p6-s1-w31",
-        "startMs": 9147,
-        "endMs": 9224
+        "startMs": 10254,
+        "endMs": 10331
       },
       {
         "wordId": "p6-s1-w32",
-        "startMs": 9214,
-        "endMs": 9595
+        "startMs": 10321,
+        "endMs": 10702
       },
       {
         "wordId": "p6-s1-w33",
-        "startMs": 9585,
-        "endMs": 10551
+        "startMs": 10692,
+        "endMs": 11023
       }
     ]
   },
@@ -2987,158 +2987,158 @@
       },
       {
         "wordId": "p6-s2-w4",
-        "startMs": 2045,
-        "endMs": 2179
+        "startMs": 2443,
+        "endMs": 2577
       },
       {
         "wordId": "p6-s2-w5",
-        "startMs": 2169,
-        "endMs": 2622
+        "startMs": 2567,
+        "endMs": 3020
       },
       {
         "wordId": "p6-s2-w6",
-        "startMs": 2612,
-        "endMs": 2927
+        "startMs": 3010,
+        "endMs": 3325
       },
       {
         "wordId": "p6-s2-w7",
-        "startMs": 2917,
-        "endMs": 3293
+        "startMs": 3315,
+        "endMs": 3691
       },
       {
         "wordId": "p6-s2-w8",
-        "startMs": 3283,
-        "endMs": 3439
+        "startMs": 3681,
+        "endMs": 3837
       },
       {
         "wordId": "p6-s2-w9",
-        "startMs": 3429,
-        "endMs": 3737
+        "startMs": 3827,
+        "endMs": 4135
       },
       {
         "wordId": "p6-s2-w10",
-        "startMs": 3727,
-        "endMs": 4303
+        "startMs": 4125,
+        "endMs": 4701
       },
       {
         "wordId": "p6-s2-w11",
-        "startMs": 4293,
-        "endMs": 4464
+        "startMs": 5251,
+        "endMs": 5422
       },
       {
         "wordId": "p6-s2-w12",
-        "startMs": 4454,
-        "endMs": 5090
+        "startMs": 5412,
+        "endMs": 6048
       },
       {
         "wordId": "p6-s2-w13",
-        "startMs": 5251,
-        "endMs": 5384
+        "startMs": 6209,
+        "endMs": 6342
       },
       {
         "wordId": "p6-s2-w14",
-        "startMs": 5374,
-        "endMs": 5505
+        "startMs": 6332,
+        "endMs": 6463
       },
       {
         "wordId": "p6-s2-w15",
-        "startMs": 5495,
-        "endMs": 5616
+        "startMs": 6453,
+        "endMs": 6574
       },
       {
         "wordId": "p6-s2-w16",
-        "startMs": 5606,
-        "endMs": 5676
+        "startMs": 6564,
+        "endMs": 6634
       },
       {
         "wordId": "p6-s2-w17",
-        "startMs": 5666,
-        "endMs": 5956
+        "startMs": 6624,
+        "endMs": 6914
       },
       {
         "wordId": "p6-s2-w18",
-        "startMs": 5946,
-        "endMs": 6054
+        "startMs": 6904,
+        "endMs": 7012
       },
       {
         "wordId": "p6-s2-w19",
-        "startMs": 6044,
-        "endMs": 6481
+        "startMs": 7002,
+        "endMs": 7439
       },
       {
         "wordId": "p6-s2-w20",
-        "startMs": 6471,
-        "endMs": 6636
+        "startMs": 7429,
+        "endMs": 7594
       },
       {
         "wordId": "p6-s2-w21",
-        "startMs": 6626,
-        "endMs": 6757
+        "startMs": 7584,
+        "endMs": 7715
       },
       {
         "wordId": "p6-s2-w22",
-        "startMs": 6747,
-        "endMs": 7320
+        "startMs": 7705,
+        "endMs": 8278
       },
       {
         "wordId": "p6-s2-w23",
-        "startMs": 7310,
-        "endMs": 7663
+        "startMs": 8268,
+        "endMs": 8621
       },
       {
         "wordId": "p6-s2-w24",
-        "startMs": 7653,
-        "endMs": 7923
+        "startMs": 8611,
+        "endMs": 8881
       },
       {
         "wordId": "p6-s2-w25",
-        "startMs": 7913,
-        "endMs": 8307
+        "startMs": 8871,
+        "endMs": 9265
       },
       {
         "wordId": "p6-s2-w26",
-        "startMs": 8297,
-        "endMs": 8496
+        "startMs": 9255,
+        "endMs": 9454
       },
       {
         "wordId": "p6-s2-w27",
-        "startMs": 8486,
-        "endMs": 8673
+        "startMs": 9444,
+        "endMs": 9631
       },
       {
         "wordId": "p6-s2-w28",
-        "startMs": 8663,
-        "endMs": 8826
+        "startMs": 9621,
+        "endMs": 9784
       },
       {
         "wordId": "p6-s2-w29",
-        "startMs": 8816,
-        "endMs": 9165
+        "startMs": 9774,
+        "endMs": 10123
       },
       {
         "wordId": "p6-s2-w30",
-        "startMs": 9155,
-        "endMs": 9481
+        "startMs": 10113,
+        "endMs": 10439
       },
       {
         "wordId": "p6-s2-w31",
-        "startMs": 9471,
-        "endMs": 9977
+        "startMs": 10429,
+        "endMs": 10935
       },
       {
         "wordId": "p6-s2-w32",
-        "startMs": 9967,
-        "endMs": 10122
+        "startMs": 10925,
+        "endMs": 11080
       },
       {
         "wordId": "p6-s2-w33",
-        "startMs": 10112,
-        "endMs": 10194
+        "startMs": 11070,
+        "endMs": 11152
       },
       {
         "wordId": "p6-s2-w34",
-        "startMs": 10184,
-        "endMs": 11134
+        "startMs": 11142,
+        "endMs": 11290
       }
     ]
   },

@@ -383,7 +383,7 @@ export function createNarrationController(overrides: Partial<NarrationController
     maybeFireMotif(firstWordId)
 
     const audio = deps.createAudio()
-    audio.src = entry.audioUrl
+    audio.src = resolveAudioSrc(entry.audioUrl)
 
     const advanceToNextSentence = () => {
       if (myEpoch !== state.epoch) return
@@ -587,6 +587,32 @@ export function createNarrationController(overrides: Partial<NarrationController
   attachVisibilityListener()
 
   return { loadPassage, play, pause, seekToSentence, destroy }
+}
+
+// ---------------------------------------------------------------------------
+// In-memory narration audio (blob URLs), registered by the loading screen.
+//
+// Why: <audio> elements STREAM their src, so a network-served WAV can fire
+// `waiting`/`stalled` mid-sentence and pause the voice -- observed on the
+// passage's longest sentence (p5-s3, ~1MB, 20.6s), whose fetch-at-play
+// stalled at currentTime 0. The loading screen already downloads every WAV;
+// keeping the bytes as object URLs means playback never touches the
+// network (an HTTP-cache warm-up is not a guarantee: <audio> range requests
+// don't reliably reuse it). Falls back to the plain URL for any sentence
+// the loading screen couldn't fetch -- same graceful degradation as ever.
+// ---------------------------------------------------------------------------
+
+const audioObjectUrls = new Map<string, string>()
+
+/** Replaces the registered set (revoking the previous book's object URLs). */
+export function registerNarrationAudio(urls: ReadonlyMap<string, string>): void {
+  for (const objectUrl of audioObjectUrls.values()) URL.revokeObjectURL(objectUrl)
+  audioObjectUrls.clear()
+  for (const [audioUrl, objectUrl] of urls) audioObjectUrls.set(audioUrl, objectUrl)
+}
+
+function resolveAudioSrc(audioUrl: string): string {
+  return audioObjectUrls.get(audioUrl) ?? audioUrl
 }
 
 // ---------------------------------------------------------------------------

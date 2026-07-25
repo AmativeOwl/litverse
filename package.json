@@ -13,6 +13,7 @@
     "test": "vitest run --passWithNoTests",
     "generate:beats": "tsx scripts/generate-scene-beats.ts",
     "generate:narration": "tsx scripts/generate-narration-audio.ts",
+    "calibrate:narration": "tsx scripts/calibrate-narration-timings.ts",
     "generate:plates": "tsx scripts/generate-plate-specs.ts"
   },
   "dependencies": {
