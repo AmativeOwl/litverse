@@ -23,6 +23,8 @@ export interface LibraryEntry {
   tagline: string
   /** The text's own first sentence, quoted on the card. */
   openingLine: string
+  /** Bookcase shelf this text sits on (display grouping, e.g. "The Jazz Age"). */
+  category: string
   passage: Passage
   /** This scene's compiled mood beats (palettes/lighting/camera per SceneBeat id). */
   beats: readonly SceneBeat[]
@@ -38,6 +40,7 @@ export const LIBRARY: readonly LibraryEntry[] = [
     chapter: 'Chapter III',
     tagline: 'The party at West Egg',
     openingLine: 'There was music from my neighbour’s house through the summer nights.',
+    category: 'The Jazz Age',
     passage: gatsbyCh3,
     beats: sceneBeatsData as SceneBeat[],
     plateSet: GATSBY_PLATES,
@@ -49,6 +52,7 @@ export const LIBRARY: readonly LibraryEntry[] = [
     chapter: 'The Imperial Suite',
     tagline: 'Prince Prospero’s masked ball',
     openingLine: 'It was a voluptuous scene, that masquerade.',
+    category: 'Gothic & Macabre',
     passage: masqueRedDeath,
     beats: MASQUE_BEATS,
     plateSet: MASQUE_PLATES,

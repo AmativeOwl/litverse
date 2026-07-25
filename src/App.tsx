@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from 'react'
+import BookcasePage from './components/BookcasePage'
 import CaptionBar from './components/CaptionBar'
 import LandingPage from './components/LandingPage'
 import LoadingScreen from './components/LoadingScreen'
 import TextPane from './components/TextPane'
 import WorldScene from './components/WorldScene'
-import type { LibraryEntry } from './data/library'
+import { LIBRARY, type LibraryEntry } from './data/library'
 import { destroy, loadPassage } from './lib/narrationController'
 
 /**
- * Three stages (see CLAUDE.md "Reading compiler + landing page", Phase A):
- * landing (pick a compiled text from the library) -> loading (honest
+ * Stages (see CLAUDE.md "Reading compiler + landing page", Phase A):
+ * bookcase (the home -- shelves by category) -> either straight into a
+ * book, or "full programme" -> the title-card carousel -> loading (honest
  * prefetch of the pre-compiled narration assets) -> reading (the two-pane
  * experience). No router -- a single state machine is all this needs.
  *
@@ -21,12 +23,13 @@ import { destroy, loadPassage } from './lib/narrationController'
  * and narration all carry across the toggle untouched.
  */
 type Stage =
-  | { phase: 'landing' }
+  | { phase: 'bookcase' }
+  | { phase: 'carousel' }
   | { phase: 'loading'; entry: LibraryEntry }
   | { phase: 'reading'; entry: LibraryEntry }
 
 function App() {
-  const [stage, setStage] = useState<Stage>({ phase: 'landing' })
+  const [stage, setStage] = useState<Stage>({ phase: 'bookcase' })
   const [cinema, setCinema] = useState(false)
 
   // Register the passage with the narration controller only once the reader
@@ -60,8 +63,42 @@ function App() {
     setStage((current) => (current.phase === 'loading' ? { phase: 'reading', entry: current.entry } : current))
   }, [])
 
-  if (stage.phase === 'landing') {
-    return <LandingPage onSelect={handleSelect} />
+  const backToBookcase = useCallback(() => setStage({ phase: 'bookcase' }), [])
+
+  // Esc returns from the carousel to the bookcase.
+  const inCarousel = stage.phase === 'carousel'
+  useEffect(() => {
+    if (!inCarousel) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') backToBookcase()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [inCarousel, backToBookcase])
+
+  if (stage.phase === 'bookcase') {
+    return (
+      <BookcasePage
+        entries={LIBRARY}
+        onSelect={handleSelect}
+        onSeeAll={() => setStage({ phase: 'carousel' })}
+      />
+    )
+  }
+  if (stage.phase === 'carousel') {
+    return (
+      // LandingPage untouched: the return-to-bookcase control overlays it.
+      <div className="relative">
+        <LandingPage onSelect={handleSelect} />
+        <button
+          type="button"
+          onClick={backToBookcase}
+          className="fixed left-4 top-4 z-50 border border-[#a8802c]/60 bg-[#efe4c9]/85 px-3 py-1.5 text-[0.65rem] uppercase tracking-[0.25em] text-[#22304f] backdrop-blur-sm transition-colors hover:bg-[#22304f] hover:text-[#efe4c9]"
+        >
+          ← The library
+        </button>
+      </div>
+    )
   }
   if (stage.phase === 'loading') {
     return <LoadingScreen entry={stage.entry} onReady={handleReady} />
