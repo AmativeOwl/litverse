@@ -16,6 +16,8 @@ const STYLE_CHOICES: { id: StylePackId; name: string; blurb: string; swatches: [
   { id: 'deco', name: 'Deco · Jazz Age', blurb: 'Gold rules, sunbursts, poster caps', swatches: ['#efe4c9', '#22304f', '#a8802c'] },
   { id: 'gothic', name: 'Gothic · Memento Mori', blurb: 'Scarlet on ebony, candlelight', swatches: ['#0b0609', '#c1121f', '#b08d57'] },
   { id: 'storybook', name: 'Storybook & Whimsy', blurb: 'Wobbly ink, scallops, rose & leaf', swatches: ['#fdf6e3', '#c56a7e', '#8aa86b'] },
+  { id: 'victorian', name: 'Victorian Engraving', blurb: 'Cross-hatch, oval vignettes, brass', swatches: ['#f2ecdd', '#2b2620', '#9a7b3c'] },
+  { id: 'water', name: 'Water', blurb: 'Ripple rings, wave crests, still mist', swatches: ['#eaf1f2', '#4a8f9f', '#16323e'] },
 ]
 
 /**
