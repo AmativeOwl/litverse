@@ -484,6 +484,318 @@ const STORYBOOK_PAINTER: CardPainter = {
 const paintStorybookCard = makePackPaint(STORYBOOK_PAINTER)
 
 // ---------------------------------------------------------------------------
+// Victorian Engraving / Brass Adventure pack -- per the style-packs concept
+// board: the frontispiece of an 1870s printing; cross-hatched seas, an oval
+// vignette, stacked title-page typography with rules between the lines.
+// ---------------------------------------------------------------------------
+
+const VC_IVORY = '#f2ecdd'
+const VC_INK = '#2b2620'
+const VC_BRASS = '#9a7b3c'
+const VC_OXBLOOD = '#6e2f2a'
+
+/** Clipped parallel-line hatching -- the engraver's tonal system. */
+function hatchRegion(
+  ctx: CanvasRenderingContext2D,
+  clip: () => void,
+  w: number,
+  h: number,
+  spacing: number,
+  angle: number,
+  alpha: number,
+): void {
+  ctx.save()
+  clip()
+  ctx.clip()
+  ctx.globalAlpha = alpha
+  ctx.strokeStyle = VC_INK
+  ctx.lineWidth = 1.1
+  ctx.translate(w / 2, h / 2)
+  ctx.rotate(angle)
+  const span = Math.max(w, h) * 1.5
+  for (let d = -span; d < span; d += spacing) {
+    ctx.beginPath()
+    ctx.moveTo(-span, d)
+    ctx.lineTo(span, d)
+    ctx.stroke()
+  }
+  ctx.restore()
+}
+
+const VICTORIAN_PAINTER: CardPainter = {
+  safeArea: (w, h) => {
+    const m = Math.min(w, h) * 0.04
+    const inset = m * 1.8 + 2 // outer + inner stacked rules
+    return { x: inset, y: inset, w: w - 2 * inset, h: h - 2 * inset }
+  },
+
+  ground: (ctx, w, h, t) => {
+    ctx.fillStyle = VC_IVORY
+    ctx.fillRect(0, 0, w, h)
+    // plate-ink flecks, re-rolled per ~12fps tick -- the paper of an old
+    // impression, not pristine stock
+    const tick = Math.floor(t * 12)
+    ctx.fillStyle = 'rgba(43,38,32,0.05)'
+    for (let i = 0; i < 90; i++) {
+      const n1 = Math.sin((tick * 67 + i) * 12.9898) * 43758.5453
+      const n2 = Math.sin((tick * 29 + i) * 78.233) * 24634.6345
+      ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.4, 1.4)
+    }
+  },
+
+  subjects: (ctx, safe, w, _h, t) => {
+    // the oval engraved vignette, low center (the type column sits above)
+    const vcx = w / 2
+    const vcy = safe.y + safe.h * 0.72
+    const vrx = Math.min(safe.w * 0.32, safe.h * 0.62)
+    const vry = vrx * 0.48
+    const ovalClip = () => {
+      ctx.beginPath()
+      ctx.ellipse(vcx, vcy, vrx, vry, 0, 0, Math.PI * 2)
+    }
+    // hatched sea at three angles, denser toward the bottom strata
+    hatchRegion(ctx, ovalClip, w, _h, 9, 0.06, 0.5)
+    hatchRegion(
+      ctx,
+      () => {
+        ctx.beginPath()
+        ctx.ellipse(vcx, vcy + vry * 0.35, vrx, vry * 0.75, 0, 0, Math.PI * 2)
+      },
+      w,
+      _h,
+      6.5,
+      -0.18,
+      0.4,
+    )
+    hatchRegion(
+      ctx,
+      () => {
+        ctx.beginPath()
+        ctx.ellipse(vcx, vcy + vry * 0.6, vrx, vry * 0.5, 0, 0, Math.PI * 2)
+      },
+      w,
+      _h,
+      4.5,
+      0.3,
+      0.42,
+    )
+
+    // light shaft from the upper left -- erases hatching like a burnisher
+    ctx.save()
+    ovalClip()
+    ctx.clip()
+    const shaft = ctx.createLinearGradient(vcx - vrx * 0.2, vcy - vry, vcx + vrx * 0.5, vcy + vry)
+    shaft.addColorStop(0, 'rgba(242,236,221,0.85)')
+    shaft.addColorStop(0.45, 'rgba(242,236,221,0.12)')
+    shaft.addColorStop(1, 'rgba(242,236,221,0)')
+    ctx.fillStyle = shaft
+    ctx.beginPath()
+    ctx.moveTo(vcx - vrx * 0.3, vcy - vry)
+    ctx.lineTo(vcx + vrx * 0.55, vcy + vry)
+    ctx.lineTo(vcx + vrx * 0.05, vcy + vry)
+    ctx.lineTo(vcx - vrx * 0.75, vcy - vry)
+    ctx.closePath()
+    ctx.fill()
+
+    // the Nautilus, riding a gentle vertical bob
+    const bob = Math.sin(t * 0.6) * 3
+    ctx.fillStyle = VC_INK
+    ctx.beginPath()
+    ctx.ellipse(vcx - vrx * 0.08, vcy + bob * 0.4, vrx * 0.52, vry * 0.24, -0.03, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.beginPath()
+    ctx.moveTo(vcx + vrx * 0.42, vcy - vry * 0.02 + bob * 0.4)
+    ctx.lineTo(vcx + vrx * 0.68, vcy - vry * 0.16 + bob * 0.4)
+    ctx.lineTo(vcx + vrx * 0.42, vcy + vry * 0.12 + bob * 0.4)
+    ctx.closePath()
+    ctx.fill()
+    ctx.fillRect(vcx - vrx * 0.3, vcy - vry * 0.34 + bob * 0.4, vrx * 0.22, vry * 0.22)
+    // brass portholes
+    ctx.fillStyle = VC_BRASS
+    for (const px of [-0.32, -0.16, 0.0, 0.16]) {
+      ctx.beginPath()
+      ctx.arc(vcx + vrx * px, vcy + bob * 0.4, 3, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    // occasional bubbles rising from the prow
+    ctx.fillStyle = 'rgba(242,236,221,0.7)'
+    for (let b = 0; b < 5; b++) {
+      const cycle = (t * 0.12 + b * 0.2) % 1
+      const bx = vcx + vrx * (0.5 + b * 0.05) + Math.sin(t + b) * 3
+      const by = vcy - vry * 0.1 - cycle * vry * 0.9
+      ctx.beginPath()
+      ctx.arc(bx, by, 1.6 + (b % 3) * 0.7, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    ctx.restore()
+
+    // oval plate line
+    ovalClip()
+    ctx.strokeStyle = VC_INK
+    ctx.lineWidth = 2.2
+    ctx.stroke()
+  },
+
+  frame: (ctx, w, h) => {
+    // stacked title-page rules + small brass corner squares
+    const m = Math.min(w, h) * 0.04
+    ctx.strokeStyle = VC_INK
+    ctx.lineWidth = 3
+    ctx.strokeRect(m, m, w - 2 * m, h - 2 * m)
+    ctx.lineWidth = 1
+    ctx.strokeRect(m * 1.8, m * 1.8, w - 3.6 * m, h - 3.6 * m)
+    ctx.fillStyle = VC_BRASS
+    const s = 7
+    for (const [px, py] of [
+      [m, m],
+      [w - m, m],
+      [w - m, h - m],
+      [m, h - m],
+    ] as const) {
+      ctx.fillRect(px - s / 2, py - s / 2, s, s)
+    }
+  },
+}
+
+const paintVictorianCard = makePackPaint(VICTORIAN_PAINTER)
+
+// ---------------------------------------------------------------------------
+// Water pack -- an original quiet vocabulary (Tsushima and any watery text):
+// ripple rings spreading from drop points, wave crests, a moon's broken
+// reflection. Stillness is the composition; nothing shouts.
+// ---------------------------------------------------------------------------
+
+const WT_MIST = '#eaf1f2'
+const WT_SILVER = '#c9d8da'
+const WT_INK = '#16323e'
+const WT_TEAL = '#4a8f9f'
+const WT_MOON = '#e8e2cf'
+
+const WATER_PAINTER: CardPainter = {
+  safeArea: (w, h) => {
+    const m = Math.min(w, h) * 0.05
+    const inset = m * 1.6
+    return { x: inset, y: inset, w: w - 2 * inset, h: h - 2 * inset }
+  },
+
+  ground: (ctx, w, h, t) => {
+    ctx.fillStyle = WT_MIST
+    ctx.fillRect(0, 0, w, h)
+    // silver deepening toward the waterline -- the card's material
+    const grad = ctx.createLinearGradient(0, h * 0.5, 0, h)
+    grad.addColorStop(0, 'rgba(201,216,218,0)')
+    grad.addColorStop(1, 'rgba(201,216,218,0.5)')
+    ctx.fillStyle = grad
+    ctx.fillRect(0, 0, w, h)
+    // very sparse silver grain, re-rolled per ~12fps tick
+    const tick = Math.floor(t * 12)
+    ctx.fillStyle = 'rgba(22,50,62,0.04)'
+    for (let i = 0; i < 50; i++) {
+      const n1 = Math.sin((tick * 53 + i) * 12.9898) * 43758.5453
+      const n2 = Math.sin((tick * 31 + i) * 78.233) * 24634.6345
+      ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.4, 1.4)
+    }
+  },
+
+  subjects: (ctx, safe, _w, _h, t) => {
+    // three staggered drop points; each cycles drop-fall -> ripple-spread
+    const points: ReadonlyArray<readonly [number, number, number, number]> = [
+      // [x frac, y frac (of safe), max ring radius, phase offset]
+      [0.3, 0.62, safe.w * 0.09, 0],
+      [0.62, 0.72, safe.w * 0.075, 0.37],
+      [0.45, 0.5, safe.w * 0.055, 0.7],
+    ]
+    const PERIOD = 7 // seconds per drop-and-ripple cycle -- unhurried
+    for (const [fx, fy, maxR, offset] of points) {
+      const cx = safe.x + safe.w * fx
+      const cy = safe.y + safe.h * fy
+      const cycle = ((t / PERIOD + offset) % 1 + 1) % 1
+      // the drop: first fifth of the cycle, falling toward the surface
+      if (cycle < 0.2) {
+        const fall = cycle / 0.2
+        ctx.fillStyle = WT_TEAL
+        ctx.beginPath()
+        ctx.arc(cx, cy - (1 - fall) * safe.h * 0.3, 3.2, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      // the rings: three staggered expansions after the landing
+      ctx.strokeStyle = WT_INK
+      for (let k = 0; k < 3; k++) {
+        const ringPhase = cycle - 0.2 - k * 0.12
+        if (ringPhase <= 0 || ringPhase > 0.6) continue
+        const p = ringPhase / 0.6
+        ctx.globalAlpha = (1 - p) * 0.5
+        ctx.lineWidth = 1.3
+        ctx.beginPath()
+        ctx.ellipse(cx, cy, maxR * p + 2, (maxR * p + 2) * 0.36, 0, 0, Math.PI * 2)
+        ctx.stroke()
+      }
+      ctx.globalAlpha = 1
+    }
+
+    // the moon, upper right, with a shimmering broken reflection
+    const moonX = safe.x + safe.w * 0.72
+    const moonY = safe.y + safe.h * 0.16
+    const moonR = Math.min(safe.w, safe.h) * 0.07
+    ctx.fillStyle = WT_MOON
+    ctx.beginPath()
+    ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.strokeStyle = WT_SILVER
+    ctx.lineWidth = 1
+    ctx.stroke()
+    ctx.strokeStyle = WT_MOON
+    ctx.lineWidth = 4
+    for (let seg = 0; seg < 6; seg++) {
+      const sy = moonY + moonR + 12 + seg * 16
+      if (sy > safe.y + safe.h * 0.95) break
+      const off = Math.sin(t * 0.8 + seg * 1.9) * 4
+      ctx.globalAlpha = 0.55 - seg * 0.07
+      ctx.beginPath()
+      ctx.moveTo(moonX + off, sy)
+      ctx.lineTo(moonX + off, sy + 8)
+      ctx.stroke()
+    }
+    ctx.globalAlpha = 1
+
+    // wave crest lines along the bottom, drifting very slowly
+    ctx.strokeStyle = WT_TEAL
+    ctx.globalAlpha = 0.35
+    ctx.lineWidth = 1.4
+    for (let i = 0; i < 4; i++) {
+      const y = safe.y + safe.h * (0.84 + i * 0.045)
+      const drift = t * 2.5 * (i % 2 === 0 ? 1 : -0.7)
+      ctx.beginPath()
+      for (let x = safe.x; x <= safe.x + safe.w; x += 4) {
+        const yy = y + Math.sin((x + drift) / 26 + i * 1.7) * 2.4
+        if (x === safe.x) ctx.moveTo(x, yy)
+        else ctx.lineTo(x, yy)
+      }
+      ctx.stroke()
+    }
+    ctx.globalAlpha = 1
+  },
+
+  frame: (ctx, w, h) => {
+    // two thin wavy teal rules, top and bottom -- the water's own edges
+    const m = Math.min(w, h) * 0.05
+    ctx.strokeStyle = WT_TEAL
+    ctx.lineWidth = 2.5
+    for (const y of [m, h - m]) {
+      ctx.beginPath()
+      for (let x = 0; x <= w; x += 4) {
+        const yy = y + Math.sin((x / w) * Math.PI * 10) * m * 0.3
+        if (x === 0) ctx.moveTo(x, yy)
+        else ctx.lineTo(x, yy)
+      }
+      ctx.stroke()
+    }
+  },
+}
+
+const paintWaterCard = makePackPaint(WATER_PAINTER)
+
+// ---------------------------------------------------------------------------
 // The style-pack registry, keyed by LibraryEntry.stylePackId
 // ---------------------------------------------------------------------------
 
@@ -494,6 +806,10 @@ interface StylePack {
   /** CSS font shorthand pieces for the bill's display face (the packs differ: deco poster caps vs storybook italic serif). */
   titleFontFamily: string
   titleItalic?: boolean
+  /** Whether the title sets in caps. Defaults to the pre-existing rule (uppercase unless italic) so older packs are untouched. */
+  titleUppercase?: boolean
+  /** Optional letterspacing for the title (e.g. the water pack's quiet wide tracking). */
+  titleTracking?: string
   kicker: string
   title: string
   titleShadow: string
@@ -563,10 +879,50 @@ const STORYBOOK_PACK: StylePack = {
   buttonShadow: SB_LEAF,
 }
 
+const VICTORIAN_PACK: StylePack = {
+  paint: paintVictorianCard,
+  bg: VC_IVORY,
+  titleFontFamily: "'Bodoni MT', Didot, 'Playfair Display', Georgia, serif",
+  kicker: VC_BRASS,
+  title: VC_INK,
+  titleShadow: '2px 2px 0 rgba(154,123,60,0.3)',
+  rule: VC_BRASS,
+  author: '#6d6455',
+  meta: '#6d6455',
+  quote: '#4a4438',
+  buttonBg: VC_OXBLOOD,
+  buttonBorder: VC_OXBLOOD,
+  buttonInk: VC_IVORY,
+  buttonHoverInk: VC_OXBLOOD,
+  buttonShadow: VC_BRASS,
+}
+
+const WATER_PACK: StylePack = {
+  paint: paintWaterCard,
+  bg: WT_MIST,
+  titleFontFamily: 'Georgia, serif',
+  titleUppercase: false,
+  titleTracking: '0.12em',
+  kicker: WT_TEAL,
+  title: WT_INK,
+  titleShadow: '1px 1px 0 rgba(74,143,159,0.25)',
+  rule: WT_TEAL,
+  author: '#6b7f85',
+  meta: '#6b7f85',
+  quote: '#3d5259',
+  buttonBg: WT_INK,
+  buttonBorder: WT_INK,
+  buttonInk: WT_MIST,
+  buttonHoverInk: WT_INK,
+  buttonShadow: WT_TEAL,
+}
+
 const PACKS: Record<StylePackId, StylePack> = {
   deco: DECO_PACK,
   gothic: GOTHIC_PACK,
   storybook: STORYBOOK_PACK,
+  victorian: VICTORIAN_PACK,
+  water: WATER_PACK,
 }
 
 function packFor(entry: LibraryEntry): StylePack {
@@ -710,8 +1066,15 @@ export default function LandingPage({ entries = LIBRARY, onSelect, onExit }: Lan
 
           <section className="mt-6 flex flex-col items-center">
             <h1
-              className={`max-w-3xl text-5xl leading-tight sm:text-6xl ${pack.titleItalic ? 'italic' : 'uppercase'}`}
-              style={{ fontFamily: pack.titleFontFamily, color: pack.title, textShadow: pack.titleShadow }}
+              className={`max-w-3xl text-5xl leading-tight sm:text-6xl ${pack.titleItalic ? 'italic' : ''} ${
+                (pack.titleUppercase ?? !pack.titleItalic) ? 'uppercase' : ''
+              }`}
+              style={{
+                fontFamily: pack.titleFontFamily,
+                color: pack.title,
+                textShadow: pack.titleShadow,
+                letterSpacing: pack.titleTracking,
+              }}
             >
               {entry.title}
             </h1>

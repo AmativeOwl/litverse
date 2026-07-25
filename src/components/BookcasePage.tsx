@@ -334,10 +334,316 @@ function paintStorybookCover(ctx: CanvasRenderingContext2D, w: number, h: number
   drawBounceTitle(ctx, w, entry, h * 0.72, Math.round(w * 0.092))
 }
 
+// --- Victorian Engraving / Brass Adventure (per the style-packs concept
+// board: 1870s frontispiece -- cross-hatched sea, oval vignette, stacked
+// title-page rules, Didone caps)
+const VC_IVORY = '#f2ecdd'
+const VC_INK = '#2b2620'
+const VC_BRASS = '#9a7b3c'
+const VC_OXBLOOD = '#6e2f2a'
+const VICTORIAN_TITLE_FONT = "'Bodoni MT', Didot, 'Playfair Display', Georgia, serif"
+
+/** Clipped parallel-line hatching -- the engraver's shading, denser where the spacing is tighter. */
+function hatchClipped(
+  ctx: CanvasRenderingContext2D,
+  clip: () => void,
+  w: number,
+  h: number,
+  spacing: number,
+  angle: number,
+  alpha: number,
+): void {
+  ctx.save()
+  clip()
+  ctx.clip()
+  ctx.globalAlpha = alpha
+  ctx.strokeStyle = VC_INK
+  ctx.lineWidth = 0.8
+  ctx.translate(w / 2, h / 2)
+  ctx.rotate(angle)
+  const span = Math.max(w, h) * 1.5
+  for (let d = -span; d < span; d += spacing) {
+    ctx.beginPath()
+    ctx.moveTo(-span, d)
+    ctx.lineTo(span, d)
+    ctx.stroke()
+  }
+  ctx.restore()
+}
+
+function drawVictorianTitle(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  entry: LibraryEntry,
+  centerY: number,
+  titlePx: number,
+): void {
+  ctx.textAlign = 'center'
+  ctx.fillStyle = VC_INK
+  ctx.font = `700 ${titlePx}px ${VICTORIAN_TITLE_FONT}`
+  const words = entry.title.toUpperCase().split(' ')
+  const lines: string[] = []
+  let line = ''
+  for (const word of words) {
+    const probe = line ? `${line} ${word}` : word
+    if (ctx.measureText(probe).width > w * 0.76 && line) {
+      lines.push(line)
+      line = word
+    } else {
+      line = probe
+    }
+  }
+  if (line) lines.push(line)
+  const lineH = titlePx * 1.3
+  const startY = centerY - ((lines.length - 1) * lineH) / 2
+  lines.forEach((text, i) => ctx.fillText(text, w / 2, startY + i * lineH))
+  // the title-page rule between title and author
+  const ruleY = startY + (lines.length - 1) * lineH + titlePx * 0.55
+  ctx.strokeStyle = VC_INK
+  ctx.lineWidth = 1
+  ctx.beginPath()
+  ctx.moveTo(w * 0.3, ruleY)
+  ctx.lineTo(w * 0.7, ruleY)
+  ctx.stroke()
+  ctx.font = `italic ${Math.round(titlePx * 0.6)}px Georgia, serif`
+  ctx.fillStyle = VC_OXBLOOD
+  ctx.fillText(entry.author, w / 2, ruleY + titlePx * 0.75)
+}
+
+function paintVictorianCover(ctx: CanvasRenderingContext2D, w: number, h: number, entry: LibraryEntry): void {
+  ctx.fillStyle = VC_IVORY
+  ctx.fillRect(0, 0, w, h)
+  const safe = safeRect(w, h)
+  // stacked double rules
+  ctx.strokeStyle = VC_INK
+  ctx.lineWidth = Math.max(1.4, w * 0.012)
+  ctx.strokeRect(safe.x, safe.y, safe.w, safe.h)
+  ctx.lineWidth = Math.max(0.7, w * 0.005)
+  ctx.strokeRect(safe.x + w * 0.028, safe.y + w * 0.028, safe.w - w * 0.056, safe.h - w * 0.056)
+
+  ctx.save()
+  ctx.beginPath()
+  ctx.rect(safe.x, safe.y, safe.w, safe.h)
+  ctx.clip()
+
+  // oval engraved vignette: hatched sea, denser toward the bottom
+  const vcx = w / 2
+  const vcy = safe.y + safe.h * 0.3
+  const vrx = safe.w * 0.36
+  const vry = safe.h * 0.18
+  const ovalClip = () => {
+    ctx.beginPath()
+    ctx.ellipse(vcx, vcy, vrx, vry, 0, 0, Math.PI * 2)
+  }
+  hatchClipped(ctx, ovalClip, w, h, 5.5, 0.06, 0.4)
+  hatchClipped(
+    ctx,
+    () => {
+      ctx.beginPath()
+      ctx.ellipse(vcx, vcy + vry * 0.4, vrx, vry * 0.7, 0, 0, Math.PI * 2)
+    },
+    w,
+    h,
+    3.5,
+    -0.16,
+    0.35,
+  )
+  // oval outline
+  ovalClip()
+  ctx.strokeStyle = VC_INK
+  ctx.lineWidth = Math.max(1, w * 0.008)
+  ctx.stroke()
+
+  // the Nautilus silhouette
+  ctx.save()
+  ovalClip()
+  ctx.clip()
+  ctx.fillStyle = VC_INK
+  ctx.beginPath()
+  ctx.ellipse(vcx - vrx * 0.06, vcy + vry * 0.08, vrx * 0.52, vry * 0.26, -0.02, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.beginPath()
+  ctx.moveTo(vcx + vrx * 0.44, vcy + vry * 0.02)
+  ctx.lineTo(vcx + vrx * 0.72, vcy - vry * 0.12)
+  ctx.lineTo(vcx + vrx * 0.44, vcy + vry * 0.18)
+  ctx.closePath()
+  ctx.fill()
+  ctx.fillRect(vcx - vrx * 0.28, vcy - vry * 0.32, vrx * 0.24, vry * 0.22)
+  // brass portholes
+  ctx.fillStyle = VC_BRASS
+  for (const px of [-0.28, -0.1, 0.1]) {
+    ctx.beginPath()
+    ctx.arc(vcx + vrx * px, vcy + vry * 0.08, Math.max(1.2, w * 0.009), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  ctx.restore()
+  ctx.restore()
+
+  drawVictorianTitle(ctx, w, entry, h * 0.68, Math.round(w * 0.088))
+}
+
+// --- Water (quiet contemporary vocabulary: ripple rings, wave crests,
+// falling drops, a moon with a broken reflection; nothing shouts)
+const WT_MIST = '#eaf1f2'
+const WT_SILVER = '#c9d8da'
+const WT_INK = '#16323e'
+const WT_TEAL = '#4a8f9f'
+const WT_MOON = '#e8e2cf'
+
+/** A thin sine-wave rule across the width -- the water pack's frame element. */
+function drawWavyRule(ctx: CanvasRenderingContext2D, w: number, y: number, amplitude: number): void {
+  ctx.strokeStyle = WT_TEAL
+  ctx.lineWidth = 1.6
+  ctx.beginPath()
+  for (let x = 0; x <= w; x += 3) {
+    const yy = y + Math.sin((x / w) * Math.PI * 6) * amplitude
+    if (x === 0) ctx.moveTo(x, yy)
+    else ctx.lineTo(x, yy)
+  }
+  ctx.stroke()
+}
+
+/** Concentric ripple rings, alpha fading outward; flattened ellipses read as a water surface. */
+function drawRippleSet(ctx: CanvasRenderingContext2D, cx: number, cy: number, baseR: number, rings: number): void {
+  ctx.strokeStyle = WT_INK
+  for (let k = 0; k < rings; k++) {
+    ctx.globalAlpha = 0.5 - k * 0.13
+    ctx.lineWidth = 1.2
+    ctx.beginPath()
+    ctx.ellipse(cx, cy, baseR * (1 + k * 0.75), baseR * (1 + k * 0.75) * 0.36, 0, 0, Math.PI * 2)
+    ctx.stroke()
+  }
+  ctx.globalAlpha = 1
+}
+
+/** Letterspaced text via manual per-char advance (canvas letterSpacing isn't everywhere yet). */
+function drawTrackedText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  cx: number,
+  y: number,
+  tracking: number,
+): void {
+  const chars = [...text]
+  const widths = chars.map((ch) => ctx.measureText(ch).width)
+  const total = widths.reduce((a, b) => a + b, 0) + tracking * Math.max(0, chars.length - 1)
+  let x = cx - total / 2
+  chars.forEach((ch, i) => {
+    const cw = widths[i] ?? 0
+    ctx.fillText(ch, x + cw / 2, y)
+    x += cw + tracking
+  })
+}
+
+function paintWaterCover(ctx: CanvasRenderingContext2D, w: number, h: number, entry: LibraryEntry): void {
+  ctx.fillStyle = WT_MIST
+  ctx.fillRect(0, 0, w, h)
+  // soft silver deepening toward the waterline (ground material)
+  const grad = ctx.createLinearGradient(0, h * 0.55, 0, h)
+  grad.addColorStop(0, 'rgba(201,216,218,0)')
+  grad.addColorStop(1, 'rgba(201,216,218,0.55)')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, w, h)
+
+  const safe = safeRect(w, h)
+  // frame: two thin wavy teal rules instead of a rect
+  drawWavyRule(ctx, w, safe.y, Math.max(1.5, h * 0.006))
+  drawWavyRule(ctx, w, safe.y + safe.h, Math.max(1.5, h * 0.006))
+
+  ctx.save()
+  ctx.beginPath()
+  ctx.rect(safe.x * 0.4, safe.y + 4, w - safe.x * 0.8, safe.h - 8)
+  ctx.clip()
+
+  // moon, upper third, with a broken vertical reflection
+  const moonX = w * 0.7
+  const moonY = safe.y + safe.h * 0.14
+  const moonR = w * 0.075
+  ctx.fillStyle = WT_MOON
+  ctx.beginPath()
+  ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.strokeStyle = WT_SILVER
+  ctx.lineWidth = 1
+  ctx.stroke()
+  ctx.strokeStyle = WT_MOON
+  ctx.lineWidth = Math.max(1.4, w * 0.012)
+  for (let seg = 0; seg < 4; seg++) {
+    const sy = moonY + moonR + 6 + seg * 9
+    const off = (seg % 2 === 0 ? 1 : -1) * 2
+    ctx.beginPath()
+    ctx.moveTo(moonX + off, sy)
+    ctx.lineTo(moonX + off, sy + 5)
+    ctx.stroke()
+  }
+
+  // ripple sets at asymmetric drop points
+  drawRippleSet(ctx, w * 0.32, safe.y + safe.h * 0.3, w * 0.055, 3)
+  drawRippleSet(ctx, w * 0.55, safe.y + safe.h * 0.42, w * 0.04, 3)
+  drawRippleSet(ctx, w * 0.75, safe.y + safe.h * 0.52, w * 0.03, 2)
+
+  // sparse falling drops
+  ctx.fillStyle = WT_TEAL
+  for (const [dx, dy, dr] of [
+    [0.28, 0.12, 0.011],
+    [0.5, 0.2, 0.009],
+    [0.62, 0.08, 0.01],
+    [0.4, 0.05, 0.008],
+  ] as const) {
+    ctx.beginPath()
+    ctx.arc(w * dx, safe.y + safe.h * dy, Math.max(1.2, w * dr), 0, Math.PI * 2)
+    ctx.fill()
+  }
+
+  // wave crest lines low on the card
+  ctx.strokeStyle = WT_TEAL
+  ctx.globalAlpha = 0.4
+  ctx.lineWidth = 1.2
+  for (let i = 0; i < 3; i++) {
+    const y = safe.y + safe.h * (0.86 + i * 0.045)
+    ctx.beginPath()
+    for (let x = safe.x; x <= safe.x + safe.w; x += 3) {
+      const yy = y + Math.sin((x / w) * Math.PI * 8 + i * 1.7) * 2
+      if (x === safe.x) ctx.moveTo(x, yy)
+      else ctx.lineTo(x, yy)
+    }
+    ctx.stroke()
+  }
+  ctx.globalAlpha = 1
+  ctx.restore()
+
+  // quiet lowercase-preserving title, wide tracking
+  const titlePx = Math.round(w * 0.085)
+  ctx.textAlign = 'center'
+  ctx.fillStyle = WT_INK
+  ctx.font = `${titlePx}px Georgia, serif`
+  const words = entry.title.split(' ')
+  const lines: string[] = []
+  let line = ''
+  for (const word of words) {
+    const probe = line ? `${line} ${word}` : word
+    if (ctx.measureText(probe).width > w * 0.66 && line) {
+      lines.push(line)
+      line = word
+    } else {
+      line = probe
+    }
+  }
+  if (line) lines.push(line)
+  const lineH = titlePx * 1.45
+  const startY = h * 0.66 - ((lines.length - 1) * lineH) / 2
+  lines.forEach((text, i) => drawTrackedText(ctx, text, w / 2, startY + i * lineH, titlePx * 0.14))
+  ctx.font = `italic ${Math.round(titlePx * 0.62)}px Georgia, serif`
+  ctx.fillStyle = WT_TEAL
+  ctx.fillText(entry.author, w / 2, startY + lines.length * lineH + titlePx * 0.2)
+}
+
 const COVER_PAINTERS: Record<LibraryEntry['stylePackId'], typeof paintDecoCover> = {
   deco: paintDecoCover,
   gothic: paintGothicCover,
   storybook: paintStorybookCover,
+  victorian: paintVictorianCover,
+  water: paintWaterCover,
 }
 
 function BookCover({ entry, onSelect }: { entry: LibraryEntry; onSelect: (entry: LibraryEntry) => void }) {

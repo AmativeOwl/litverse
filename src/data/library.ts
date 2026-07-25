@@ -19,7 +19,7 @@ import sceneBeatsData from './scene-beats.json'
  * concept board): each pack is a cover painter + title-card painter + type
  * treatment. Data picks which one a book wears; packs are never generated.
  */
-export type StylePackId = 'deco' | 'gothic' | 'storybook'
+export type StylePackId = 'deco' | 'gothic' | 'storybook' | 'victorian' | 'water'
 
 export interface LibraryEntry {
   id: string
