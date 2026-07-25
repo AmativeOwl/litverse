@@ -29,7 +29,56 @@ interface LandingPageProps {
  */
 
 // ---------------------------------------------------------------------------
-// Deco pack (Gatsby) -- the shipped title card, unchanged
+// The cover-frame rule (applies to EVERY style pack):
+//
+//   every discrete PICTORIAL element -- arches, clocks, figures, marquee
+//   ornaments -- must sit fully INSIDE the card's border frame. Only GROUND
+//   may bleed full-canvas: texture and atmosphere that read as the card's
+//   material rather than as things (paper, stone, sunburst rays, film
+//   grain, vignettes).
+//
+// A pack painter is therefore three phases, orchestrated by paintCard():
+//   ground   -- full-bleed, painted first, runs under the frame
+//   subjects -- composed against the frame's inner SAFE RECT and hard-
+//               clipped to it besides (the clip is the enforcement; the
+//               safe-rect-relative composition is what keeps shapes whole
+//               instead of amputated at the rule)
+//   frame    -- the border itself, painted last, over the ground
+// ---------------------------------------------------------------------------
+
+interface CardRect {
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
+interface CardPainter {
+  /** Inner rect of the frame -- the subjects' safe area (derive from the same margins `frame` strokes). */
+  safeArea: (w: number, h: number) => CardRect
+  ground: (ctx: CanvasRenderingContext2D, w: number, h: number, t: number) => void
+  subjects: (ctx: CanvasRenderingContext2D, safe: CardRect, w: number, h: number, t: number) => void
+  frame: (ctx: CanvasRenderingContext2D, w: number, h: number, t: number) => void
+}
+
+function makePackPaint(painter: CardPainter) {
+  return (ctx: CanvasRenderingContext2D, w: number, h: number, t: number): void => {
+    painter.ground(ctx, w, h, t)
+    const safe = painter.safeArea(w, h)
+    ctx.save()
+    ctx.beginPath()
+    ctx.rect(safe.x, safe.y, safe.w, safe.h)
+    ctx.clip()
+    painter.subjects(ctx, safe, w, h, t)
+    ctx.restore()
+    painter.frame(ctx, w, h, t)
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Deco pack (Gatsby) -- the shipped title card, restructured onto the
+// ground/subjects/frame contract (visually unchanged: its sunburst and
+// grain are ground by design, and it has no discrete pictorial subjects)
 // ---------------------------------------------------------------------------
 
 const PAPER = '#efe4c9'
@@ -38,67 +87,85 @@ const NAVY = '#22304f'
 const GOLD = '#a8802c'
 const GOLD_BRIGHT = '#c99b3f'
 
-function paintDecoCard(ctx: CanvasRenderingContext2D, w: number, h: number, t: number): void {
-  // paper ground with a soft radial deepening toward the edges
-  ctx.fillStyle = PAPER
-  ctx.fillRect(0, 0, w, h)
-  const vignette = ctx.createRadialGradient(w / 2, h / 2, h * 0.25, w / 2, h / 2, h * 0.95)
-  vignette.addColorStop(0, 'rgba(0,0,0,0)')
-  vignette.addColorStop(1, 'rgba(90,66,30,0.18)')
-  ctx.fillStyle = vignette
-  ctx.fillRect(0, 0, w, h)
+const DECO_PAINTER: CardPainter = {
+  safeArea: (w, h) => {
+    const m = Math.min(w, h) * 0.035
+    const inset = m * 1.55 + 2 // inner gold rule + its stroke
+    return { x: inset, y: inset, w: w - 2 * inset, h: h - 2 * inset }
+  },
 
-  // the giant sunburst, turning almost imperceptibly
-  const cx = w / 2
-  const cy = h * 0.42
-  const rayCount = 28
-  const rotation = t * 0.015
-  ctx.fillStyle = PAPER_DEEP
-  for (let i = 0; i < rayCount; i++) {
-    const a0 = rotation + (i / rayCount) * Math.PI * 2
-    const a1 = a0 + (Math.PI * 2) / rayCount / 2
-    ctx.beginPath()
-    ctx.moveTo(cx, cy)
-    ctx.arc(cx, cy, Math.max(w, h), a0, a1)
-    ctx.closePath()
-    ctx.fill()
-  }
+  ground: (ctx, w, h, t) => {
+    // paper with a soft radial deepening toward the edges
+    ctx.fillStyle = PAPER
+    ctx.fillRect(0, 0, w, h)
+    const vignette = ctx.createRadialGradient(w / 2, h / 2, h * 0.25, w / 2, h / 2, h * 0.95)
+    vignette.addColorStop(0, 'rgba(0,0,0,0)')
+    vignette.addColorStop(1, 'rgba(90,66,30,0.18)')
+    ctx.fillStyle = vignette
+    ctx.fillRect(0, 0, w, h)
 
-  // film grain, re-rolled per ~12fps tick
-  const tick = Math.floor(t * 12)
-  ctx.fillStyle = 'rgba(60,40,15,0.06)'
-  for (let i = 0; i < 110; i++) {
-    const n1 = Math.sin((tick * 91 + i) * 12.9898) * 43758.5453
-    const n2 = Math.sin((tick * 47 + i) * 78.233) * 24634.6345
-    ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.6, 1.6)
-  }
-
-  // deco border: double rule + corner fans, in navy and gold
-  const m = Math.min(w, h) * 0.035
-  ctx.strokeStyle = NAVY
-  ctx.lineWidth = 3
-  ctx.strokeRect(m, m, w - 2 * m, h - 2 * m)
-  ctx.strokeStyle = GOLD
-  ctx.lineWidth = 1.2
-  ctx.strokeRect(m * 1.55, m * 1.55, w - 3.1 * m, h - 3.1 * m)
-  const fan = m * 1.6
-  const corners: ReadonlyArray<readonly [number, number, number]> = [
-    [m, m, 0],
-    [w - m, m, Math.PI / 2],
-    [w - m, h - m, Math.PI],
-    [m, h - m, -Math.PI / 2],
-  ]
-  ctx.strokeStyle = GOLD
-  for (const [px, py, rot] of corners) {
-    for (let r = 0; r <= 5; r++) {
-      const a = rot + (r / 5) * (Math.PI / 2)
+    // the giant sunburst, turning almost imperceptibly -- rays radiate to
+    // the canvas edges BEHIND the frame deliberately: they are the card's
+    // material, not a pictorial subject
+    const cx = w / 2
+    const cy = h * 0.42
+    const rayCount = 28
+    const rotation = t * 0.015
+    ctx.fillStyle = PAPER_DEEP
+    for (let i = 0; i < rayCount; i++) {
+      const a0 = rotation + (i / rayCount) * Math.PI * 2
+      const a1 = a0 + (Math.PI * 2) / rayCount / 2
       ctx.beginPath()
-      ctx.moveTo(px + Math.cos(a) * fan * 0.35, py + Math.sin(a) * fan * 0.35)
-      ctx.lineTo(px + Math.cos(a) * fan, py + Math.sin(a) * fan)
-      ctx.stroke()
+      ctx.moveTo(cx, cy)
+      ctx.arc(cx, cy, Math.max(w, h), a0, a1)
+      ctx.closePath()
+      ctx.fill()
     }
-  }
+
+    // film grain, re-rolled per ~12fps tick
+    const tick = Math.floor(t * 12)
+    ctx.fillStyle = 'rgba(60,40,15,0.06)'
+    for (let i = 0; i < 110; i++) {
+      const n1 = Math.sin((tick * 91 + i) * 12.9898) * 43758.5453
+      const n2 = Math.sin((tick * 47 + i) * 78.233) * 24634.6345
+      ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.6, 1.6)
+    }
+  },
+
+  subjects: () => {
+    // the Deco bill is type-led: no painted pictorial subjects
+  },
+
+  frame: (ctx, w, h) => {
+    // deco border: double rule + corner fans, in navy and gold
+    const m = Math.min(w, h) * 0.035
+    ctx.strokeStyle = NAVY
+    ctx.lineWidth = 3
+    ctx.strokeRect(m, m, w - 2 * m, h - 2 * m)
+    ctx.strokeStyle = GOLD
+    ctx.lineWidth = 1.2
+    ctx.strokeRect(m * 1.55, m * 1.55, w - 3.1 * m, h - 3.1 * m)
+    const fan = m * 1.6
+    const corners: ReadonlyArray<readonly [number, number, number]> = [
+      [m, m, 0],
+      [w - m, m, Math.PI / 2],
+      [w - m, h - m, Math.PI],
+      [m, h - m, -Math.PI / 2],
+    ]
+    ctx.strokeStyle = GOLD
+    for (const [px, py, rot] of corners) {
+      for (let r = 0; r <= 5; r++) {
+        const a = rot + (r / 5) * (Math.PI / 2)
+        ctx.beginPath()
+        ctx.moveTo(px + Math.cos(a) * fan * 0.35, py + Math.sin(a) * fan * 0.35)
+        ctx.lineTo(px + Math.cos(a) * fan, py + Math.sin(a) * fan)
+        ctx.stroke()
+      }
+    }
+  },
 }
+
+const paintDecoCard = makePackPaint(DECO_PAINTER)
 
 // ---------------------------------------------------------------------------
 // Gothic / Memento Mori pack (the Masque) -- per the style-packs board
@@ -113,159 +180,175 @@ const GOTHIC_RULE = '#3a2028'
 /** Poe's room order: blue, purple, green, orange, white, violet -- then the black room's scarlet panes. */
 const ROOM_PANES = ['#2a4a8a', '#5a3a8a', '#2f6b3f', '#b05a1f', '#cfc8bd', '#3b2a5a', '#c1121f'] as const
 
-function paintGothicCard(ctx: CanvasRenderingContext2D, w: number, h: number, t: number): void {
-  // ebony ground, faint stone lift toward the top
-  ctx.fillStyle = EBONY
-  ctx.fillRect(0, 0, w, h)
-  const stone = ctx.createLinearGradient(0, 0, 0, h)
-  stone.addColorStop(0, EBONY_LIFT)
-  stone.addColorStop(1, EBONY)
-  ctx.fillStyle = stone
-  ctx.fillRect(0, 0, w, h)
+const GOTHIC_PAINTER: CardPainter = {
+  safeArea: (w, h) => {
+    const m = Math.min(w, h) * 0.03
+    const inset = m * 1.6 + 2 // inner rule + its stroke
+    return { x: inset, y: inset, w: w - 2 * inset, h: h - 2 * inset }
+  },
 
-  // seven pointed-arch windows across the lower hall, each glowing its
-  // room's hue; candle-flicker breathes the glow, out of phase per room
-  const n = ROOM_PANES.length
-  const marginX = w * 0.06
-  const slot = (w - marginX * 2) / n
-  const aw = slot * 0.52
-  const baseY = h * 0.96
-  const ah = h * 0.42
-  const floorY = baseY
-  for (let i = 0; i < n; i++) {
-    const pane = ROOM_PANES[i] ?? SCARLET
-    const x = marginX + i * slot + (slot - aw) / 2
-    const cxA = x + aw / 2
-    const flicker = 0.8 + 0.2 * Math.sin(t * 1.9 + i * 1.7)
-    // glow halo
-    const glow = ctx.createRadialGradient(cxA, baseY - ah * 0.5, 8, cxA, baseY - ah * 0.5, ah * 0.75)
-    glow.addColorStop(0, `${pane}44`)
-    glow.addColorStop(1, 'rgba(0,0,0,0)')
-    ctx.globalAlpha = 0.9 * flicker
-    ctx.fillStyle = glow
-    ctx.fillRect(cxA - ah * 0.8, baseY - ah - ah * 0.4, ah * 1.6, ah * 1.5)
-    // pane
-    ctx.globalAlpha = 0.5
-    ctx.fillStyle = pane
+  ground: (ctx, w, h, t) => {
+    // ebony ground, faint stone lift toward the top
+    ctx.fillStyle = EBONY
+    ctx.fillRect(0, 0, w, h)
+    const stone = ctx.createLinearGradient(0, 0, 0, h)
+    stone.addColorStop(0, EBONY_LIFT)
+    stone.addColorStop(1, EBONY)
+    ctx.fillStyle = stone
+    ctx.fillRect(0, 0, w, h)
+
+    // bone-dust grain, re-rolled per ~12fps tick
+    const tick = Math.floor(t * 12)
+    ctx.fillStyle = 'rgba(216,207,192,0.045)'
+    for (let i = 0; i < 110; i++) {
+      const n1 = Math.sin((tick * 73 + i) * 12.9898) * 43758.5453
+      const n2 = Math.sin((tick * 59 + i) * 78.233) * 24634.6345
+      ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.6, 1.6)
+    }
+  },
+
+  subjects: (ctx, safe, w, h, t) => {
+    // seven pointed-arch windows across the lower hall, composed against
+    // the SAFE RECT so every full arch shape -- base, spring, and point --
+    // sits inside the frame (they used to run to the canvas edges); each
+    // glows its room's hue, candle-flicker out of phase per room
+    const n = ROOM_PANES.length
+    const marginX = safe.w * 0.035
+    const slot = (safe.w - marginX * 2) / n
+    const aw = slot * 0.52
+    const baseY = safe.y + safe.h - 2 // arch bases rest just above the inner rule
+    const ah = Math.min(safe.h * 0.46, slot * 1.6)
+    for (let i = 0; i < n; i++) {
+      const pane = ROOM_PANES[i] ?? SCARLET
+      const x = safe.x + marginX + i * slot + (slot - aw) / 2
+      const cxA = x + aw / 2
+      const flicker = 0.8 + 0.2 * Math.sin(t * 1.9 + i * 1.7)
+      // glow halo -- soft light, safe to let the clip feather its edges
+      const glow = ctx.createRadialGradient(cxA, baseY - ah * 0.5, 8, cxA, baseY - ah * 0.5, ah * 0.75)
+      glow.addColorStop(0, `${pane}44`)
+      glow.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.globalAlpha = 0.9 * flicker
+      ctx.fillStyle = glow
+      ctx.fillRect(cxA - ah * 0.8, baseY - ah - ah * 0.4, ah * 1.6, ah * 1.5)
+      // pane
+      ctx.globalAlpha = 0.5
+      ctx.fillStyle = pane
+      ctx.beginPath()
+      ctx.moveTo(x, baseY)
+      ctx.lineTo(x, baseY - ah * 0.62)
+      ctx.quadraticCurveTo(x, baseY - ah, cxA, baseY - ah)
+      ctx.quadraticCurveTo(x + aw, baseY - ah, x + aw, baseY - ah * 0.62)
+      ctx.lineTo(x + aw, baseY)
+      ctx.closePath()
+      ctx.fill()
+      // tracery: mullion + transom in ebony, arch outline in candle gold
+      ctx.globalAlpha = 0.85
+      ctx.strokeStyle = EBONY
+      ctx.lineWidth = Math.max(2, aw * 0.045)
+      ctx.beginPath()
+      ctx.moveTo(cxA, baseY)
+      ctx.lineTo(cxA, baseY - ah * 0.94)
+      ctx.moveTo(x, baseY - ah * 0.5)
+      ctx.lineTo(x + aw, baseY - ah * 0.5)
+      ctx.stroke()
+      ctx.strokeStyle = CANDLE
+      ctx.lineWidth = Math.max(1.4, aw * 0.03)
+      ctx.globalAlpha = 0.6 * flicker
+      ctx.beginPath()
+      ctx.moveTo(x, baseY)
+      ctx.lineTo(x, baseY - ah * 0.62)
+      ctx.quadraticCurveTo(x, baseY - ah, cxA, baseY - ah)
+      ctx.quadraticCurveTo(x + aw, baseY - ah, x + aw, baseY - ah * 0.62)
+      ctx.lineTo(x + aw, baseY)
+      ctx.stroke()
+      ctx.globalAlpha = 1
+    }
+    // hall floor line, inside the frame
+    ctx.strokeStyle = GOTHIC_RULE
+    ctx.lineWidth = 2
     ctx.beginPath()
-    ctx.moveTo(x, baseY)
-    ctx.lineTo(x, baseY - ah * 0.62)
-    ctx.quadraticCurveTo(x, baseY - ah, cxA, baseY - ah)
-    ctx.quadraticCurveTo(x + aw, baseY - ah, x + aw, baseY - ah * 0.62)
-    ctx.lineTo(x + aw, baseY)
-    ctx.closePath()
-    ctx.fill()
-    // tracery: mullion + transom in ebony, arch outline in candle gold
-    ctx.globalAlpha = 0.85
-    ctx.strokeStyle = EBONY
-    ctx.lineWidth = Math.max(2, aw * 0.045)
-    ctx.beginPath()
-    ctx.moveTo(cxA, baseY)
-    ctx.lineTo(cxA, baseY - ah * 0.94)
-    ctx.moveTo(x, baseY - ah * 0.5)
-    ctx.lineTo(x + aw, baseY - ah * 0.5)
+    ctx.moveTo(safe.x + safe.w * 0.01, baseY)
+    ctx.lineTo(safe.x + safe.w * 0.99, baseY)
     ctx.stroke()
+
+    // center scrim: an ebony pool behind the type column so the bill stays
+    // legible over the brighter panes (white and orange rooms especially)
+    const scrim = ctx.createRadialGradient(w / 2, h * 0.52, h * 0.08, w / 2, h * 0.52, h * 0.62)
+    scrim.addColorStop(0, 'rgba(11,6,9,0.82)')
+    scrim.addColorStop(0.7, 'rgba(11,6,9,0.45)')
+    scrim.addColorStop(1, 'rgba(11,6,9,0)')
+    ctx.fillStyle = scrim
+    ctx.fillRect(safe.x, safe.y, safe.w, safe.h)
+
+    // the ebony clock, a small medallion a minute from midnight -- hung
+    // from the safe rect's top so its full dial (ring stroke included)
+    // clears the frame (it used to cross the top rule), and sized down so
+    // it also clears the DOM kicker line below on short viewports
+    const ccx = w / 2
+    const cr = Math.min(w, h) * 0.028
+    const ccy = safe.y + cr * 1.14 + 3
+    ctx.fillStyle = EBONY_LIFT
+    ctx.beginPath()
+    ctx.arc(ccx, ccy, cr * 1.14, 0, Math.PI * 2)
+    ctx.fill()
     ctx.strokeStyle = CANDLE
-    ctx.lineWidth = Math.max(1.4, aw * 0.03)
-    ctx.globalAlpha = 0.6 * flicker
-    ctx.beginPath()
-    ctx.moveTo(x, baseY)
-    ctx.lineTo(x, baseY - ah * 0.62)
-    ctx.quadraticCurveTo(x, baseY - ah, cxA, baseY - ah)
-    ctx.quadraticCurveTo(x + aw, baseY - ah, x + aw, baseY - ah * 0.62)
-    ctx.lineTo(x + aw, baseY)
+    ctx.lineWidth = 2.4
     ctx.stroke()
-    ctx.globalAlpha = 1
-  }
-  // hall floor line
-  ctx.strokeStyle = GOTHIC_RULE
-  ctx.lineWidth = 2
-  ctx.beginPath()
-  ctx.moveTo(w * 0.04, floorY)
-  ctx.lineTo(w * 0.96, floorY)
-  ctx.stroke()
-
-  // center scrim: an ebony pool behind the type column so the bill stays
-  // legible over the brighter panes (white and orange rooms especially)
-  const scrim = ctx.createRadialGradient(w / 2, h * 0.52, h * 0.08, w / 2, h * 0.52, h * 0.62)
-  scrim.addColorStop(0, 'rgba(11,6,9,0.82)')
-  scrim.addColorStop(0.7, 'rgba(11,6,9,0.45)')
-  scrim.addColorStop(1, 'rgba(11,6,9,0)')
-  ctx.fillStyle = scrim
-  ctx.fillRect(0, 0, w, h)
-
-  // the ebony clock, small and high, a minute from midnight (the pendulum
-  // lives in the world's card, not on the bill -- here it would swing
-  // through the lettering)
-  const ccx = w / 2
-  const ccy = h * 0.062
-  const cr = Math.min(w, h) * 0.045
-  ctx.fillStyle = EBONY_LIFT
-  ctx.beginPath()
-  ctx.arc(ccx, ccy, cr * 1.14, 0, Math.PI * 2)
-  ctx.fill()
-  ctx.strokeStyle = CANDLE
-  ctx.lineWidth = 2.4
-  ctx.stroke()
-  ctx.strokeStyle = BONE
-  ctx.lineWidth = 1.8
-  for (let i = 0; i < 12; i++) {
-    const an = (i * Math.PI) / 6
+    ctx.strokeStyle = BONE
+    ctx.lineWidth = 1.8
+    for (let i = 0; i < 12; i++) {
+      const an = (i * Math.PI) / 6
+      ctx.beginPath()
+      ctx.moveTo(ccx + Math.sin(an) * cr * 0.82, ccy - Math.cos(an) * cr * 0.82)
+      ctx.lineTo(ccx + Math.sin(an) * cr * 0.95, ccy - Math.cos(an) * cr * 0.95)
+      ctx.stroke()
+    }
+    // hands at 11:59
+    ctx.strokeStyle = SCARLET
+    ctx.lineWidth = 3
+    const minuteAngle = -Math.PI / 30
     ctx.beginPath()
-    ctx.moveTo(ccx + Math.sin(an) * cr * 0.82, ccy - Math.cos(an) * cr * 0.82)
-    ctx.lineTo(ccx + Math.sin(an) * cr * 0.95, ccy - Math.cos(an) * cr * 0.95)
+    ctx.moveTo(ccx, ccy)
+    ctx.lineTo(ccx + Math.sin(minuteAngle) * cr * 0.75, ccy - Math.cos(minuteAngle) * cr * 0.75)
     ctx.stroke()
-  }
-  // hands at 11:59
-  ctx.strokeStyle = SCARLET
-  ctx.lineWidth = 3
-  const minuteAngle = -Math.PI / 30
-  ctx.beginPath()
-  ctx.moveTo(ccx, ccy)
-  ctx.lineTo(ccx + Math.sin(minuteAngle) * cr * 0.75, ccy - Math.cos(minuteAngle) * cr * 0.75)
-  ctx.stroke()
-  ctx.lineWidth = 4
-  ctx.beginPath()
-  ctx.moveTo(ccx, ccy)
-  ctx.lineTo(ccx + Math.sin(-0.02) * cr * 0.45, ccy - Math.cos(-0.02) * cr * 0.45)
-  ctx.stroke()
-  ctx.fillStyle = SCARLET
-  ctx.beginPath()
-  ctx.arc(ccx, ccy, cr * 0.07, 0, Math.PI * 2)
-  ctx.fill()
-
-  // bone-dust grain, re-rolled per ~12fps tick
-  const tick = Math.floor(t * 12)
-  ctx.fillStyle = 'rgba(216,207,192,0.045)'
-  for (let i = 0; i < 110; i++) {
-    const n1 = Math.sin((tick * 73 + i) * 12.9898) * 43758.5453
-    const n2 = Math.sin((tick * 59 + i) * 78.233) * 24634.6345
-    ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.6, 1.6)
-  }
-
-  // thin double rule frame with scarlet corner diamonds
-  const m = Math.min(w, h) * 0.03
-  ctx.strokeStyle = GOTHIC_RULE
-  ctx.lineWidth = 2
-  ctx.strokeRect(m, m, w - 2 * m, h - 2 * m)
-  ctx.lineWidth = 1
-  ctx.strokeRect(m * 1.6, m * 1.6, w - 3.2 * m, h - 3.2 * m)
-  ctx.fillStyle = SCARLET
-  for (const [px, py] of [
-    [m, m],
-    [w - m, m],
-    [w - m, h - m],
-    [m, h - m],
-  ] as const) {
+    ctx.lineWidth = 4
     ctx.beginPath()
-    ctx.moveTo(px, py - 6)
-    ctx.lineTo(px + 6, py)
-    ctx.lineTo(px, py + 6)
-    ctx.lineTo(px - 6, py)
-    ctx.closePath()
+    ctx.moveTo(ccx, ccy)
+    ctx.lineTo(ccx + Math.sin(-0.02) * cr * 0.45, ccy - Math.cos(-0.02) * cr * 0.45)
+    ctx.stroke()
+    ctx.fillStyle = SCARLET
+    ctx.beginPath()
+    ctx.arc(ccx, ccy, cr * 0.07, 0, Math.PI * 2)
     ctx.fill()
-  }
+  },
+
+  frame: (ctx, w, h) => {
+    // thin double rule frame with scarlet corner diamonds
+    const m = Math.min(w, h) * 0.03
+    ctx.strokeStyle = GOTHIC_RULE
+    ctx.lineWidth = 2
+    ctx.strokeRect(m, m, w - 2 * m, h - 2 * m)
+    ctx.lineWidth = 1
+    ctx.strokeRect(m * 1.6, m * 1.6, w - 3.2 * m, h - 3.2 * m)
+    ctx.fillStyle = SCARLET
+    for (const [px, py] of [
+      [m, m],
+      [w - m, m],
+      [w - m, h - m],
+      [m, h - m],
+    ] as const) {
+      ctx.beginPath()
+      ctx.moveTo(px, py - 6)
+      ctx.lineTo(px + 6, py)
+      ctx.lineTo(px, py + 6)
+      ctx.lineTo(px - 6, py)
+      ctx.closePath()
+      ctx.fill()
+    }
+  },
 }
+
+const paintGothicCard = makePackPaint(GOTHIC_PAINTER)
 
 // ---------------------------------------------------------------------------
 // The style-pack registry (module-local; a LibraryEntry.stylePackId is the
