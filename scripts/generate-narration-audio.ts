@@ -336,14 +336,58 @@ function hashToUnit(key: string): number {
 }
 
 /**
- * Per-sentence speed micro-jitter: a deterministic +/-0.04 offset from the
- * base speed, keyed by sentence id, so cadence isn't perfectly metronomic
- * sentence-to-sentence (a real narrator doesn't speak every sentence at
- * exactly the same rate).
+ * Per-sentence speech-rate normalization (replaced the earlier +/-0.04
+ * speed micro-jitter, which pulled in the opposite direction of evenness).
+ *
+ * Kokoro's duration model paces by *input length*: long sentences come out
+ * audibly rushed and very short ones drag. Measured on the previously
+ * shipped manifests (syllables / summed word-speech-time, pauses excluded):
+ * rate correlated with sentence word count at r=0.66 (gatsby) / r=0.83
+ * (masque), ranging from ~3.9 syll/s on a 4-word sentence to ~10.1 syll/s
+ * on Poe's 138-word clock sentence against a ~5.3 median -- the listener
+ * hears the narrator speed up on long sentences and slow down on short ones.
+ *
+ * Since the model's `speed` parameter scales phoneme durations roughly
+ * proportionally, the fix is closed-loop rather than predictive: synthesize
+ * at the base speed, measure the realized syllable rate from the aligned
+ * word timings, and if it misses TARGET_SYLLABLES_PER_SEC by more than
+ * RATE_TOLERANCE, re-synthesize with speed scaled by (target / measured) --
+ * up to MAX_RATE_PASSES total generations per sentence. The target is the
+ * measured median of the shipped audio at base speed 1.1, so the overall
+ * voice pace is unchanged; only the per-sentence spread tightens.
  */
-function speedJitterFor(sentenceId: string, baseSpeed: number): number {
-  const offset = (hashToUnit(`${sentenceId}:speed`) - 0.5) * 0.08 // +/-0.04
-  return Math.round((baseSpeed + offset) * 1000) / 1000
+const TARGET_SYLLABLES_PER_SEC = 5.3
+/** Accept a sentence whose measured rate is within this fraction of target. */
+const RATE_TOLERANCE = 0.04
+/** Total synthesis attempts per sentence (1 initial + corrections). */
+const MAX_RATE_PASSES = 3
+/**
+ * Hard clamp on the corrected speed. The floor is genuinely low on purpose:
+ * the worst rushed sentence measured ~1.9x target, needing ~0.58 to fix.
+ */
+const MIN_SENTENCE_SPEED = 0.55
+const MAX_SENTENCE_SPEED = 1.45
+
+/**
+ * Rough syllable count: runs of vowel letters in the normalized word. Crude
+ * against true phonology (silent e, diphthongs) but the same estimator was
+ * used to derive TARGET_SYLLABLES_PER_SEC from the shipped manifests, so the
+ * bias cancels -- only consistency matters here, not linguistic truth.
+ */
+function syllableCount(normalized: string): number {
+  const runs = normalized.match(/[aeiouy]+/g)
+  return Math.max(1, runs ? runs.length : 0)
+}
+
+/**
+ * Realized speech rate in syllables/sec over *speaking* time only (summed
+ * per-word durations) -- inserted pause breaks and inter-word gaps don't
+ * count, so punctuation-heavy sentences aren't misread as "slow".
+ */
+function measuredSyllableRate(sentence: Sentence, timings: WordTiming[]): number {
+  const syllables = sentence.words.reduce((acc, w) => acc + syllableCount(w.normalized), 0)
+  const speakMs = timings.reduce((acc, t) => acc + (t.endMs - t.startMs), 0)
+  return speakMs > 0 ? syllables / (speakMs / 1000) : TARGET_SYLLABLES_PER_SEC
 }
 
 /**
@@ -645,32 +689,68 @@ async function main() {
     }
 
     const inputWithPauses = insertPauseBreaks(input, sentence)
-    const sentenceSpeed = speedJitterFor(sentence.id, SPEED)
 
-    const { metadata } = await synthesizeSentence(worker, inputWithPauses, sentenceSpeed)
-    const audioDurationMs = wavDurationMs(metadata.audio, SAMPLE_RATE)
+    // Closed-loop rate normalization: synthesize, measure, correct speed,
+    // repeat -- see TARGET_SYLLABLES_PER_SEC's doc comment for the why.
+    let speed = SPEED
+    let accepted:
+      | { metadata: TtsMetadata; words: WordTiming[]; audioDurationMs: number; speed: number; rate: number }
+      | null = null
+    let alignmentError: string | null = null
 
-    const words = alignWordTimings(sentence, metadata, audioDurationMs, inputWithPauses)
-    if (!Array.isArray(words)) {
-      failures.push(
-        `${sentence.id}: alignment failed -- ${words.error}. ` +
-          `ours=[${sentence.words.map((w) => w.normalized).join(' ')}] theirs=[${metadata.words.join(' ')}]`,
-      )
+    for (let pass = 1; pass <= MAX_RATE_PASSES; pass++) {
+      const { metadata } = await synthesizeSentence(worker, inputWithPauses, speed)
+      const audioDurationMs = wavDurationMs(metadata.audio, SAMPLE_RATE)
+
+      const words = alignWordTimings(sentence, metadata, audioDurationMs, inputWithPauses)
+      if (!Array.isArray(words)) {
+        // A failed *correction* pass keeps the earlier accepted render.
+        alignmentError =
+          `alignment failed -- ${words.error}. ` +
+          `ours=[${sentence.words.map((w) => w.normalized).join(' ')}] theirs=[${metadata.words.join(' ')}]`
+        break
+      }
+
+      const finalRate = measuredSyllableRate(sentence, words)
+      accepted = { metadata, words, audioDurationMs, speed, rate: finalRate }
+      const deviation = finalRate / TARGET_SYLLABLES_PER_SEC - 1
+      if (Math.abs(deviation) <= RATE_TOLERANCE) break
+
+      const corrected = Math.round(speed * (TARGET_SYLLABLES_PER_SEC / finalRate) * 1000) / 1000
+      const clamped = Math.min(MAX_SENTENCE_SPEED, Math.max(MIN_SENTENCE_SPEED, corrected))
+      if (pass < MAX_RATE_PASSES) {
+        console.log(
+          `  ${sentence.id}: pass ${pass} rate ${finalRate.toFixed(2)} syll/s (target ${TARGET_SYLLABLES_PER_SEC}), ` +
+            `retrying at speed ${clamped}${clamped !== corrected ? ' (clamped)' : ''}`,
+        )
+        speed = clamped
+      } else {
+        console.warn(
+          `  ${sentence.id}: still ${finalRate.toFixed(2)} syll/s after ${MAX_RATE_PASSES} passes -- keeping last render.`,
+        )
+      }
+    }
+
+    if (!accepted) {
+      failures.push(`${sentence.id}: ${alignmentError ?? 'no synthesis pass succeeded'}`)
       continue
     }
 
     const audioFileName = `${sentence.id}.wav`
-    writeWav(resolve(OUT_DIR, audioFileName), metadata.audio)
+    writeWav(resolve(OUT_DIR, audioFileName), accepted.metadata.audio)
     successCount++
 
     if (!IS_TRIAL) {
       manifest[sentence.id] = {
         audioUrl: `/narration/${PASSAGE_ID}/${audioFileName}`,
-        durationMs: Math.round(audioDurationMs),
-        words,
+        durationMs: Math.round(accepted.audioDurationMs),
+        words: accepted.words,
       }
     }
-    console.log(`  ${sentence.id}: OK (${words.length} words, ${Math.round(audioDurationMs)}ms)`)
+    console.log(
+      `  ${sentence.id}: OK (${accepted.words.length} words, ${Math.round(accepted.audioDurationMs)}ms, ` +
+        `${accepted.rate.toFixed(2)} syll/s @ speed ${accepted.speed})`,
+    )
   }
 
   worker.terminate()
