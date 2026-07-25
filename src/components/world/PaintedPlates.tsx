@@ -6,6 +6,7 @@ import type { PlateDef, PlateLayer, ScenePlateSet } from '../../types-plates'
 import { useReadingStore } from '../../store/readingStore'
 import type { LerpedSceneBeat } from './beatMath'
 import { shellArcFromTheta, tileSlotAzimuths, vignetteVisibility } from './decoPlateKit'
+import { turntableMotion } from './WorldTurntable'
 
 interface PaintedPlatesProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -66,6 +67,14 @@ const WINDOW_FADE_RATE = 4
 const REPAINT_INTERVAL_SECONDS = 1 / 12
 /** Plates dimmer than this skip their repaint (invisible work). */
 const REPAINT_MIN_OPACITY = 0.04
+/**
+ * Drum speed (rad/s) above which the living paintings hold their last
+ * frame: every repaint is a GPU texture upload, and mid-rotation those
+ * uploads read as visible ticks against the smooth turn. ~0.05 rad/s means
+ * repaints resume in the turn's final settling moments and run freely at
+ * dwell -- where the card animation actually registers.
+ */
+const REPAINT_PAUSE_TURN_SPEED = 0.05
 
 interface BuiltPlate {
   def: PlateDef
@@ -97,6 +106,8 @@ interface BuiltPlate {
     palette: SceneBeat['palette']
     paint: NonNullable<Extract<PlateDef['source'], { kind: 'paint' }>>['paint']
   }
+  /** Next repaint due time (clock seconds) -- per-plate so live paintings stagger their GPU uploads across frames instead of all landing on one tick. Mutated per frame, never React state. */
+  nextRepaintAt: number
 }
 
 interface BuiltWindow {
@@ -185,6 +196,7 @@ function buildPlate(
     fogTint: LAYER_FOG_TINT[def.layer],
     renderOrder: renderOrder ?? LAYER_RENDER_ORDER[def.layer],
     repaint,
+    nextRepaintAt: 0,
   }
 }
 
@@ -273,7 +285,6 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
   builtRef.current = built
   const windowsRef = useRef(builtWindows)
   windowsRef.current = builtWindows
-  const lastRepaintRef = useRef(0)
   const hazeMaterialRef = useRef<THREE.MeshBasicMaterial>(null)
 
   useFrame(({ clock }, delta) => {
@@ -285,18 +296,32 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
       hazeMaterialRef.current.color.set(lerped.palette.background).lerp(workingColor, 0.6)
     }
 
-    // -- living paintings: repaint visible animated plates "on twos"
-    if (clock.elapsedTime - lastRepaintRef.current >= REPAINT_INTERVAL_SECONDS) {
-      lastRepaintRef.current = clock.elapsedTime
-      const repaintIfLive = (plate: BuiltPlate) => {
+    // -- living paintings: repaint visible animated plates "on twos", with
+    // two anti-jank rules. (1) Hold every card's last frame while the drum
+    // is visibly turning -- repaints are GPU texture uploads, and uploads
+    // mid-rotation read as ticks against the smooth motion. (2) At most ONE
+    // upload per frame: each plate carries its own due time, and only the
+    // most overdue candidate repaints this frame, so concurrent live cards
+    // stagger onto different frames instead of stalling one together.
+    if (turntableMotion.radPerSec <= REPAINT_PAUSE_TURN_SPEED) {
+      let due: BuiltPlate | null = null
+      const consider = (plate: BuiltPlate) => {
         if (!plate.repaint || plate.material.opacity < REPAINT_MIN_OPACITY) return
-        const { canvas, ctx, palette, paint } = plate.repaint
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        paint(ctx, canvas.width, canvas.height, palette, clock.elapsedTime)
-        plate.texture.needsUpdate = true
+        if (clock.elapsedTime < plate.nextRepaintAt) return
+        if (!due || plate.nextRepaintAt < due.nextRepaintAt) due = plate
       }
-      for (const plate of builtRef.current) repaintIfLive(plate)
-      for (const window of windowsRef.current) repaintIfLive(window.built)
+      for (const plate of builtRef.current) consider(plate)
+      for (const window of windowsRef.current) consider(window.built)
+      if (due) {
+        const plate: BuiltPlate = due
+        plate.nextRepaintAt = clock.elapsedTime + REPAINT_INTERVAL_SECONDS
+        if (plate.repaint) {
+          const { canvas, ctx, palette, paint } = plate.repaint
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+          paint(ctx, canvas.width, canvas.height, palette, clock.elapsedTime)
+          plate.texture.needsUpdate = true
+        }
+      }
     }
 
     // -- window track: damped fades toward active/inactive targets

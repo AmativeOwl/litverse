@@ -37,6 +37,17 @@ const TURN_RATE = 0.5
 /** Snap out the asymptotic tail -- a settled stage must actually be still. */
 const TURN_SNAP_RAD = 0.002
 
+/**
+ * Per-frame angular speed of the drum (rad/s), written here every frame and
+ * read by PaintedPlates -- module-level mutable per the established
+ * per-frame-ref idiom, never React state. The living-painting repaint loop
+ * pauses while the drum is visibly turning: a 12fps canvas repaint means a
+ * GPU texture upload, and those uploads read as hitches ("ticks") exactly
+ * when the eye is tracking smooth rotation. Frozen card animation during a
+ * ~6s slide is imperceptible; the hitches were not.
+ */
+export const turntableMotion = { radPerSec: 0 }
+
 export function WorldTurntable({ lerpedRef, plateSet, children }: WorldTurntableProps) {
   const groupRef = useRef<Group>(null)
   const angleRef = useRef<number | null>(null)
@@ -67,8 +78,10 @@ export function WorldTurntable({ lerpedRef, plateSet, children }: WorldTurntable
     const error = Math.abs(
       Math.atan2(Math.sin(target - angleRef.current), Math.cos(target - angleRef.current)),
     )
+    const previous = angleRef.current
     angleRef.current = lerpAngleRad(angleRef.current, target, 1 - Math.exp(-delta * TURN_RATE))
     if (error < TURN_SNAP_RAD) angleRef.current = target
+    turntableMotion.radPerSec = delta > 0 ? Math.abs(angleRef.current - previous) / delta : 0
     group.rotation.y = angleRef.current
   })
 
