@@ -366,3 +366,19 @@ export const ALICE_PLATES: ScenePlateSet = {
     },
   ],
 }
+
+/**
+ * The registry's CardSpecs as inspectable data, keyed by card name -- the
+ * eval layer's window into what composeCard() closures otherwise hide
+ * (scripts/evals/ runs compiler-law assertions over these).
+ */
+export const ALICE_CARD_SPECS: Record<string, CardSpec> = {
+  riverbank: RIVERBANK_CARD,
+  'white-rabbit': WHITE_RABBIT_CARD,
+  'rabbit-hole': RABBIT_HOLE_CARD,
+  falling: FALLING_CARD,
+  cupboards: CUPBOARDS_CARD,
+  musing: MUSING_CARD,
+  watch: WATCH_CARD,
+  marmalade: MARMALADE_CARD,
+}

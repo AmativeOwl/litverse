@@ -75,6 +75,12 @@ interface CliArgs {
   retries: number
   /** Build + validate the inventory and prompt, write the prompt to disk, and exit WITHOUT any API call. */
   dryRun: boolean
+  /**
+   * Treat every sentence as uncovered -- the eval harness's from-scratch
+   * mode, so a draft's window choices can be compared against the shipped,
+   * hand-approved registry instead of being forbidden from re-picking them.
+   */
+  ignoreCovered: boolean
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -86,7 +92,8 @@ function parseArgs(argv: string[]): CliArgs {
   const model = get('--model')
   const retries = Number(get('--retries', '2'))
   const dryRun = argv.includes('--dry-run')
-  return { out, model, retries: Number.isFinite(retries) ? retries : 2, dryRun }
+  const ignoreCovered = argv.includes('--ignore-covered')
+  return { out, model, retries: Number.isFinite(retries) ? retries : 2, dryRun, ignoreCovered }
 }
 
 // ---------------------------------------------------------------------------
@@ -253,6 +260,15 @@ pace). Only what the text moves should move; scenery holds still. If the
 text truly demands an object/verb outside the lexicons, use the closest fit
 and add a "NEW:<name>" note in sourcePhrases for a human to consider.
 
+GRAMMAR STRICTNESS (drafts violating these are rejected mechanically):
+- "pose" may appear ONLY on elements whose noun is "figure", and only with
+  the listed pose values. A boat/car/sun/waves element NEVER has a pose --
+  express its action through "motion" instead (a diving person is a figure
+  with motion verb "dive"; a crossing boat is a boat with motion "cross").
+- "motion.verb" must be EXACTLY one of the MOTION VERBS. "dance" is a
+  figure POSE, not a motion verb -- a dancer is pose "dance" with a motion
+  like "sway" or "glide".
+
 NUMERIC FIDELITY: when the text states a count, the card renders exactly
 that count -- "five crates" is five crate elements, "eight servants" is
 eight figures, "two motorboats" is two boats. List each instance as its own
@@ -415,7 +431,7 @@ function validateDraft(raw: string, rows: SentenceRow[], covered: Set<string>): 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2))
   const rows = buildSentenceInventory()
-  const covered = coveredSentenceIds()
+  const covered = args.ignoreCovered ? new Set<string>() : coveredSentenceIds()
   const prompt = buildPrompt(rows, covered, GATSBY_PLATES.cameraAzimuthDeg)
 
   console.log(

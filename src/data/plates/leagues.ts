@@ -286,3 +286,20 @@ export const LEAGUES_PLATES: ScenePlateSet = {
     },
   ],
 }
+
+/**
+ * The registry's CardSpecs as inspectable data, keyed by card name -- the
+ * eval layer's window into what composeCard() closures otherwise hide
+ * (scripts/evals/ runs compiler-law assertions over these).
+ */
+export const LEAGUES_CARD_SPECS: Record<string, CardSpec> = {
+  salon: SALON_CARD,
+  'sea-hymn': SEA_HYMN_CARD,
+  freedom: FREEDOM_CARD,
+  darkness: DARKNESS_CARD,
+  panels: PANELS_CARD,
+  'liquid-light': LIQUID_LIGHT_CARD,
+  abyss: ABYSS_CARD,
+  'crystal-plates': CRYSTAL_PLATES_CARD,
+  aquarium: AQUARIUM_CARD,
+}
