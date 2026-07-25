@@ -114,11 +114,15 @@ describe('TextPane word/sentence highlighting', () => {
     })
     render(<TextPane passage={fixturePassage} />)
 
-    const activeWord = document.querySelector('[data-word-id="w2"]')
-    const inactiveWord = document.querySelector('[data-word-id="w1"]')
+    const activeWord = document.querySelector<HTMLElement>('[data-word-id="w2"]')
+    const inactiveWord = document.querySelector<HTMLElement>('[data-word-id="w1"]')
 
-    expect(activeWord).toHaveClass('bg-amber-400/80')
-    expect(inactiveWord).not.toHaveClass('bg-amber-400/80')
+    // Accent-ink treatment: the active word is marked by data-active plus an
+    // inline color (the beat accent), not a background block.
+    expect(activeWord).toHaveAttribute('data-active', 'true')
+    expect(activeWord?.style.color).not.toBe('')
+    expect(inactiveWord).not.toHaveAttribute('data-active')
+    expect(inactiveWord?.style.color ?? '').toBe('')
   })
 
   it('renders no active word when currentWordId is null', () => {
@@ -127,8 +131,7 @@ describe('TextPane word/sentence highlighting', () => {
     })
     render(<TextPane passage={fixturePassage} />)
 
-    const highlighted = document.querySelectorAll('.bg-amber-400\\/80')
-    expect(highlighted.length).toBe(0)
+    expect(document.querySelectorAll('[data-active]').length).toBe(0)
   })
 
   it('updates highlighting reactively when the store changes after mount', () => {
@@ -142,7 +145,7 @@ describe('TextPane word/sentence highlighting', () => {
 
     expect(document.querySelector('[data-sentence-index="0"]')).not.toHaveAttribute('aria-current')
     expect(document.querySelector('[data-sentence-index="2"]')).toHaveAttribute('aria-current', 'true')
-    expect(document.querySelector('[data-word-id="w8"]')).toHaveClass('bg-amber-400/80')
+    expect(document.querySelector('[data-word-id="w8"]')).toHaveAttribute('data-active', 'true')
   })
 })
 

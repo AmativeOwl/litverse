@@ -129,7 +129,7 @@ function App() {
         <WorldScene entry={stage.entry} />
         {cinema ? (
           <>
-            <CaptionBar passage={stage.entry.passage} />
+            <CaptionBar passage={stage.entry.passage} beats={stage.entry.beats} />
             <button
               type="button"
               className="absolute right-4 top-4 z-10 rounded-full border border-neutral-700/80 bg-neutral-900/70 px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-neutral-300 shadow-lg shadow-black/30 backdrop-blur-md transition-colors hover:border-amber-400/70 hover:text-amber-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"

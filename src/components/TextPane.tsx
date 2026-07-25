@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
 import {
   pause as narrationPause,
   play as narrationPlay,
@@ -12,12 +12,10 @@ import {
   storeFontScaleIndex,
   storeRate,
 } from '../lib/readerPrefs'
+import { useBeatAccent } from '../lib/useBeatAccent'
 import { useReadingStore } from '../store/readingStore'
 import PlaybackControls, { SKIP_BUTTON } from './PlaybackControls'
 import type { Passage, SceneBeat } from '../types'
-
-/** Fallback accent when `activeSceneBeatId` doesn't (yet) match a known beat -- keeps the original amber look. */
-const DEFAULT_SENTENCE_ACCENT = '#fbbf24' // Tailwind's amber-400, matching the pre-existing bg-amber-400/10 wash
 
 /**
  * Local demo fixture — richer than the trivial `data/gatsby-ch3.ts` stub
@@ -201,7 +199,6 @@ export default function TextPane({ passage = fallbackPassage, beats, onExitBook 
   const currentWordId = useReadingStore((s) => s.currentWordId)
   const playbackState = useReadingStore((s) => s.playbackState)
   const narrationAvailable = useReadingStore((s) => s.narrationAvailable)
-  const activeSceneBeatId = useReadingStore((s) => s.activeSceneBeatId)
   const playbackRate = useReadingStore((s) => s.playbackRate)
 
   // Text-size accessibility stepper: an index into FONT_SCALES applied as an
@@ -228,14 +225,9 @@ export default function TextPane({ passage = fallbackPassage, beats, onExitBook 
     storeRate(rate)
   }, [])
 
-  // `id -> palette.accent`, so the sentence wash's hue shifts with the
-  // world's mood (falls back to amber for unknown/absent beats).
-  const beatAccents = useMemo(
-    () => Object.fromEntries((beats ?? []).map((beat) => [beat.id, beat.palette.accent])),
-    [beats],
-  )
-  const sentenceAccent =
-    (activeSceneBeatId && beatAccents[activeSceneBeatId]) || DEFAULT_SENTENCE_ACCENT
+  // The active beat's accent drives both the sentence wash's tint and the
+  // active word's ink, so the world's mood colors the text pane.
+  const sentenceAccent = useBeatAccent(beats)
 
   const rootRef = useRef<HTMLDivElement>(null)
   const scrollToActive = useAutoScroll(rootRef)
@@ -367,14 +359,23 @@ export default function TextPane({ passage = fallbackPassage, beats, onExitBook 
                         <Fragment key={word.id}>
                           <span
                             data-word-id={word.id}
-                            // Always carries the transition classes (even when
-                            // inactive) so the highlight fades in *and* out
-                            // instead of hard-cutting on/off.
-                            className={`rounded transition-all duration-200 ease-out ${
+                            data-active={isActiveWord || undefined}
+                            // The spoken word is marked by ink alone -- the
+                            // beat accent plus a soft same-hue halo (no
+                            // background block, per user direction), which
+                            // also means zero layout shift as the highlight
+                            // walks the line. Transition classes stay on the
+                            // inactive state too so the color fades out, not
+                            // hard-cuts.
+                            className="transition-all duration-200 ease-out"
+                            style={
                               isActiveWord
-                                ? 'bg-amber-400/80 text-neutral-900 shadow-[0_0_0_3px_rgba(251,191,36,0.35)]'
-                                : 'shadow-[0_0_0_0px_rgba(251,191,36,0)]'
-                            }`}
+                                ? {
+                                    color: sentenceAccent,
+                                    textShadow: `0 0 14px color-mix(in srgb, ${sentenceAccent} 65%, transparent)`,
+                                  }
+                                : undefined
+                            }
                           >
                             {word.text}
                           </span>
