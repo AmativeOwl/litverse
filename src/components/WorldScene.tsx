@@ -76,7 +76,7 @@ function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: Scen
       <Atmosphere lerpedRef={lerpedRef} />
       {/* The zoetrope stage: the ring of shell paintings rotates to face the
           fixed viewer -- the images move, the camera never travels. */}
-      <WorldTurntable lerpedRef={lerpedRef} azimuthByBeatDeg={entry.plateSet.cameraAzimuthDeg}>
+      <WorldTurntable lerpedRef={lerpedRef} plateSet={entry.plateSet}>
         <PaintedPlates
           lerpedRef={lerpedRef}
           plateSet={entry.plateSet}
