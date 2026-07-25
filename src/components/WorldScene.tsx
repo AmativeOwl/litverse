@@ -1,9 +1,10 @@
-import { Suspense, useMemo } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Suspense, useEffect, useMemo } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { ACESFilmicToneMapping, SRGBColorSpace } from 'three'
 import { useReadingStore } from '../store/readingStore'
 import type { SceneBeat } from '../types'
 import type { LibraryEntry } from '../data/library'
+import { computeAdaptiveDpr } from './world/adaptiveDpr'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
 import { MotifEffects } from './world/MotifEffects'
@@ -42,6 +43,21 @@ function buildSceneData(entry: LibraryEntry): SceneData {
       paragraph.sentences.map((sentence) => sentence.id),
     ),
   }
+}
+
+/**
+ * Applies the pixel-budget dpr (see adaptiveDpr.ts) whenever the canvas
+ * size changes -- which includes the half-pane <-> fullscreen cinema
+ * toggle, the case that motivated it: a fixed dpr made cinema mode ~4x
+ * heavier per frame than the reader pane.
+ */
+function AdaptiveResolution() {
+  const size = useThree((state) => state.size)
+  const setDpr = useThree((state) => state.setDpr)
+  useEffect(() => {
+    setDpr(computeAdaptiveDpr(size.width, size.height, window.devicePixelRatio))
+  }, [size.width, size.height, setDpr])
+  return null
 }
 
 /**
@@ -115,14 +131,15 @@ export default function WorldScene({ entry }: WorldSceneProps) {
     <div className="h-full w-full bg-neutral-950">
       <Canvas
         camera={{ position: [0, 2.6, 9], fov: 50, near: 0.1, far: 100 }}
-        // dpr capped at 1.5 (was 2) and default-framebuffer MSAA off: every
-        // per-pixel cost scales with viewport x dpr squared, and cinema
-        // mode's fullscreen canvas at dpr 2 ran ~4x the half-pane's pixels
-        // -- the observed lag. The EffectComposer renders the scene into
-        // its own buffers and owns anti-aliasing (multisampling there), so
-        // canvas-level MSAA was pure waste; `shadows` is likewise gone --
-        // nothing casts or receives since the painted pivot (all materials
-        // are unlit MeshBasicMaterial).
+        // Initial dpr only -- AdaptiveResolution (inside) re-derives it
+        // from a fixed pixel budget whenever the canvas size changes, so
+        // cinema mode's fullscreen canvas costs roughly the same per frame
+        // as the half-pane reader. Default-framebuffer MSAA stays off: the
+        // EffectComposer renders the scene into its own buffers and owns
+        // anti-aliasing (multisampling there), so canvas-level MSAA was
+        // pure waste; `shadows` is likewise gone -- nothing casts or
+        // receives since the painted pivot (all materials are unlit
+        // MeshBasicMaterial).
         dpr={[1, 1.5]}
         // ACES filmic tone mapping (rolls off highlights instead of
         // clipping) and explicit high-precision sRGB output, configured
@@ -135,6 +152,7 @@ export default function WorldScene({ entry }: WorldSceneProps) {
         }}
       >
         <Suspense fallback={null}>
+          <AdaptiveResolution />
           <WorldSceneContents entry={entry} scene={scene} />
         </Suspense>
       </Canvas>
