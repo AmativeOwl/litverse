@@ -264,8 +264,10 @@ function alignWordTimings(
   metadata: TtsMetadata,
   totalDurationMs: number,
   inputItems: (PhoneticInputItem | BreakInputItem)[],
-): WordTiming[] | null {
-  if (metadata.words.length !== inputItems.length) return null // HeadTTS echoed a different item count than we sent -- sanity check
+): WordTiming[] | { error: string } {
+  if (metadata.words.length !== inputItems.length) {
+    return { error: `item-count: sent ${inputItems.length} items, HeadTTS echoed ${metadata.words.length}` }
+  }
 
   const words: string[] = []
   const wtimes: number[] = []
@@ -277,21 +279,36 @@ function alignWordTimings(
     wdurations.push(metadata.wdurations[i] ?? 0)
   }
 
-  if (words.length !== sentence.words.length) return null
+  if (words.length !== sentence.words.length) {
+    return { error: `word-count: ours ${sentence.words.length}, theirs ${words.length} after break filtering` }
+  }
 
   const timings: WordTiming[] = []
+  let lastEndMs = 0
   for (let i = 0; i < sentence.words.length; i++) {
     const ours = sentence.words[i]
     const theirs = words[i]
-    if (!ours || theirs === undefined) return null
-    if (normalizeForComparison(theirs) !== ours.normalized) return null
+    if (!ours || theirs === undefined) return { error: `missing entry at index ${i}` }
+    if (normalizeForComparison(theirs) !== ours.normalized) {
+      return { error: `text mismatch at index ${i}: ours "${ours.normalized}" vs theirs "${theirs}"` }
+    }
 
-    const start = wtimes[i] ?? 0
-    if (Number.isNaN(start)) return null // no sane fallback for a NaN start
+    // Same upstream updateTimestamps() quirk as the NaN-duration case in
+    // the doc comment above, hitting the *start* boundary instead --
+    // observed on very long sentences (HeadTTS splits those into several
+    // internal generations, and the read-past-the-end can land on a chunk
+    // boundary, not only the final word). The previous word's end is a
+    // safe, monotonic stand-in: word highlighting is driven by startMs
+    // ("most recently started word"), so a start no earlier than the
+    // previous word's speech keeps the highlight sequence correct.
+    const rawStart = wtimes[i] ?? 0
+    const start = Number.isNaN(rawStart) ? lastEndMs : rawStart
 
     const duration = wdurations[i] ?? 0
     const end = Number.isNaN(duration) ? totalDurationMs : start + duration
-    timings.push({ wordId: ours.id, startMs: start, endMs: Math.max(start, end) })
+    const boundedEnd = Math.max(start, end)
+    timings.push({ wordId: ours.id, startMs: start, endMs: boundedEnd })
+    lastEndMs = boundedEnd
   }
   return timings
 }
@@ -634,9 +651,9 @@ async function main() {
     const audioDurationMs = wavDurationMs(metadata.audio, SAMPLE_RATE)
 
     const words = alignWordTimings(sentence, metadata, audioDurationMs, inputWithPauses)
-    if (!words) {
+    if (!Array.isArray(words)) {
       failures.push(
-        `${sentence.id}: word-count/text mismatch (ours=${sentence.words.length}, theirs=${metadata.words.length}). ` +
+        `${sentence.id}: alignment failed -- ${words.error}. ` +
           `ours=[${sentence.words.map((w) => w.normalized).join(' ')}] theirs=[${metadata.words.join(' ')}]`,
       )
       continue
@@ -648,7 +665,7 @@ async function main() {
 
     if (!IS_TRIAL) {
       manifest[sentence.id] = {
-        audioUrl: `/narration/gatsby-ch3/${audioFileName}`,
+        audioUrl: `/narration/${PASSAGE_ID}/${audioFileName}`,
         durationMs: Math.round(audioDurationMs),
         words,
       }

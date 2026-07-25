@@ -1,0 +1,6181 @@
+{
+  "mq-p1-s1": {
+    "audioUrl": "/narration/masque/mq-p1-s1.wav",
+    "durationMs": 13311,
+    "words": [
+      {
+        "wordId": "mq-p1-s1-w1",
+        "startMs": 398,
+        "endMs": 490
+      },
+      {
+        "wordId": "mq-p1-s1-w2",
+        "startMs": 480,
+        "endMs": 611
+      },
+      {
+        "wordId": "mq-p1-s1-w3",
+        "startMs": 601,
+        "endMs": 919
+      },
+      {
+        "wordId": "mq-p1-s1-w4",
+        "startMs": 909,
+        "endMs": 1007
+      },
+      {
+        "wordId": "mq-p1-s1-w5",
+        "startMs": 997,
+        "endMs": 1346
+      },
+      {
+        "wordId": "mq-p1-s1-w6",
+        "startMs": 1336,
+        "endMs": 1423
+      },
+      {
+        "wordId": "mq-p1-s1-w7",
+        "startMs": 1413,
+        "endMs": 1505
+      },
+      {
+        "wordId": "mq-p1-s1-w8",
+        "startMs": 1495,
+        "endMs": 1855
+      },
+      {
+        "wordId": "mq-p1-s1-w9",
+        "startMs": 1845,
+        "endMs": 1996
+      },
+      {
+        "wordId": "mq-p1-s1-w10",
+        "startMs": 1986,
+        "endMs": 2321
+      },
+      {
+        "wordId": "mq-p1-s1-w11",
+        "startMs": 2311,
+        "endMs": 2538
+      },
+      {
+        "wordId": "mq-p1-s1-w12",
+        "startMs": 2528,
+        "endMs": 2610
+      },
+      {
+        "wordId": "mq-p1-s1-w13",
+        "startMs": 2600,
+        "endMs": 2713
+      },
+      {
+        "wordId": "mq-p1-s1-w14",
+        "startMs": 2703,
+        "endMs": 3741
+      },
+      {
+        "wordId": "mq-p1-s1-w15",
+        "startMs": 3868,
+        "endMs": 3995
+      },
+      {
+        "wordId": "mq-p1-s1-w16",
+        "startMs": 3985,
+        "endMs": 4158
+      },
+      {
+        "wordId": "mq-p1-s1-w17",
+        "startMs": 4148,
+        "endMs": 4232
+      },
+      {
+        "wordId": "mq-p1-s1-w18",
+        "startMs": 4222,
+        "endMs": 4747
+      },
+      {
+        "wordId": "mq-p1-s1-w19",
+        "startMs": 4737,
+        "endMs": 5190
+      },
+      {
+        "wordId": "mq-p1-s1-w20",
+        "startMs": 5180,
+        "endMs": 5475
+      },
+      {
+        "wordId": "mq-p1-s1-w21",
+        "startMs": 5465,
+        "endMs": 6030
+      },
+      {
+        "wordId": "mq-p1-s1-w22",
+        "startMs": 6020,
+        "endMs": 6884
+      },
+      {
+        "wordId": "mq-p1-s1-w23",
+        "startMs": 7012,
+        "endMs": 7169
+      },
+      {
+        "wordId": "mq-p1-s1-w24",
+        "startMs": 7159,
+        "endMs": 7253
+      },
+      {
+        "wordId": "mq-p1-s1-w25",
+        "startMs": 7243,
+        "endMs": 7522
+      },
+      {
+        "wordId": "mq-p1-s1-w26",
+        "startMs": 7512,
+        "endMs": 8063
+      },
+      {
+        "wordId": "mq-p1-s1-w27",
+        "startMs": 8053,
+        "endMs": 8525
+      },
+      {
+        "wordId": "mq-p1-s1-w28",
+        "startMs": 8515,
+        "endMs": 8684
+      },
+      {
+        "wordId": "mq-p1-s1-w29",
+        "startMs": 8674,
+        "endMs": 9099
+      },
+      {
+        "wordId": "mq-p1-s1-w30",
+        "startMs": 9089,
+        "endMs": 9734
+      },
+      {
+        "wordId": "mq-p1-s1-w31",
+        "startMs": 9724,
+        "endMs": 9885
+      },
+      {
+        "wordId": "mq-p1-s1-w32",
+        "startMs": 9875,
+        "endMs": 9960
+      },
+      {
+        "wordId": "mq-p1-s1-w33",
+        "startMs": 9950,
+        "endMs": 10399
+      },
+      {
+        "wordId": "mq-p1-s1-w34",
+        "startMs": 10389,
+        "endMs": 10775
+      },
+      {
+        "wordId": "mq-p1-s1-w35",
+        "startMs": 10765,
+        "endMs": 10876
+      },
+      {
+        "wordId": "mq-p1-s1-w36",
+        "startMs": 10866,
+        "endMs": 10949
+      },
+      {
+        "wordId": "mq-p1-s1-w37",
+        "startMs": 10939,
+        "endMs": 11251
+      },
+      {
+        "wordId": "mq-p1-s1-w38",
+        "startMs": 11241,
+        "endMs": 11853
+      },
+      {
+        "wordId": "mq-p1-s1-w39",
+        "startMs": 11843,
+        "endMs": 13026
+      }
+    ]
+  },
+  "mq-p2-s1": {
+    "audioUrl": "/narration/masque/mq-p2-s1.wav",
+    "durationMs": 3203,
+    "words": [
+      {
+        "wordId": "mq-p2-s1-w1",
+        "startMs": 372,
+        "endMs": 477
+      },
+      {
+        "wordId": "mq-p2-s1-w2",
+        "startMs": 467,
+        "endMs": 602
+      },
+      {
+        "wordId": "mq-p2-s1-w3",
+        "startMs": 592,
+        "endMs": 656
+      },
+      {
+        "wordId": "mq-p2-s1-w4",
+        "startMs": 646,
+        "endMs": 1204
+      },
+      {
+        "wordId": "mq-p2-s1-w5",
+        "startMs": 1194,
+        "endMs": 1687
+      },
+      {
+        "wordId": "mq-p2-s1-w6",
+        "startMs": 1840,
+        "endMs": 2020
+      },
+      {
+        "wordId": "mq-p2-s1-w7",
+        "startMs": 2010,
+        "endMs": 3089
+      }
+    ]
+  },
+  "mq-p2-s2": {
+    "audioUrl": "/narration/masque/mq-p2-s2.wav",
+    "durationMs": 3425,
+    "words": [
+      {
+        "wordId": "mq-p2-s2-w1",
+        "startMs": 371,
+        "endMs": 533
+      },
+      {
+        "wordId": "mq-p2-s2-w2",
+        "startMs": 523,
+        "endMs": 897
+      },
+      {
+        "wordId": "mq-p2-s2-w3",
+        "startMs": 887,
+        "endMs": 1046
+      },
+      {
+        "wordId": "mq-p2-s2-w4",
+        "startMs": 1036,
+        "endMs": 1158
+      },
+      {
+        "wordId": "mq-p2-s2-w5",
+        "startMs": 1148,
+        "endMs": 1417
+      },
+      {
+        "wordId": "mq-p2-s2-w6",
+        "startMs": 1407,
+        "endMs": 1509
+      },
+      {
+        "wordId": "mq-p2-s2-w7",
+        "startMs": 1499,
+        "endMs": 1607
+      },
+      {
+        "wordId": "mq-p2-s2-w8",
+        "startMs": 1597,
+        "endMs": 2045
+      },
+      {
+        "wordId": "mq-p2-s2-w9",
+        "startMs": 2035,
+        "endMs": 2159
+      },
+      {
+        "wordId": "mq-p2-s2-w10",
+        "startMs": 2149,
+        "endMs": 2319
+      },
+      {
+        "wordId": "mq-p2-s2-w11",
+        "startMs": 2309,
+        "endMs": 2389
+      },
+      {
+        "wordId": "mq-p2-s2-w12",
+        "startMs": 2379,
+        "endMs": 2515
+      },
+      {
+        "wordId": "mq-p2-s2-w13",
+        "startMs": 2505,
+        "endMs": 3305
+      }
+    ]
+  },
+  "mq-p2-s3": {
+    "audioUrl": "/narration/masque/mq-p2-s3.wav",
+    "durationMs": 2982,
+    "words": [
+      {
+        "wordId": "mq-p2-s3-w1",
+        "startMs": 409,
+        "endMs": 612
+      },
+      {
+        "wordId": "mq-p2-s3-w2",
+        "startMs": 602,
+        "endMs": 738
+      },
+      {
+        "wordId": "mq-p2-s3-w3",
+        "startMs": 728,
+        "endMs": 1262
+      },
+      {
+        "wordId": "mq-p2-s3-w4",
+        "startMs": 1479,
+        "endMs": 1596
+      },
+      {
+        "wordId": "mq-p2-s3-w5",
+        "startMs": 1586,
+        "endMs": 2093
+      },
+      {
+        "wordId": "mq-p2-s3-w6",
+        "startMs": 2083,
+        "endMs": 2884
+      }
+    ]
+  },
+  "mq-p2-s4": {
+    "audioUrl": "/narration/masque/mq-p2-s4.wav",
+    "durationMs": 11458,
+    "words": [
+      {
+        "wordId": "mq-p2-s4-w1",
+        "startMs": 418,
+        "endMs": 495
+      },
+      {
+        "wordId": "mq-p2-s4-w2",
+        "startMs": 485,
+        "endMs": 693
+      },
+      {
+        "wordId": "mq-p2-s4-w3",
+        "startMs": 683,
+        "endMs": 1190
+      },
+      {
+        "wordId": "mq-p2-s4-w4",
+        "startMs": 1307,
+        "endMs": 2037
+      },
+      {
+        "wordId": "mq-p2-s4-w5",
+        "startMs": 2200,
+        "endMs": 2412
+      },
+      {
+        "wordId": "mq-p2-s4-w6",
+        "startMs": 2402,
+        "endMs": 2734
+      },
+      {
+        "wordId": "mq-p2-s4-w7",
+        "startMs": 2724,
+        "endMs": 2963
+      },
+      {
+        "wordId": "mq-p2-s4-w8",
+        "startMs": 2953,
+        "endMs": 3044
+      },
+      {
+        "wordId": "mq-p2-s4-w9",
+        "startMs": 3034,
+        "endMs": 3342
+      },
+      {
+        "wordId": "mq-p2-s4-w10",
+        "startMs": 3332,
+        "endMs": 3431
+      },
+      {
+        "wordId": "mq-p2-s4-w11",
+        "startMs": 3421,
+        "endMs": 3714
+      },
+      {
+        "wordId": "mq-p2-s4-w12",
+        "startMs": 3704,
+        "endMs": 4468
+      },
+      {
+        "wordId": "mq-p2-s4-w13",
+        "startMs": 4594,
+        "endMs": 4760
+      },
+      {
+        "wordId": "mq-p2-s4-w14",
+        "startMs": 4750,
+        "endMs": 4834
+      },
+      {
+        "wordId": "mq-p2-s4-w15",
+        "startMs": 4824,
+        "endMs": 5189
+      },
+      {
+        "wordId": "mq-p2-s4-w16",
+        "startMs": 5179,
+        "endMs": 5486
+      },
+      {
+        "wordId": "mq-p2-s4-w17",
+        "startMs": 5476,
+        "endMs": 5782
+      },
+      {
+        "wordId": "mq-p2-s4-w18",
+        "startMs": 5772,
+        "endMs": 6047
+      },
+      {
+        "wordId": "mq-p2-s4-w19",
+        "startMs": 6037,
+        "endMs": 6386
+      },
+      {
+        "wordId": "mq-p2-s4-w20",
+        "startMs": 6376,
+        "endMs": 6479
+      },
+      {
+        "wordId": "mq-p2-s4-w21",
+        "startMs": 6469,
+        "endMs": 6566
+      },
+      {
+        "wordId": "mq-p2-s4-w22",
+        "startMs": 6556,
+        "endMs": 6896
+      },
+      {
+        "wordId": "mq-p2-s4-w23",
+        "startMs": 6886,
+        "endMs": 7012
+      },
+      {
+        "wordId": "mq-p2-s4-w24",
+        "startMs": 7002,
+        "endMs": 7248
+      },
+      {
+        "wordId": "mq-p2-s4-w25",
+        "startMs": 7238,
+        "endMs": 7943
+      },
+      {
+        "wordId": "mq-p2-s4-w26",
+        "startMs": 8081,
+        "endMs": 8239
+      },
+      {
+        "wordId": "mq-p2-s4-w27",
+        "startMs": 8229,
+        "endMs": 8376
+      },
+      {
+        "wordId": "mq-p2-s4-w28",
+        "startMs": 8366,
+        "endMs": 8462
+      },
+      {
+        "wordId": "mq-p2-s4-w29",
+        "startMs": 8452,
+        "endMs": 8682
+      },
+      {
+        "wordId": "mq-p2-s4-w30",
+        "startMs": 8672,
+        "endMs": 8761
+      },
+      {
+        "wordId": "mq-p2-s4-w31",
+        "startMs": 8751,
+        "endMs": 8837
+      },
+      {
+        "wordId": "mq-p2-s4-w32",
+        "startMs": 8827,
+        "endMs": 9069
+      },
+      {
+        "wordId": "mq-p2-s4-w33",
+        "startMs": 9059,
+        "endMs": 9512
+      },
+      {
+        "wordId": "mq-p2-s4-w34",
+        "startMs": 9502,
+        "endMs": 9629
+      },
+      {
+        "wordId": "mq-p2-s4-w35",
+        "startMs": 9619,
+        "endMs": 10107
+      },
+      {
+        "wordId": "mq-p2-s4-w36",
+        "startMs": 10097,
+        "endMs": 11006
+      }
+    ]
+  },
+  "mq-p2-s5": {
+    "audioUrl": "/narration/masque/mq-p2-s5.wav",
+    "durationMs": 5294,
+    "words": [
+      {
+        "wordId": "mq-p2-s5-w1",
+        "startMs": 372,
+        "endMs": 552
+      },
+      {
+        "wordId": "mq-p2-s5-w2",
+        "startMs": 542,
+        "endMs": 651
+      },
+      {
+        "wordId": "mq-p2-s5-w3",
+        "startMs": 641,
+        "endMs": 985
+      },
+      {
+        "wordId": "mq-p2-s5-w4",
+        "startMs": 975,
+        "endMs": 1164
+      },
+      {
+        "wordId": "mq-p2-s5-w5",
+        "startMs": 1154,
+        "endMs": 1452
+      },
+      {
+        "wordId": "mq-p2-s5-w6",
+        "startMs": 1442,
+        "endMs": 2133
+      },
+      {
+        "wordId": "mq-p2-s5-w7",
+        "startMs": 2262,
+        "endMs": 2431
+      },
+      {
+        "wordId": "mq-p2-s5-w8",
+        "startMs": 2421,
+        "endMs": 2591
+      },
+      {
+        "wordId": "mq-p2-s5-w9",
+        "startMs": 2581,
+        "endMs": 2680
+      },
+      {
+        "wordId": "mq-p2-s5-w10",
+        "startMs": 2670,
+        "endMs": 2789
+      },
+      {
+        "wordId": "mq-p2-s5-w11",
+        "startMs": 2779,
+        "endMs": 3290
+      },
+      {
+        "wordId": "mq-p2-s5-w12",
+        "startMs": 3280,
+        "endMs": 3440
+      },
+      {
+        "wordId": "mq-p2-s5-w13",
+        "startMs": 3430,
+        "endMs": 3525
+      },
+      {
+        "wordId": "mq-p2-s5-w14",
+        "startMs": 3515,
+        "endMs": 3839
+      },
+      {
+        "wordId": "mq-p2-s5-w15",
+        "startMs": 3829,
+        "endMs": 4090
+      },
+      {
+        "wordId": "mq-p2-s5-w16",
+        "startMs": 4080,
+        "endMs": 4162
+      },
+      {
+        "wordId": "mq-p2-s5-w17",
+        "startMs": 4152,
+        "endMs": 4228
+      },
+      {
+        "wordId": "mq-p2-s5-w18",
+        "startMs": 4218,
+        "endMs": 5120
+      }
+    ]
+  },
+  "mq-p2-s6": {
+    "audioUrl": "/narration/masque/mq-p2-s6.wav",
+    "durationMs": 6275,
+    "words": [
+      {
+        "wordId": "mq-p2-s6-w1",
+        "startMs": 373,
+        "endMs": 465
+      },
+      {
+        "wordId": "mq-p2-s6-w2",
+        "startMs": 455,
+        "endMs": 955
+      },
+      {
+        "wordId": "mq-p2-s6-w3",
+        "startMs": 945,
+        "endMs": 1083
+      },
+      {
+        "wordId": "mq-p2-s6-w4",
+        "startMs": 1073,
+        "endMs": 1438
+      },
+      {
+        "wordId": "mq-p2-s6-w5",
+        "startMs": 1428,
+        "endMs": 2128
+      },
+      {
+        "wordId": "mq-p2-s6-w6",
+        "startMs": 2118,
+        "endMs": 2936
+      },
+      {
+        "wordId": "mq-p2-s6-w7",
+        "startMs": 2926,
+        "endMs": 3127
+      },
+      {
+        "wordId": "mq-p2-s6-w8",
+        "startMs": 3117,
+        "endMs": 3210
+      },
+      {
+        "wordId": "mq-p2-s6-w9",
+        "startMs": 3200,
+        "endMs": 3518
+      },
+      {
+        "wordId": "mq-p2-s6-w10",
+        "startMs": 3508,
+        "endMs": 4058
+      },
+      {
+        "wordId": "mq-p2-s6-w11",
+        "startMs": 4048,
+        "endMs": 4212
+      },
+      {
+        "wordId": "mq-p2-s6-w12",
+        "startMs": 4202,
+        "endMs": 4431
+      },
+      {
+        "wordId": "mq-p2-s6-w13",
+        "startMs": 4421,
+        "endMs": 4629
+      },
+      {
+        "wordId": "mq-p2-s6-w14",
+        "startMs": 4619,
+        "endMs": 4764
+      },
+      {
+        "wordId": "mq-p2-s6-w15",
+        "startMs": 4754,
+        "endMs": 4996
+      },
+      {
+        "wordId": "mq-p2-s6-w16",
+        "startMs": 4986,
+        "endMs": 5088
+      },
+      {
+        "wordId": "mq-p2-s6-w17",
+        "startMs": 5078,
+        "endMs": 5137
+      },
+      {
+        "wordId": "mq-p2-s6-w18",
+        "startMs": 5127,
+        "endMs": 5945
+      }
+    ]
+  },
+  "mq-p2-s7": {
+    "audioUrl": "/narration/masque/mq-p2-s7.wav",
+    "durationMs": 5366,
+    "words": [
+      {
+        "wordId": "mq-p2-s7-w1",
+        "startMs": 386,
+        "endMs": 486
+      },
+      {
+        "wordId": "mq-p2-s7-w2",
+        "startMs": 476,
+        "endMs": 594
+      },
+      {
+        "wordId": "mq-p2-s7-w3",
+        "startMs": 584,
+        "endMs": 662
+      },
+      {
+        "wordId": "mq-p2-s7-w4",
+        "startMs": 652,
+        "endMs": 972
+      },
+      {
+        "wordId": "mq-p2-s7-w5",
+        "startMs": 962,
+        "endMs": 1256
+      },
+      {
+        "wordId": "mq-p2-s7-w6",
+        "startMs": 1246,
+        "endMs": 1362
+      },
+      {
+        "wordId": "mq-p2-s7-w7",
+        "startMs": 1352,
+        "endMs": 1634
+      },
+      {
+        "wordId": "mq-p2-s7-w8",
+        "startMs": 1624,
+        "endMs": 1907
+      },
+      {
+        "wordId": "mq-p2-s7-w9",
+        "startMs": 1897,
+        "endMs": 2017
+      },
+      {
+        "wordId": "mq-p2-s7-w10",
+        "startMs": 2007,
+        "endMs": 2293
+      },
+      {
+        "wordId": "mq-p2-s7-w11",
+        "startMs": 2283,
+        "endMs": 3013
+      },
+      {
+        "wordId": "mq-p2-s7-w12",
+        "startMs": 3161,
+        "endMs": 3286
+      },
+      {
+        "wordId": "mq-p2-s7-w13",
+        "startMs": 3276,
+        "endMs": 3395
+      },
+      {
+        "wordId": "mq-p2-s7-w14",
+        "startMs": 3385,
+        "endMs": 3633
+      },
+      {
+        "wordId": "mq-p2-s7-w15",
+        "startMs": 3623,
+        "endMs": 3969
+      },
+      {
+        "wordId": "mq-p2-s7-w16",
+        "startMs": 3959,
+        "endMs": 4080
+      },
+      {
+        "wordId": "mq-p2-s7-w17",
+        "startMs": 4070,
+        "endMs": 4401
+      },
+      {
+        "wordId": "mq-p2-s7-w18",
+        "startMs": 4391,
+        "endMs": 5219
+      }
+    ]
+  },
+  "mq-p2-s8": {
+    "audioUrl": "/narration/masque/mq-p2-s8.wav",
+    "durationMs": 8501,
+    "words": [
+      {
+        "wordId": "mq-p2-s8-w1",
+        "startMs": 394,
+        "endMs": 462
+      },
+      {
+        "wordId": "mq-p2-s8-w2",
+        "startMs": 452,
+        "endMs": 549
+      },
+      {
+        "wordId": "mq-p2-s8-w3",
+        "startMs": 539,
+        "endMs": 793
+      },
+      {
+        "wordId": "mq-p2-s8-w4",
+        "startMs": 783,
+        "endMs": 901
+      },
+      {
+        "wordId": "mq-p2-s8-w5",
+        "startMs": 891,
+        "endMs": 1400
+      },
+      {
+        "wordId": "mq-p2-s8-w6",
+        "startMs": 1522,
+        "endMs": 1626
+      },
+      {
+        "wordId": "mq-p2-s8-w7",
+        "startMs": 1616,
+        "endMs": 1694
+      },
+      {
+        "wordId": "mq-p2-s8-w8",
+        "startMs": 1684,
+        "endMs": 1905
+      },
+      {
+        "wordId": "mq-p2-s8-w9",
+        "startMs": 1895,
+        "endMs": 1978
+      },
+      {
+        "wordId": "mq-p2-s8-w10",
+        "startMs": 1968,
+        "endMs": 2191
+      },
+      {
+        "wordId": "mq-p2-s8-w11",
+        "startMs": 2181,
+        "endMs": 2904
+      },
+      {
+        "wordId": "mq-p2-s8-w12",
+        "startMs": 3048,
+        "endMs": 3151
+      },
+      {
+        "wordId": "mq-p2-s8-w13",
+        "startMs": 3141,
+        "endMs": 3471
+      },
+      {
+        "wordId": "mq-p2-s8-w14",
+        "startMs": 3461,
+        "endMs": 3567
+      },
+      {
+        "wordId": "mq-p2-s8-w15",
+        "startMs": 3557,
+        "endMs": 3878
+      },
+      {
+        "wordId": "mq-p2-s8-w16",
+        "startMs": 3868,
+        "endMs": 4270
+      },
+      {
+        "wordId": "mq-p2-s8-w17",
+        "startMs": 4260,
+        "endMs": 4754
+      },
+      {
+        "wordId": "mq-p2-s8-w18",
+        "startMs": 4744,
+        "endMs": 4997
+      },
+      {
+        "wordId": "mq-p2-s8-w19",
+        "startMs": 4987,
+        "endMs": 5151
+      },
+      {
+        "wordId": "mq-p2-s8-w20",
+        "startMs": 5141,
+        "endMs": 5382
+      },
+      {
+        "wordId": "mq-p2-s8-w21",
+        "startMs": 5372,
+        "endMs": 5448
+      },
+      {
+        "wordId": "mq-p2-s8-w22",
+        "startMs": 5438,
+        "endMs": 5846
+      },
+      {
+        "wordId": "mq-p2-s8-w23",
+        "startMs": 5836,
+        "endMs": 6339
+      },
+      {
+        "wordId": "mq-p2-s8-w24",
+        "startMs": 6329,
+        "endMs": 6523
+      },
+      {
+        "wordId": "mq-p2-s8-w25",
+        "startMs": 6513,
+        "endMs": 6889
+      },
+      {
+        "wordId": "mq-p2-s8-w26",
+        "startMs": 6879,
+        "endMs": 6967
+      },
+      {
+        "wordId": "mq-p2-s8-w27",
+        "startMs": 6957,
+        "endMs": 7387
+      },
+      {
+        "wordId": "mq-p2-s8-w28",
+        "startMs": 7377,
+        "endMs": 7459
+      },
+      {
+        "wordId": "mq-p2-s8-w29",
+        "startMs": 7449,
+        "endMs": 7535
+      },
+      {
+        "wordId": "mq-p2-s8-w30",
+        "startMs": 7525,
+        "endMs": 8333
+      }
+    ]
+  },
+  "mq-p2-s9": {
+    "audioUrl": "/narration/masque/mq-p2-s9.wav",
+    "durationMs": 8450,
+    "words": [
+      {
+        "wordId": "mq-p2-s9-w1",
+        "startMs": 410,
+        "endMs": 619
+      },
+      {
+        "wordId": "mq-p2-s9-w2",
+        "startMs": 609,
+        "endMs": 1041
+      },
+      {
+        "wordId": "mq-p2-s9-w3",
+        "startMs": 1031,
+        "endMs": 1178
+      },
+      {
+        "wordId": "mq-p2-s9-w4",
+        "startMs": 1168,
+        "endMs": 1305
+      },
+      {
+        "wordId": "mq-p2-s9-w5",
+        "startMs": 1295,
+        "endMs": 1721
+      },
+      {
+        "wordId": "mq-p2-s9-w6",
+        "startMs": 1711,
+        "endMs": 2419
+      },
+      {
+        "wordId": "mq-p2-s9-w7",
+        "startMs": 2409,
+        "endMs": 2653
+      },
+      {
+        "wordId": "mq-p2-s9-w8",
+        "startMs": 2643,
+        "endMs": 2984
+      },
+      {
+        "wordId": "mq-p2-s9-w9",
+        "startMs": 2974,
+        "endMs": 3358
+      },
+      {
+        "wordId": "mq-p2-s9-w10",
+        "startMs": 3348,
+        "endMs": 3453
+      },
+      {
+        "wordId": "mq-p2-s9-w11",
+        "startMs": 3443,
+        "endMs": 3952
+      },
+      {
+        "wordId": "mq-p2-s9-w12",
+        "startMs": 3942,
+        "endMs": 4087
+      },
+      {
+        "wordId": "mq-p2-s9-w13",
+        "startMs": 4077,
+        "endMs": 4168
+      },
+      {
+        "wordId": "mq-p2-s9-w14",
+        "startMs": 4158,
+        "endMs": 4710
+      },
+      {
+        "wordId": "mq-p2-s9-w15",
+        "startMs": 4700,
+        "endMs": 5041
+      },
+      {
+        "wordId": "mq-p2-s9-w16",
+        "startMs": 5031,
+        "endMs": 5145
+      },
+      {
+        "wordId": "mq-p2-s9-w17",
+        "startMs": 5135,
+        "endMs": 5218
+      },
+      {
+        "wordId": "mq-p2-s9-w18",
+        "startMs": 5208,
+        "endMs": 5847
+      },
+      {
+        "wordId": "mq-p2-s9-w19",
+        "startMs": 5837,
+        "endMs": 5921
+      },
+      {
+        "wordId": "mq-p2-s9-w20",
+        "startMs": 5911,
+        "endMs": 5994
+      },
+      {
+        "wordId": "mq-p2-s9-w21",
+        "startMs": 5984,
+        "endMs": 6726
+      },
+      {
+        "wordId": "mq-p2-s9-w22",
+        "startMs": 6716,
+        "endMs": 7029
+      },
+      {
+        "wordId": "mq-p2-s9-w23",
+        "startMs": 7019,
+        "endMs": 7203
+      },
+      {
+        "wordId": "mq-p2-s9-w24",
+        "startMs": 7193,
+        "endMs": 7282
+      },
+      {
+        "wordId": "mq-p2-s9-w25",
+        "startMs": 7272,
+        "endMs": 8132
+      }
+    ]
+  },
+  "mq-p2-s10": {
+    "audioUrl": "/narration/masque/mq-p2-s10.wav",
+    "durationMs": 6292,
+    "words": [
+      {
+        "wordId": "mq-p2-s10-w1",
+        "startMs": 413,
+        "endMs": 543
+      },
+      {
+        "wordId": "mq-p2-s10-w2",
+        "startMs": 533,
+        "endMs": 625
+      },
+      {
+        "wordId": "mq-p2-s10-w3",
+        "startMs": 615,
+        "endMs": 730
+      },
+      {
+        "wordId": "mq-p2-s10-w4",
+        "startMs": 720,
+        "endMs": 1147
+      },
+      {
+        "wordId": "mq-p2-s10-w5",
+        "startMs": 1137,
+        "endMs": 1682
+      },
+      {
+        "wordId": "mq-p2-s10-w6",
+        "startMs": 1672,
+        "endMs": 1838
+      },
+      {
+        "wordId": "mq-p2-s10-w7",
+        "startMs": 1828,
+        "endMs": 2414
+      },
+      {
+        "wordId": "mq-p2-s10-w8",
+        "startMs": 2578,
+        "endMs": 2710
+      },
+      {
+        "wordId": "mq-p2-s10-w9",
+        "startMs": 2700,
+        "endMs": 3156
+      },
+      {
+        "wordId": "mq-p2-s10-w10",
+        "startMs": 3146,
+        "endMs": 3283
+      },
+      {
+        "wordId": "mq-p2-s10-w11",
+        "startMs": 3273,
+        "endMs": 3911
+      },
+      {
+        "wordId": "mq-p2-s10-w12",
+        "startMs": 4114,
+        "endMs": 4266
+      },
+      {
+        "wordId": "mq-p2-s10-w13",
+        "startMs": 4256,
+        "endMs": 4656
+      },
+      {
+        "wordId": "mq-p2-s10-w14",
+        "startMs": 4646,
+        "endMs": 4935
+      },
+      {
+        "wordId": "mq-p2-s10-w15",
+        "startMs": 4925,
+        "endMs": 5058
+      },
+      {
+        "wordId": "mq-p2-s10-w16",
+        "startMs": 5048,
+        "endMs": 5194
+      },
+      {
+        "wordId": "mq-p2-s10-w17",
+        "startMs": 5184,
+        "endMs": 6113
+      }
+    ]
+  },
+  "mq-p2-s11": {
+    "audioUrl": "/narration/masque/mq-p2-s11.wav",
+    "durationMs": 5667,
+    "words": [
+      {
+        "wordId": "mq-p2-s11-w1",
+        "startMs": 394,
+        "endMs": 472
+      },
+      {
+        "wordId": "mq-p2-s11-w2",
+        "startMs": 462,
+        "endMs": 803
+      },
+      {
+        "wordId": "mq-p2-s11-w3",
+        "startMs": 793,
+        "endMs": 1185
+      },
+      {
+        "wordId": "mq-p2-s11-w4",
+        "startMs": 1175,
+        "endMs": 1345
+      },
+      {
+        "wordId": "mq-p2-s11-w5",
+        "startMs": 1335,
+        "endMs": 1771
+      },
+      {
+        "wordId": "mq-p2-s11-w6",
+        "startMs": 1761,
+        "endMs": 1870
+      },
+      {
+        "wordId": "mq-p2-s11-w7",
+        "startMs": 1860,
+        "endMs": 2014
+      },
+      {
+        "wordId": "mq-p2-s11-w8",
+        "startMs": 2004,
+        "endMs": 2456
+      },
+      {
+        "wordId": "mq-p2-s11-w9",
+        "startMs": 2446,
+        "endMs": 2550
+      },
+      {
+        "wordId": "mq-p2-s11-w10",
+        "startMs": 2540,
+        "endMs": 3544
+      },
+      {
+        "wordId": "mq-p2-s11-w11",
+        "startMs": 3695,
+        "endMs": 3825
+      },
+      {
+        "wordId": "mq-p2-s11-w12",
+        "startMs": 3815,
+        "endMs": 4031
+      },
+      {
+        "wordId": "mq-p2-s11-w13",
+        "startMs": 4021,
+        "endMs": 4110
+      },
+      {
+        "wordId": "mq-p2-s11-w14",
+        "startMs": 4100,
+        "endMs": 4463
+      },
+      {
+        "wordId": "mq-p2-s11-w15",
+        "startMs": 4453,
+        "endMs": 4572
+      },
+      {
+        "wordId": "mq-p2-s11-w16",
+        "startMs": 4562,
+        "endMs": 5448
+      }
+    ]
+  },
+  "mq-p2-s12": {
+    "audioUrl": "/narration/masque/mq-p2-s12.wav",
+    "durationMs": 3762,
+    "words": [
+      {
+        "wordId": "mq-p2-s12-w1",
+        "startMs": 411,
+        "endMs": 498
+      },
+      {
+        "wordId": "mq-p2-s12-w2",
+        "startMs": 488,
+        "endMs": 830
+      },
+      {
+        "wordId": "mq-p2-s12-w3",
+        "startMs": 820,
+        "endMs": 995
+      },
+      {
+        "wordId": "mq-p2-s12-w4",
+        "startMs": 985,
+        "endMs": 1301
+      },
+      {
+        "wordId": "mq-p2-s12-w5",
+        "startMs": 1291,
+        "endMs": 1916
+      },
+      {
+        "wordId": "mq-p2-s12-w6",
+        "startMs": 2084,
+        "endMs": 2217
+      },
+      {
+        "wordId": "mq-p2-s12-w7",
+        "startMs": 2207,
+        "endMs": 2442
+      },
+      {
+        "wordId": "mq-p2-s12-w8",
+        "startMs": 2432,
+        "endMs": 2548
+      },
+      {
+        "wordId": "mq-p2-s12-w9",
+        "startMs": 2538,
+        "endMs": 2623
+      },
+      {
+        "wordId": "mq-p2-s12-w10",
+        "startMs": 2613,
+        "endMs": 3641
+      }
+    ]
+  },
+  "mq-p2-s13": {
+    "audioUrl": "/narration/masque/mq-p2-s13.wav",
+    "durationMs": 5685,
+    "words": [
+      {
+        "wordId": "mq-p2-s13-w1",
+        "startMs": 387,
+        "endMs": 461
+      },
+      {
+        "wordId": "mq-p2-s13-w2",
+        "startMs": 451,
+        "endMs": 756
+      },
+      {
+        "wordId": "mq-p2-s13-w3",
+        "startMs": 746,
+        "endMs": 913
+      },
+      {
+        "wordId": "mq-p2-s13-w4",
+        "startMs": 903,
+        "endMs": 1360
+      },
+      {
+        "wordId": "mq-p2-s13-w5",
+        "startMs": 1350,
+        "endMs": 1478
+      },
+      {
+        "wordId": "mq-p2-s13-w6",
+        "startMs": 1468,
+        "endMs": 1770
+      },
+      {
+        "wordId": "mq-p2-s13-w7",
+        "startMs": 1760,
+        "endMs": 1910
+      },
+      {
+        "wordId": "mq-p2-s13-w8",
+        "startMs": 1900,
+        "endMs": 2673
+      },
+      {
+        "wordId": "mq-p2-s13-w9",
+        "startMs": 2860,
+        "endMs": 2972
+      },
+      {
+        "wordId": "mq-p2-s13-w10",
+        "startMs": 2962,
+        "endMs": 3239
+      },
+      {
+        "wordId": "mq-p2-s13-w11",
+        "startMs": 3229,
+        "endMs": 3382
+      },
+      {
+        "wordId": "mq-p2-s13-w12",
+        "startMs": 3372,
+        "endMs": 3787
+      },
+      {
+        "wordId": "mq-p2-s13-w13",
+        "startMs": 3996,
+        "endMs": 4114
+      },
+      {
+        "wordId": "mq-p2-s13-w14",
+        "startMs": 4104,
+        "endMs": 4461
+      },
+      {
+        "wordId": "mq-p2-s13-w15",
+        "startMs": 4451,
+        "endMs": 4604
+      },
+      {
+        "wordId": "mq-p2-s13-w16",
+        "startMs": 4594,
+        "endMs": 5470
+      }
+    ]
+  },
+  "mq-p2-s14": {
+    "audioUrl": "/narration/masque/mq-p2-s14.wav",
+    "durationMs": 11152,
+    "words": [
+      {
+        "wordId": "mq-p2-s14-w1",
+        "startMs": 415,
+        "endMs": 490
+      },
+      {
+        "wordId": "mq-p2-s14-w2",
+        "startMs": 480,
+        "endMs": 857
+      },
+      {
+        "wordId": "mq-p2-s14-w3",
+        "startMs": 847,
+        "endMs": 1367
+      },
+      {
+        "wordId": "mq-p2-s14-w4",
+        "startMs": 1357,
+        "endMs": 1523
+      },
+      {
+        "wordId": "mq-p2-s14-w5",
+        "startMs": 1513,
+        "endMs": 1933
+      },
+      {
+        "wordId": "mq-p2-s14-w6",
+        "startMs": 1923,
+        "endMs": 2414
+      },
+      {
+        "wordId": "mq-p2-s14-w7",
+        "startMs": 2404,
+        "endMs": 2580
+      },
+      {
+        "wordId": "mq-p2-s14-w8",
+        "startMs": 2570,
+        "endMs": 2896
+      },
+      {
+        "wordId": "mq-p2-s14-w9",
+        "startMs": 2886,
+        "endMs": 3237
+      },
+      {
+        "wordId": "mq-p2-s14-w10",
+        "startMs": 3227,
+        "endMs": 4207
+      },
+      {
+        "wordId": "mq-p2-s14-w11",
+        "startMs": 4197,
+        "endMs": 4383
+      },
+      {
+        "wordId": "mq-p2-s14-w12",
+        "startMs": 4373,
+        "endMs": 4618
+      },
+      {
+        "wordId": "mq-p2-s14-w13",
+        "startMs": 4608,
+        "endMs": 4858
+      },
+      {
+        "wordId": "mq-p2-s14-w14",
+        "startMs": 4848,
+        "endMs": 5054
+      },
+      {
+        "wordId": "mq-p2-s14-w15",
+        "startMs": 5044,
+        "endMs": 5138
+      },
+      {
+        "wordId": "mq-p2-s14-w16",
+        "startMs": 5128,
+        "endMs": 5718
+      },
+      {
+        "wordId": "mq-p2-s14-w17",
+        "startMs": 5708,
+        "endMs": 5876
+      },
+      {
+        "wordId": "mq-p2-s14-w18",
+        "startMs": 5866,
+        "endMs": 6103
+      },
+      {
+        "wordId": "mq-p2-s14-w19",
+        "startMs": 6093,
+        "endMs": 6180
+      },
+      {
+        "wordId": "mq-p2-s14-w20",
+        "startMs": 6170,
+        "endMs": 7060
+      },
+      {
+        "wordId": "mq-p2-s14-w21",
+        "startMs": 7230,
+        "endMs": 7621
+      },
+      {
+        "wordId": "mq-p2-s14-w22",
+        "startMs": 7611,
+        "endMs": 7732
+      },
+      {
+        "wordId": "mq-p2-s14-w23",
+        "startMs": 7722,
+        "endMs": 8003
+      },
+      {
+        "wordId": "mq-p2-s14-w24",
+        "startMs": 7993,
+        "endMs": 8440
+      },
+      {
+        "wordId": "mq-p2-s14-w25",
+        "startMs": 8430,
+        "endMs": 8688
+      },
+      {
+        "wordId": "mq-p2-s14-w26",
+        "startMs": 8678,
+        "endMs": 8745
+      },
+      {
+        "wordId": "mq-p2-s14-w27",
+        "startMs": 8735,
+        "endMs": 9087
+      },
+      {
+        "wordId": "mq-p2-s14-w28",
+        "startMs": 9077,
+        "endMs": 9168
+      },
+      {
+        "wordId": "mq-p2-s14-w29",
+        "startMs": 9158,
+        "endMs": 9253
+      },
+      {
+        "wordId": "mq-p2-s14-w30",
+        "startMs": 9243,
+        "endMs": 9526
+      },
+      {
+        "wordId": "mq-p2-s14-w31",
+        "startMs": 9516,
+        "endMs": 10020
+      },
+      {
+        "wordId": "mq-p2-s14-w32",
+        "startMs": 10010,
+        "endMs": 10151
+      },
+      {
+        "wordId": "mq-p2-s14-w33",
+        "startMs": 10141,
+        "endMs": 10944
+      }
+    ]
+  },
+  "mq-p2-s15": {
+    "audioUrl": "/narration/masque/mq-p2-s15.wav",
+    "durationMs": 5578,
+    "words": [
+      {
+        "wordId": "mq-p2-s15-w1",
+        "startMs": 370,
+        "endMs": 493
+      },
+      {
+        "wordId": "mq-p2-s15-w2",
+        "startMs": 483,
+        "endMs": 626
+      },
+      {
+        "wordId": "mq-p2-s15-w3",
+        "startMs": 616,
+        "endMs": 815
+      },
+      {
+        "wordId": "mq-p2-s15-w4",
+        "startMs": 805,
+        "endMs": 1192
+      },
+      {
+        "wordId": "mq-p2-s15-w5",
+        "startMs": 1182,
+        "endMs": 1873
+      },
+      {
+        "wordId": "mq-p2-s15-w6",
+        "startMs": 2010,
+        "endMs": 2123
+      },
+      {
+        "wordId": "mq-p2-s15-w7",
+        "startMs": 2113,
+        "endMs": 2439
+      },
+      {
+        "wordId": "mq-p2-s15-w8",
+        "startMs": 2429,
+        "endMs": 2515
+      },
+      {
+        "wordId": "mq-p2-s15-w9",
+        "startMs": 2505,
+        "endMs": 2591
+      },
+      {
+        "wordId": "mq-p2-s15-w10",
+        "startMs": 2581,
+        "endMs": 3068
+      },
+      {
+        "wordId": "mq-p2-s15-w11",
+        "startMs": 3058,
+        "endMs": 3387
+      },
+      {
+        "wordId": "mq-p2-s15-w12",
+        "startMs": 3377,
+        "endMs": 3492
+      },
+      {
+        "wordId": "mq-p2-s15-w13",
+        "startMs": 3482,
+        "endMs": 4088
+      },
+      {
+        "wordId": "mq-p2-s15-w14",
+        "startMs": 4078,
+        "endMs": 4194
+      },
+      {
+        "wordId": "mq-p2-s15-w15",
+        "startMs": 4184,
+        "endMs": 4262
+      },
+      {
+        "wordId": "mq-p2-s15-w16",
+        "startMs": 4252,
+        "endMs": 5409
+      }
+    ]
+  },
+  "mq-p2-s16": {
+    "audioUrl": "/narration/masque/mq-p2-s16.wav",
+    "durationMs": 3533,
+    "words": [
+      {
+        "wordId": "mq-p2-s16-w1",
+        "startMs": 376,
+        "endMs": 442
+      },
+      {
+        "wordId": "mq-p2-s16-w2",
+        "startMs": 432,
+        "endMs": 781
+      },
+      {
+        "wordId": "mq-p2-s16-w3",
+        "startMs": 771,
+        "endMs": 976
+      },
+      {
+        "wordId": "mq-p2-s16-w4",
+        "startMs": 966,
+        "endMs": 1091
+      },
+      {
+        "wordId": "mq-p2-s16-w5",
+        "startMs": 1081,
+        "endMs": 1718
+      },
+      {
+        "wordId": "mq-p2-s16-w6",
+        "startMs": 1959,
+        "endMs": 2061
+      },
+      {
+        "wordId": "mq-p2-s16-w7",
+        "startMs": 2051,
+        "endMs": 2320
+      },
+      {
+        "wordId": "mq-p2-s16-w8",
+        "startMs": 2310,
+        "endMs": 2568
+      },
+      {
+        "wordId": "mq-p2-s16-w9",
+        "startMs": 2558,
+        "endMs": 3351
+      }
+    ]
+  },
+  "mq-p2-s17": {
+    "audioUrl": "/narration/masque/mq-p2-s17.wav",
+    "durationMs": 10422,
+    "words": [
+      {
+        "wordId": "mq-p2-s17-w1",
+        "startMs": 464,
+        "endMs": 734
+      },
+      {
+        "wordId": "mq-p2-s17-w2",
+        "startMs": 724,
+        "endMs": 870
+      },
+      {
+        "wordId": "mq-p2-s17-w3",
+        "startMs": 860,
+        "endMs": 1244
+      },
+      {
+        "wordId": "mq-p2-s17-w4",
+        "startMs": 1234,
+        "endMs": 1403
+      },
+      {
+        "wordId": "mq-p2-s17-w5",
+        "startMs": 1393,
+        "endMs": 1472
+      },
+      {
+        "wordId": "mq-p2-s17-w6",
+        "startMs": 1462,
+        "endMs": 1549
+      },
+      {
+        "wordId": "mq-p2-s17-w7",
+        "startMs": 1539,
+        "endMs": 1851
+      },
+      {
+        "wordId": "mq-p2-s17-w8",
+        "startMs": 1841,
+        "endMs": 2388
+      },
+      {
+        "wordId": "mq-p2-s17-w9",
+        "startMs": 2378,
+        "endMs": 2544
+      },
+      {
+        "wordId": "mq-p2-s17-w10",
+        "startMs": 2534,
+        "endMs": 2728
+      },
+      {
+        "wordId": "mq-p2-s17-w11",
+        "startMs": 2718,
+        "endMs": 2996
+      },
+      {
+        "wordId": "mq-p2-s17-w12",
+        "startMs": 2986,
+        "endMs": 3318
+      },
+      {
+        "wordId": "mq-p2-s17-w13",
+        "startMs": 3308,
+        "endMs": 3452
+      },
+      {
+        "wordId": "mq-p2-s17-w14",
+        "startMs": 3442,
+        "endMs": 4545
+      },
+      {
+        "wordId": "mq-p2-s17-w15",
+        "startMs": 4706,
+        "endMs": 4966
+      },
+      {
+        "wordId": "mq-p2-s17-w16",
+        "startMs": 4956,
+        "endMs": 5037
+      },
+      {
+        "wordId": "mq-p2-s17-w17",
+        "startMs": 5027,
+        "endMs": 5568
+      },
+      {
+        "wordId": "mq-p2-s17-w18",
+        "startMs": 5558,
+        "endMs": 5689
+      },
+      {
+        "wordId": "mq-p2-s17-w19",
+        "startMs": 5679,
+        "endMs": 6065
+      },
+      {
+        "wordId": "mq-p2-s17-w20",
+        "startMs": 6055,
+        "endMs": 6540
+      },
+      {
+        "wordId": "mq-p2-s17-w21",
+        "startMs": 6530,
+        "endMs": 6733
+      },
+      {
+        "wordId": "mq-p2-s17-w22",
+        "startMs": 6723,
+        "endMs": 6969
+      },
+      {
+        "wordId": "mq-p2-s17-w23",
+        "startMs": 6959,
+        "endMs": 7447
+      },
+      {
+        "wordId": "mq-p2-s17-w24",
+        "startMs": 7437,
+        "endMs": 7675
+      },
+      {
+        "wordId": "mq-p2-s17-w25",
+        "startMs": 7665,
+        "endMs": 7862
+      },
+      {
+        "wordId": "mq-p2-s17-w26",
+        "startMs": 7852,
+        "endMs": 8486
+      },
+      {
+        "wordId": "mq-p2-s17-w27",
+        "startMs": 8476,
+        "endMs": 8753
+      },
+      {
+        "wordId": "mq-p2-s17-w28",
+        "startMs": 8743,
+        "endMs": 9179
+      },
+      {
+        "wordId": "mq-p2-s17-w29",
+        "startMs": 9169,
+        "endMs": 9326
+      },
+      {
+        "wordId": "mq-p2-s17-w30",
+        "startMs": 9316,
+        "endMs": 9399
+      },
+      {
+        "wordId": "mq-p2-s17-w31",
+        "startMs": 9389,
+        "endMs": 10160
+      }
+    ]
+  },
+  "mq-p2-s18": {
+    "audioUrl": "/narration/masque/mq-p2-s18.wav",
+    "durationMs": 5725,
+    "words": [
+      {
+        "wordId": "mq-p2-s18-w1",
+        "startMs": 399,
+        "endMs": 502
+      },
+      {
+        "wordId": "mq-p2-s18-w2",
+        "startMs": 492,
+        "endMs": 634
+      },
+      {
+        "wordId": "mq-p2-s18-w3",
+        "startMs": 624,
+        "endMs": 833
+      },
+      {
+        "wordId": "mq-p2-s18-w4",
+        "startMs": 823,
+        "endMs": 1100
+      },
+      {
+        "wordId": "mq-p2-s18-w5",
+        "startMs": 1090,
+        "endMs": 1219
+      },
+      {
+        "wordId": "mq-p2-s18-w6",
+        "startMs": 1209,
+        "endMs": 1451
+      },
+      {
+        "wordId": "mq-p2-s18-w7",
+        "startMs": 1441,
+        "endMs": 1902
+      },
+      {
+        "wordId": "mq-p2-s18-w8",
+        "startMs": 1892,
+        "endMs": 2468
+      },
+      {
+        "wordId": "mq-p2-s18-w9",
+        "startMs": 2458,
+        "endMs": 2650
+      },
+      {
+        "wordId": "mq-p2-s18-w10",
+        "startMs": 2640,
+        "endMs": 3221
+      },
+      {
+        "wordId": "mq-p2-s18-w11",
+        "startMs": 3211,
+        "endMs": 3417
+      },
+      {
+        "wordId": "mq-p2-s18-w12",
+        "startMs": 3407,
+        "endMs": 3849
+      },
+      {
+        "wordId": "mq-p2-s18-w13",
+        "startMs": 3839,
+        "endMs": 4083
+      },
+      {
+        "wordId": "mq-p2-s18-w14",
+        "startMs": 4073,
+        "endMs": 4159
+      },
+      {
+        "wordId": "mq-p2-s18-w15",
+        "startMs": 4149,
+        "endMs": 4412
+      },
+      {
+        "wordId": "mq-p2-s18-w16",
+        "startMs": 4402,
+        "endMs": 4492
+      },
+      {
+        "wordId": "mq-p2-s18-w17",
+        "startMs": 4482,
+        "endMs": 5447
+      }
+    ]
+  },
+  "mq-p2-s19": {
+    "audioUrl": "/narration/masque/mq-p2-s19.wav",
+    "durationMs": 12723,
+    "words": [
+      {
+        "wordId": "mq-p2-s19-w1",
+        "startMs": 383,
+        "endMs": 488
+      },
+      {
+        "wordId": "mq-p2-s19-w2",
+        "startMs": 478,
+        "endMs": 570
+      },
+      {
+        "wordId": "mq-p2-s19-w3",
+        "startMs": 560,
+        "endMs": 643
+      },
+      {
+        "wordId": "mq-p2-s19-w4",
+        "startMs": 633,
+        "endMs": 1100
+      },
+      {
+        "wordId": "mq-p2-s19-w5",
+        "startMs": 1090,
+        "endMs": 1248
+      },
+      {
+        "wordId": "mq-p2-s19-w6",
+        "startMs": 1238,
+        "endMs": 1548
+      },
+      {
+        "wordId": "mq-p2-s19-w7",
+        "startMs": 1538,
+        "endMs": 1632
+      },
+      {
+        "wordId": "mq-p2-s19-w8",
+        "startMs": 1622,
+        "endMs": 2220
+      },
+      {
+        "wordId": "mq-p2-s19-w9",
+        "startMs": 2367,
+        "endMs": 2556
+      },
+      {
+        "wordId": "mq-p2-s19-w10",
+        "startMs": 2546,
+        "endMs": 3237
+      },
+      {
+        "wordId": "mq-p2-s19-w11",
+        "startMs": 3373,
+        "endMs": 3787
+      },
+      {
+        "wordId": "mq-p2-s19-w12",
+        "startMs": 3777,
+        "endMs": 3905
+      },
+      {
+        "wordId": "mq-p2-s19-w13",
+        "startMs": 3895,
+        "endMs": 4126
+      },
+      {
+        "wordId": "mq-p2-s19-w14",
+        "startMs": 4116,
+        "endMs": 4914
+      },
+      {
+        "wordId": "mq-p2-s19-w15",
+        "startMs": 5083,
+        "endMs": 5177
+      },
+      {
+        "wordId": "mq-p2-s19-w16",
+        "startMs": 5167,
+        "endMs": 5433
+      },
+      {
+        "wordId": "mq-p2-s19-w17",
+        "startMs": 5423,
+        "endMs": 6216
+      },
+      {
+        "wordId": "mq-p2-s19-w18",
+        "startMs": 6385,
+        "endMs": 6691
+      },
+      {
+        "wordId": "mq-p2-s19-w19",
+        "startMs": 6681,
+        "endMs": 6746
+      },
+      {
+        "wordId": "mq-p2-s19-w20",
+        "startMs": 6736,
+        "endMs": 7119
+      },
+      {
+        "wordId": "mq-p2-s19-w21",
+        "startMs": 7109,
+        "endMs": 7214
+      },
+      {
+        "wordId": "mq-p2-s19-w22",
+        "startMs": 7204,
+        "endMs": 7913
+      },
+      {
+        "wordId": "mq-p2-s19-w23",
+        "startMs": 8056,
+        "endMs": 8213
+      },
+      {
+        "wordId": "mq-p2-s19-w24",
+        "startMs": 8203,
+        "endMs": 8680
+      },
+      {
+        "wordId": "mq-p2-s19-w25",
+        "startMs": 8670,
+        "endMs": 8837
+      },
+      {
+        "wordId": "mq-p2-s19-w26",
+        "startMs": 8827,
+        "endMs": 9193
+      },
+      {
+        "wordId": "mq-p2-s19-w27",
+        "startMs": 9183,
+        "endMs": 9362
+      },
+      {
+        "wordId": "mq-p2-s19-w28",
+        "startMs": 9352,
+        "endMs": 9456
+      },
+      {
+        "wordId": "mq-p2-s19-w29",
+        "startMs": 9446,
+        "endMs": 9798
+      },
+      {
+        "wordId": "mq-p2-s19-w30",
+        "startMs": 9788,
+        "endMs": 10206
+      },
+      {
+        "wordId": "mq-p2-s19-w31",
+        "startMs": 10196,
+        "endMs": 10345
+      },
+      {
+        "wordId": "mq-p2-s19-w32",
+        "startMs": 10335,
+        "endMs": 10587
+      },
+      {
+        "wordId": "mq-p2-s19-w33",
+        "startMs": 10577,
+        "endMs": 11132
+      },
+      {
+        "wordId": "mq-p2-s19-w34",
+        "startMs": 11122,
+        "endMs": 11531
+      },
+      {
+        "wordId": "mq-p2-s19-w35",
+        "startMs": 11521,
+        "endMs": 11608
+      },
+      {
+        "wordId": "mq-p2-s19-w36",
+        "startMs": 11598,
+        "endMs": 12378
+      }
+    ]
+  },
+  "mq-p2-s20": {
+    "audioUrl": "/narration/masque/mq-p2-s20.wav",
+    "durationMs": 4825,
+    "words": [
+      {
+        "wordId": "mq-p2-s20-w1",
+        "startMs": 416,
+        "endMs": 542
+      },
+      {
+        "wordId": "mq-p2-s20-w2",
+        "startMs": 532,
+        "endMs": 867
+      },
+      {
+        "wordId": "mq-p2-s20-w3",
+        "startMs": 857,
+        "endMs": 996
+      },
+      {
+        "wordId": "mq-p2-s20-w4",
+        "startMs": 986,
+        "endMs": 1535
+      },
+      {
+        "wordId": "mq-p2-s20-w5",
+        "startMs": 1525,
+        "endMs": 1649
+      },
+      {
+        "wordId": "mq-p2-s20-w6",
+        "startMs": 1639,
+        "endMs": 2264
+      },
+      {
+        "wordId": "mq-p2-s20-w7",
+        "startMs": 2254,
+        "endMs": 2400
+      },
+      {
+        "wordId": "mq-p2-s20-w8",
+        "startMs": 2390,
+        "endMs": 2858
+      },
+      {
+        "wordId": "mq-p2-s20-w9",
+        "startMs": 2848,
+        "endMs": 2989
+      },
+      {
+        "wordId": "mq-p2-s20-w10",
+        "startMs": 2979,
+        "endMs": 3587
+      },
+      {
+        "wordId": "mq-p2-s20-w11",
+        "startMs": 3577,
+        "endMs": 4668
+      }
+    ]
+  },
+  "mq-p2-s21": {
+    "audioUrl": "/narration/masque/mq-p2-s21.wav",
+    "durationMs": 16852,
+    "words": [
+      {
+        "wordId": "mq-p2-s21-w1",
+        "startMs": 369,
+        "endMs": 469
+      },
+      {
+        "wordId": "mq-p2-s21-w2",
+        "startMs": 459,
+        "endMs": 544
+      },
+      {
+        "wordId": "mq-p2-s21-w3",
+        "startMs": 534,
+        "endMs": 613
+      },
+      {
+        "wordId": "mq-p2-s21-w4",
+        "startMs": 603,
+        "endMs": 1166
+      },
+      {
+        "wordId": "mq-p2-s21-w5",
+        "startMs": 1156,
+        "endMs": 1333
+      },
+      {
+        "wordId": "mq-p2-s21-w6",
+        "startMs": 1323,
+        "endMs": 1607
+      },
+      {
+        "wordId": "mq-p2-s21-w7",
+        "startMs": 1597,
+        "endMs": 1994
+      },
+      {
+        "wordId": "mq-p2-s21-w8",
+        "startMs": 1984,
+        "endMs": 2099
+      },
+      {
+        "wordId": "mq-p2-s21-w9",
+        "startMs": 2089,
+        "endMs": 2442
+      },
+      {
+        "wordId": "mq-p2-s21-w10",
+        "startMs": 2432,
+        "endMs": 2515
+      },
+      {
+        "wordId": "mq-p2-s21-w11",
+        "startMs": 2505,
+        "endMs": 2595
+      },
+      {
+        "wordId": "mq-p2-s21-w12",
+        "startMs": 2585,
+        "endMs": 3129
+      },
+      {
+        "wordId": "mq-p2-s21-w13",
+        "startMs": 3119,
+        "endMs": 3282
+      },
+      {
+        "wordId": "mq-p2-s21-w14",
+        "startMs": 3272,
+        "endMs": 3622
+      },
+      {
+        "wordId": "mq-p2-s21-w15",
+        "startMs": 3612,
+        "endMs": 3852
+      },
+      {
+        "wordId": "mq-p2-s21-w16",
+        "startMs": 3842,
+        "endMs": 3920
+      },
+      {
+        "wordId": "mq-p2-s21-w17",
+        "startMs": 3910,
+        "endMs": 4163
+      },
+      {
+        "wordId": "mq-p2-s21-w18",
+        "startMs": 4153,
+        "endMs": 4618
+      },
+      {
+        "wordId": "mq-p2-s21-w19",
+        "startMs": 4608,
+        "endMs": 4801
+      },
+      {
+        "wordId": "mq-p2-s21-w20",
+        "startMs": 4791,
+        "endMs": 4881
+      },
+      {
+        "wordId": "mq-p2-s21-w21",
+        "startMs": 4871,
+        "endMs": 5402
+      },
+      {
+        "wordId": "mq-p2-s21-w22",
+        "startMs": 5392,
+        "endMs": 6262
+      },
+      {
+        "wordId": "mq-p2-s21-w23",
+        "startMs": 6397,
+        "endMs": 6574
+      },
+      {
+        "wordId": "mq-p2-s21-w24",
+        "startMs": 6564,
+        "endMs": 7071
+      },
+      {
+        "wordId": "mq-p2-s21-w25",
+        "startMs": 7061,
+        "endMs": 7165
+      },
+      {
+        "wordId": "mq-p2-s21-w26",
+        "startMs": 7155,
+        "endMs": 7254
+      },
+      {
+        "wordId": "mq-p2-s21-w27",
+        "startMs": 7244,
+        "endMs": 8230
+      },
+      {
+        "wordId": "mq-p2-s21-w28",
+        "startMs": 8392,
+        "endMs": 8513
+      },
+      {
+        "wordId": "mq-p2-s21-w29",
+        "startMs": 8503,
+        "endMs": 8893
+      },
+      {
+        "wordId": "mq-p2-s21-w30",
+        "startMs": 8883,
+        "endMs": 9175
+      },
+      {
+        "wordId": "mq-p2-s21-w31",
+        "startMs": 9165,
+        "endMs": 9509
+      },
+      {
+        "wordId": "mq-p2-s21-w32",
+        "startMs": 9499,
+        "endMs": 9583
+      },
+      {
+        "wordId": "mq-p2-s21-w33",
+        "startMs": 9573,
+        "endMs": 9875
+      },
+      {
+        "wordId": "mq-p2-s21-w34",
+        "startMs": 9865,
+        "endMs": 10161
+      },
+      {
+        "wordId": "mq-p2-s21-w35",
+        "startMs": 10151,
+        "endMs": 10232
+      },
+      {
+        "wordId": "mq-p2-s21-w36",
+        "startMs": 10222,
+        "endMs": 10819
+      },
+      {
+        "wordId": "mq-p2-s21-w37",
+        "startMs": 10809,
+        "endMs": 10903
+      },
+      {
+        "wordId": "mq-p2-s21-w38",
+        "startMs": 10893,
+        "endMs": 11141
+      },
+      {
+        "wordId": "mq-p2-s21-w39",
+        "startMs": 11131,
+        "endMs": 11255
+      },
+      {
+        "wordId": "mq-p2-s21-w40",
+        "startMs": 11245,
+        "endMs": 12115
+      },
+      {
+        "wordId": "mq-p2-s21-w41",
+        "startMs": 12270,
+        "endMs": 12439
+      },
+      {
+        "wordId": "mq-p2-s21-w42",
+        "startMs": 12429,
+        "endMs": 12567
+      },
+      {
+        "wordId": "mq-p2-s21-w43",
+        "startMs": 12557,
+        "endMs": 12686
+      },
+      {
+        "wordId": "mq-p2-s21-w44",
+        "startMs": 12676,
+        "endMs": 12918
+      },
+      {
+        "wordId": "mq-p2-s21-w45",
+        "startMs": 12908,
+        "endMs": 13002
+      },
+      {
+        "wordId": "mq-p2-s21-w46",
+        "startMs": 12992,
+        "endMs": 13075
+      },
+      {
+        "wordId": "mq-p2-s21-w47",
+        "startMs": 13065,
+        "endMs": 13469
+      },
+      {
+        "wordId": "mq-p2-s21-w48",
+        "startMs": 13459,
+        "endMs": 13783
+      },
+      {
+        "wordId": "mq-p2-s21-w49",
+        "startMs": 13773,
+        "endMs": 14021
+      },
+      {
+        "wordId": "mq-p2-s21-w50",
+        "startMs": 14011,
+        "endMs": 14133
+      },
+      {
+        "wordId": "mq-p2-s21-w51",
+        "startMs": 14123,
+        "endMs": 14374
+      },
+      {
+        "wordId": "mq-p2-s21-w52",
+        "startMs": 14364,
+        "endMs": 14638
+      },
+      {
+        "wordId": "mq-p2-s21-w53",
+        "startMs": 14628,
+        "endMs": 14873
+      },
+      {
+        "wordId": "mq-p2-s21-w54",
+        "startMs": 14863,
+        "endMs": 15012
+      },
+      {
+        "wordId": "mq-p2-s21-w55",
+        "startMs": 15002,
+        "endMs": 15453
+      },
+      {
+        "wordId": "mq-p2-s21-w56",
+        "startMs": 15443,
+        "endMs": 15535
+      },
+      {
+        "wordId": "mq-p2-s21-w57",
+        "startMs": 15525,
+        "endMs": 16248
+      }
+    ]
+  },
+  "mq-p3-s1": {
+    "audioUrl": "/narration/masque/mq-p3-s1.wav",
+    "durationMs": 6619,
+    "words": [
+      {
+        "wordId": "mq-p3-s1-w1",
+        "startMs": 389,
+        "endMs": 494
+      },
+      {
+        "wordId": "mq-p3-s1-w2",
+        "startMs": 484,
+        "endMs": 620
+      },
+      {
+        "wordId": "mq-p3-s1-w3",
+        "startMs": 610,
+        "endMs": 730
+      },
+      {
+        "wordId": "mq-p3-s1-w4",
+        "startMs": 720,
+        "endMs": 880
+      },
+      {
+        "wordId": "mq-p3-s1-w5",
+        "startMs": 870,
+        "endMs": 1493
+      },
+      {
+        "wordId": "mq-p3-s1-w6",
+        "startMs": 1648,
+        "endMs": 2234
+      },
+      {
+        "wordId": "mq-p3-s1-w7",
+        "startMs": 2361,
+        "endMs": 2512
+      },
+      {
+        "wordId": "mq-p3-s1-w8",
+        "startMs": 2502,
+        "endMs": 2682
+      },
+      {
+        "wordId": "mq-p3-s1-w9",
+        "startMs": 2672,
+        "endMs": 2917
+      },
+      {
+        "wordId": "mq-p3-s1-w10",
+        "startMs": 2907,
+        "endMs": 3226
+      },
+      {
+        "wordId": "mq-p3-s1-w11",
+        "startMs": 3216,
+        "endMs": 3304
+      },
+      {
+        "wordId": "mq-p3-s1-w12",
+        "startMs": 3294,
+        "endMs": 3708
+      },
+      {
+        "wordId": "mq-p3-s1-w13",
+        "startMs": 3698,
+        "endMs": 4316
+      },
+      {
+        "wordId": "mq-p3-s1-w14",
+        "startMs": 4488,
+        "endMs": 4593
+      },
+      {
+        "wordId": "mq-p3-s1-w15",
+        "startMs": 4583,
+        "endMs": 5192
+      },
+      {
+        "wordId": "mq-p3-s1-w16",
+        "startMs": 5182,
+        "endMs": 5486
+      },
+      {
+        "wordId": "mq-p3-s1-w17",
+        "startMs": 5476,
+        "endMs": 5570
+      },
+      {
+        "wordId": "mq-p3-s1-w18",
+        "startMs": 5560,
+        "endMs": 6403
+      }
+    ]
+  },
+  "mq-p3-s2": {
+    "audioUrl": "/narration/masque/mq-p3-s2.wav",
+    "durationMs": 25695,
+    "words": [
+      {
+        "wordId": "mq-p3-s2-w1",
+        "startMs": 373,
+        "endMs": 516
+      },
+      {
+        "wordId": "mq-p3-s2-w2",
+        "startMs": 506,
+        "endMs": 916
+      },
+      {
+        "wordId": "mq-p3-s2-w3",
+        "startMs": 906,
+        "endMs": 1202
+      },
+      {
+        "wordId": "mq-p3-s2-w4",
+        "startMs": 1192,
+        "endMs": 1366
+      },
+      {
+        "wordId": "mq-p3-s2-w5",
+        "startMs": 1356,
+        "endMs": 1482
+      },
+      {
+        "wordId": "mq-p3-s2-w6",
+        "startMs": 1472,
+        "endMs": 1760
+      },
+      {
+        "wordId": "mq-p3-s2-w7",
+        "startMs": 1750,
+        "endMs": 1877
+      },
+      {
+        "wordId": "mq-p3-s2-w8",
+        "startMs": 1867,
+        "endMs": 1947
+      },
+      {
+        "wordId": "mq-p3-s2-w9",
+        "startMs": 1937,
+        "endMs": 2334
+      },
+      {
+        "wordId": "mq-p3-s2-w10",
+        "startMs": 2450,
+        "endMs": 2756
+      },
+      {
+        "wordId": "mq-p3-s2-w11",
+        "startMs": 2904,
+        "endMs": 3378
+      },
+      {
+        "wordId": "mq-p3-s2-w12",
+        "startMs": 3368,
+        "endMs": 4173
+      },
+      {
+        "wordId": "mq-p3-s2-w13",
+        "startMs": 4374,
+        "endMs": 4492
+      },
+      {
+        "wordId": "mq-p3-s2-w14",
+        "startMs": 4482,
+        "endMs": 4604
+      },
+      {
+        "wordId": "mq-p3-s2-w15",
+        "startMs": 4594,
+        "endMs": 4671
+      },
+      {
+        "wordId": "mq-p3-s2-w16",
+        "startMs": 4661,
+        "endMs": 5080
+      },
+      {
+        "wordId": "mq-p3-s2-w17",
+        "startMs": 5070,
+        "endMs": 5236
+      },
+      {
+        "wordId": "mq-p3-s2-w18",
+        "startMs": 5226,
+        "endMs": 5305
+      },
+      {
+        "wordId": "mq-p3-s2-w19",
+        "startMs": 5295,
+        "endMs": 5565
+      },
+      {
+        "wordId": "mq-p3-s2-w20",
+        "startMs": 5555,
+        "endMs": 5633
+      },
+      {
+        "wordId": "mq-p3-s2-w21",
+        "startMs": 5623,
+        "endMs": 5706
+      },
+      {
+        "wordId": "mq-p3-s2-w22",
+        "startMs": 5696,
+        "endMs": 6283
+      },
+      {
+        "wordId": "mq-p3-s2-w23",
+        "startMs": 6429,
+        "endMs": 6541
+      },
+      {
+        "wordId": "mq-p3-s2-w24",
+        "startMs": 6531,
+        "endMs": 6629
+      },
+      {
+        "wordId": "mq-p3-s2-w25",
+        "startMs": 6619,
+        "endMs": 6878
+      },
+      {
+        "wordId": "mq-p3-s2-w26",
+        "startMs": 6868,
+        "endMs": 6996
+      },
+      {
+        "wordId": "mq-p3-s2-w27",
+        "startMs": 6986,
+        "endMs": 7081
+      },
+      {
+        "wordId": "mq-p3-s2-w28",
+        "startMs": 7071,
+        "endMs": 7175
+      },
+      {
+        "wordId": "mq-p3-s2-w29",
+        "startMs": 7165,
+        "endMs": 7912
+      },
+      {
+        "wordId": "mq-p3-s2-w30",
+        "startMs": 8059,
+        "endMs": 8179
+      },
+      {
+        "wordId": "mq-p3-s2-w31",
+        "startMs": 8169,
+        "endMs": 8396
+      },
+      {
+        "wordId": "mq-p3-s2-w32",
+        "startMs": 8386,
+        "endMs": 8520
+      },
+      {
+        "wordId": "mq-p3-s2-w33",
+        "startMs": 8510,
+        "endMs": 8588
+      },
+      {
+        "wordId": "mq-p3-s2-w34",
+        "startMs": 8578,
+        "endMs": 8960
+      },
+      {
+        "wordId": "mq-p3-s2-w35",
+        "startMs": 8950,
+        "endMs": 9194
+      },
+      {
+        "wordId": "mq-p3-s2-w36",
+        "startMs": 9184,
+        "endMs": 9261
+      },
+      {
+        "wordId": "mq-p3-s2-w37",
+        "startMs": 9251,
+        "endMs": 9329
+      },
+      {
+        "wordId": "mq-p3-s2-w38",
+        "startMs": 9319,
+        "endMs": 9623
+      },
+      {
+        "wordId": "mq-p3-s2-w39",
+        "startMs": 9613,
+        "endMs": 9696
+      },
+      {
+        "wordId": "mq-p3-s2-w40",
+        "startMs": 9686,
+        "endMs": 9967
+      },
+      {
+        "wordId": "mq-p3-s2-w41",
+        "startMs": 9957,
+        "endMs": 10083
+      },
+      {
+        "wordId": "mq-p3-s2-w42",
+        "startMs": 10073,
+        "endMs": 10208
+      },
+      {
+        "wordId": "mq-p3-s2-w43",
+        "startMs": 10198,
+        "endMs": 10493
+      },
+      {
+        "wordId": "mq-p3-s2-w44",
+        "startMs": 10483,
+        "endMs": 10608
+      },
+      {
+        "wordId": "mq-p3-s2-w45",
+        "startMs": 10598,
+        "endMs": 10923
+      },
+      {
+        "wordId": "mq-p3-s2-w46",
+        "startMs": 10913,
+        "endMs": 11023
+      },
+      {
+        "wordId": "mq-p3-s2-w47",
+        "startMs": 11013,
+        "endMs": 11248
+      },
+      {
+        "wordId": "mq-p3-s2-w48",
+        "startMs": 11238,
+        "endMs": 11340
+      },
+      {
+        "wordId": "mq-p3-s2-w49",
+        "startMs": 11330,
+        "endMs": 11823
+      },
+      {
+        "wordId": "mq-p3-s2-w50",
+        "startMs": 11813,
+        "endMs": 12641
+      },
+      {
+        "wordId": "mq-p3-s2-w51",
+        "startMs": 12767,
+        "endMs": 12905
+      },
+      {
+        "wordId": "mq-p3-s2-w52",
+        "startMs": 12895,
+        "endMs": 12979
+      },
+      {
+        "wordId": "mq-p3-s2-w53",
+        "startMs": 12969,
+        "endMs": 13143
+      },
+      {
+        "wordId": "mq-p3-s2-w54",
+        "startMs": 13133,
+        "endMs": 13566
+      },
+      {
+        "wordId": "mq-p3-s2-w55",
+        "startMs": 13556,
+        "endMs": 13613
+      },
+      {
+        "wordId": "mq-p3-s2-w56",
+        "startMs": 13603,
+        "endMs": 13819
+      },
+      {
+        "wordId": "mq-p3-s2-w57",
+        "startMs": 13809,
+        "endMs": 13910
+      },
+      {
+        "wordId": "mq-p3-s2-w58",
+        "startMs": 13900,
+        "endMs": 14340
+      },
+      {
+        "wordId": "mq-p3-s2-w59",
+        "startMs": 14330,
+        "endMs": 14584
+      },
+      {
+        "wordId": "mq-p3-s2-w60",
+        "startMs": 14730,
+        "endMs": 14842
+      },
+      {
+        "wordId": "mq-p3-s2-w61",
+        "startMs": 14832,
+        "endMs": 15043
+      },
+      {
+        "wordId": "mq-p3-s2-w62",
+        "startMs": 15033,
+        "endMs": 15295
+      },
+      {
+        "wordId": "mq-p3-s2-w63",
+        "startMs": 15285,
+        "endMs": 15362
+      },
+      {
+        "wordId": "mq-p3-s2-w64",
+        "startMs": 15352,
+        "endMs": 15431
+      },
+      {
+        "wordId": "mq-p3-s2-w65",
+        "startMs": 15421,
+        "endMs": 16066
+      },
+      {
+        "wordId": "mq-p3-s2-w66",
+        "startMs": 16220,
+        "endMs": 16306
+      },
+      {
+        "wordId": "mq-p3-s2-w67",
+        "startMs": 16296,
+        "endMs": 16764
+      },
+      {
+        "wordId": "mq-p3-s2-w68",
+        "startMs": 16754,
+        "endMs": 16831
+      },
+      {
+        "wordId": "mq-p3-s2-w69",
+        "startMs": 16821,
+        "endMs": 16908
+      },
+      {
+        "wordId": "mq-p3-s2-w70",
+        "startMs": 16898,
+        "endMs": 17332
+      },
+      {
+        "wordId": "mq-p3-s2-w71",
+        "startMs": 17322,
+        "endMs": 17425
+      },
+      {
+        "wordId": "mq-p3-s2-w72",
+        "startMs": 17415,
+        "endMs": 17859
+      },
+      {
+        "wordId": "mq-p3-s2-w73",
+        "startMs": 17849,
+        "endMs": 17936
+      },
+      {
+        "wordId": "mq-p3-s2-w74",
+        "startMs": 17926,
+        "endMs": 18494
+      },
+      {
+        "wordId": "mq-p3-s2-w75",
+        "startMs": 18646,
+        "endMs": 19288
+      },
+      {
+        "wordId": "mq-p3-s2-w76",
+        "startMs": 19395,
+        "endMs": 19473
+      },
+      {
+        "wordId": "mq-p3-s2-w77",
+        "startMs": 19463,
+        "endMs": 19579
+      },
+      {
+        "wordId": "mq-p3-s2-w78",
+        "startMs": 19569,
+        "endMs": 20230
+      },
+      {
+        "wordId": "mq-p3-s2-w79",
+        "startMs": 20348,
+        "endMs": 20451
+      },
+      {
+        "wordId": "mq-p3-s2-w80",
+        "startMs": 20441,
+        "endMs": 20772
+      },
+      {
+        "wordId": "mq-p3-s2-w81",
+        "startMs": 20762,
+        "endMs": 20862
+      },
+      {
+        "wordId": "mq-p3-s2-w82",
+        "startMs": 20852,
+        "endMs": 20936
+      },
+      {
+        "wordId": "mq-p3-s2-w83",
+        "startMs": 20926,
+        "endMs": 21745
+      },
+      {
+        "wordId": "mq-p3-s2-w84",
+        "startMs": 21949,
+        "endMs": 22071
+      },
+      {
+        "wordId": "mq-p3-s2-w85",
+        "startMs": 22061,
+        "endMs": 22247
+      },
+      {
+        "wordId": "mq-p3-s2-w86",
+        "startMs": 22237,
+        "endMs": 22338
+      },
+      {
+        "wordId": "mq-p3-s2-w87",
+        "startMs": 22328,
+        "endMs": 22755
+      },
+      {
+        "wordId": "mq-p3-s2-w88",
+        "startMs": 22745,
+        "endMs": 23139
+      },
+      {
+        "wordId": "mq-p3-s2-w89",
+        "startMs": 23129,
+        "endMs": 23375
+      },
+      {
+        "wordId": "mq-p3-s2-w90",
+        "startMs": 23365,
+        "endMs": 23511
+      },
+      {
+        "wordId": "mq-p3-s2-w91",
+        "startMs": 23501,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w92",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w93",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w94",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w95",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w96",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w97",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w98",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w99",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w100",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w101",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w102",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w103",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w104",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w105",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w106",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w107",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w108",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w109",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w110",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w111",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w112",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w113",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w114",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w115",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w116",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w117",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w118",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w119",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w120",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w121",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w122",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w123",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w124",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w125",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w126",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w127",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w128",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w129",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w130",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w131",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w132",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w133",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w134",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w135",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w136",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w137",
+        "startMs": 25695,
+        "endMs": 25695
+      },
+      {
+        "wordId": "mq-p3-s2-w138",
+        "startMs": 25695,
+        "endMs": 25695
+      }
+    ]
+  },
+  "mq-p3-s3": {
+    "audioUrl": "/narration/masque/mq-p3-s3.wav",
+    "durationMs": 25064,
+    "words": [
+      {
+        "wordId": "mq-p3-s3-w1",
+        "startMs": 365,
+        "endMs": 467
+      },
+      {
+        "wordId": "mq-p3-s3-w2",
+        "startMs": 457,
+        "endMs": 581
+      },
+      {
+        "wordId": "mq-p3-s3-w3",
+        "startMs": 571,
+        "endMs": 671
+      },
+      {
+        "wordId": "mq-p3-s3-w4",
+        "startMs": 661,
+        "endMs": 984
+      },
+      {
+        "wordId": "mq-p3-s3-w5",
+        "startMs": 974,
+        "endMs": 1101
+      },
+      {
+        "wordId": "mq-p3-s3-w6",
+        "startMs": 1091,
+        "endMs": 1347
+      },
+      {
+        "wordId": "mq-p3-s3-w7",
+        "startMs": 1337,
+        "endMs": 1928
+      },
+      {
+        "wordId": "mq-p3-s3-w8",
+        "startMs": 2056,
+        "endMs": 2155
+      },
+      {
+        "wordId": "mq-p3-s3-w9",
+        "startMs": 2145,
+        "endMs": 2357
+      },
+      {
+        "wordId": "mq-p3-s3-w10",
+        "startMs": 2347,
+        "endMs": 2681
+      },
+      {
+        "wordId": "mq-p3-s3-w11",
+        "startMs": 2671,
+        "endMs": 2755
+      },
+      {
+        "wordId": "mq-p3-s3-w12",
+        "startMs": 2745,
+        "endMs": 3005
+      },
+      {
+        "wordId": "mq-p3-s3-w13",
+        "startMs": 2995,
+        "endMs": 3389
+      },
+      {
+        "wordId": "mq-p3-s3-w14",
+        "startMs": 3379,
+        "endMs": 3467
+      },
+      {
+        "wordId": "mq-p3-s3-w15",
+        "startMs": 3457,
+        "endMs": 4331
+      },
+      {
+        "wordId": "mq-p3-s3-w16",
+        "startMs": 4566,
+        "endMs": 4659
+      },
+      {
+        "wordId": "mq-p3-s3-w17",
+        "startMs": 4649,
+        "endMs": 5127
+      },
+      {
+        "wordId": "mq-p3-s3-w18",
+        "startMs": 5117,
+        "endMs": 5329
+      },
+      {
+        "wordId": "mq-p3-s3-w19",
+        "startMs": 5319,
+        "endMs": 5400
+      },
+      {
+        "wordId": "mq-p3-s3-w20",
+        "startMs": 5390,
+        "endMs": 5535
+      },
+      {
+        "wordId": "mq-p3-s3-w21",
+        "startMs": 5525,
+        "endMs": 5756
+      },
+      {
+        "wordId": "mq-p3-s3-w22",
+        "startMs": 5746,
+        "endMs": 5872
+      },
+      {
+        "wordId": "mq-p3-s3-w23",
+        "startMs": 5862,
+        "endMs": 6298
+      },
+      {
+        "wordId": "mq-p3-s3-w24",
+        "startMs": 6288,
+        "endMs": 6415
+      },
+      {
+        "wordId": "mq-p3-s3-w25",
+        "startMs": 6405,
+        "endMs": 6546
+      },
+      {
+        "wordId": "mq-p3-s3-w26",
+        "startMs": 6536,
+        "endMs": 6632
+      },
+      {
+        "wordId": "mq-p3-s3-w27",
+        "startMs": 6622,
+        "endMs": 6775
+      },
+      {
+        "wordId": "mq-p3-s3-w28",
+        "startMs": 6765,
+        "endMs": 6963
+      },
+      {
+        "wordId": "mq-p3-s3-w29",
+        "startMs": 6953,
+        "endMs": 7429
+      },
+      {
+        "wordId": "mq-p3-s3-w30",
+        "startMs": 7419,
+        "endMs": 7530
+      },
+      {
+        "wordId": "mq-p3-s3-w31",
+        "startMs": 7520,
+        "endMs": 8264
+      },
+      {
+        "wordId": "mq-p3-s3-w32",
+        "startMs": 8396,
+        "endMs": 8518
+      },
+      {
+        "wordId": "mq-p3-s3-w33",
+        "startMs": 8508,
+        "endMs": 8694
+      },
+      {
+        "wordId": "mq-p3-s3-w34",
+        "startMs": 8684,
+        "endMs": 9096
+      },
+      {
+        "wordId": "mq-p3-s3-w35",
+        "startMs": 9086,
+        "endMs": 9576
+      },
+      {
+        "wordId": "mq-p3-s3-w36",
+        "startMs": 9713,
+        "endMs": 9925
+      },
+      {
+        "wordId": "mq-p3-s3-w37",
+        "startMs": 9915,
+        "endMs": 10016
+      },
+      {
+        "wordId": "mq-p3-s3-w38",
+        "startMs": 10006,
+        "endMs": 10107
+      },
+      {
+        "wordId": "mq-p3-s3-w39",
+        "startMs": 10097,
+        "endMs": 10505
+      },
+      {
+        "wordId": "mq-p3-s3-w40",
+        "startMs": 10644,
+        "endMs": 10768
+      },
+      {
+        "wordId": "mq-p3-s3-w41",
+        "startMs": 10758,
+        "endMs": 10843
+      },
+      {
+        "wordId": "mq-p3-s3-w42",
+        "startMs": 10833,
+        "endMs": 11091
+      },
+      {
+        "wordId": "mq-p3-s3-w43",
+        "startMs": 11081,
+        "endMs": 11350
+      },
+      {
+        "wordId": "mq-p3-s3-w44",
+        "startMs": 11340,
+        "endMs": 11418
+      },
+      {
+        "wordId": "mq-p3-s3-w45",
+        "startMs": 11408,
+        "endMs": 11487
+      },
+      {
+        "wordId": "mq-p3-s3-w46",
+        "startMs": 11477,
+        "endMs": 11760
+      },
+      {
+        "wordId": "mq-p3-s3-w47",
+        "startMs": 11750,
+        "endMs": 11901
+      },
+      {
+        "wordId": "mq-p3-s3-w48",
+        "startMs": 11891,
+        "endMs": 12219
+      },
+      {
+        "wordId": "mq-p3-s3-w49",
+        "startMs": 12209,
+        "endMs": 12290
+      },
+      {
+        "wordId": "mq-p3-s3-w50",
+        "startMs": 12280,
+        "endMs": 12423
+      },
+      {
+        "wordId": "mq-p3-s3-w51",
+        "startMs": 12413,
+        "endMs": 12596
+      },
+      {
+        "wordId": "mq-p3-s3-w52",
+        "startMs": 12586,
+        "endMs": 12927
+      },
+      {
+        "wordId": "mq-p3-s3-w53",
+        "startMs": 12917,
+        "endMs": 13807
+      },
+      {
+        "wordId": "mq-p3-s3-w54",
+        "startMs": 14009,
+        "endMs": 14135
+      },
+      {
+        "wordId": "mq-p3-s3-w55",
+        "startMs": 14125,
+        "endMs": 14398
+      },
+      {
+        "wordId": "mq-p3-s3-w56",
+        "startMs": 14516,
+        "endMs": 14763
+      },
+      {
+        "wordId": "mq-p3-s3-w57",
+        "startMs": 14753,
+        "endMs": 14832
+      },
+      {
+        "wordId": "mq-p3-s3-w58",
+        "startMs": 14822,
+        "endMs": 15111
+      },
+      {
+        "wordId": "mq-p3-s3-w59",
+        "startMs": 15101,
+        "endMs": 15191
+      },
+      {
+        "wordId": "mq-p3-s3-w60",
+        "startMs": 15181,
+        "endMs": 15519
+      },
+      {
+        "wordId": "mq-p3-s3-w61",
+        "startMs": 15509,
+        "endMs": 16169
+      },
+      {
+        "wordId": "mq-p3-s3-w62",
+        "startMs": 16278,
+        "endMs": 16446
+      },
+      {
+        "wordId": "mq-p3-s3-w63",
+        "startMs": 16436,
+        "endMs": 16789
+      },
+      {
+        "wordId": "mq-p3-s3-w64",
+        "startMs": 16779,
+        "endMs": 17016
+      },
+      {
+        "wordId": "mq-p3-s3-w65",
+        "startMs": 17006,
+        "endMs": 17402
+      },
+      {
+        "wordId": "mq-p3-s3-w66",
+        "startMs": 17392,
+        "endMs": 17494
+      },
+      {
+        "wordId": "mq-p3-s3-w67",
+        "startMs": 17484,
+        "endMs": 17720
+      },
+      {
+        "wordId": "mq-p3-s3-w68",
+        "startMs": 17710,
+        "endMs": 17964
+      },
+      {
+        "wordId": "mq-p3-s3-w69",
+        "startMs": 17954,
+        "endMs": 18276
+      },
+      {
+        "wordId": "mq-p3-s3-w70",
+        "startMs": 18266,
+        "endMs": 18344
+      },
+      {
+        "wordId": "mq-p3-s3-w71",
+        "startMs": 18334,
+        "endMs": 18413
+      },
+      {
+        "wordId": "mq-p3-s3-w72",
+        "startMs": 18403,
+        "endMs": 18652
+      },
+      {
+        "wordId": "mq-p3-s3-w73",
+        "startMs": 18642,
+        "endMs": 18782
+      },
+      {
+        "wordId": "mq-p3-s3-w74",
+        "startMs": 18772,
+        "endMs": 19622
+      },
+      {
+        "wordId": "mq-p3-s3-w75",
+        "startMs": 19612,
+        "endMs": 19754
+      },
+      {
+        "wordId": "mq-p3-s3-w76",
+        "startMs": 19744,
+        "endMs": 19948
+      },
+      {
+        "wordId": "mq-p3-s3-w77",
+        "startMs": 19938,
+        "endMs": 20115
+      },
+      {
+        "wordId": "mq-p3-s3-w78",
+        "startMs": 20105,
+        "endMs": 20434
+      },
+      {
+        "wordId": "mq-p3-s3-w79",
+        "startMs": 20424,
+        "endMs": 20758
+      },
+      {
+        "wordId": "mq-p3-s3-w80",
+        "startMs": 20748,
+        "endMs": 20828
+      },
+      {
+        "wordId": "mq-p3-s3-w81",
+        "startMs": 20818,
+        "endMs": 20898
+      },
+      {
+        "wordId": "mq-p3-s3-w82",
+        "startMs": 20888,
+        "endMs": 21452
+      },
+      {
+        "wordId": "mq-p3-s3-w83",
+        "startMs": 21585,
+        "endMs": 21708
+      },
+      {
+        "wordId": "mq-p3-s3-w84",
+        "startMs": 21698,
+        "endMs": 21830
+      },
+      {
+        "wordId": "mq-p3-s3-w85",
+        "startMs": 21820,
+        "endMs": 21924
+      },
+      {
+        "wordId": "mq-p3-s3-w86",
+        "startMs": 21914,
+        "endMs": 22001
+      },
+      {
+        "wordId": "mq-p3-s3-w87",
+        "startMs": 21991,
+        "endMs": 22329
+      },
+      {
+        "wordId": "mq-p3-s3-w88",
+        "startMs": 22319,
+        "endMs": 22935
+      },
+      {
+        "wordId": "mq-p3-s3-w89",
+        "startMs": 22925,
+        "endMs": 23042
+      },
+      {
+        "wordId": "mq-p3-s3-w90",
+        "startMs": 23032,
+        "endMs": 24101
+      },
+      {
+        "wordId": "mq-p3-s3-w91",
+        "startMs": 24091,
+        "endMs": 25064
+      },
+      {
+        "wordId": "mq-p3-s3-w92",
+        "startMs": 25064,
+        "endMs": 25064
+      },
+      {
+        "wordId": "mq-p3-s3-w93",
+        "startMs": 25064,
+        "endMs": 25064
+      },
+      {
+        "wordId": "mq-p3-s3-w94",
+        "startMs": 25064,
+        "endMs": 25064
+      }
+    ]
+  },
+  "mq-p4-s1": {
+    "audioUrl": "/narration/masque/mq-p4-s1.wav",
+    "durationMs": 4698,
+    "words": [
+      {
+        "wordId": "mq-p4-s1-w1",
+        "startMs": 381,
+        "endMs": 622
+      },
+      {
+        "wordId": "mq-p4-s1-w2",
+        "startMs": 770,
+        "endMs": 916
+      },
+      {
+        "wordId": "mq-p4-s1-w3",
+        "startMs": 906,
+        "endMs": 1223
+      },
+      {
+        "wordId": "mq-p4-s1-w4",
+        "startMs": 1213,
+        "endMs": 1294
+      },
+      {
+        "wordId": "mq-p4-s1-w5",
+        "startMs": 1284,
+        "endMs": 1511
+      },
+      {
+        "wordId": "mq-p4-s1-w6",
+        "startMs": 1501,
+        "endMs": 2154
+      },
+      {
+        "wordId": "mq-p4-s1-w7",
+        "startMs": 2312,
+        "endMs": 2427
+      },
+      {
+        "wordId": "mq-p4-s1-w8",
+        "startMs": 2417,
+        "endMs": 2555
+      },
+      {
+        "wordId": "mq-p4-s1-w9",
+        "startMs": 2545,
+        "endMs": 2633
+      },
+      {
+        "wordId": "mq-p4-s1-w10",
+        "startMs": 2623,
+        "endMs": 2999
+      },
+      {
+        "wordId": "mq-p4-s1-w11",
+        "startMs": 2989,
+        "endMs": 3127
+      },
+      {
+        "wordId": "mq-p4-s1-w12",
+        "startMs": 3117,
+        "endMs": 3755
+      },
+      {
+        "wordId": "mq-p4-s1-w13",
+        "startMs": 3745,
+        "endMs": 4533
+      }
+    ]
+  },
+  "mq-p4-s2": {
+    "audioUrl": "/narration/masque/mq-p4-s2.wav",
+    "durationMs": 2525,
+    "words": [
+      {
+        "wordId": "mq-p4-s2-w1",
+        "startMs": 369,
+        "endMs": 453
+      },
+      {
+        "wordId": "mq-p4-s2-w2",
+        "startMs": 443,
+        "endMs": 853
+      },
+      {
+        "wordId": "mq-p4-s2-w3",
+        "startMs": 843,
+        "endMs": 941
+      },
+      {
+        "wordId": "mq-p4-s2-w4",
+        "startMs": 931,
+        "endMs": 1031
+      },
+      {
+        "wordId": "mq-p4-s2-w5",
+        "startMs": 1021,
+        "endMs": 1326
+      },
+      {
+        "wordId": "mq-p4-s2-w6",
+        "startMs": 1316,
+        "endMs": 1446
+      },
+      {
+        "wordId": "mq-p4-s2-w7",
+        "startMs": 1436,
+        "endMs": 2444
+      }
+    ]
+  },
+  "mq-p4-s3": {
+    "audioUrl": "/narration/masque/mq-p4-s3.wav",
+    "durationMs": 2800,
+    "words": [
+      {
+        "wordId": "mq-p4-s3-w1",
+        "startMs": 394,
+        "endMs": 481
+      },
+      {
+        "wordId": "mq-p4-s3-w2",
+        "startMs": 471,
+        "endMs": 614
+      },
+      {
+        "wordId": "mq-p4-s3-w3",
+        "startMs": 604,
+        "endMs": 678
+      },
+      {
+        "wordId": "mq-p4-s3-w4",
+        "startMs": 668,
+        "endMs": 1060
+      },
+      {
+        "wordId": "mq-p4-s3-w5",
+        "startMs": 1050,
+        "endMs": 1282
+      },
+      {
+        "wordId": "mq-p4-s3-w6",
+        "startMs": 1272,
+        "endMs": 1416
+      },
+      {
+        "wordId": "mq-p4-s3-w7",
+        "startMs": 1406,
+        "endMs": 1811
+      },
+      {
+        "wordId": "mq-p4-s3-w8",
+        "startMs": 1801,
+        "endMs": 1914
+      },
+      {
+        "wordId": "mq-p4-s3-w9",
+        "startMs": 1904,
+        "endMs": 2778
+      }
+    ]
+  },
+  "mq-p4-s4": {
+    "audioUrl": "/narration/masque/mq-p4-s4.wav",
+    "durationMs": 3275,
+    "words": [
+      {
+        "wordId": "mq-p4-s4-w1",
+        "startMs": 389,
+        "endMs": 574
+      },
+      {
+        "wordId": "mq-p4-s4-w2",
+        "startMs": 564,
+        "endMs": 1255
+      },
+      {
+        "wordId": "mq-p4-s4-w3",
+        "startMs": 1245,
+        "endMs": 1349
+      },
+      {
+        "wordId": "mq-p4-s4-w4",
+        "startMs": 1339,
+        "endMs": 1902
+      },
+      {
+        "wordId": "mq-p4-s4-w5",
+        "startMs": 1892,
+        "endMs": 2065
+      },
+      {
+        "wordId": "mq-p4-s4-w6",
+        "startMs": 2055,
+        "endMs": 2273
+      },
+      {
+        "wordId": "mq-p4-s4-w7",
+        "startMs": 2263,
+        "endMs": 3176
+      }
+    ]
+  },
+  "mq-p4-s5": {
+    "audioUrl": "/narration/masque/mq-p4-s5.wav",
+    "durationMs": 5338,
+    "words": [
+      {
+        "wordId": "mq-p4-s5-w1",
+        "startMs": 381,
+        "endMs": 524
+      },
+      {
+        "wordId": "mq-p4-s5-w2",
+        "startMs": 514,
+        "endMs": 898
+      },
+      {
+        "wordId": "mq-p4-s5-w3",
+        "startMs": 888,
+        "endMs": 1014
+      },
+      {
+        "wordId": "mq-p4-s5-w4",
+        "startMs": 1004,
+        "endMs": 1389
+      },
+      {
+        "wordId": "mq-p4-s5-w5",
+        "startMs": 1379,
+        "endMs": 1493
+      },
+      {
+        "wordId": "mq-p4-s5-w6",
+        "startMs": 1483,
+        "endMs": 2235
+      },
+      {
+        "wordId": "mq-p4-s5-w7",
+        "startMs": 2380,
+        "endMs": 2499
+      },
+      {
+        "wordId": "mq-p4-s5-w8",
+        "startMs": 2489,
+        "endMs": 2626
+      },
+      {
+        "wordId": "mq-p4-s5-w9",
+        "startMs": 2616,
+        "endMs": 3255
+      },
+      {
+        "wordId": "mq-p4-s5-w10",
+        "startMs": 3245,
+        "endMs": 3640
+      },
+      {
+        "wordId": "mq-p4-s5-w11",
+        "startMs": 3630,
+        "endMs": 3770
+      },
+      {
+        "wordId": "mq-p4-s5-w12",
+        "startMs": 3760,
+        "endMs": 4228
+      },
+      {
+        "wordId": "mq-p4-s5-w13",
+        "startMs": 4218,
+        "endMs": 5064
+      }
+    ]
+  },
+  "mq-p4-s6": {
+    "audioUrl": "/narration/masque/mq-p4-s6.wav",
+    "durationMs": 2700,
+    "words": [
+      {
+        "wordId": "mq-p4-s6-w1",
+        "startMs": 416,
+        "endMs": 541
+      },
+      {
+        "wordId": "mq-p4-s6-w2",
+        "startMs": 531,
+        "endMs": 670
+      },
+      {
+        "wordId": "mq-p4-s6-w3",
+        "startMs": 660,
+        "endMs": 1028
+      },
+      {
+        "wordId": "mq-p4-s6-w4",
+        "startMs": 1018,
+        "endMs": 1256
+      },
+      {
+        "wordId": "mq-p4-s6-w5",
+        "startMs": 1246,
+        "endMs": 1376
+      },
+      {
+        "wordId": "mq-p4-s6-w6",
+        "startMs": 1366,
+        "endMs": 1491
+      },
+      {
+        "wordId": "mq-p4-s6-w7",
+        "startMs": 1481,
+        "endMs": 1704
+      },
+      {
+        "wordId": "mq-p4-s6-w8",
+        "startMs": 1694,
+        "endMs": 1840
+      },
+      {
+        "wordId": "mq-p4-s6-w9",
+        "startMs": 1830,
+        "endMs": 2644
+      }
+    ]
+  },
+  "mq-p4-s7": {
+    "audioUrl": "/narration/masque/mq-p4-s7.wav",
+    "durationMs": 2625,
+    "words": [
+      {
+        "wordId": "mq-p4-s7-w1",
+        "startMs": 401,
+        "endMs": 582
+      },
+      {
+        "wordId": "mq-p4-s7-w2",
+        "startMs": 572,
+        "endMs": 1095
+      },
+      {
+        "wordId": "mq-p4-s7-w3",
+        "startMs": 1085,
+        "endMs": 1359
+      },
+      {
+        "wordId": "mq-p4-s7-w4",
+        "startMs": 1349,
+        "endMs": 1477
+      },
+      {
+        "wordId": "mq-p4-s7-w5",
+        "startMs": 1467,
+        "endMs": 1615
+      },
+      {
+        "wordId": "mq-p4-s7-w6",
+        "startMs": 1605,
+        "endMs": 1774
+      },
+      {
+        "wordId": "mq-p4-s7-w7",
+        "startMs": 1764,
+        "endMs": 2535
+      }
+    ]
+  },
+  "mq-p4-s8": {
+    "audioUrl": "/narration/masque/mq-p4-s8.wav",
+    "durationMs": 4700,
+    "words": [
+      {
+        "wordId": "mq-p4-s8-w1",
+        "startMs": 386,
+        "endMs": 494
+      },
+      {
+        "wordId": "mq-p4-s8-w2",
+        "startMs": 484,
+        "endMs": 634
+      },
+      {
+        "wordId": "mq-p4-s8-w3",
+        "startMs": 624,
+        "endMs": 1208
+      },
+      {
+        "wordId": "mq-p4-s8-w4",
+        "startMs": 1198,
+        "endMs": 1321
+      },
+      {
+        "wordId": "mq-p4-s8-w5",
+        "startMs": 1311,
+        "endMs": 1542
+      },
+      {
+        "wordId": "mq-p4-s8-w6",
+        "startMs": 1532,
+        "endMs": 1673
+      },
+      {
+        "wordId": "mq-p4-s8-w7",
+        "startMs": 1663,
+        "endMs": 2254
+      },
+      {
+        "wordId": "mq-p4-s8-w8",
+        "startMs": 2244,
+        "endMs": 2442
+      },
+      {
+        "wordId": "mq-p4-s8-w9",
+        "startMs": 2432,
+        "endMs": 2687
+      },
+      {
+        "wordId": "mq-p4-s8-w10",
+        "startMs": 2677,
+        "endMs": 2853
+      },
+      {
+        "wordId": "mq-p4-s8-w11",
+        "startMs": 2843,
+        "endMs": 2944
+      },
+      {
+        "wordId": "mq-p4-s8-w12",
+        "startMs": 2934,
+        "endMs": 3062
+      },
+      {
+        "wordId": "mq-p4-s8-w13",
+        "startMs": 3052,
+        "endMs": 3334
+      },
+      {
+        "wordId": "mq-p4-s8-w14",
+        "startMs": 3324,
+        "endMs": 3451
+      },
+      {
+        "wordId": "mq-p4-s8-w15",
+        "startMs": 3441,
+        "endMs": 3583
+      },
+      {
+        "wordId": "mq-p4-s8-w16",
+        "startMs": 3573,
+        "endMs": 3735
+      },
+      {
+        "wordId": "mq-p4-s8-w17",
+        "startMs": 3725,
+        "endMs": 4480
+      }
+    ]
+  },
+  "mq-p5-s1": {
+    "audioUrl": "/narration/masque/mq-p5-s1.wav",
+    "durationMs": 11793,
+    "words": [
+      {
+        "wordId": "mq-p5-s1-w1",
+        "startMs": 401,
+        "endMs": 491
+      },
+      {
+        "wordId": "mq-p5-s1-w2",
+        "startMs": 481,
+        "endMs": 591
+      },
+      {
+        "wordId": "mq-p5-s1-w3",
+        "startMs": 581,
+        "endMs": 1296
+      },
+      {
+        "wordId": "mq-p5-s1-w4",
+        "startMs": 1454,
+        "endMs": 1603
+      },
+      {
+        "wordId": "mq-p5-s1-w5",
+        "startMs": 1593,
+        "endMs": 1886
+      },
+      {
+        "wordId": "mq-p5-s1-w6",
+        "startMs": 1876,
+        "endMs": 2485
+      },
+      {
+        "wordId": "mq-p5-s1-w7",
+        "startMs": 2642,
+        "endMs": 2764
+      },
+      {
+        "wordId": "mq-p5-s1-w8",
+        "startMs": 2754,
+        "endMs": 3181
+      },
+      {
+        "wordId": "mq-p5-s1-w9",
+        "startMs": 3171,
+        "endMs": 3853
+      },
+      {
+        "wordId": "mq-p5-s1-w10",
+        "startMs": 3843,
+        "endMs": 3945
+      },
+      {
+        "wordId": "mq-p5-s1-w11",
+        "startMs": 3935,
+        "endMs": 4031
+      },
+      {
+        "wordId": "mq-p5-s1-w12",
+        "startMs": 4021,
+        "endMs": 4375
+      },
+      {
+        "wordId": "mq-p5-s1-w13",
+        "startMs": 4365,
+        "endMs": 5286
+      },
+      {
+        "wordId": "mq-p5-s1-w14",
+        "startMs": 5436,
+        "endMs": 5738
+      },
+      {
+        "wordId": "mq-p5-s1-w15",
+        "startMs": 5728,
+        "endMs": 6186
+      },
+      {
+        "wordId": "mq-p5-s1-w16",
+        "startMs": 6176,
+        "endMs": 6272
+      },
+      {
+        "wordId": "mq-p5-s1-w17",
+        "startMs": 6262,
+        "endMs": 6438
+      },
+      {
+        "wordId": "mq-p5-s1-w18",
+        "startMs": 6428,
+        "endMs": 6697
+      },
+      {
+        "wordId": "mq-p5-s1-w19",
+        "startMs": 6687,
+        "endMs": 7433
+      },
+      {
+        "wordId": "mq-p5-s1-w20",
+        "startMs": 7626,
+        "endMs": 7782
+      },
+      {
+        "wordId": "mq-p5-s1-w21",
+        "startMs": 7772,
+        "endMs": 7859
+      },
+      {
+        "wordId": "mq-p5-s1-w22",
+        "startMs": 7849,
+        "endMs": 7981
+      },
+      {
+        "wordId": "mq-p5-s1-w23",
+        "startMs": 7971,
+        "endMs": 8149
+      },
+      {
+        "wordId": "mq-p5-s1-w24",
+        "startMs": 8139,
+        "endMs": 8437
+      },
+      {
+        "wordId": "mq-p5-s1-w25",
+        "startMs": 8427,
+        "endMs": 8791
+      },
+      {
+        "wordId": "mq-p5-s1-w26",
+        "startMs": 8781,
+        "endMs": 9166
+      },
+      {
+        "wordId": "mq-p5-s1-w27",
+        "startMs": 9156,
+        "endMs": 9315
+      },
+      {
+        "wordId": "mq-p5-s1-w28",
+        "startMs": 9305,
+        "endMs": 9433
+      },
+      {
+        "wordId": "mq-p5-s1-w29",
+        "startMs": 9423,
+        "endMs": 9704
+      },
+      {
+        "wordId": "mq-p5-s1-w30",
+        "startMs": 9694,
+        "endMs": 10183
+      },
+      {
+        "wordId": "mq-p5-s1-w31",
+        "startMs": 10173,
+        "endMs": 10282
+      },
+      {
+        "wordId": "mq-p5-s1-w32",
+        "startMs": 10272,
+        "endMs": 10358
+      },
+      {
+        "wordId": "mq-p5-s1-w33",
+        "startMs": 10348,
+        "endMs": 11570
+      }
+    ]
+  },
+  "mq-p5-s2": {
+    "audioUrl": "/narration/masque/mq-p5-s2.wav",
+    "durationMs": 2150,
+    "words": [
+      {
+        "wordId": "mq-p5-s2-w1",
+        "startMs": 399,
+        "endMs": 538
+      },
+      {
+        "wordId": "mq-p5-s2-w2",
+        "startMs": 528,
+        "endMs": 856
+      },
+      {
+        "wordId": "mq-p5-s2-w3",
+        "startMs": 846,
+        "endMs": 1000
+      },
+      {
+        "wordId": "mq-p5-s2-w4",
+        "startMs": 990,
+        "endMs": 1132
+      },
+      {
+        "wordId": "mq-p5-s2-w5",
+        "startMs": 1122,
+        "endMs": 2171
+      }
+    ]
+  },
+  "mq-p5-s3": {
+    "audioUrl": "/narration/masque/mq-p5-s3.wav",
+    "durationMs": 6431,
+    "words": [
+      {
+        "wordId": "mq-p5-s3-w1",
+        "startMs": 405,
+        "endMs": 509
+      },
+      {
+        "wordId": "mq-p5-s3-w2",
+        "startMs": 499,
+        "endMs": 615
+      },
+      {
+        "wordId": "mq-p5-s3-w3",
+        "startMs": 605,
+        "endMs": 869
+      },
+      {
+        "wordId": "mq-p5-s3-w4",
+        "startMs": 859,
+        "endMs": 1276
+      },
+      {
+        "wordId": "mq-p5-s3-w5",
+        "startMs": 1266,
+        "endMs": 1401
+      },
+      {
+        "wordId": "mq-p5-s3-w6",
+        "startMs": 1391,
+        "endMs": 1783
+      },
+      {
+        "wordId": "mq-p5-s3-w7",
+        "startMs": 1773,
+        "endMs": 1917
+      },
+      {
+        "wordId": "mq-p5-s3-w8",
+        "startMs": 1907,
+        "endMs": 2487
+      },
+      {
+        "wordId": "mq-p5-s3-w9",
+        "startMs": 2477,
+        "endMs": 2603
+      },
+      {
+        "wordId": "mq-p5-s3-w10",
+        "startMs": 2593,
+        "endMs": 3671
+      },
+      {
+        "wordId": "mq-p5-s3-w11",
+        "startMs": 3863,
+        "endMs": 4110
+      },
+      {
+        "wordId": "mq-p5-s3-w12",
+        "startMs": 4100,
+        "endMs": 4188
+      },
+      {
+        "wordId": "mq-p5-s3-w13",
+        "startMs": 4178,
+        "endMs": 4308
+      },
+      {
+        "wordId": "mq-p5-s3-w14",
+        "startMs": 4298,
+        "endMs": 4433
+      },
+      {
+        "wordId": "mq-p5-s3-w15",
+        "startMs": 4423,
+        "endMs": 4611
+      },
+      {
+        "wordId": "mq-p5-s3-w16",
+        "startMs": 4601,
+        "endMs": 4839
+      },
+      {
+        "wordId": "mq-p5-s3-w17",
+        "startMs": 4829,
+        "endMs": 5136
+      },
+      {
+        "wordId": "mq-p5-s3-w18",
+        "startMs": 5126,
+        "endMs": 5304
+      },
+      {
+        "wordId": "mq-p5-s3-w19",
+        "startMs": 5294,
+        "endMs": 6302
+      }
+    ]
+  },
+  "mq-p5-s4": {
+    "audioUrl": "/narration/masque/mq-p5-s4.wav",
+    "durationMs": 3950,
+    "words": [
+      {
+        "wordId": "mq-p5-s4-w1",
+        "startMs": 408,
+        "endMs": 515
+      },
+      {
+        "wordId": "mq-p5-s4-w2",
+        "startMs": 505,
+        "endMs": 646
+      },
+      {
+        "wordId": "mq-p5-s4-w3",
+        "startMs": 636,
+        "endMs": 1168
+      },
+      {
+        "wordId": "mq-p5-s4-w4",
+        "startMs": 1158,
+        "endMs": 1640
+      },
+      {
+        "wordId": "mq-p5-s4-w5",
+        "startMs": 1630,
+        "endMs": 1830
+      },
+      {
+        "wordId": "mq-p5-s4-w6",
+        "startMs": 1820,
+        "endMs": 2403
+      },
+      {
+        "wordId": "mq-p5-s4-w7",
+        "startMs": 2393,
+        "endMs": 2750
+      },
+      {
+        "wordId": "mq-p5-s4-w8",
+        "startMs": 2740,
+        "endMs": 2863
+      },
+      {
+        "wordId": "mq-p5-s4-w9",
+        "startMs": 2853,
+        "endMs": 3870
+      }
+    ]
+  },
+  "mq-p5-s5": {
+    "audioUrl": "/narration/masque/mq-p5-s5.wav",
+    "durationMs": 3725,
+    "words": [
+      {
+        "wordId": "mq-p5-s5-w1",
+        "startMs": 383,
+        "endMs": 491
+      },
+      {
+        "wordId": "mq-p5-s5-w2",
+        "startMs": 481,
+        "endMs": 616
+      },
+      {
+        "wordId": "mq-p5-s5-w3",
+        "startMs": 606,
+        "endMs": 1173
+      },
+      {
+        "wordId": "mq-p5-s5-w4",
+        "startMs": 1163,
+        "endMs": 1816
+      },
+      {
+        "wordId": "mq-p5-s5-w5",
+        "startMs": 1806,
+        "endMs": 2041
+      },
+      {
+        "wordId": "mq-p5-s5-w6",
+        "startMs": 2031,
+        "endMs": 2170
+      },
+      {
+        "wordId": "mq-p5-s5-w7",
+        "startMs": 2160,
+        "endMs": 2251
+      },
+      {
+        "wordId": "mq-p5-s5-w8",
+        "startMs": 2241,
+        "endMs": 2676
+      },
+      {
+        "wordId": "mq-p5-s5-w9",
+        "startMs": 2666,
+        "endMs": 3635
+      }
+    ]
+  },
+  "mq-p5-s6": {
+    "audioUrl": "/narration/masque/mq-p5-s6.wav",
+    "durationMs": 8931,
+    "words": [
+      {
+        "wordId": "mq-p5-s6-w1",
+        "startMs": 416,
+        "endMs": 523
+      },
+      {
+        "wordId": "mq-p5-s6-w2",
+        "startMs": 513,
+        "endMs": 629
+      },
+      {
+        "wordId": "mq-p5-s6-w3",
+        "startMs": 619,
+        "endMs": 860
+      },
+      {
+        "wordId": "mq-p5-s6-w4",
+        "startMs": 850,
+        "endMs": 950
+      },
+      {
+        "wordId": "mq-p5-s6-w5",
+        "startMs": 940,
+        "endMs": 1033
+      },
+      {
+        "wordId": "mq-p5-s6-w6",
+        "startMs": 1023,
+        "endMs": 1714
+      },
+      {
+        "wordId": "mq-p5-s6-w7",
+        "startMs": 1882,
+        "endMs": 2123
+      },
+      {
+        "wordId": "mq-p5-s6-w8",
+        "startMs": 2113,
+        "endMs": 2203
+      },
+      {
+        "wordId": "mq-p5-s6-w9",
+        "startMs": 2193,
+        "endMs": 2288
+      },
+      {
+        "wordId": "mq-p5-s6-w10",
+        "startMs": 2278,
+        "endMs": 3193
+      },
+      {
+        "wordId": "mq-p5-s6-w11",
+        "startMs": 3328,
+        "endMs": 3578
+      },
+      {
+        "wordId": "mq-p5-s6-w12",
+        "startMs": 3568,
+        "endMs": 3665
+      },
+      {
+        "wordId": "mq-p5-s6-w13",
+        "startMs": 3655,
+        "endMs": 3740
+      },
+      {
+        "wordId": "mq-p5-s6-w14",
+        "startMs": 3730,
+        "endMs": 4466
+      },
+      {
+        "wordId": "mq-p5-s6-w15",
+        "startMs": 4618,
+        "endMs": 4927
+      },
+      {
+        "wordId": "mq-p5-s6-w16",
+        "startMs": 4917,
+        "endMs": 5006
+      },
+      {
+        "wordId": "mq-p5-s6-w17",
+        "startMs": 4996,
+        "endMs": 5079
+      },
+      {
+        "wordId": "mq-p5-s6-w18",
+        "startMs": 5069,
+        "endMs": 5898
+      },
+      {
+        "wordId": "mq-p5-s6-w19",
+        "startMs": 6044,
+        "endMs": 6174
+      },
+      {
+        "wordId": "mq-p5-s6-w20",
+        "startMs": 6164,
+        "endMs": 6359
+      },
+      {
+        "wordId": "mq-p5-s6-w21",
+        "startMs": 6349,
+        "endMs": 6416
+      },
+      {
+        "wordId": "mq-p5-s6-w22",
+        "startMs": 6406,
+        "endMs": 6643
+      },
+      {
+        "wordId": "mq-p5-s6-w23",
+        "startMs": 6633,
+        "endMs": 6732
+      },
+      {
+        "wordId": "mq-p5-s6-w24",
+        "startMs": 6722,
+        "endMs": 6981
+      },
+      {
+        "wordId": "mq-p5-s6-w25",
+        "startMs": 6971,
+        "endMs": 7165
+      },
+      {
+        "wordId": "mq-p5-s6-w26",
+        "startMs": 7155,
+        "endMs": 7342
+      },
+      {
+        "wordId": "mq-p5-s6-w27",
+        "startMs": 7332,
+        "endMs": 7436
+      },
+      {
+        "wordId": "mq-p5-s6-w28",
+        "startMs": 7426,
+        "endMs": 7853
+      },
+      {
+        "wordId": "mq-p5-s6-w29",
+        "startMs": 7843,
+        "endMs": 8836
+      }
+    ]
+  },
+  "mq-p5-s7": {
+    "audioUrl": "/narration/masque/mq-p5-s7.wav",
+    "durationMs": 5455,
+    "words": [
+      {
+        "wordId": "mq-p5-s7-w1",
+        "startMs": 395,
+        "endMs": 499
+      },
+      {
+        "wordId": "mq-p5-s7-w2",
+        "startMs": 489,
+        "endMs": 624
+      },
+      {
+        "wordId": "mq-p5-s7-w3",
+        "startMs": 614,
+        "endMs": 939
+      },
+      {
+        "wordId": "mq-p5-s7-w4",
+        "startMs": 929,
+        "endMs": 1022
+      },
+      {
+        "wordId": "mq-p5-s7-w5",
+        "startMs": 1012,
+        "endMs": 1101
+      },
+      {
+        "wordId": "mq-p5-s7-w6",
+        "startMs": 1091,
+        "endMs": 1431
+      },
+      {
+        "wordId": "mq-p5-s7-w7",
+        "startMs": 1421,
+        "endMs": 1872
+      },
+      {
+        "wordId": "mq-p5-s7-w8",
+        "startMs": 1862,
+        "endMs": 2028
+      },
+      {
+        "wordId": "mq-p5-s7-w9",
+        "startMs": 2018,
+        "endMs": 2660
+      },
+      {
+        "wordId": "mq-p5-s7-w10",
+        "startMs": 2814,
+        "endMs": 2962
+      },
+      {
+        "wordId": "mq-p5-s7-w11",
+        "startMs": 2952,
+        "endMs": 3497
+      },
+      {
+        "wordId": "mq-p5-s7-w12",
+        "startMs": 3638,
+        "endMs": 3740
+      },
+      {
+        "wordId": "mq-p5-s7-w13",
+        "startMs": 3730,
+        "endMs": 4258
+      },
+      {
+        "wordId": "mq-p5-s7-w14",
+        "startMs": 4248,
+        "endMs": 4345
+      },
+      {
+        "wordId": "mq-p5-s7-w15",
+        "startMs": 4335,
+        "endMs": 5297
+      }
+    ]
+  },
+  "mq-p5-s8": {
+    "audioUrl": "/narration/masque/mq-p5-s8.wav",
+    "durationMs": 9543,
+    "words": [
+      {
+        "wordId": "mq-p5-s8-w1",
+        "startMs": 425,
+        "endMs": 556
+      },
+      {
+        "wordId": "mq-p5-s8-w2",
+        "startMs": 546,
+        "endMs": 1063
+      },
+      {
+        "wordId": "mq-p5-s8-w3",
+        "startMs": 1259,
+        "endMs": 1370
+      },
+      {
+        "wordId": "mq-p5-s8-w4",
+        "startMs": 1360,
+        "endMs": 2246
+      },
+      {
+        "wordId": "mq-p5-s8-w5",
+        "startMs": 2449,
+        "endMs": 2862
+      },
+      {
+        "wordId": "mq-p5-s8-w6",
+        "startMs": 2852,
+        "endMs": 3155
+      },
+      {
+        "wordId": "mq-p5-s8-w7",
+        "startMs": 3145,
+        "endMs": 3290
+      },
+      {
+        "wordId": "mq-p5-s8-w8",
+        "startMs": 3280,
+        "endMs": 3489
+      },
+      {
+        "wordId": "mq-p5-s8-w9",
+        "startMs": 3479,
+        "endMs": 3803
+      },
+      {
+        "wordId": "mq-p5-s8-w10",
+        "startMs": 3793,
+        "endMs": 4010
+      },
+      {
+        "wordId": "mq-p5-s8-w11",
+        "startMs": 4000,
+        "endMs": 4154
+      },
+      {
+        "wordId": "mq-p5-s8-w12",
+        "startMs": 4144,
+        "endMs": 4227
+      },
+      {
+        "wordId": "mq-p5-s8-w13",
+        "startMs": 4217,
+        "endMs": 5091
+      },
+      {
+        "wordId": "mq-p5-s8-w14",
+        "startMs": 5224,
+        "endMs": 5351
+      },
+      {
+        "wordId": "mq-p5-s8-w15",
+        "startMs": 5341,
+        "endMs": 5712
+      },
+      {
+        "wordId": "mq-p5-s8-w16",
+        "startMs": 5702,
+        "endMs": 5795
+      },
+      {
+        "wordId": "mq-p5-s8-w17",
+        "startMs": 5785,
+        "endMs": 6128
+      },
+      {
+        "wordId": "mq-p5-s8-w18",
+        "startMs": 6118,
+        "endMs": 6470
+      },
+      {
+        "wordId": "mq-p5-s8-w19",
+        "startMs": 6460,
+        "endMs": 6542
+      },
+      {
+        "wordId": "mq-p5-s8-w20",
+        "startMs": 6532,
+        "endMs": 6638
+      },
+      {
+        "wordId": "mq-p5-s8-w21",
+        "startMs": 6628,
+        "endMs": 7236
+      },
+      {
+        "wordId": "mq-p5-s8-w22",
+        "startMs": 7226,
+        "endMs": 7382
+      },
+      {
+        "wordId": "mq-p5-s8-w23",
+        "startMs": 7372,
+        "endMs": 7650
+      },
+      {
+        "wordId": "mq-p5-s8-w24",
+        "startMs": 7640,
+        "endMs": 7765
+      },
+      {
+        "wordId": "mq-p5-s8-w25",
+        "startMs": 7755,
+        "endMs": 7879
+      },
+      {
+        "wordId": "mq-p5-s8-w26",
+        "startMs": 7869,
+        "endMs": 8187
+      },
+      {
+        "wordId": "mq-p5-s8-w27",
+        "startMs": 8177,
+        "endMs": 8272
+      },
+      {
+        "wordId": "mq-p5-s8-w28",
+        "startMs": 8262,
+        "endMs": 8419
+      },
+      {
+        "wordId": "mq-p5-s8-w29",
+        "startMs": 8409,
+        "endMs": 9257
+      }
+    ]
+  },
+  "mq-p5-s9": {
+    "audioUrl": "/narration/masque/mq-p5-s9.wav",
+    "durationMs": 5009,
+    "words": [
+      {
+        "wordId": "mq-p5-s9-w1",
+        "startMs": 427,
+        "endMs": 673
+      },
+      {
+        "wordId": "mq-p5-s9-w2",
+        "startMs": 786,
+        "endMs": 1427
+      },
+      {
+        "wordId": "mq-p5-s9-w3",
+        "startMs": 1572,
+        "endMs": 1733
+      },
+      {
+        "wordId": "mq-p5-s9-w4",
+        "startMs": 1723,
+        "endMs": 2093
+      },
+      {
+        "wordId": "mq-p5-s9-w5",
+        "startMs": 2083,
+        "endMs": 2205
+      },
+      {
+        "wordId": "mq-p5-s9-w6",
+        "startMs": 2195,
+        "endMs": 2531
+      },
+      {
+        "wordId": "mq-p5-s9-w7",
+        "startMs": 2521,
+        "endMs": 2883
+      },
+      {
+        "wordId": "mq-p5-s9-w8",
+        "startMs": 2873,
+        "endMs": 3040
+      },
+      {
+        "wordId": "mq-p5-s9-w9",
+        "startMs": 3030,
+        "endMs": 3406
+      },
+      {
+        "wordId": "mq-p5-s9-w10",
+        "startMs": 3396,
+        "endMs": 3480
+      },
+      {
+        "wordId": "mq-p5-s9-w11",
+        "startMs": 3470,
+        "endMs": 3553
+      },
+      {
+        "wordId": "mq-p5-s9-w12",
+        "startMs": 3543,
+        "endMs": 3814
+      },
+      {
+        "wordId": "mq-p5-s9-w13",
+        "startMs": 3804,
+        "endMs": 3890
+      },
+      {
+        "wordId": "mq-p5-s9-w14",
+        "startMs": 3880,
+        "endMs": 3961
+      },
+      {
+        "wordId": "mq-p5-s9-w15",
+        "startMs": 3951,
+        "endMs": 4837
+      }
+    ]
+  },
+  "mq-p5-s10": {
+    "audioUrl": "/narration/masque/mq-p5-s10.wav",
+    "durationMs": 5375,
+    "words": [
+      {
+        "wordId": "mq-p5-s10-w1",
+        "startMs": 400,
+        "endMs": 516
+      },
+      {
+        "wordId": "mq-p5-s10-w2",
+        "startMs": 506,
+        "endMs": 855
+      },
+      {
+        "wordId": "mq-p5-s10-w3",
+        "startMs": 1017,
+        "endMs": 1139
+      },
+      {
+        "wordId": "mq-p5-s10-w4",
+        "startMs": 1129,
+        "endMs": 1185
+      },
+      {
+        "wordId": "mq-p5-s10-w5",
+        "startMs": 1175,
+        "endMs": 1606
+      },
+      {
+        "wordId": "mq-p5-s10-w6",
+        "startMs": 1760,
+        "endMs": 1970
+      },
+      {
+        "wordId": "mq-p5-s10-w7",
+        "startMs": 1960,
+        "endMs": 2060
+      },
+      {
+        "wordId": "mq-p5-s10-w8",
+        "startMs": 2050,
+        "endMs": 2667
+      },
+      {
+        "wordId": "mq-p5-s10-w9",
+        "startMs": 2819,
+        "endMs": 2938
+      },
+      {
+        "wordId": "mq-p5-s10-w10",
+        "startMs": 2928,
+        "endMs": 3108
+      },
+      {
+        "wordId": "mq-p5-s10-w11",
+        "startMs": 3098,
+        "endMs": 3200
+      },
+      {
+        "wordId": "mq-p5-s10-w12",
+        "startMs": 3190,
+        "endMs": 3610
+      },
+      {
+        "wordId": "mq-p5-s10-w13",
+        "startMs": 3600,
+        "endMs": 3849
+      },
+      {
+        "wordId": "mq-p5-s10-w14",
+        "startMs": 3839,
+        "endMs": 3921
+      },
+      {
+        "wordId": "mq-p5-s10-w15",
+        "startMs": 3911,
+        "endMs": 4187
+      },
+      {
+        "wordId": "mq-p5-s10-w16",
+        "startMs": 4177,
+        "endMs": 4256
+      },
+      {
+        "wordId": "mq-p5-s10-w17",
+        "startMs": 4246,
+        "endMs": 4323
+      },
+      {
+        "wordId": "mq-p5-s10-w18",
+        "startMs": 4313,
+        "endMs": 5102
+      }
+    ]
+  },
+  "mq-p5-s11": {
+    "audioUrl": "/narration/masque/mq-p5-s11.wav",
+    "durationMs": 2850,
+    "words": [
+      {
+        "wordId": "mq-p5-s11-w1",
+        "startMs": 372,
+        "endMs": 444
+      },
+      {
+        "wordId": "mq-p5-s11-w2",
+        "startMs": 434,
+        "endMs": 864
+      },
+      {
+        "wordId": "mq-p5-s11-w3",
+        "startMs": 854,
+        "endMs": 983
+      },
+      {
+        "wordId": "mq-p5-s11-w4",
+        "startMs": 973,
+        "endMs": 1669
+      },
+      {
+        "wordId": "mq-p5-s11-w5",
+        "startMs": 1659,
+        "endMs": 1796
+      },
+      {
+        "wordId": "mq-p5-s11-w6",
+        "startMs": 1786,
+        "endMs": 1920
+      },
+      {
+        "wordId": "mq-p5-s11-w7",
+        "startMs": 1910,
+        "endMs": 2758
+      }
+    ]
+  },
+  "mq-p5-s12": {
+    "audioUrl": "/narration/masque/mq-p5-s12.wav",
+    "durationMs": 8743,
+    "words": [
+      {
+        "wordId": "mq-p5-s12-w1",
+        "startMs": 354,
+        "endMs": 454
+      },
+      {
+        "wordId": "mq-p5-s12-w2",
+        "startMs": 444,
+        "endMs": 550
+      },
+      {
+        "wordId": "mq-p5-s12-w3",
+        "startMs": 540,
+        "endMs": 936
+      },
+      {
+        "wordId": "mq-p5-s12-w4",
+        "startMs": 926,
+        "endMs": 1013
+      },
+      {
+        "wordId": "mq-p5-s12-w5",
+        "startMs": 1003,
+        "endMs": 1089
+      },
+      {
+        "wordId": "mq-p5-s12-w6",
+        "startMs": 1079,
+        "endMs": 1401
+      },
+      {
+        "wordId": "mq-p5-s12-w7",
+        "startMs": 1391,
+        "endMs": 1593
+      },
+      {
+        "wordId": "mq-p5-s12-w8",
+        "startMs": 1583,
+        "endMs": 2264
+      },
+      {
+        "wordId": "mq-p5-s12-w9",
+        "startMs": 2486,
+        "endMs": 2622
+      },
+      {
+        "wordId": "mq-p5-s12-w10",
+        "startMs": 2612,
+        "endMs": 2763
+      },
+      {
+        "wordId": "mq-p5-s12-w11",
+        "startMs": 2753,
+        "endMs": 3207
+      },
+      {
+        "wordId": "mq-p5-s12-w12",
+        "startMs": 3197,
+        "endMs": 3335
+      },
+      {
+        "wordId": "mq-p5-s12-w13",
+        "startMs": 3325,
+        "endMs": 3428
+      },
+      {
+        "wordId": "mq-p5-s12-w14",
+        "startMs": 3418,
+        "endMs": 4200
+      },
+      {
+        "wordId": "mq-p5-s12-w15",
+        "startMs": 4444,
+        "endMs": 4567
+      },
+      {
+        "wordId": "mq-p5-s12-w16",
+        "startMs": 4557,
+        "endMs": 4638
+      },
+      {
+        "wordId": "mq-p5-s12-w17",
+        "startMs": 4628,
+        "endMs": 5211
+      },
+      {
+        "wordId": "mq-p5-s12-w18",
+        "startMs": 5361,
+        "endMs": 6034
+      },
+      {
+        "wordId": "mq-p5-s12-w19",
+        "startMs": 6024,
+        "endMs": 6409
+      },
+      {
+        "wordId": "mq-p5-s12-w20",
+        "startMs": 6399,
+        "endMs": 6757
+      },
+      {
+        "wordId": "mq-p5-s12-w21",
+        "startMs": 6747,
+        "endMs": 7042
+      },
+      {
+        "wordId": "mq-p5-s12-w22",
+        "startMs": 7032,
+        "endMs": 7227
+      },
+      {
+        "wordId": "mq-p5-s12-w23",
+        "startMs": 7217,
+        "endMs": 7352
+      },
+      {
+        "wordId": "mq-p5-s12-w24",
+        "startMs": 7342,
+        "endMs": 7476
+      },
+      {
+        "wordId": "mq-p5-s12-w25",
+        "startMs": 7466,
+        "endMs": 8307
+      }
+    ]
+  },
+  "mq-p5-s13": {
+    "audioUrl": "/narration/masque/mq-p5-s13.wav",
+    "durationMs": 10345,
+    "words": [
+      {
+        "wordId": "mq-p5-s13-w1",
+        "startMs": 409,
+        "endMs": 514
+      },
+      {
+        "wordId": "mq-p5-s13-w2",
+        "startMs": 504,
+        "endMs": 688
+      },
+      {
+        "wordId": "mq-p5-s13-w3",
+        "startMs": 678,
+        "endMs": 915
+      },
+      {
+        "wordId": "mq-p5-s13-w4",
+        "startMs": 905,
+        "endMs": 984
+      },
+      {
+        "wordId": "mq-p5-s13-w5",
+        "startMs": 974,
+        "endMs": 1295
+      },
+      {
+        "wordId": "mq-p5-s13-w6",
+        "startMs": 1285,
+        "endMs": 1998
+      },
+      {
+        "wordId": "mq-p5-s13-w7",
+        "startMs": 2162,
+        "endMs": 2283
+      },
+      {
+        "wordId": "mq-p5-s13-w8",
+        "startMs": 2273,
+        "endMs": 2350
+      },
+      {
+        "wordId": "mq-p5-s13-w9",
+        "startMs": 2340,
+        "endMs": 2716
+      },
+      {
+        "wordId": "mq-p5-s13-w10",
+        "startMs": 2706,
+        "endMs": 3397
+      },
+      {
+        "wordId": "mq-p5-s13-w11",
+        "startMs": 3560,
+        "endMs": 3687
+      },
+      {
+        "wordId": "mq-p5-s13-w12",
+        "startMs": 3677,
+        "endMs": 3981
+      },
+      {
+        "wordId": "mq-p5-s13-w13",
+        "startMs": 3971,
+        "endMs": 4108
+      },
+      {
+        "wordId": "mq-p5-s13-w14",
+        "startMs": 4098,
+        "endMs": 4220
+      },
+      {
+        "wordId": "mq-p5-s13-w15",
+        "startMs": 4210,
+        "endMs": 4475
+      },
+      {
+        "wordId": "mq-p5-s13-w16",
+        "startMs": 4465,
+        "endMs": 4676
+      },
+      {
+        "wordId": "mq-p5-s13-w17",
+        "startMs": 4666,
+        "endMs": 5032
+      },
+      {
+        "wordId": "mq-p5-s13-w18",
+        "startMs": 5022,
+        "endMs": 5149
+      },
+      {
+        "wordId": "mq-p5-s13-w19",
+        "startMs": 5139,
+        "endMs": 5751
+      },
+      {
+        "wordId": "mq-p5-s13-w20",
+        "startMs": 5917,
+        "endMs": 6238
+      },
+      {
+        "wordId": "mq-p5-s13-w21",
+        "startMs": 6228,
+        "endMs": 6463
+      },
+      {
+        "wordId": "mq-p5-s13-w22",
+        "startMs": 6453,
+        "endMs": 6603
+      },
+      {
+        "wordId": "mq-p5-s13-w23",
+        "startMs": 6593,
+        "endMs": 6670
+      },
+      {
+        "wordId": "mq-p5-s13-w24",
+        "startMs": 6660,
+        "endMs": 6869
+      },
+      {
+        "wordId": "mq-p5-s13-w25",
+        "startMs": 6859,
+        "endMs": 7202
+      },
+      {
+        "wordId": "mq-p5-s13-w26",
+        "startMs": 7192,
+        "endMs": 7641
+      },
+      {
+        "wordId": "mq-p5-s13-w27",
+        "startMs": 7631,
+        "endMs": 7871
+      },
+      {
+        "wordId": "mq-p5-s13-w28",
+        "startMs": 7861,
+        "endMs": 8050
+      },
+      {
+        "wordId": "mq-p5-s13-w29",
+        "startMs": 8040,
+        "endMs": 8353
+      },
+      {
+        "wordId": "mq-p5-s13-w30",
+        "startMs": 8343,
+        "endMs": 8441
+      },
+      {
+        "wordId": "mq-p5-s13-w31",
+        "startMs": 8431,
+        "endMs": 8747
+      },
+      {
+        "wordId": "mq-p5-s13-w32",
+        "startMs": 8737,
+        "endMs": 8880
+      },
+      {
+        "wordId": "mq-p5-s13-w33",
+        "startMs": 8870,
+        "endMs": 8947
+      },
+      {
+        "wordId": "mq-p5-s13-w34",
+        "startMs": 8937,
+        "endMs": 9967
+      }
+    ]
+  },
+  "mq-p5-s14": {
+    "audioUrl": "/narration/masque/mq-p5-s14.wav",
+    "durationMs": 24734,
+    "words": [
+      {
+        "wordId": "mq-p5-s14-w1",
+        "startMs": 381,
+        "endMs": 487
+      },
+      {
+        "wordId": "mq-p5-s14-w2",
+        "startMs": 477,
+        "endMs": 582
+      },
+      {
+        "wordId": "mq-p5-s14-w3",
+        "startMs": 572,
+        "endMs": 667
+      },
+      {
+        "wordId": "mq-p5-s14-w4",
+        "startMs": 657,
+        "endMs": 1063
+      },
+      {
+        "wordId": "mq-p5-s14-w5",
+        "startMs": 1053,
+        "endMs": 1240
+      },
+      {
+        "wordId": "mq-p5-s14-w6",
+        "startMs": 1230,
+        "endMs": 1514
+      },
+      {
+        "wordId": "mq-p5-s14-w7",
+        "startMs": 1504,
+        "endMs": 1761
+      },
+      {
+        "wordId": "mq-p5-s14-w8",
+        "startMs": 1751,
+        "endMs": 2230
+      },
+      {
+        "wordId": "mq-p5-s14-w9",
+        "startMs": 2220,
+        "endMs": 2304
+      },
+      {
+        "wordId": "mq-p5-s14-w10",
+        "startMs": 2294,
+        "endMs": 2380
+      },
+      {
+        "wordId": "mq-p5-s14-w11",
+        "startMs": 2370,
+        "endMs": 3178
+      },
+      {
+        "wordId": "mq-p5-s14-w12",
+        "startMs": 3333,
+        "endMs": 3463
+      },
+      {
+        "wordId": "mq-p5-s14-w13",
+        "startMs": 3453,
+        "endMs": 3537
+      },
+      {
+        "wordId": "mq-p5-s14-w14",
+        "startMs": 3527,
+        "endMs": 3690
+      },
+      {
+        "wordId": "mq-p5-s14-w15",
+        "startMs": 3680,
+        "endMs": 3860
+      },
+      {
+        "wordId": "mq-p5-s14-w16",
+        "startMs": 3850,
+        "endMs": 3933
+      },
+      {
+        "wordId": "mq-p5-s14-w17",
+        "startMs": 3923,
+        "endMs": 4005
+      },
+      {
+        "wordId": "mq-p5-s14-w18",
+        "startMs": 3995,
+        "endMs": 4454
+      },
+      {
+        "wordId": "mq-p5-s14-w19",
+        "startMs": 4444,
+        "endMs": 4558
+      },
+      {
+        "wordId": "mq-p5-s14-w20",
+        "startMs": 4548,
+        "endMs": 5400
+      },
+      {
+        "wordId": "mq-p5-s14-w21",
+        "startMs": 5629,
+        "endMs": 5756
+      },
+      {
+        "wordId": "mq-p5-s14-w22",
+        "startMs": 5746,
+        "endMs": 5836
+      },
+      {
+        "wordId": "mq-p5-s14-w23",
+        "startMs": 5826,
+        "endMs": 6061
+      },
+      {
+        "wordId": "mq-p5-s14-w24",
+        "startMs": 6051,
+        "endMs": 6165
+      },
+      {
+        "wordId": "mq-p5-s14-w25",
+        "startMs": 6155,
+        "endMs": 6437
+      },
+      {
+        "wordId": "mq-p5-s14-w26",
+        "startMs": 6427,
+        "endMs": 7156
+      },
+      {
+        "wordId": "mq-p5-s14-w27",
+        "startMs": 7401,
+        "endMs": 7528
+      },
+      {
+        "wordId": "mq-p5-s14-w28",
+        "startMs": 7518,
+        "endMs": 7665
+      },
+      {
+        "wordId": "mq-p5-s14-w29",
+        "startMs": 7655,
+        "endMs": 7966
+      },
+      {
+        "wordId": "mq-p5-s14-w30",
+        "startMs": 7956,
+        "endMs": 8032
+      },
+      {
+        "wordId": "mq-p5-s14-w31",
+        "startMs": 8022,
+        "endMs": 8365
+      },
+      {
+        "wordId": "mq-p5-s14-w32",
+        "startMs": 8355,
+        "endMs": 8623
+      },
+      {
+        "wordId": "mq-p5-s14-w33",
+        "startMs": 8613,
+        "endMs": 8774
+      },
+      {
+        "wordId": "mq-p5-s14-w34",
+        "startMs": 8764,
+        "endMs": 8851
+      },
+      {
+        "wordId": "mq-p5-s14-w35",
+        "startMs": 8841,
+        "endMs": 9397
+      },
+      {
+        "wordId": "mq-p5-s14-w36",
+        "startMs": 9387,
+        "endMs": 10245
+      },
+      {
+        "wordId": "mq-p5-s14-w37",
+        "startMs": 10452,
+        "endMs": 10580
+      },
+      {
+        "wordId": "mq-p5-s14-w38",
+        "startMs": 10570,
+        "endMs": 10651
+      },
+      {
+        "wordId": "mq-p5-s14-w39",
+        "startMs": 10641,
+        "endMs": 11123
+      },
+      {
+        "wordId": "mq-p5-s14-w40",
+        "startMs": 11113,
+        "endMs": 11201
+      },
+      {
+        "wordId": "mq-p5-s14-w41",
+        "startMs": 11191,
+        "endMs": 11281
+      },
+      {
+        "wordId": "mq-p5-s14-w42",
+        "startMs": 11271,
+        "endMs": 11588
+      },
+      {
+        "wordId": "mq-p5-s14-w43",
+        "startMs": 11578,
+        "endMs": 11973
+      },
+      {
+        "wordId": "mq-p5-s14-w44",
+        "startMs": 11963,
+        "endMs": 12828
+      },
+      {
+        "wordId": "mq-p5-s14-w45",
+        "startMs": 13022,
+        "endMs": 13150
+      },
+      {
+        "wordId": "mq-p5-s14-w46",
+        "startMs": 13140,
+        "endMs": 13236
+      },
+      {
+        "wordId": "mq-p5-s14-w47",
+        "startMs": 13226,
+        "endMs": 13460
+      },
+      {
+        "wordId": "mq-p5-s14-w48",
+        "startMs": 13450,
+        "endMs": 13660
+      },
+      {
+        "wordId": "mq-p5-s14-w49",
+        "startMs": 13650,
+        "endMs": 13888
+      },
+      {
+        "wordId": "mq-p5-s14-w50",
+        "startMs": 13878,
+        "endMs": 14153
+      },
+      {
+        "wordId": "mq-p5-s14-w51",
+        "startMs": 14143,
+        "endMs": 14365
+      },
+      {
+        "wordId": "mq-p5-s14-w52",
+        "startMs": 14355,
+        "endMs": 14438
+      },
+      {
+        "wordId": "mq-p5-s14-w53",
+        "startMs": 14428,
+        "endMs": 14721
+      },
+      {
+        "wordId": "mq-p5-s14-w54",
+        "startMs": 14711,
+        "endMs": 15337
+      },
+      {
+        "wordId": "mq-p5-s14-w55",
+        "startMs": 15464,
+        "endMs": 15616
+      },
+      {
+        "wordId": "mq-p5-s14-w56",
+        "startMs": 15606,
+        "endMs": 15876
+      },
+      {
+        "wordId": "mq-p5-s14-w57",
+        "startMs": 15866,
+        "endMs": 16011
+      },
+      {
+        "wordId": "mq-p5-s14-w58",
+        "startMs": 16001,
+        "endMs": 16082
+      },
+      {
+        "wordId": "mq-p5-s14-w59",
+        "startMs": 16072,
+        "endMs": 16294
+      },
+      {
+        "wordId": "mq-p5-s14-w60",
+        "startMs": 16284,
+        "endMs": 16557
+      },
+      {
+        "wordId": "mq-p5-s14-w61",
+        "startMs": 16547,
+        "endMs": 16638
+      },
+      {
+        "wordId": "mq-p5-s14-w62",
+        "startMs": 16628,
+        "endMs": 17048
+      },
+      {
+        "wordId": "mq-p5-s14-w63",
+        "startMs": 17038,
+        "endMs": 17171
+      },
+      {
+        "wordId": "mq-p5-s14-w64",
+        "startMs": 17161,
+        "endMs": 17552
+      },
+      {
+        "wordId": "mq-p5-s14-w65",
+        "startMs": 17542,
+        "endMs": 18054
+      },
+      {
+        "wordId": "mq-p5-s14-w66",
+        "startMs": 18044,
+        "endMs": 18300
+      },
+      {
+        "wordId": "mq-p5-s14-w67",
+        "startMs": 18290,
+        "endMs": 18782
+      },
+      {
+        "wordId": "mq-p5-s14-w68",
+        "startMs": 18772,
+        "endMs": 19385
+      },
+      {
+        "wordId": "mq-p5-s14-w69",
+        "startMs": 19375,
+        "endMs": 19541
+      },
+      {
+        "wordId": "mq-p5-s14-w70",
+        "startMs": 19531,
+        "endMs": 19826
+      },
+      {
+        "wordId": "mq-p5-s14-w71",
+        "startMs": 19816,
+        "endMs": 20013
+      },
+      {
+        "wordId": "mq-p5-s14-w72",
+        "startMs": 20003,
+        "endMs": 20357
+      },
+      {
+        "wordId": "mq-p5-s14-w73",
+        "startMs": 20347,
+        "endMs": 20530
+      },
+      {
+        "wordId": "mq-p5-s14-w74",
+        "startMs": 20520,
+        "endMs": 21014
+      },
+      {
+        "wordId": "mq-p5-s14-w75",
+        "startMs": 21004,
+        "endMs": 21150
+      },
+      {
+        "wordId": "mq-p5-s14-w76",
+        "startMs": 21140,
+        "endMs": 21698
+      },
+      {
+        "wordId": "mq-p5-s14-w77",
+        "startMs": 21688,
+        "endMs": 21790
+      },
+      {
+        "wordId": "mq-p5-s14-w78",
+        "startMs": 21780,
+        "endMs": 21863
+      },
+      {
+        "wordId": "mq-p5-s14-w79",
+        "startMs": 21853,
+        "endMs": 22086
+      },
+      {
+        "wordId": "mq-p5-s14-w80",
+        "startMs": 22076,
+        "endMs": 22437
+      },
+      {
+        "wordId": "mq-p5-s14-w81",
+        "startMs": 22427,
+        "endMs": 22924
+      },
+      {
+        "wordId": "mq-p5-s14-w82",
+        "startMs": 22914,
+        "endMs": 23004
+      },
+      {
+        "wordId": "mq-p5-s14-w83",
+        "startMs": 22994,
+        "endMs": 23087
+      },
+      {
+        "wordId": "mq-p5-s14-w84",
+        "startMs": 23077,
+        "endMs": 23309
+      },
+      {
+        "wordId": "mq-p5-s14-w85",
+        "startMs": 23299,
+        "endMs": 24316
+      }
+    ]
+  },
+  "mq-p6-s1": {
+    "audioUrl": "/narration/masque/mq-p6-s1.wav",
+    "durationMs": 5622,
+    "words": [
+      {
+        "wordId": "mq-p6-s1-w1",
+        "startMs": 382,
+        "endMs": 502
+      },
+      {
+        "wordId": "mq-p6-s1-w2",
+        "startMs": 492,
+        "endMs": 726
+      },
+      {
+        "wordId": "mq-p6-s1-w3",
+        "startMs": 716,
+        "endMs": 956
+      },
+      {
+        "wordId": "mq-p6-s1-w4",
+        "startMs": 946,
+        "endMs": 1479
+      },
+      {
+        "wordId": "mq-p6-s1-w5",
+        "startMs": 1469,
+        "endMs": 1604
+      },
+      {
+        "wordId": "mq-p6-s1-w6",
+        "startMs": 1594,
+        "endMs": 2009
+      },
+      {
+        "wordId": "mq-p6-s1-w7",
+        "startMs": 1999,
+        "endMs": 2776
+      },
+      {
+        "wordId": "mq-p6-s1-w8",
+        "startMs": 2913,
+        "endMs": 3096
+      },
+      {
+        "wordId": "mq-p6-s1-w9",
+        "startMs": 3086,
+        "endMs": 3208
+      },
+      {
+        "wordId": "mq-p6-s1-w10",
+        "startMs": 3198,
+        "endMs": 3444
+      },
+      {
+        "wordId": "mq-p6-s1-w11",
+        "startMs": 3434,
+        "endMs": 3725
+      },
+      {
+        "wordId": "mq-p6-s1-w12",
+        "startMs": 3715,
+        "endMs": 4302
+      },
+      {
+        "wordId": "mq-p6-s1-w13",
+        "startMs": 4292,
+        "endMs": 4404
+      },
+      {
+        "wordId": "mq-p6-s1-w14",
+        "startMs": 4394,
+        "endMs": 4636
+      },
+      {
+        "wordId": "mq-p6-s1-w15",
+        "startMs": 4626,
+        "endMs": 4745
+      },
+      {
+        "wordId": "mq-p6-s1-w16",
+        "startMs": 4735,
+        "endMs": 5536
+      }
+    ]
+  },
+  "mq-p6-s2": {
+    "audioUrl": "/narration/masque/mq-p6-s2.wav",
+    "durationMs": 6215,
+    "words": [
+      {
+        "wordId": "mq-p6-s2-w1",
+        "startMs": 422,
+        "endMs": 548
+      },
+      {
+        "wordId": "mq-p6-s2-w2",
+        "startMs": 538,
+        "endMs": 631
+      },
+      {
+        "wordId": "mq-p6-s2-w3",
+        "startMs": 621,
+        "endMs": 982
+      },
+      {
+        "wordId": "mq-p6-s2-w4",
+        "startMs": 972,
+        "endMs": 1199
+      },
+      {
+        "wordId": "mq-p6-s2-w5",
+        "startMs": 1189,
+        "endMs": 1713
+      },
+      {
+        "wordId": "mq-p6-s2-w6",
+        "startMs": 1703,
+        "endMs": 2355
+      },
+      {
+        "wordId": "mq-p6-s2-w7",
+        "startMs": 2529,
+        "endMs": 2836
+      },
+      {
+        "wordId": "mq-p6-s2-w8",
+        "startMs": 2826,
+        "endMs": 2929
+      },
+      {
+        "wordId": "mq-p6-s2-w9",
+        "startMs": 2919,
+        "endMs": 3270
+      },
+      {
+        "wordId": "mq-p6-s2-w10",
+        "startMs": 3260,
+        "endMs": 3423
+      },
+      {
+        "wordId": "mq-p6-s2-w11",
+        "startMs": 3413,
+        "endMs": 3805
+      },
+      {
+        "wordId": "mq-p6-s2-w12",
+        "startMs": 3795,
+        "endMs": 3898
+      },
+      {
+        "wordId": "mq-p6-s2-w13",
+        "startMs": 3888,
+        "endMs": 4311
+      },
+      {
+        "wordId": "mq-p6-s2-w14",
+        "startMs": 4301,
+        "endMs": 4414
+      },
+      {
+        "wordId": "mq-p6-s2-w15",
+        "startMs": 4404,
+        "endMs": 4856
+      },
+      {
+        "wordId": "mq-p6-s2-w16",
+        "startMs": 4846,
+        "endMs": 5143
+      },
+      {
+        "wordId": "mq-p6-s2-w17",
+        "startMs": 5133,
+        "endMs": 5216
+      },
+      {
+        "wordId": "mq-p6-s2-w18",
+        "startMs": 5206,
+        "endMs": 6040
+      }
+    ]
+  }
+}

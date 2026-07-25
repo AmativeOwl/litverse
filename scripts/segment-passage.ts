@@ -88,7 +88,16 @@ function splitSentences(paragraph: string): string[] {
 
 /** Tokenizes a sentence into words, dropping pure-punctuation tokens (em-dashes etc). */
 function splitWords(sentence: string): SegWord[] {
-  const raw = sentence.split(/\s+/).filter(Boolean)
+  // Unspaced em/en-dashes ("seven—an", Poe's habit) must split into two
+  // words with the dash trailing the left one ("seven—" + "an") -- the same
+  // shape Gatsby's data already uses ("York—"). One glued word would break
+  // narration alignment: Misaki tokenizes the dash separately, so the token
+  // stream could never merge 1:1 back onto a fused word. Plain hyphens
+  // ("minute-hand") are NOT split -- those are real single words.
+  const raw = sentence
+    .split(/\s+/)
+    .flatMap((token) => token.split(/(?<=[—–])(?=[^\s])/))
+    .filter(Boolean)
   const words: SegWord[] = []
   for (const text of raw) {
     // Normalize: lowercase, strip everything except letters/digits/internal apostrophes.

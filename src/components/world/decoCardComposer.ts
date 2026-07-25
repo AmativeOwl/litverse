@@ -3,8 +3,11 @@ import type { SceneBeat } from '../../types'
 import {
   darkenHex,
   drawBandedSky,
+  drawBrazier,
   drawCarProfile,
   drawDecoFrame,
+  drawEbonyClock,
+  drawGothicArch,
   drawFruitPyramid,
   drawGlazedHam,
   drawJuiceMachine,
@@ -262,6 +265,18 @@ function drawElement(
       break
     case 'spray':
       drawSunburst(ctx, x, y, size * 0.1, size, 8, color === darkenHex(p.background, 0.45) ? p.accent : color, -Math.PI * 0.85, -Math.PI * 0.15, 0.8 * m.alpha)
+      break
+    case 'gothic-arch':
+      // pane color from the role (default: the un-roled shadow color reads
+      // wrong for glass, so fall back to the palette accent -- same trick as
+      // lights-strand/spray above)
+      drawGothicArch(ctx, x, y, size * 0.42, size, color === darkenHex(p.background, 0.45) ? p.accent : color, darkenHex(p.background, 0.35))
+      break
+    case 'brazier':
+      drawBrazier(ctx, x, y, size, darkenHex(p.background, 0.45), color === darkenHex(p.background, 0.45) ? p.accent : color, t)
+      break
+    case 'clock':
+      drawEbonyClock(ctx, x, y, size, darkenHex(p.background, 0.5), lightenHex(p.accent, 0.35), p.accent, el.motion?.verb === 'still' ? undefined : t)
       break
   }
   ctx.restore()

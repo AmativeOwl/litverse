@@ -1,7 +1,10 @@
 import type { Passage, SceneBeat } from '../types'
 import type { ScenePlateSet } from '../types-plates'
+import { MASQUE_BEATS } from './beats/masque'
 import { gatsbyCh3 } from './gatsby-ch3'
+import { masqueRedDeath } from './masque'
 import { GATSBY_PLATES } from './plates/gatsby-ch3'
+import { MASQUE_PLATES } from './plates/masque'
 import sceneBeatsData from './scene-beats.json'
 
 /**
@@ -38,6 +41,17 @@ export const LIBRARY: readonly LibraryEntry[] = [
     passage: gatsbyCh3,
     beats: sceneBeatsData as SceneBeat[],
     plateSet: GATSBY_PLATES,
+  },
+  {
+    id: 'masque',
+    title: 'The Masque of the Red Death',
+    author: 'Edgar Allan Poe',
+    chapter: 'The Imperial Suite',
+    tagline: 'Prince Prospero’s masked ball',
+    openingLine: 'It was a voluptuous scene, that masquerade.',
+    passage: masqueRedDeath,
+    beats: MASQUE_BEATS,
+    plateSet: MASQUE_PLATES,
   },
 ]
 

@@ -102,11 +102,24 @@ PHONEME_OVERRIDES = {
     # so unlike a crash this silently resolves to UNK_MARKER instead of
     # raising -- built from "door" (dˈɔɹ) + "nerve"/"serve"/"curve" (-ˈɜɹv).
     "hors-d'oeuvre": "ˌɔɹdˈɜɹv",
+    # Masque of the Red Death (Poe) additions, found by running this script
+    # over the full excerpt: "decora" is the Latin plural Poe uses for
+    # "proprieties" -- built from the dictionary's own "decorum" (dɪkˈɔɹəm)
+    # minus the final m; "fête" is the anglicized loanword pronounced like
+    # "fate" (fˈeɪt); "Hernani" is Victor Hugo's play, anglicized stress on
+    # the middle syllable, "her-" as in "heron" (hˈɛɹən) + "-nani" by
+    # analogy with "Armani"/"Ferrari"'s -ˈɑni ending.
+    "decora": "dɪkˈɔɹə",
+    "fête": "fˈeɪt",
+    "hernani": "hɛɹnˈɑni",
 }
 # Core allows internal hyphens (e.g. "hors-d'oeuvre") and both apostrophe
 # styles, so a hyphenated/curly-quoted compound is captured as ONE core
-# rather than only matching its first letter-run.
-_WORD_CORE_PATTERN = re.compile(r"^([^A-Za-z'’\-]*)([A-Za-z'’\-]+)([^A-Za-z'’\-]*)$")
+# rather than only matching its first letter-run. The À-ÖØ-öø-ÿ ranges add
+# accented Latin letters (the two gaps skip the × and ÷ symbols) so a
+# loanword like "fête" is one core instead of failing to match at all --
+# without them its override entry below could never apply.
+_WORD_CORE_PATTERN = re.compile(r"^([^A-Za-z'’\-À-ÖØ-öø-ÿ]*)([A-Za-z'’\-À-ÖØ-öø-ÿ]+)([^A-Za-z'’\-À-ÖØ-öø-ÿ]*)$")
 
 
 def _normalize_override_key(word: str) -> str:
@@ -125,10 +138,20 @@ def _apply_overrides(text: str) -> str:
 
 
 def _restore_overridden_spelling(token_text: str) -> str:
-    british = _REVERSE_OVERRIDES.get(token_text.lower())
-    if british is None:
-        return token_text
-    return british.capitalize() if token_text[:1].isupper() else british
+    # Symmetric with _apply_overrides: substitute per letter-run, not per
+    # whole token, so a hyphenated compound whose *part* was respelled
+    # ("blood-coloured" -> "blood-colored") restores correctly too. A
+    # whole-token lookup here silently missed those, and the un-restored
+    # American spelling then failed word alignment downstream (normalized
+    # "bloodcolored" != "bloodcoloured").
+    def replace(match: re.Match[str]) -> str:
+        run = match.group(0)
+        british = _REVERSE_OVERRIDES.get(run.lower())
+        if british is None:
+            return run
+        return british.capitalize() if run[:1].isupper() else british
+
+    return _OVERRIDE_PATTERN.sub(replace, token_text)
 
 
 def _phonemize_word_with_overrides(g2p, word: str) -> list["_LiteralToken"]:

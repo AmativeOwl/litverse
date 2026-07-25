@@ -134,6 +134,11 @@ export type ObjectNoun =
   | 'waves'
   | 'stars'
   | 'spray' // upward fan of spray/sparks (fountain, splash source)
+  // Masque of the Red Death additions -- per the shared-lexicon rule, a text
+  // demanding a new noun extends the kit for every text after it:
+  | 'gothic-arch' // tall narrow pointed-arch stained-glass window
+  | 'brazier' // tripod of fire (flame flickers when the card is animated)
+  | 'clock' // the tall ebony clock (pendulum swings when animated)
 
 export interface ElementSpec {
   noun: ObjectNoun
