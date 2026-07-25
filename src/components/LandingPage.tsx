@@ -343,7 +343,6 @@ interface StylePack {
   buttonInk: string
   buttonHoverInk: string
   buttonShadow: string
-  footnote: string
 }
 
 const DECO_PACK: StylePack = {
@@ -361,7 +360,6 @@ const DECO_PACK: StylePack = {
   buttonInk: PAPER,
   buttonHoverInk: NAVY,
   buttonShadow: GOLD_BRIGHT,
-  footnote: '#8a7450',
 }
 
 const GOTHIC_PACK: StylePack = {
@@ -379,7 +377,6 @@ const GOTHIC_PACK: StylePack = {
   buttonInk: BONE,
   buttonHoverInk: SCARLET,
   buttonShadow: CANDLE,
-  footnote: '#6f6558',
 }
 
 const PACK_BY_ENTRY_ID: Record<string, StylePack> = {
@@ -515,7 +512,9 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
         style={{ opacity: fading ? 0 : 1, transitionDuration: `${FADE_MS}ms` }}
       >
         <TitleCardCanvas pack={pack} reduced={reduced} />
-        <main className="relative flex h-full flex-col items-center justify-center px-8 py-16 text-center">
+        {/* pt outweighs pb so the centered column sits lower, ceding the
+            top of the card to the floating library cloud */}
+        <main className="relative flex h-full flex-col items-center justify-center px-8 pb-14 pt-32 text-center">
           <p
             className="font-sans text-[11px] font-semibold uppercase tracking-[0.45em]"
             style={{ color: pack.kicker }}
@@ -593,26 +592,25 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
               {sentenceCountOf(entry)} sentences · narrated &amp; painted
             </p>
           </section>
-
-          <p
-            className="mt-10 max-w-md font-sans text-[10px] leading-relaxed tracking-wide"
-            style={{ color: pack.footnote }}
-          >
-            Narration and scenery are compiled ahead of time — nothing is generated while you read.
-          </p>
         </main>
       </div>
 
       {onExit && (
-        // Spectral: a ghost of a control drifting above the masthead --
-        // barely-there ink and a faint pack-colored aura until hover/focus
-        // draws it into this world. top-14 keeps it clear of both packs'
-        // inner frame rules at any viewport height.
+        // Spectral cloud: a softly-bordered pill drifting above the
+        // masthead -- faint pack-colored ring and halo, barely-there until
+        // hover/focus draws it into this world. top-14 keeps it clear of
+        // both packs' inner frame rules at any viewport height.
         <button
           type="button"
           onClick={onExit}
-          className="absolute left-1/2 top-14 z-10 -translate-x-1/2 cursor-pointer font-sans text-[10px] uppercase tracking-[0.35em] opacity-40 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 focus-visible:opacity-90 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4"
-          style={{ color: pack.kicker, textShadow: `0 0 14px ${pack.rule}`, outlineColor: pack.rule }}
+          className="absolute left-1/2 top-14 z-10 -translate-x-1/2 cursor-pointer rounded-full border px-5 py-2 font-sans text-[10px] uppercase tracking-[0.35em] opacity-50 backdrop-blur-[2px] transition-all duration-300 hover:-translate-y-0.5 hover:opacity-95 focus-visible:opacity-95 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4"
+          style={{
+            color: pack.kicker,
+            borderColor: `${pack.rule}59`,
+            boxShadow: `0 0 20px ${pack.rule}40, inset 0 0 12px ${pack.rule}1a`,
+            textShadow: `0 0 12px ${pack.rule}`,
+            outlineColor: pack.rule,
+          }}
         >
           ← The library
         </button>
