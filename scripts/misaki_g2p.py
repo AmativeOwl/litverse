@@ -112,6 +112,13 @@ PHONEME_OVERRIDES = {
     "decora": "dɪkˈɔɹə",
     "fête": "fˈeɪt",
     "hernani": "hɛɹnˈɑni",
+    # Twenty Thousand Leagues (Verne/Mercier) additions, found by running
+    # the pre-flight over the curated excerpt: "Nemo" as universally
+    # anglicized (NEE-mo) -- "nee-" as the dictionary's "knee" (nˈi) + the
+    # unstressed -o of "piano"/"zero" (-oʊ); "Ned" rhymes with the
+    # dictionary's own "bed"/"red" (-ˈɛd) with plain n onset.
+    "nemo": "nˈimoʊ",
+    "ned": "nˈɛd",
 }
 # Core allows internal hyphens (e.g. "hors-d'oeuvre") and both apostrophe
 # styles, so a hyphenated/curly-quoted compound is captured as ONE core
