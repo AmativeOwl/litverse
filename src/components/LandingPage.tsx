@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { LIBRARY, sentenceCountOf, type LibraryEntry } from '../data/library'
 
 interface LandingPageProps {
@@ -6,26 +6,39 @@ interface LandingPageProps {
 }
 
 /**
- * The landing page as a 1930s animated-short TITLE CARD (user direction:
- * Art Deco + Tom & Jerry / Cuphead title-screen style) -- aged-cream paper,
- * a giant sunburst turning almost imperceptibly behind marquee lettering
- * (Limelight), a double-ruled deco border with corner fans, gold-on-ink
- * type, and the book itself as the star of the bill. Painted on a canvas at
- * ~12fps ("on twos", like everything else in this project) with per-tick
- * grain flicker -- the projected-film idiom the era's cards actually had.
+ * The landing page as a CAROUSEL of 1930s picture-house title cards -- one
+ * book per bill, each rendered in its own STYLE PACK (the style-packs
+ * concept board: the compiler picks a rendering vocabulary per text; here
+ * the landing card is that vocabulary's front door). Gatsby keeps the
+ * shipped Deco card exactly (aged paper, rotating sunburst, deco border);
+ * the Masque of the Red Death gets the Gothic/Memento Mori card -- seven
+ * pointed-arch windows in Poe's own room-color order ending in the black
+ * room's scarlet, an ebony clock a minute from midnight, candlelight golds
+ * on near-black.
  *
- * Deliberately distinct from the reader's dark painted world: the title
- * card is the poster outside the theater; the world is the film.
+ * Program changes between bills fade through the house lights going down
+ * (a short content fade while the ground color crossfades underneath) --
+ * the way a real picture house swapped title cards. Painted on one canvas
+ * at ~12fps ("on twos") with per-tick grain; reduced-motion gets a static
+ * painting and instant card swaps.
+ *
+ * Style packs live INSIDE this module keyed by entry id for now -- a
+ * proper `stylePackId` on LibraryEntry is the future refactor (see the
+ * style-packs concept in CLAUDE.md's orbit); the landing page should not
+ * front-run the data contract.
  */
 
-// -- the title-card palette (aged paper, ink, deco navy, two golds) --------
+// ---------------------------------------------------------------------------
+// Deco pack (Gatsby) -- the shipped title card, unchanged
+// ---------------------------------------------------------------------------
+
 const PAPER = '#efe4c9'
 const PAPER_DEEP = '#e4d5b0'
 const NAVY = '#22304f'
 const GOLD = '#a8802c'
 const GOLD_BRIGHT = '#c99b3f'
 
-function paintTitleCard(ctx: CanvasRenderingContext2D, w: number, h: number, t: number): void {
+function paintDecoCard(ctx: CanvasRenderingContext2D, w: number, h: number, t: number): void {
   // paper ground with a soft radial deepening toward the edges
   ctx.fillStyle = PAPER
   ctx.fillRect(0, 0, w, h)
@@ -87,21 +100,271 @@ function paintTitleCard(ctx: CanvasRenderingContext2D, w: number, h: number, t: 
   }
 }
 
-function TitleCardCanvas() {
+// ---------------------------------------------------------------------------
+// Gothic / Memento Mori pack (the Masque) -- per the style-packs board
+// ---------------------------------------------------------------------------
+
+const EBONY = '#0b0609'
+const EBONY_LIFT = '#160a10'
+const SCARLET = '#c1121f'
+const BONE = '#d8cfc0'
+const CANDLE = '#b08d57'
+const GOTHIC_RULE = '#3a2028'
+/** Poe's room order: blue, purple, green, orange, white, violet -- then the black room's scarlet panes. */
+const ROOM_PANES = ['#2a4a8a', '#5a3a8a', '#2f6b3f', '#b05a1f', '#cfc8bd', '#3b2a5a', '#c1121f'] as const
+
+function paintGothicCard(ctx: CanvasRenderingContext2D, w: number, h: number, t: number): void {
+  // ebony ground, faint stone lift toward the top
+  ctx.fillStyle = EBONY
+  ctx.fillRect(0, 0, w, h)
+  const stone = ctx.createLinearGradient(0, 0, 0, h)
+  stone.addColorStop(0, EBONY_LIFT)
+  stone.addColorStop(1, EBONY)
+  ctx.fillStyle = stone
+  ctx.fillRect(0, 0, w, h)
+
+  // seven pointed-arch windows across the lower hall, each glowing its
+  // room's hue; candle-flicker breathes the glow, out of phase per room
+  const n = ROOM_PANES.length
+  const marginX = w * 0.06
+  const slot = (w - marginX * 2) / n
+  const aw = slot * 0.52
+  const baseY = h * 0.96
+  const ah = h * 0.42
+  const floorY = baseY
+  for (let i = 0; i < n; i++) {
+    const pane = ROOM_PANES[i] ?? SCARLET
+    const x = marginX + i * slot + (slot - aw) / 2
+    const cxA = x + aw / 2
+    const flicker = 0.8 + 0.2 * Math.sin(t * 1.9 + i * 1.7)
+    // glow halo
+    const glow = ctx.createRadialGradient(cxA, baseY - ah * 0.5, 8, cxA, baseY - ah * 0.5, ah * 0.75)
+    glow.addColorStop(0, `${pane}44`)
+    glow.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.globalAlpha = 0.9 * flicker
+    ctx.fillStyle = glow
+    ctx.fillRect(cxA - ah * 0.8, baseY - ah - ah * 0.4, ah * 1.6, ah * 1.5)
+    // pane
+    ctx.globalAlpha = 0.5
+    ctx.fillStyle = pane
+    ctx.beginPath()
+    ctx.moveTo(x, baseY)
+    ctx.lineTo(x, baseY - ah * 0.62)
+    ctx.quadraticCurveTo(x, baseY - ah, cxA, baseY - ah)
+    ctx.quadraticCurveTo(x + aw, baseY - ah, x + aw, baseY - ah * 0.62)
+    ctx.lineTo(x + aw, baseY)
+    ctx.closePath()
+    ctx.fill()
+    // tracery: mullion + transom in ebony, arch outline in candle gold
+    ctx.globalAlpha = 0.85
+    ctx.strokeStyle = EBONY
+    ctx.lineWidth = Math.max(2, aw * 0.045)
+    ctx.beginPath()
+    ctx.moveTo(cxA, baseY)
+    ctx.lineTo(cxA, baseY - ah * 0.94)
+    ctx.moveTo(x, baseY - ah * 0.5)
+    ctx.lineTo(x + aw, baseY - ah * 0.5)
+    ctx.stroke()
+    ctx.strokeStyle = CANDLE
+    ctx.lineWidth = Math.max(1.4, aw * 0.03)
+    ctx.globalAlpha = 0.6 * flicker
+    ctx.beginPath()
+    ctx.moveTo(x, baseY)
+    ctx.lineTo(x, baseY - ah * 0.62)
+    ctx.quadraticCurveTo(x, baseY - ah, cxA, baseY - ah)
+    ctx.quadraticCurveTo(x + aw, baseY - ah, x + aw, baseY - ah * 0.62)
+    ctx.lineTo(x + aw, baseY)
+    ctx.stroke()
+    ctx.globalAlpha = 1
+  }
+  // hall floor line
+  ctx.strokeStyle = GOTHIC_RULE
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(w * 0.04, floorY)
+  ctx.lineTo(w * 0.96, floorY)
+  ctx.stroke()
+
+  // center scrim: an ebony pool behind the type column so the bill stays
+  // legible over the brighter panes (white and orange rooms especially)
+  const scrim = ctx.createRadialGradient(w / 2, h * 0.52, h * 0.08, w / 2, h * 0.52, h * 0.62)
+  scrim.addColorStop(0, 'rgba(11,6,9,0.82)')
+  scrim.addColorStop(0.7, 'rgba(11,6,9,0.45)')
+  scrim.addColorStop(1, 'rgba(11,6,9,0)')
+  ctx.fillStyle = scrim
+  ctx.fillRect(0, 0, w, h)
+
+  // the ebony clock, small and high, a minute from midnight (the pendulum
+  // lives in the world's card, not on the bill -- here it would swing
+  // through the lettering)
+  const ccx = w / 2
+  const ccy = h * 0.062
+  const cr = Math.min(w, h) * 0.045
+  ctx.fillStyle = EBONY_LIFT
+  ctx.beginPath()
+  ctx.arc(ccx, ccy, cr * 1.14, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.strokeStyle = CANDLE
+  ctx.lineWidth = 2.4
+  ctx.stroke()
+  ctx.strokeStyle = BONE
+  ctx.lineWidth = 1.8
+  for (let i = 0; i < 12; i++) {
+    const an = (i * Math.PI) / 6
+    ctx.beginPath()
+    ctx.moveTo(ccx + Math.sin(an) * cr * 0.82, ccy - Math.cos(an) * cr * 0.82)
+    ctx.lineTo(ccx + Math.sin(an) * cr * 0.95, ccy - Math.cos(an) * cr * 0.95)
+    ctx.stroke()
+  }
+  // hands at 11:59
+  ctx.strokeStyle = SCARLET
+  ctx.lineWidth = 3
+  const minuteAngle = -Math.PI / 30
+  ctx.beginPath()
+  ctx.moveTo(ccx, ccy)
+  ctx.lineTo(ccx + Math.sin(minuteAngle) * cr * 0.75, ccy - Math.cos(minuteAngle) * cr * 0.75)
+  ctx.stroke()
+  ctx.lineWidth = 4
+  ctx.beginPath()
+  ctx.moveTo(ccx, ccy)
+  ctx.lineTo(ccx + Math.sin(-0.02) * cr * 0.45, ccy - Math.cos(-0.02) * cr * 0.45)
+  ctx.stroke()
+  ctx.fillStyle = SCARLET
+  ctx.beginPath()
+  ctx.arc(ccx, ccy, cr * 0.07, 0, Math.PI * 2)
+  ctx.fill()
+
+  // bone-dust grain, re-rolled per ~12fps tick
+  const tick = Math.floor(t * 12)
+  ctx.fillStyle = 'rgba(216,207,192,0.045)'
+  for (let i = 0; i < 110; i++) {
+    const n1 = Math.sin((tick * 73 + i) * 12.9898) * 43758.5453
+    const n2 = Math.sin((tick * 59 + i) * 78.233) * 24634.6345
+    ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.6, 1.6)
+  }
+
+  // thin double rule frame with scarlet corner diamonds
+  const m = Math.min(w, h) * 0.03
+  ctx.strokeStyle = GOTHIC_RULE
+  ctx.lineWidth = 2
+  ctx.strokeRect(m, m, w - 2 * m, h - 2 * m)
+  ctx.lineWidth = 1
+  ctx.strokeRect(m * 1.6, m * 1.6, w - 3.2 * m, h - 3.2 * m)
+  ctx.fillStyle = SCARLET
+  for (const [px, py] of [
+    [m, m],
+    [w - m, m],
+    [w - m, h - m],
+    [m, h - m],
+  ] as const) {
+    ctx.beginPath()
+    ctx.moveTo(px, py - 6)
+    ctx.lineTo(px + 6, py)
+    ctx.lineTo(px, py + 6)
+    ctx.lineTo(px - 6, py)
+    ctx.closePath()
+    ctx.fill()
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The style-pack registry (module-local; a LibraryEntry.stylePackId is the
+// future data-contract version of this map)
+// ---------------------------------------------------------------------------
+
+interface StylePack {
+  paint: (ctx: CanvasRenderingContext2D, w: number, h: number, t: number) => void
+  /** Page ground behind/around the canvas (also the fade-through color between bills). */
+  bg: string
+  kicker: string
+  title: string
+  titleShadow: string
+  rule: string
+  author: string
+  meta: string
+  quote: string
+  buttonBg: string
+  buttonBorder: string
+  buttonInk: string
+  buttonHoverInk: string
+  buttonShadow: string
+  footnote: string
+}
+
+const DECO_PACK: StylePack = {
+  paint: paintDecoCard,
+  bg: PAPER,
+  kicker: NAVY,
+  title: '#221a12',
+  titleShadow: '3px 3px 0 rgba(168,128,44,0.35)',
+  rule: GOLD,
+  author: '#3d3020',
+  meta: '#6b5836',
+  quote: '#4a3b26',
+  buttonBg: NAVY,
+  buttonBorder: NAVY,
+  buttonInk: PAPER,
+  buttonHoverInk: NAVY,
+  buttonShadow: GOLD_BRIGHT,
+  footnote: '#8a7450',
+}
+
+const GOTHIC_PACK: StylePack = {
+  paint: paintGothicCard,
+  bg: EBONY,
+  kicker: CANDLE,
+  title: BONE,
+  titleShadow: '3px 3px 0 rgba(193,18,31,0.45)',
+  rule: SCARLET,
+  author: '#a99e90',
+  meta: '#8d8378',
+  quote: '#b8ac9c',
+  buttonBg: SCARLET,
+  buttonBorder: SCARLET,
+  buttonInk: BONE,
+  buttonHoverInk: SCARLET,
+  buttonShadow: CANDLE,
+  footnote: '#6f6558',
+}
+
+const PACK_BY_ENTRY_ID: Record<string, StylePack> = {
+  'gatsby-ch3': DECO_PACK,
+  masque: GOTHIC_PACK,
+}
+
+function packFor(entry: LibraryEntry): StylePack {
+  return PACK_BY_ENTRY_ID[entry.id] ?? DECO_PACK
+}
+
+// ---------------------------------------------------------------------------
+// Canvas + carousel
+// ---------------------------------------------------------------------------
+
+function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const onChange = () => setReduced(query.matches)
+    query.addEventListener('change', onChange)
+    return () => query.removeEventListener('change', onChange)
+  }, [])
+  return reduced
+}
+
+function TitleCardCanvas({ pack, reduced }: { pack: StylePack; reduced: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const packRef = useRef(pack)
+  packRef.current = pack
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
-    let raf = 0
-    let last = 0
-    const start = performance.now()
-    const draw = (now: number) => {
-      raf = requestAnimationFrame(draw)
-      if (now - last < 1000 / 12) return // on twos
-      last = now
+
+    const paintOnce = (t: number) => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const { clientWidth, clientHeight } = canvas
       if (canvas.width !== clientWidth * dpr || canvas.height !== clientHeight * dpr) {
@@ -109,73 +372,221 @@ function TitleCardCanvas() {
         canvas.height = clientHeight * dpr
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      paintTitleCard(ctx, clientWidth, clientHeight, (now - start) / 1000)
+      packRef.current.paint(ctx, clientWidth, clientHeight, t)
+    }
+
+    if (reduced) {
+      // one static painting per pack; repaint on resize only
+      paintOnce(0)
+      const onResize = () => paintOnce(0)
+      window.addEventListener('resize', onResize)
+      return () => window.removeEventListener('resize', onResize)
+    }
+
+    let raf = 0
+    let last = 0
+    const start = performance.now()
+    const draw = (now: number) => {
+      raf = requestAnimationFrame(draw)
+      if (now - last < 1000 / 12) return // on twos
+      last = now
+      paintOnce((now - start) / 1000)
     }
     raf = requestAnimationFrame(draw)
     return () => cancelAnimationFrame(raf)
-  }, [])
+  }, [reduced, pack])
 
   return <canvas ref={canvasRef} aria-hidden className="absolute inset-0 h-full w-full" />
 }
 
-export default function LandingPage({ onSelect }: LandingPageProps) {
-  return (
-    <div className="relative h-screen w-screen overflow-y-auto bg-[#efe4c9]">
-      <TitleCardCanvas />
-      <main className="relative flex min-h-full flex-col items-center justify-center px-8 py-16 text-center">
-        <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.45em] text-[#22304f]">
-          Litverse presents
-        </p>
+/** Content-fade duration for the program change between bills (ms). */
+const FADE_MS = 280
 
-        {LIBRARY.map((entry) => (
-          <section key={entry.id} className="mt-6 flex flex-col items-center">
+export default function LandingPage({ onSelect }: LandingPageProps) {
+  const [index, setIndex] = useState(0)
+  const [fading, setFading] = useState(false)
+  const fadeTimerRef = useRef<number | null>(null)
+  const reduced = usePrefersReducedMotion()
+
+  const entry = LIBRARY[index] ?? LIBRARY[0]
+  const goTo = useCallback(
+    (nextIndex: number) => {
+      const total = LIBRARY.length
+      if (total < 2) return
+      const wrapped = ((nextIndex % total) + total) % total
+      if (reduced) {
+        setIndex(wrapped)
+        return
+      }
+      setFading(true)
+      if (fadeTimerRef.current !== null) window.clearTimeout(fadeTimerRef.current)
+      fadeTimerRef.current = window.setTimeout(() => {
+        setIndex(wrapped)
+        setFading(false)
+      }, FADE_MS)
+    },
+    [reduced],
+  )
+
+  useEffect(() => () => {
+    if (fadeTimerRef.current !== null) window.clearTimeout(fadeTimerRef.current)
+  }, [])
+
+  // the setIndex-in-timeout pattern means `index` inside goTo callers is
+  // always the committed card; arrow keys navigate relative to it
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') goTo(index - 1)
+      else if (event.key === 'ArrowRight') goTo(index + 1)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [goTo, index])
+
+  if (!entry) return null
+  const pack = packFor(entry)
+  const many = LIBRARY.length > 1
+
+  return (
+    <div
+      className="relative h-screen w-screen overflow-hidden transition-colors duration-500"
+      style={{ backgroundColor: pack.bg }}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Litverse library"
+    >
+      <div
+        className="absolute inset-0 transition-opacity"
+        style={{ opacity: fading ? 0 : 1, transitionDuration: `${FADE_MS}ms` }}
+      >
+        <TitleCardCanvas pack={pack} reduced={reduced} />
+        <main className="relative flex h-full flex-col items-center justify-center px-8 py-16 text-center">
+          <p
+            className="font-sans text-[11px] font-semibold uppercase tracking-[0.45em]"
+            style={{ color: pack.kicker }}
+          >
+            Litverse presents
+          </p>
+
+          <section className="mt-6 flex flex-col items-center">
             <h1
-              className="max-w-3xl text-5xl uppercase leading-tight text-[#221a12] sm:text-6xl"
-              style={{ fontFamily: 'var(--font-display)', textShadow: '3px 3px 0 rgba(168,128,44,0.35)' }}
+              className="max-w-3xl text-5xl uppercase leading-tight sm:text-6xl"
+              style={{ fontFamily: 'var(--font-display)', color: pack.title, textShadow: pack.titleShadow }}
             >
               {entry.title}
             </h1>
 
             {/* ribbon rule */}
-            <div className="mt-6 flex items-center gap-3 text-[#a8802c]">
-              <span className="block h-px w-16 bg-[#a8802c]" />
-              <span aria-hidden className="text-xs">◆</span>
-              <span className="block h-px w-16 bg-[#a8802c]" />
+            <div className="mt-6 flex items-center gap-3" style={{ color: pack.rule }}>
+              <span className="block h-px w-16" style={{ backgroundColor: pack.rule }} />
+              <span aria-hidden className="text-xs">
+                ◆
+              </span>
+              <span className="block h-px w-16" style={{ backgroundColor: pack.rule }} />
             </div>
 
-            <p className="mt-5 font-serif text-lg italic text-[#3d3020]">by {entry.author}</p>
-            <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.3em] text-[#6b5836]">
+            <p className="mt-5 font-serif text-lg italic" style={{ color: pack.author }}>
+              by {entry.author}
+            </p>
+            <p
+              className="mt-1 font-sans text-[11px] uppercase tracking-[0.3em]"
+              style={{ color: pack.meta }}
+            >
               {entry.chapter} · {entry.tagline}
             </p>
 
-            <p className="mt-8 max-w-xl font-serif text-base italic leading-relaxed text-[#4a3b26]">
+            <p
+              className="mt-8 max-w-xl font-serif text-base italic leading-relaxed"
+              style={{ color: pack.quote }}
+            >
               “{entry.openingLine}”
             </p>
 
             <button
               type="button"
               onClick={() => onSelect(entry)}
-              className="group mt-10 cursor-pointer border-2 border-[#22304f] bg-[#22304f] px-10 py-3 transition-colors duration-200 hover:bg-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a8802c]"
-              style={{ boxShadow: `4px 4px 0 ${GOLD_BRIGHT}` }}
+              className="group mt-10 cursor-pointer border-2 px-10 py-3 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+              style={{
+                backgroundColor: pack.buttonBg,
+                borderColor: pack.buttonBorder,
+                boxShadow: `4px 4px 0 ${pack.buttonShadow}`,
+                outlineColor: pack.rule,
+              }}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.backgroundColor = 'transparent'
+                const label = event.currentTarget.firstElementChild as HTMLElement | null
+                if (label) label.style.color = pack.buttonHoverInk
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.backgroundColor = pack.buttonBg
+                const label = event.currentTarget.firstElementChild as HTMLElement | null
+                if (label) label.style.color = pack.buttonInk
+              }}
             >
               <span
-                className="text-xl uppercase tracking-[0.2em] text-[#efe4c9] transition-colors duration-200 group-hover:text-[#22304f]"
-                style={{ fontFamily: 'var(--font-display)' }}
+                className="text-xl uppercase tracking-[0.2em] transition-colors duration-200"
+                style={{ fontFamily: 'var(--font-display)', color: pack.buttonInk }}
               >
                 Begin
               </span>
             </button>
 
-            <p className="mt-4 font-sans text-[10px] uppercase tracking-[0.25em] text-[#8a7450]">
+            <p
+              className="mt-4 font-sans text-[10px] uppercase tracking-[0.25em]"
+              style={{ color: pack.meta }}
+            >
               {sentenceCountOf(entry)} sentences · narrated &amp; painted
             </p>
           </section>
-        ))}
 
-        <p className="mt-14 max-w-md font-sans text-[10px] leading-relaxed tracking-wide text-[#8a7450]">
-          Narration and scenery are compiled ahead of time — nothing is generated while you read.
-        </p>
-      </main>
+          <p
+            className="mt-10 max-w-md font-sans text-[10px] leading-relaxed tracking-wide"
+            style={{ color: pack.footnote }}
+          >
+            Narration and scenery are compiled ahead of time — nothing is generated while you read.
+          </p>
+        </main>
+      </div>
+
+      {many && (
+        <>
+          <button
+            type="button"
+            aria-label="Previous book"
+            onClick={() => goTo(index - 1)}
+            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer border px-3 py-4 text-2xl leading-none transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:left-8"
+            style={{ color: pack.rule, borderColor: pack.rule, opacity: 0.75, outlineColor: pack.rule }}
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            aria-label="Next book"
+            onClick={() => goTo(index + 1)}
+            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer border px-3 py-4 text-2xl leading-none transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sm:right-8"
+            style={{ color: pack.rule, borderColor: pack.rule, opacity: 0.75, outlineColor: pack.rule }}
+          >
+            ›
+          </button>
+          <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
+            {LIBRARY.map((item, itemIndex) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={item.title}
+                aria-current={itemIndex === index}
+                onClick={() => goTo(itemIndex)}
+                className="h-2.5 w-2.5 cursor-pointer rounded-full border transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{
+                  borderColor: pack.rule,
+                  backgroundColor: itemIndex === index ? pack.rule : 'transparent',
+                  outlineColor: pack.rule,
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }
