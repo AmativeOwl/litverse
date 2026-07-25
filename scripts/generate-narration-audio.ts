@@ -121,7 +121,10 @@ const IS_TRIAL = cliArgs.trial
 const TRIAL_SENTENCE_IDS = ['p1-s1', 'p3-s1', 'p4-s3']
 
 const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX-timestamped'
-const VOICE_NAME = cliArgs.voice ?? 'af_sky'
+// af_heart replaced af_sky as default (2026-07-25) after a 12-voice audition
+// through the trial harness -- the user's pick, judged on the long-sentence
+// sample where sustained prose exposes flatness most.
+const VOICE_NAME = cliArgs.voice ?? 'af_heart'
 /**
  * Base speed. Was `1` (the model's default) until a trial-harness A/B pass
  * (`--voice af_sky --speed <n>` for a few values around 1.08-1.15, output to
