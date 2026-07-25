@@ -230,7 +230,7 @@ const HAZE_DRUM_HEIGHT = 18
 const HAZE_DRUM_CENTER_Y = 5
 
 export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: PaintedPlatesProps) {
-  const { built, builtWindows, midGroups } = useMemo(() => {
+  const { built, builtWindows } = useMemo(() => {
     // Narrative order first: cameraAzimuthDeg's key order is the scene's
     // beat sequence (both registries declare beats in story order), so
     // consecutive story beats land in adjacent drum slots -- every beat
@@ -259,18 +259,7 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
       sentenceIdSet: new Set(window.sentenceIds),
       opacity: 0,
     }))
-    // Mid/near shells grouped by authored sector azimuth: a group of one is
-    // ALWAYS fully visible (the drum's persistent gallery); a shared slot
-    // (e.g. orchestra + dancing at Gatsby's 80) crossfades by beat
-    // membership, topped up so the slot never goes blank.
-    const groups = new Map<number, BuiltPlate[]>()
-    for (const plate of builtPlates) {
-      if (plate.def.layer === 'far') continue
-      const group = groups.get(plate.def.azimuthDeg) ?? []
-      group.push(plate)
-      groups.set(plate.def.azimuthDeg, group)
-    }
-    return { built: builtPlates, builtWindows: windows, midGroups: groups }
+    return { built: builtPlates, builtWindows: windows }
   }, [plateSet, beatsById])
 
   // Sentence-level store field (permitted; word-level is what's barred).
@@ -284,8 +273,6 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
   builtRef.current = built
   const windowsRef = useRef(builtWindows)
   windowsRef.current = builtWindows
-  const midGroupsRef = useRef(midGroups)
-  midGroupsRef.current = midGroups
   const lastRepaintRef = useRef(0)
   const hazeMaterialRef = useRef<THREE.MeshBasicMaterial>(null)
 
@@ -326,40 +313,23 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
       suppressionByAzimuth.set(azimuth, Math.max(suppressionByAzimuth.get(azimuth) ?? 0, window.opacity))
     }
 
-    // -- far rings: full-circle panoramas crossfading on beat change (the
-    // outgoing and incoming rings always sum to full cover, so the backdrop
-    // is painted at every rotation angle)
+    // -- beat track: dissolve + advance. Far rings crossfade on beat change
+    // (outgoing + incoming always sum to full cover, so the backdrop is
+    // painted at every rotation angle); mid/near cards are beat-gated by
+    // the same vignetteVisibility -- the outgoing card dissolves out over
+    // the ~1s beat lerp while the drum advances one slot, so a rotation
+    // never carries the previous frame along. This gating is also the
+    // living-painting perf gate: only visible cards pass the repaint
+    // threshold above, so at most a couple of canvases repaint + re-upload
+    // per tick instead of the whole gallery (an always-visible gallery made
+    // every animated card upload every tick -- the observed jank).
     for (const plate of builtRef.current) {
-      if (plate.def.layer !== 'far') continue
-      plate.material.opacity = vignetteVisibility(lerped.fromId, lerped.toId, lerped.t, plate.memberSet)
-      plate.material.color.setRGB(1, 1, 1).lerp(workingColor, plate.fogTint)
-    }
-
-    // -- mid/near shells: the drum's persistent gallery. Every sector's
-    // painting stays visible so a turn slides image-into-image with no
-    // blank between frames; only slot-SHARING plates crossfade by beat
-    // membership, topped up so their slot never goes empty either.
-    for (const group of midGroupsRef.current.values()) {
-      const first = group[0]
-      if (!first) continue
-      const suppression = 1 - (suppressionByAzimuth.get(first.def.azimuthDeg) ?? 0)
-      if (group.length === 1) {
-        first.material.opacity = suppression
-        first.material.color.setRGB(1, 1, 1).lerp(workingColor, first.fogTint)
-        continue
+      let opacity = vignetteVisibility(lerped.fromId, lerped.toId, lerped.t, plate.memberSet)
+      if (plate.def.layer !== 'far') {
+        opacity *= 1 - (suppressionByAzimuth.get(plate.def.azimuthDeg) ?? 0)
       }
-      let total = 0
-      const visibilities = group.map((plate) => {
-        const visibility = vignetteVisibility(lerped.fromId, lerped.toId, lerped.t, plate.memberSet)
-        total += visibility
-        return visibility
-      })
-      const deficit = Math.max(0, 1 - total)
-      group.forEach((plate, index) => {
-        const base = (visibilities[index] ?? 0) + (index === 0 ? deficit : 0)
-        plate.material.opacity = base * suppression
-        plate.material.color.setRGB(1, 1, 1).lerp(workingColor, plate.fogTint)
-      })
+      plate.material.opacity = opacity
+      plate.material.color.setRGB(1, 1, 1).lerp(workingColor, plate.fogTint)
     }
   })
 
