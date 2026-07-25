@@ -1,6 +1,6 @@
 import type { Paragraph, Passage, SceneBeat, Sentence, Word } from '../types'
 import type { CardSpec, ScenePlateSet } from '../types-plates'
-import type { LibraryEntry } from '../data/library'
+import type { LibraryEntry, StylePackId } from '../data/library'
 import { composeCard } from '../components/world/decoCardComposer'
 import { darkenHex, drawBandedSky, lightenHex, mixHex } from '../components/world/decoPlateKit'
 
@@ -30,6 +30,28 @@ export interface UserBookRecord {
   author: string
   passage: Passage
   addedAt: string
+  /**
+   * Style pack chosen by the reader at add time (the picker on the add-a-book
+   * desk). Optional because records predate the picker; loadUserBooks
+   * backfills those once via the deterministic title heuristic below.
+   */
+  stylePackId?: StylePackId
+}
+
+/**
+ * One-time backfill for books added before the style picker existed: a
+ * deterministic keyword table (zero AI -- the same closed-pack bet as
+ * everywhere else; the picker is the real mechanism going forward).
+ */
+function inferStylePack(title: string, author: string): StylePackId {
+  const haystack = `${title} ${author}`.toLowerCase()
+  if (/wonderland|alice|looking-glass|fairy|grimm|andersen|peter pan|willows|carroll/.test(haystack)) {
+    return 'storybook'
+  }
+  if (/poe|usher|raven|dracula|frankenstein|gothic|ghost|vampire|shelley|stoker/.test(haystack)) {
+    return 'gothic'
+  }
+  return 'deco'
 }
 
 // ---------------------------------------------------------------------------
@@ -242,13 +264,30 @@ export function loadUserBooks(): UserBookRecord[] {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw) as UserBookRecord[]
-    return Array.isArray(parsed) ? parsed.filter((b) => b && b.id && b.passage) : []
+    if (!Array.isArray(parsed)) return []
+    const books = parsed.filter((b) => b && b.id && b.passage)
+    // Backfill pre-picker records with an inferred pack, persisted so the
+    // inference runs once per book, not on every load.
+    let migrated = false
+    for (const book of books) {
+      if (!book.stylePackId) {
+        book.stylePackId = inferStylePack(book.title, book.author)
+        migrated = true
+      }
+    }
+    if (migrated) localStorage.setItem(STORAGE_KEY, JSON.stringify(books))
+    return books
   } catch {
     return []
   }
 }
 
-export function addUserBook(input: { title: string; author: string; text: string }): UserBookRecord {
+export function addUserBook(input: {
+  title: string
+  author: string
+  text: string
+  stylePackId?: StylePackId
+}): UserBookRecord {
   const title = input.title.trim()
   const author = input.author.trim() || 'Unknown'
   const text = input.text.trim()
@@ -260,7 +299,14 @@ export function addUserBook(input: { title: string; author: string; text: string
   const id = `user-${slugify(title)}-${Date.now().toString(36)}`
   const passage = compilePassage(id, title, text)
   if (passage.paragraphs.length === 0) throw new Error('No readable sentences found in that text.')
-  const record: UserBookRecord = { id, title, author, passage, addedAt: new Date().toISOString() }
+  const record: UserBookRecord = {
+    id,
+    title,
+    author,
+    passage,
+    addedAt: new Date().toISOString(),
+    stylePackId: input.stylePackId ?? inferStylePack(title, author),
+  }
   const books = [...loadUserBooks(), record]
   localStorage.setItem(STORAGE_KEY, JSON.stringify(books))
   return record
@@ -277,6 +323,7 @@ export function toLibraryEntry(record: UserBookRecord): LibraryEntry {
     title: record.title,
     author: record.author,
     chapter: 'Reader’s edition',
+    stylePackId: record.stylePackId ?? 'deco',
     tagline: 'Compiled in your browser — silent reading',
     openingLine: opening,
     category: USER_CATEGORY,

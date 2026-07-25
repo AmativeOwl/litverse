@@ -14,11 +14,20 @@ import sceneBeatsData from './scene-beats.json'
  * Phase A. The landing page renders whatever this list contains, so adding
  * a future compiled text is one entry + its data modules, no UI changes.
  */
+/**
+ * The closed set of hand-built rendering vocabularies (see the style-packs
+ * concept board): each pack is a cover painter + title-card painter + type
+ * treatment. Data picks which one a book wears; packs are never generated.
+ */
+export type StylePackId = 'deco' | 'gothic' | 'storybook'
+
 export interface LibraryEntry {
   id: string
   title: string
   author: string
   chapter: string
+  /** Which style pack paints this book's cover and title card. */
+  stylePackId: StylePackId
   /** One-line description shown under the chapter. */
   tagline: string
   /** The text's own first sentence, quoted on the card. */
@@ -38,6 +47,7 @@ export const LIBRARY: readonly LibraryEntry[] = [
     title: 'The Great Gatsby',
     author: 'F. Scott Fitzgerald',
     chapter: 'Chapter III',
+    stylePackId: 'deco',
     tagline: 'The party at West Egg',
     openingLine: 'There was music from my neighbour’s house through the summer nights.',
     category: 'The Jazz Age',
@@ -50,6 +60,7 @@ export const LIBRARY: readonly LibraryEntry[] = [
     title: 'The Masque of the Red Death',
     author: 'Edgar Allan Poe',
     chapter: 'The Imperial Suite',
+    stylePackId: 'gothic',
     tagline: 'Prince Prospero’s masked ball',
     openingLine: 'It was a voluptuous scene, that masquerade.',
     category: 'Gothic & Macabre',

@@ -20,8 +20,9 @@ interface BookcasePageProps {
  * continuous sequence.
  *
  * Covers are small procedural canvases painted once per book in that
- * book's style-pack language (Deco for the Jazz Age shelf, Gothic for the
- * Macabre shelf) -- the same closed-pack bet as the concept board: packs
+ * book's style-pack language (Deco, Gothic, or Storybook, per
+ * `entry.stylePackId` -- reader-added books carry the pack chosen on the
+ * add-a-book desk) -- the same closed-pack bet as the concept board: packs
  * are hand-built vocabulary, data picks which one a book wears.
  */
 
@@ -30,13 +31,6 @@ const NAVY = '#22304f'
 const GOLD = '#a8802c'
 const GOLD_BRIGHT = '#c99b3f'
 
-type CoverPack = 'deco' | 'gothic'
-
-/** Style pack per entry id; unknown ids wear the house deco binding. */
-const COVER_PACK_BY_ID: Record<string, CoverPack> = {
-  'gatsby-ch3': 'deco',
-  masque: 'gothic',
-}
 
 /** Frame-rule helper: every pictorial element stays inside this inset rect; only ground texture may bleed. */
 function safeRect(w: number, h: number) {
@@ -171,9 +165,179 @@ function paintGothicCover(ctx: CanvasRenderingContext2D, w: number, h: number, e
   drawTitleBlock(ctx, w, entry, GOTHIC_BONE, GOTHIC_SCARLET, h * 0.66, Math.round(w * 0.092))
 }
 
-const COVER_PAINTERS: Record<CoverPack, typeof paintDecoCover> = {
+// --- Storybook & Whimsy (per the style-packs concept board: wobbly hand-
+// inked line, scalloped edges, cream/rose/leaf palette, nothing quite level)
+const SB_CREAM = '#fdf6e3'
+const SB_CREAM_DEEP = '#f5ead0'
+const SB_INK = '#3a3230'
+const SB_ROSE = '#c56a7e'
+const SB_LEAF = '#8aa86b'
+const SB_BRASS = '#9a7b3c'
+
+/** Title lines on a bouncing baseline -- the storybook lettering rule: nothing sits level. */
+function drawBounceTitle(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  entry: LibraryEntry,
+  centerY: number,
+  titlePx: number,
+): void {
+  ctx.textAlign = 'center'
+  ctx.fillStyle = SB_INK
+  ctx.font = `700 italic ${titlePx}px Georgia, serif`
+  const words = entry.title.split(' ')
+  const lines: string[] = []
+  let line = ''
+  for (const word of words) {
+    const probe = line ? `${line} ${word}` : word
+    if (ctx.measureText(probe).width > w * 0.74 && line) {
+      lines.push(line)
+      line = word
+    } else {
+      line = probe
+    }
+  }
+  if (line) lines.push(line)
+  const lineH = titlePx * 1.3
+  const startY = centerY - ((lines.length - 1) * lineH) / 2
+  lines.forEach((text, lineIndex) => {
+    const widths = [...text].map((ch) => ctx.measureText(ch).width)
+    let x = w / 2 - widths.reduce((a, b) => a + b, 0) / 2
+    ;[...text].forEach((ch, i) => {
+      const dy = Math.sin((i + lineIndex * 3) * 1.05) * titlePx * 0.14
+      ctx.fillText(ch, x + (widths[i] ?? 0) / 2, startY + lineIndex * lineH + dy)
+      x += widths[i] ?? 0
+    })
+  })
+  ctx.font = `italic ${Math.round(titlePx * 0.62)}px Georgia, serif`
+  ctx.fillStyle = SB_ROSE
+  ctx.fillText(entry.author, w / 2, startY + lines.length * lineH + titlePx * 0.3)
+}
+
+function paintStorybookCover(ctx: CanvasRenderingContext2D, w: number, h: number, entry: LibraryEntry): void {
+  ctx.fillStyle = SB_CREAM
+  ctx.fillRect(0, 0, w, h)
+  const safe = safeRect(w, h)
+
+  // scalloped rose border, running along the safe rect on all four sides
+  ctx.strokeStyle = SB_ROSE
+  ctx.lineWidth = Math.max(1.2, w * 0.011)
+  const r = Math.max(4.5, w * 0.042)
+  ctx.beginPath()
+  for (let x = safe.x + r; x < safe.x + safe.w - r / 2; x += 2 * r) ctx.arc(x, safe.y, r, Math.PI, 0)
+  ctx.stroke()
+  ctx.beginPath()
+  for (let x = safe.x + r; x < safe.x + safe.w - r / 2; x += 2 * r) ctx.arc(x, safe.y + safe.h, r, 0, Math.PI)
+  ctx.stroke()
+  ctx.beginPath()
+  for (let y = safe.y + r; y < safe.y + safe.h - r / 2; y += 2 * r) ctx.arc(safe.x, y, r, Math.PI / 2, -Math.PI / 2)
+  ctx.stroke()
+  ctx.beginPath()
+  for (let y = safe.y + r; y < safe.y + safe.h - r / 2; y += 2 * r) ctx.arc(safe.x + safe.w, y, r, -Math.PI / 2, Math.PI / 2)
+  ctx.stroke()
+
+  ctx.save()
+  ctx.beginPath()
+  ctx.rect(safe.x + r, safe.y + r, safe.w - 2 * r, safe.h - 2 * r)
+  ctx.clip()
+
+  // wobbly hand-inked vignette ring around the picture zone
+  const cx = w / 2
+  const cy = safe.y + safe.h * 0.3
+  const ringR = safe.w * 0.34
+  ctx.strokeStyle = SB_INK
+  ctx.lineWidth = Math.max(1.2, w * 0.011)
+  ctx.beginPath()
+  for (let i = 0; i <= 48; i++) {
+    const an = (i / 48) * Math.PI * 2
+    const rr = ringR + Math.sin(an * 7) * w * 0.013 + Math.cos(an * 3) * w * 0.01
+    const px = cx + Math.cos(an) * rr
+    const py = cy + Math.sin(an) * rr * 0.8
+    if (i === 0) ctx.moveTo(px, py)
+    else ctx.lineTo(px, py)
+  }
+  ctx.closePath()
+  ctx.stroke()
+
+  // the mushroom: rose cap with cream spots, wobbly cream stalk
+  const mx = cx - safe.w * 0.13
+  const my = cy + ringR * 0.32
+  const capW = safe.w * 0.3
+  ctx.fillStyle = SB_ROSE
+  ctx.beginPath()
+  ctx.moveTo(mx - capW / 2, my)
+  ctx.quadraticCurveTo(mx - capW * 0.1, my - capW * 0.52, mx + capW / 2, my - capW * 0.04)
+  ctx.quadraticCurveTo(mx, my + capW * 0.1, mx - capW / 2, my)
+  ctx.fill()
+  ctx.strokeStyle = SB_INK
+  ctx.lineWidth = Math.max(1, w * 0.009)
+  ctx.stroke()
+  ctx.fillStyle = SB_CREAM
+  for (const [sx, sy, sr] of [
+    [-0.28, -0.16, 0.045],
+    [-0.05, -0.26, 0.038],
+    [0.22, -0.12, 0.042],
+  ] as const) {
+    ctx.beginPath()
+    ctx.ellipse(mx + capW * sx, my + capW * sy, capW * sr, capW * sr * 0.75, 0, 0, Math.PI * 2)
+    ctx.fill()
+  }
+  ctx.fillStyle = SB_CREAM_DEEP
+  ctx.beginPath()
+  ctx.moveTo(mx - capW * 0.1, my + capW * 0.03)
+  ctx.quadraticCurveTo(mx - capW * 0.16, my + capW * 0.42, mx - capW * 0.06, my + capW * 0.44)
+  ctx.quadraticCurveTo(mx + capW * 0.08, my + capW * 0.42, mx + capW * 0.06, my + capW * 0.04)
+  ctx.closePath()
+  ctx.fill()
+  ctx.stroke()
+
+  // the floating key, tilted
+  ctx.save()
+  ctx.translate(cx + safe.w * 0.2, cy - ringR * 0.28)
+  ctx.rotate(0.35)
+  ctx.strokeStyle = SB_BRASS
+  ctx.lineWidth = Math.max(1.6, w * 0.016)
+  const kr = safe.w * 0.055
+  ctx.beginPath()
+  ctx.arc(0, 0, kr, 0, Math.PI * 2)
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(kr * 0.9, kr * 0.35)
+  ctx.lineTo(kr * 3.6, kr * 1.3)
+  ctx.moveTo(kr * 2.9, kr * 1.1)
+  ctx.lineTo(kr * 2.7, kr * 1.9)
+  ctx.moveTo(kr * 3.5, kr * 1.3)
+  ctx.lineTo(kr * 3.3, kr * 2.1)
+  ctx.stroke()
+  ctx.restore()
+
+  // card pips adrift
+  ctx.textAlign = 'center'
+  ctx.font = `700 ${Math.round(w * 0.085)}px Georgia, serif`
+  ctx.fillStyle = SB_ROSE
+  ctx.fillText('♥', cx + safe.w * 0.26, cy + ringR * 0.62)
+  ctx.fillStyle = SB_INK
+  ctx.fillText('♠', cx - safe.w * 0.3, cy - ringR * 0.5)
+
+  // dotted leaf-green path wandering out of the ring
+  ctx.fillStyle = SB_LEAF
+  for (let d = 0; d < 12; d++) {
+    const tt = d / 11
+    const px = cx - safe.w * 0.05 + tt * safe.w * 0.34
+    const py = cy + ringR * 0.86 - Math.sin(tt * 5) * safe.h * 0.03 - tt * safe.h * 0.05
+    ctx.beginPath()
+    ctx.arc(px, py, Math.max(1.2, w * 0.011), 0, Math.PI * 2)
+    ctx.fill()
+  }
+  ctx.restore()
+
+  drawBounceTitle(ctx, w, entry, h * 0.72, Math.round(w * 0.092))
+}
+
+const COVER_PAINTERS: Record<LibraryEntry['stylePackId'], typeof paintDecoCover> = {
   deco: paintDecoCover,
   gothic: paintGothicCover,
+  storybook: paintStorybookCover,
 }
 
 function BookCover({ entry, onSelect }: { entry: LibraryEntry; onSelect: (entry: LibraryEntry) => void }) {
@@ -190,7 +354,7 @@ function BookCover({ entry, onSelect }: { entry: LibraryEntry; onSelect: (entry:
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     ctx.scale(dpr, dpr)
-    const paint = COVER_PAINTERS[COVER_PACK_BY_ID[entry.id] ?? 'deco']
+    const paint = COVER_PAINTERS[entry.stylePackId] ?? paintDecoCover
     paint(ctx, cssW, cssH, entry)
   }, [entry])
 

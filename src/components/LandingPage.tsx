@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { LIBRARY, sentenceCountOf, type LibraryEntry } from '../data/library'
+import { LIBRARY, sentenceCountOf, type LibraryEntry, type StylePackId } from '../data/library'
+import { USER_CATEGORY } from '../lib/userLibrary'
 
 interface LandingPageProps {
+  /**
+   * The bills on the programme. Defaults to the precompiled LIBRARY;
+   * App passes the full list (built-ins + reader-added books) so a book
+   * added on the desk gets a real title card in its own pack's language.
+   */
+  entries?: readonly LibraryEntry[]
   onSelect: (entry: LibraryEntry) => void
   /**
    * Returns to the bookcase home. Rendered as a spectral, floating link
@@ -323,14 +330,170 @@ const GOTHIC_PAINTER: CardPainter = {
 const paintGothicCard = makePackPaint(GOTHIC_PAINTER)
 
 // ---------------------------------------------------------------------------
-// The style-pack registry (module-local; a LibraryEntry.stylePackId is the
-// future data-contract version of this map)
+// Storybook & Whimsy pack (Alice and the fairy-tale shelf) -- per the
+// style-packs concept board: wobbly hand-inked line, scalloped edges, a
+// path that refuses to run straight; nothing is quite level, on purpose.
+// ---------------------------------------------------------------------------
+
+const SB_CREAM = '#fdf6e3'
+const SB_CREAM_DEEP = '#f5ead0'
+const SB_INK = '#3a3230'
+const SB_ROSE = '#c56a7e'
+const SB_LEAF = '#8aa86b'
+const SB_BRASS = '#9a7b3c'
+const SB_ROBIN = '#7ac0c9'
+
+const STORYBOOK_PAINTER: CardPainter = {
+  safeArea: (w, h) => {
+    const m = Math.min(w, h) * 0.045 // scallop lane
+    const inset = m * 2
+    return { x: inset, y: inset, w: w - 2 * inset, h: h - 2 * inset }
+  },
+
+  ground: (ctx, w, h, t) => {
+    ctx.fillStyle = SB_CREAM
+    ctx.fillRect(0, 0, w, h)
+    // ink-fleck grain, re-rolled per ~12fps tick -- lighter-handed than the
+    // deco/gothic grain: storybook paper is clean nursery cream
+    const tick = Math.floor(t * 12)
+    ctx.fillStyle = 'rgba(58,50,48,0.05)'
+    for (let i = 0; i < 70; i++) {
+      const n1 = Math.sin((tick * 83 + i) * 12.9898) * 43758.5453
+      const n2 = Math.sin((tick * 41 + i) * 78.233) * 24634.6345
+      ctx.fillRect((n1 - Math.floor(n1)) * w, (n2 - Math.floor(n2)) * h, 1.5, 1.5)
+    }
+  },
+
+  subjects: (ctx, safe, w, h, t) => {
+    // wobbly double vignette ring, low center -- the picture zone the type
+    // column sits above
+    const cx = w / 2
+    const cy = safe.y + safe.h * 0.62
+    const R1 = Math.min(safe.w * 0.24, safe.h * 0.5)
+    ctx.strokeStyle = SB_INK
+    ctx.lineWidth = 3
+    for (const R of [R1, R1 * 1.05]) {
+      ctx.beginPath()
+      for (let i = 0; i <= 64; i++) {
+        const an = (i / 64) * Math.PI * 2
+        const rr = R + Math.sin(an * 7) * 5 + Math.cos(an * 3) * 4
+        const px = cx + Math.cos(an) * rr * 1.6
+        const py = cy + Math.sin(an) * rr * 0.74
+        if (i === 0) ctx.moveTo(px, py)
+        else ctx.lineTo(px, py)
+      }
+      ctx.closePath()
+      ctx.stroke()
+    }
+
+    // mushroom, left of ring center: rose cap, cream spots, wobbly stalk
+    const mx = cx - R1 * 1.05
+    const my = cy + R1 * 0.3
+    const capW = R1 * 1.15
+    ctx.fillStyle = SB_ROSE
+    ctx.beginPath()
+    ctx.moveTo(mx - capW / 2, my)
+    ctx.quadraticCurveTo(mx - capW * 0.08, my - capW * 0.5, mx + capW / 2, my - capW * 0.03)
+    ctx.quadraticCurveTo(mx, my + capW * 0.1, mx - capW / 2, my)
+    ctx.fill()
+    ctx.strokeStyle = SB_INK
+    ctx.lineWidth = 3
+    ctx.stroke()
+    ctx.fillStyle = SB_CREAM
+    for (const [sx, sy, sr] of [
+      [-0.3, -0.16, 0.05],
+      [-0.06, -0.25, 0.042],
+      [0.22, -0.12, 0.047],
+    ] as const) {
+      ctx.beginPath()
+      ctx.ellipse(mx + capW * sx, my + capW * sy, capW * sr, capW * sr * 0.72, 0, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    ctx.fillStyle = SB_CREAM_DEEP
+    ctx.beginPath()
+    ctx.moveTo(mx - capW * 0.1, my + capW * 0.02)
+    ctx.quadraticCurveTo(mx - capW * 0.15, my + capW * 0.5, mx - capW * 0.04, my + capW * 0.52)
+    ctx.quadraticCurveTo(mx + capW * 0.1, my + capW * 0.5, mx + capW * 0.07, my + capW * 0.03)
+    ctx.closePath()
+    ctx.fill()
+    ctx.stroke()
+
+    // the floating key, right of center, drifting on a slow bob
+    ctx.save()
+    ctx.translate(cx + R1 * 1.1, cy - R1 * 0.35 + Math.sin(t * 0.7) * 6)
+    ctx.rotate(0.35 + Math.sin(t * 0.5) * 0.05)
+    ctx.strokeStyle = SB_BRASS
+    ctx.lineWidth = 6
+    const kr = R1 * 0.18
+    ctx.beginPath()
+    ctx.arc(0, 0, kr, 0, Math.PI * 2)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.moveTo(kr * 0.9, kr * 0.35)
+    ctx.lineTo(kr * 4.1, kr * 1.5)
+    ctx.moveTo(kr * 3.3, kr * 1.25)
+    ctx.lineTo(kr * 3, kr * 2.1)
+    ctx.moveTo(kr * 4, kr * 1.5)
+    ctx.lineTo(kr * 3.7, kr * 2.3)
+    ctx.stroke()
+    ctx.restore()
+
+    // card pips adrift, each bobbing out of phase
+    ctx.textAlign = 'center'
+    ctx.font = '700 40px Georgia, serif'
+    ctx.fillStyle = SB_INK
+    ctx.fillText('♠', cx + R1 * 1.75, cy + R1 * 0.75 + Math.sin(t * 0.6 + 1) * 5)
+    ctx.fillStyle = SB_ROSE
+    ctx.fillText('♥', cx + R1 * 0.5, cy + R1 * 1.02 + Math.sin(t * 0.55 + 2.4) * 5)
+    ctx.fillStyle = SB_ROBIN
+    ctx.fillText('♦', cx - R1 * 1.7, cy - R1 * 0.72 + Math.sin(t * 0.65 + 4) * 5)
+
+    // dotted leaf path wandering up and out of the ring
+    ctx.fillStyle = SB_LEAF
+    for (let d = 0; d < 24; d++) {
+      const tt = d / 23
+      const px = cx - R1 * 0.3 + tt * R1 * 2.6
+      const py = cy + R1 * 1.15 - Math.sin(tt * 5) * R1 * 0.22 - tt * R1 * 0.55
+      ctx.beginPath()
+      ctx.arc(px, py, 4.2, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  },
+
+  frame: (ctx, w, h) => {
+    // scalloped rose border on all four sides -- the storybook page edge
+    const m = Math.min(w, h) * 0.045
+    const r = m * 0.62
+    ctx.strokeStyle = SB_ROSE
+    ctx.lineWidth = 3
+    ctx.beginPath()
+    for (let x = m + r; x < w - m; x += r * 2) ctx.arc(x, m, r, Math.PI, 0, false)
+    ctx.stroke()
+    ctx.beginPath()
+    for (let x = m + r; x < w - m; x += r * 2) ctx.arc(x, h - m, r, 0, Math.PI, false)
+    ctx.stroke()
+    ctx.beginPath()
+    for (let y = m + r; y < h - m; y += r * 2) ctx.arc(m, y, r, Math.PI / 2, -Math.PI / 2, false)
+    ctx.stroke()
+    ctx.beginPath()
+    for (let y = m + r; y < h - m; y += r * 2) ctx.arc(w - m, y, r, -Math.PI / 2, Math.PI / 2, false)
+    ctx.stroke()
+  },
+}
+
+const paintStorybookCard = makePackPaint(STORYBOOK_PAINTER)
+
+// ---------------------------------------------------------------------------
+// The style-pack registry, keyed by LibraryEntry.stylePackId
 // ---------------------------------------------------------------------------
 
 interface StylePack {
   paint: (ctx: CanvasRenderingContext2D, w: number, h: number, t: number) => void
   /** Page ground behind/around the canvas (also the fade-through color between bills). */
   bg: string
+  /** CSS font shorthand pieces for the bill's display face (the packs differ: deco poster caps vs storybook italic serif). */
+  titleFontFamily: string
+  titleItalic?: boolean
   kicker: string
   title: string
   titleShadow: string
@@ -348,6 +511,7 @@ interface StylePack {
 const DECO_PACK: StylePack = {
   paint: paintDecoCard,
   bg: PAPER,
+  titleFontFamily: 'var(--font-display)',
   kicker: NAVY,
   title: '#221a12',
   titleShadow: '3px 3px 0 rgba(168,128,44,0.35)',
@@ -365,6 +529,7 @@ const DECO_PACK: StylePack = {
 const GOTHIC_PACK: StylePack = {
   paint: paintGothicCard,
   bg: EBONY,
+  titleFontFamily: 'var(--font-display)',
   kicker: CANDLE,
   title: BONE,
   titleShadow: '3px 3px 0 rgba(193,18,31,0.45)',
@@ -379,13 +544,33 @@ const GOTHIC_PACK: StylePack = {
   buttonShadow: CANDLE,
 }
 
-const PACK_BY_ENTRY_ID: Record<string, StylePack> = {
-  'gatsby-ch3': DECO_PACK,
-  masque: GOTHIC_PACK,
+const STORYBOOK_PACK: StylePack = {
+  paint: paintStorybookCard,
+  bg: SB_CREAM,
+  titleFontFamily: 'Georgia, serif',
+  titleItalic: true,
+  kicker: SB_ROSE,
+  title: SB_INK,
+  titleShadow: '3px 3px 0 rgba(197,106,126,0.28)',
+  rule: SB_ROSE,
+  author: '#847668',
+  meta: '#847668',
+  quote: '#5f554e',
+  buttonBg: SB_ROSE,
+  buttonBorder: SB_ROSE,
+  buttonInk: SB_CREAM,
+  buttonHoverInk: SB_ROSE,
+  buttonShadow: SB_LEAF,
+}
+
+const PACKS: Record<StylePackId, StylePack> = {
+  deco: DECO_PACK,
+  gothic: GOTHIC_PACK,
+  storybook: STORYBOOK_PACK,
 }
 
 function packFor(entry: LibraryEntry): StylePack {
-  return PACK_BY_ENTRY_ID[entry.id] ?? DECO_PACK
+  return PACKS[entry.stylePackId] ?? DECO_PACK
 }
 
 // ---------------------------------------------------------------------------
@@ -454,16 +639,16 @@ function TitleCardCanvas({ pack, reduced }: { pack: StylePack; reduced: boolean 
 /** Content-fade duration for the program change between bills (ms). */
 const FADE_MS = 280
 
-export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
+export default function LandingPage({ entries = LIBRARY, onSelect, onExit }: LandingPageProps) {
   const [index, setIndex] = useState(0)
   const [fading, setFading] = useState(false)
   const fadeTimerRef = useRef<number | null>(null)
   const reduced = usePrefersReducedMotion()
 
-  const entry = LIBRARY[index] ?? LIBRARY[0]
+  const entry = entries[index] ?? entries[0]
   const goTo = useCallback(
     (nextIndex: number) => {
-      const total = LIBRARY.length
+      const total = entries.length
       if (total < 2) return
       const wrapped = ((nextIndex % total) + total) % total
       if (reduced) {
@@ -477,7 +662,7 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
         setFading(false)
       }, FADE_MS)
     },
-    [reduced],
+    [reduced, entries.length],
   )
 
   useEffect(() => () => {
@@ -497,7 +682,8 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
 
   if (!entry) return null
   const pack = packFor(entry)
-  const many = LIBRARY.length > 1
+  const many = entries.length > 1
+  const silent = entry.category === USER_CATEGORY
 
   return (
     <div
@@ -524,8 +710,8 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
 
           <section className="mt-6 flex flex-col items-center">
             <h1
-              className="max-w-3xl text-5xl uppercase leading-tight sm:text-6xl"
-              style={{ fontFamily: 'var(--font-display)', color: pack.title, textShadow: pack.titleShadow }}
+              className={`max-w-3xl text-5xl leading-tight sm:text-6xl ${pack.titleItalic ? 'italic' : 'uppercase'}`}
+              style={{ fontFamily: pack.titleFontFamily, color: pack.title, textShadow: pack.titleShadow }}
             >
               {entry.title}
             </h1>
@@ -589,7 +775,7 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
               className="mt-4 font-sans text-[10px] uppercase tracking-[0.25em]"
               style={{ color: pack.meta }}
             >
-              {sentenceCountOf(entry)} sentences · narrated &amp; painted
+              {sentenceCountOf(entry)} sentences · {silent ? 'painted · silent reading' : 'narrated & painted'}
             </p>
           </section>
         </main>
@@ -639,7 +825,7 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
             ›
           </button>
           <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
-            {LIBRARY.map((item, itemIndex) => (
+            {entries.map((item, itemIndex) => (
               <button
                 key={item.id}
                 type="button"

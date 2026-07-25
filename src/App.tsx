@@ -115,7 +115,7 @@ function App() {
     // The return-to-bookcase control lives inside LandingPage now (pack-
     // colored footer link) -- the old fixed top-left overlay sat awkwardly
     // on the card's corner ornament.
-    return <LandingPage onSelect={handleSelect} onExit={backToBookcase} />
+    return <LandingPage entries={entries} onSelect={handleSelect} onExit={backToBookcase} />
   }
   if (stage.phase === 'loading') {
     return <LoadingScreen entry={stage.entry} onReady={handleReady} />

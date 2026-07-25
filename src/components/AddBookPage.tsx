@@ -1,10 +1,22 @@
 import { useState } from 'react'
+import type { StylePackId } from '../data/library'
 import { addUserBook, type UserBookRecord } from '../lib/userLibrary'
 
 interface AddBookPageProps {
   onAdded: (record: UserBookRecord) => void
   onCancel: () => void
 }
+
+/**
+ * The closed pack set, presented as swatched choices. Picking the style
+ * yourself is what keeps this zero-AI: judging "this prose reads storybook"
+ * from arbitrary text is the offline compiler's LLM job, not the client's.
+ */
+const STYLE_CHOICES: { id: StylePackId; name: string; blurb: string; swatches: [string, string, string] }[] = [
+  { id: 'deco', name: 'Deco · Jazz Age', blurb: 'Gold rules, sunbursts, poster caps', swatches: ['#efe4c9', '#22304f', '#a8802c'] },
+  { id: 'gothic', name: 'Gothic · Memento Mori', blurb: 'Scarlet on ebony, candlelight', swatches: ['#0b0609', '#c1121f', '#b08d57'] },
+  { id: 'storybook', name: 'Storybook & Whimsy', blurb: 'Wobbly ink, scallops, rose & leaf', swatches: ['#fdf6e3', '#c56a7e', '#8aa86b'] },
+]
 
 /**
  * The "add a book" desk: paste a public-domain text, it compiles in the
@@ -17,12 +29,13 @@ export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [text, setText] = useState('')
+  const [stylePackId, setStylePackId] = useState<StylePackId>('deco')
   const [error, setError] = useState<string | null>(null)
 
   const submit = () => {
     try {
       setError(null)
-      onAdded(addUserBook({ title, author, text }))
+      onAdded(addUserBook({ title, author, text, stylePackId }))
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not compile that text.')
     }
@@ -59,6 +72,42 @@ export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
               placeholder="Paste the passage or chapter here. Blank lines separate paragraphs."
             />
           </label>
+
+          <fieldset className="flex flex-col gap-2">
+            <legend className="mb-1 text-[0.65rem] uppercase tracking-[0.25em] text-[#a8802c]">
+              Cover &amp; title-card style
+            </legend>
+            <div className="flex flex-wrap gap-3">
+              {STYLE_CHOICES.map((choice) => {
+                const selected = choice.id === stylePackId
+                return (
+                  <button
+                    key={choice.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setStylePackId(choice.id)}
+                    className={`flex min-w-[11rem] flex-1 flex-col gap-2 border px-4 py-3 text-left transition-colors ${
+                      selected
+                        ? 'border-[#22304f] bg-[#f7efdd]'
+                        : 'border-[#a8802c]/40 hover:border-[#a8802c]'
+                    }`}
+                  >
+                    <span className="flex gap-1.5">
+                      {choice.swatches.map((color) => (
+                        <span
+                          key={color}
+                          className="h-4 w-4 rounded-full border border-black/10"
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </span>
+                    <span className="text-sm font-semibold text-[#22304f]">{choice.name}</span>
+                    <span className="text-xs text-[#22304f]/60">{choice.blurb}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </fieldset>
 
           {error ? <p className="text-sm text-[#8a1f1f]">{error}</p> : null}
 
