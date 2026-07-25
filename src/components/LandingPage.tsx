@@ -364,7 +364,7 @@ const STORYBOOK_PAINTER: CardPainter = {
     }
   },
 
-  subjects: (ctx, safe, w, h, t) => {
+  subjects: (ctx, safe, w, _h, t) => {
     // wobbly double vignette ring, low center -- the picture zone the type
     // column sits above
     const cx = w / 2
