@@ -52,10 +52,14 @@ const RETREAT_RATE = 1.4
 const PAN_RATE = 0.5
 const PAN_SETTLED_RAD = 0.15
 /** Look-around inside the shell: a slow pendulum sweep of the gaze. One full
- * left-right period ~17s; +/- ~14 degrees -- enough to visit the arc's
- * flanks without ever showing its edge as the frame's center. */
+ * left-right period ~17s. Amplitude is set for the close-up dwell (camera
+ * ~7 units off the shell surface): 0.16 rad of azimuth sweep works out to
+ * roughly +/-24 degrees of gaze rotation at that standoff -- a real
+ * head-turn around the interior without ever centering the arc's edge.
+ * (The old 0.24 was tuned for the 16-unit standoff; up close it swung
+ * ~+/-37 degrees, more sprinkler than gaze.) */
 const DWELL_YAW_SPEED = 0.37
-const DWELL_YAW_AMPLITUDE_RAD = 0.24
+const DWELL_YAW_AMPLITUDE_RAD = 0.16
 /** The yaw eases in over this many seconds after the crossing lands. */
 const DWELL_YAW_RAMP_SECONDS = 3
 
