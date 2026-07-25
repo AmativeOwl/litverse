@@ -181,6 +181,7 @@ export default function TextPane({ passage = fallbackPassage, beats }: TextPaneP
   const currentSentenceIndex = useReadingStore((s) => s.currentSentenceIndex)
   const currentWordId = useReadingStore((s) => s.currentWordId)
   const playbackState = useReadingStore((s) => s.playbackState)
+  const narrationAvailable = useReadingStore((s) => s.narrationAvailable)
   const activeSceneBeatId = useReadingStore((s) => s.activeSceneBeatId)
 
   // `id -> palette.accent`, so the sentence wash's hue shifts with the
@@ -242,13 +243,15 @@ export default function TextPane({ passage = fallbackPassage, beats }: TextPaneP
         </button>
         <button
           type="button"
-          className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
+          className="rounded border border-neutral-700 px-2 py-1 enabled:hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
+          disabled={!narrationAvailable}
+          title={narrationAvailable ? undefined : 'This book has no pre-rendered narration — click sentences to read through it.'}
           onClick={() => (playbackState === 'playing' ? narrationPause() : narrationPlay())}
         >
           {playbackState === 'playing' ? 'Pause' : 'Play'}
         </button>
         <span className="ml-auto">
-          sentence {currentSentenceIndex} · {playbackState}
+          {narrationAvailable ? `sentence ${currentSentenceIndex} · ${playbackState}` : `sentence ${currentSentenceIndex} · silent reading`}
         </span>
       </div>
 

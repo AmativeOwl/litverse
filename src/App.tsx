@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import AddBookPage from './components/AddBookPage'
 import BookcasePage from './components/BookcasePage'
 import CaptionBar from './components/CaptionBar'
 import LandingPage from './components/LandingPage'
@@ -7,6 +8,7 @@ import TextPane from './components/TextPane'
 import WorldScene from './components/WorldScene'
 import { LIBRARY, type LibraryEntry } from './data/library'
 import { destroy, loadPassage } from './lib/narrationController'
+import { loadUserBooks, toLibraryEntry, type UserBookRecord } from './lib/userLibrary'
 
 /**
  * Stages (see CLAUDE.md "Reading compiler + landing page", Phase A):
@@ -25,12 +27,15 @@ import { destroy, loadPassage } from './lib/narrationController'
 type Stage =
   | { phase: 'bookcase' }
   | { phase: 'carousel' }
+  | { phase: 'add' }
   | { phase: 'loading'; entry: LibraryEntry }
   | { phase: 'reading'; entry: LibraryEntry }
 
 function App() {
   const [stage, setStage] = useState<Stage>({ phase: 'bookcase' })
   const [cinema, setCinema] = useState(false)
+  const [userBooks, setUserBooks] = useState<UserBookRecord[]>(() => loadUserBooks())
+  const entries = useMemo(() => [...LIBRARY, ...userBooks.map(toLibraryEntry)], [userBooks])
 
   // Register the passage with the narration controller only once the reader
   // opens. loadPassage resets store position to the first sentence but does
@@ -79,9 +84,21 @@ function App() {
   if (stage.phase === 'bookcase') {
     return (
       <BookcasePage
-        entries={LIBRARY}
+        entries={entries}
         onSelect={handleSelect}
         onSeeAll={() => setStage({ phase: 'carousel' })}
+        onAddBook={() => setStage({ phase: 'add' })}
+      />
+    )
+  }
+  if (stage.phase === 'add') {
+    return (
+      <AddBookPage
+        onAdded={() => {
+          setUserBooks(loadUserBooks())
+          setStage({ phase: 'bookcase' })
+        }}
+        onCancel={backToBookcase}
       />
     )
   }

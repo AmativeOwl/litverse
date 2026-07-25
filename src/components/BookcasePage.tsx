@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useRef } from 'react'
 import type { LibraryEntry } from '../data/library'
+import { USER_CATEGORY } from '../lib/userLibrary'
 
 interface BookcasePageProps {
   entries: readonly LibraryEntry[]
   onSelect: (entry: LibraryEntry) => void
   /** Opens the full carousel ("the full programme"). */
   onSeeAll: () => void
+  /** Opens the add-a-book desk; its shelf shows an empty slot inviting it. */
+  onAddBook: () => void
 }
 
 /**
@@ -212,7 +215,7 @@ function sentenceLabel(entry: LibraryEntry): string {
   return `${count} sentences · narrated & painted`
 }
 
-export default function BookcasePage({ entries, onSelect, onSeeAll }: BookcasePageProps) {
+export default function BookcasePage({ entries, onSelect, onSeeAll, onAddBook }: BookcasePageProps) {
   const shelves = useMemo(() => {
     const byCategory = new Map<string, LibraryEntry[]>()
     for (const entry of entries) {
@@ -220,6 +223,8 @@ export default function BookcasePage({ entries, onSelect, onSeeAll }: BookcasePa
       shelf.push(entry)
       byCategory.set(entry.category, shelf)
     }
+    // the additions shelf always exists -- empty, it holds the invitation
+    if (!byCategory.has(USER_CATEGORY)) byCategory.set(USER_CATEGORY, [])
     return [...byCategory.entries()]
   }, [entries])
 
@@ -254,6 +259,17 @@ export default function BookcasePage({ entries, onSelect, onSeeAll }: BookcasePa
               {books.map((entry) => (
                 <BookCover key={entry.id} entry={entry} onSelect={onSelect} />
               ))}
+              {category === USER_CATEGORY ? (
+                <button
+                  type="button"
+                  onClick={onAddBook}
+                  className="flex h-56 w-[9.5rem] shrink-0 flex-col items-center justify-center gap-2 rounded-[2px] border-2 border-dashed border-[#a8802c]/50 text-[#a8802c] transition-colors hover:border-[#a8802c] hover:bg-[#a8802c]/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a8802c]"
+                  aria-label="Add a book"
+                >
+                  <span className="text-3xl leading-none">+</span>
+                  <span className="text-[0.6rem] uppercase tracking-[0.25em]">Add a book</span>
+                </button>
+              ) : null}
             </div>
             {/* the shelf ledge */}
             <div className="mt-0 h-3 rounded-[1px] bg-gradient-to-b from-[#6b4a2f] to-[#4a3018] shadow-[0_5px_8px_rgba(74,48,24,0.35)]" />

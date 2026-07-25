@@ -177,6 +177,7 @@ function createHarness(
     activeSceneBeatId: null,
     activeSpeakerId: null,
     playbackState: 'idle',
+    narrationAvailable: true,
     activeMotifId: null,
     activeMotifNonce: 0,
   }

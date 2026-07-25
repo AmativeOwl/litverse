@@ -18,6 +18,14 @@ interface ReadingState {
    * would otherwise be a no-op re-render and silently swallow the second cue.
    */
   activeMotifNonce: number
+  /**
+   * False when the loaded passage has no pre-rendered narration (no
+   * manifest -- e.g. a reader-added book compiled client-side without the
+   * offline TTS pass). The reader stays fully usable as a silent painted
+   * text (click-to-seek drives the world); playback controls disable
+   * honestly instead of no-opping.
+   */
+  narrationAvailable: boolean
 
   play: () => void
   pause: () => void
@@ -32,6 +40,7 @@ export const useReadingStore = create<ReadingState>((set) => ({
   playbackState: 'idle',
   activeMotifId: null,
   activeMotifNonce: 0,
+  narrationAvailable: true,
 
   play: () => set({ playbackState: 'playing' }),
   pause: () => set({ playbackState: 'paused' }),

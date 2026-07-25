@@ -110,6 +110,8 @@ export interface NarrationPositionState {
   playbackState: PlaybackState
   activeMotifId: string | null
   activeMotifNonce: number
+  /** False when the loaded passage has no narration manifest (silent painted reading). */
+  narrationAvailable: boolean
 }
 
 /** The store surface this module reads/writes. Narrow enough to fake in tests without satisfying Zustand's full overloaded `setState`. */
@@ -328,6 +330,9 @@ export function createNarrationController(overrides: Partial<NarrationController
         )
         state.manifest = null
       }
+      // Honest playback UI: a passage without pre-rendered narration (e.g. a
+      // reader-added book) disables the Play control instead of no-opping.
+      deps.store.setState({ narrationAvailable: state.manifest !== null })
     })()
 
     return state.manifestReadyPromise
