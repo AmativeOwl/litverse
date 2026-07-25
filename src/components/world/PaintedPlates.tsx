@@ -5,7 +5,7 @@ import type { SceneBeat } from '../../types'
 import type { PlateDef, PlateLayer, ScenePlateSet } from '../../types-plates'
 import { useReadingStore } from '../../store/readingStore'
 import type { LerpedSceneBeat } from './beatMath'
-import { shellArc, vignetteVisibility } from './decoPlateKit'
+import { shellArcFromTheta, tileSlotAzimuths, vignetteVisibility } from './decoPlateKit'
 
 interface PaintedPlatesProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -125,16 +125,31 @@ function buildTexture(def: PlateDef, beatsById: Record<string, SceneBeat>): Buil
   return { texture, repaint }
 }
 
-function buildPlate(def: PlateDef, beatsById: Record<string, SceneBeat>): BuiltPlate {
+function buildPlate(
+  def: PlateDef,
+  beatsById: Record<string, SceneBeat>,
+  slotAzimuthDeg: number,
+  slotThetaRad: number,
+): BuiltPlate {
   const radius = def.radius ?? LAYER_RADIUS[def.layer]
   const size = def.size ?? LAYER_SIZE[def.layer]
-  const { thetaStart, thetaLength } = shellArc(def.azimuthDeg, size[0], radius)
+  // FAR shells wrap the FULL circle -- a continuous painted panorama ring
+  // (compositions are mirror-symmetric at their edges, so tiling the
+  // texture an integer number of times around the drum is seamless). MID
+  // and NEAR shells are cut to exactly one sector slot so neighbors abut
+  // edge-to-edge -- the zoetrope drum with no blank space between frames.
+  const isRing = def.layer === 'far'
+  const { thetaStart, thetaLength } = isRing
+    ? { thetaStart: 0, thetaLength: Math.PI * 2 }
+    : shellArcFromTheta(slotAzimuthDeg, slotThetaRad)
   const { texture, repaint } = buildTexture(def, beatsById)
   // The shell is viewed from INSIDE (BackSide): that flips the horizontal
-  // read of the texture, so mirror U to keep compositions un-mirrored --
-  // the spectrum corridor must still recede left-to-right.
+  // read of the texture, so mirror U (negative repeat) to keep compositions
+  // un-mirrored -- the spectrum corridor must still recede left-to-right.
+  // Ring shells tile the texture round(circumference / painting width)
+  // times so the pattern density matches the flat-plate era.
   texture.wrapS = THREE.RepeatWrapping
-  texture.repeat.x = -1
+  texture.repeat.x = isRing ? -Math.max(1, Math.round((Math.PI * 2 * radius) / size[0])) : -1
   return {
     def,
     memberSet: new Set(def.memberBeatIds),
@@ -199,19 +214,35 @@ const HAZE_DRUM_HEIGHT = 18
 const HAZE_DRUM_CENTER_Y = 5
 
 export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: PaintedPlatesProps) {
-  const built = useMemo<BuiltPlate[]>(
-    () => plateSet.plates.map((def) => buildPlate(def, beatsById)),
-    [plateSet, beatsById],
-  )
-  const builtWindows = useMemo<BuiltWindow[]>(
-    () =>
-      (plateSet.windows ?? []).map((window) => ({
-        built: buildPlate(window.plate, beatsById),
-        sentenceIdSet: new Set(window.sentenceIds),
-        opacity: 0,
-      })),
-    [plateSet, beatsById],
-  )
+  const { built, builtWindows, midGroups } = useMemo(() => {
+    const allAzimuths = [
+      ...plateSet.plates.map((def) => def.azimuthDeg),
+      ...(plateSet.windows ?? []).map((window) => window.plate.azimuthDeg),
+    ]
+    const slots = tileSlotAzimuths(allAzimuths)
+    const slotThetaRad = slots.size > 0 ? (Math.PI * 2) / slots.size : Math.PI * 2
+    const slotOf = (deg: number) => slots.get(deg) ?? deg
+    const builtPlates = plateSet.plates.map((def) =>
+      buildPlate(def, beatsById, slotOf(def.azimuthDeg), slotThetaRad),
+    )
+    const windows: BuiltWindow[] = (plateSet.windows ?? []).map((window) => ({
+      built: buildPlate(window.plate, beatsById, slotOf(window.plate.azimuthDeg), slotThetaRad),
+      sentenceIdSet: new Set(window.sentenceIds),
+      opacity: 0,
+    }))
+    // Mid/near shells grouped by authored sector azimuth: a group of one is
+    // ALWAYS fully visible (the drum's persistent gallery); a shared slot
+    // (e.g. orchestra + dancing at Gatsby's 80) crossfades by beat
+    // membership, topped up so the slot never goes blank.
+    const groups = new Map<number, BuiltPlate[]>()
+    for (const plate of builtPlates) {
+      if (plate.def.layer === 'far') continue
+      const group = groups.get(plate.def.azimuthDeg) ?? []
+      group.push(plate)
+      groups.set(plate.def.azimuthDeg, group)
+    }
+    return { built: builtPlates, builtWindows: windows, midGroups: groups }
+  }, [plateSet, beatsById])
 
   // Sentence-level store field (permitted; word-level is what's barred).
   // Mirrored into a ref so the useFrame loop reads the freshest value
@@ -224,6 +255,8 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
   builtRef.current = built
   const windowsRef = useRef(builtWindows)
   windowsRef.current = builtWindows
+  const midGroupsRef = useRef(midGroups)
+  midGroupsRef.current = midGroups
   const lastRepaintRef = useRef(0)
   const hazeMaterialRef = useRef<THREE.MeshBasicMaterial>(null)
 
@@ -264,15 +297,40 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
       suppressionByAzimuth.set(azimuth, Math.max(suppressionByAzimuth.get(azimuth) ?? 0, window.opacity))
     }
 
-    // -- beat track
+    // -- far rings: full-circle panoramas crossfading on beat change (the
+    // outgoing and incoming rings always sum to full cover, so the backdrop
+    // is painted at every rotation angle)
     for (const plate of builtRef.current) {
-      let opacity = vignetteVisibility(lerped.fromId, lerped.toId, lerped.t, plate.memberSet)
-      if (plate.def.layer === 'mid') {
-        const suppression = suppressionByAzimuth.get(plate.def.azimuthDeg) ?? 0
-        opacity *= 1 - suppression
-      }
-      plate.material.opacity = opacity
+      if (plate.def.layer !== 'far') continue
+      plate.material.opacity = vignetteVisibility(lerped.fromId, lerped.toId, lerped.t, plate.memberSet)
       plate.material.color.setRGB(1, 1, 1).lerp(workingColor, plate.fogTint)
+    }
+
+    // -- mid/near shells: the drum's persistent gallery. Every sector's
+    // painting stays visible so a turn slides image-into-image with no
+    // blank between frames; only slot-SHARING plates crossfade by beat
+    // membership, topped up so their slot never goes empty either.
+    for (const group of midGroupsRef.current.values()) {
+      const first = group[0]
+      if (!first) continue
+      const suppression = 1 - (suppressionByAzimuth.get(first.def.azimuthDeg) ?? 0)
+      if (group.length === 1) {
+        first.material.opacity = suppression
+        first.material.color.setRGB(1, 1, 1).lerp(workingColor, first.fogTint)
+        continue
+      }
+      let total = 0
+      const visibilities = group.map((plate) => {
+        const visibility = vignetteVisibility(lerped.fromId, lerped.toId, lerped.t, plate.memberSet)
+        total += visibility
+        return visibility
+      })
+      const deficit = Math.max(0, 1 - total)
+      group.forEach((plate, index) => {
+        const base = (visibilities[index] ?? 0) + (index === 0 ? deficit : 0)
+        plate.material.opacity = base * suppression
+        plate.material.color.setRGB(1, 1, 1).lerp(workingColor, plate.fogTint)
+      })
     }
   })
 

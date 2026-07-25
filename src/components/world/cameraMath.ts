@@ -34,17 +34,15 @@ const LOOKAT_HEIGHT = 1
 const CARD_RADIUS = 20
 /**
  * How far from the origin, toward the sector, the camera stands while
- * inside the card. This is the "you are IN the painting" lever: at 13 the
- * camera is only ~7 units from the mid shell's surface, so the painting
- * overflows the frame on every side -- its arc edges sit ~60 degrees
- * off-axis (invisible at a ~30-degree half-fov) and its 10-unit height
- * spills past the top and bottom of the frame. (The first cyclorama cut
- * used 4, which left the whole card inside the frame and still read as
- * watching a screen from a seat -- user feedback.) Kept just inside the
- * near ornament layer radius (13.5) so a future near shell stays in front
- * of the lens.
+ * inside the card -- the "you are IN the painting" lever, tuned twice by
+ * user feedback: 4 read as watching a screen from a seat; 13 (7 units off
+ * the wall) overflowed the frame so much the composition couldn't be read
+ * whole. 9 is the split: ~11 units off the mid shell, the painting's full
+ * 10-unit height just fills the frame at the ~51-degree half-pane lens, so
+ * you see the whole scene while its neighbors connect at the frame edges
+ * and the surround stays painted in every direction.
  */
-const DWELL_RADIUS = 13
+const DWELL_RADIUS = 9
 const CARD_CENTER_Y = 4.0
 /** Travel arc: a gentle crane lift over the scene center during the crossing
  * -- pure axial travel read as flat; the lift gives the threshold a small

@@ -234,10 +234,39 @@ export function shellArc(
   arcLength: number,
   radius: number,
 ): { thetaStart: number; thetaLength: number } {
+  return shellArcFromTheta(azimuthDeg, arcLength / radius)
+}
+
+/** Same conversion as shellArc but from an explicit angular span -- used when a shell must fill an exact sector slot rather than derive its span from a painting's width. */
+export function shellArcFromTheta(
+  azimuthDeg: number,
+  thetaLength: number,
+): { thetaStart: number; thetaLength: number } {
   const azimuthRad = (azimuthDeg * Math.PI) / 180
-  const thetaLength = arcLength / radius
   const thetaCenter = Math.PI / 2 - azimuthRad
   return { thetaStart: thetaCenter - thetaLength / 2, thetaLength }
+}
+
+/**
+ * The seamless-drum spacing rule: N distinct sector azimuths retile onto an
+ * even 360/N-degree circle (ascending order preserved, first azimuth kept
+ * as the anchor), so sector shells cut to exactly one slot each abut their
+ * neighbors with no gap -- the zoetrope-drum look where paintings connect
+ * edge-to-edge and a turn slides image-into-image. Authored azimuths stay
+ * the *identity* of a sector (data files and camera map are untouched);
+ * this is purely the hanging position. Pure and exported for tests.
+ */
+export function tileSlotAzimuths(azimuthsDeg: readonly number[]): Map<number, number> {
+  const unique = [...new Set(azimuthsDeg)].sort((a, b) => a - b)
+  const slots = new Map<number, number>()
+  const count = unique.length
+  if (count === 0) return slots
+  const step = 360 / count
+  const anchor = unique[0] ?? 0
+  unique.forEach((azimuth, index) => {
+    slots.set(azimuth, (anchor + index * step) % 360)
+  })
+  return slots
 }
 
 /** Double-ruled gold border with quarter-fan corners -- the plate's poster frame. */

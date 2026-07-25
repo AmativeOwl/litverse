@@ -6,6 +6,7 @@ import {
   lightenHex,
   mixHex,
   shellArc,
+  tileSlotAzimuths,
   sunburstRayAngles,
   vignetteVisibility,
   zigguratSteps,
@@ -125,5 +126,29 @@ describe('shellArc', () => {
     const far = shellArc(0, 42, 26)
     expect(far.thetaLength).toBeGreaterThan(1.2)
     expect(far.thetaLength).toBeLessThan(Math.PI)
+  })
+})
+
+describe('tileSlotAzimuths', () => {
+  it('retiles N distinct azimuths onto an even 360/N circle, first azimuth anchored', () => {
+    const gatsby = [28, 80, 140, 222, 235, 280, 325]
+    const slots = tileSlotAzimuths(gatsby)
+    expect(slots.size).toBe(7)
+    expect(slots.get(28)).toBeCloseTo(28, 6)
+    const step = 360 / 7
+    gatsby.forEach((az, i) => {
+      expect(slots.get(az)).toBeCloseTo((28 + i * step) % 360, 6)
+    })
+  })
+
+  it('leaves an already-even ring unchanged (Masque: nine sectors at 40 degrees)', () => {
+    const masque = [0, 40, 80, 120, 160, 200, 240, 280, 320]
+    const slots = tileSlotAzimuths(masque)
+    for (const az of masque) expect(slots.get(az)).toBeCloseTo(az, 6)
+  })
+
+  it('dedupes repeated azimuths and tolerates empty input', () => {
+    expect(tileSlotAzimuths([80, 80, 80]).size).toBe(1)
+    expect(tileSlotAzimuths([]).size).toBe(0)
   })
 })

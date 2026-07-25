@@ -1,13 +1,14 @@
-import { useRef, type ReactNode, type RefObject } from 'react'
+import { useMemo, useRef, type ReactNode, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
+import type { ScenePlateSet } from '../../types-plates'
 import type { LerpedSceneBeat } from './beatMath'
 import { DEFAULT_CAMERA_AZIMUTH_RAD, lerpAngleRad } from './cameraMath'
+import { tileSlotAzimuths } from './decoPlateKit'
 
 interface WorldTurntableProps {
   lerpedRef: RefObject<LerpedSceneBeat>
-  /** Beat id -> sector azimuth degrees (the plate registry's cameraAzimuthDeg map, its name a relic of the camera-travel era). */
-  azimuthByBeatDeg: Record<string, number>
+  plateSet: ScenePlateSet
   children: ReactNode
 }
 
@@ -23,25 +24,39 @@ interface WorldTurntableProps {
  * perceptually identical to camera travel, mechanically simpler, and it
  * kills the wide-shot framing where half the frame was empty floor).
  *
- * Rotation.y = sectorAzimuth - viewAzimuth brings a plate hung at
- * `sectorAzimuth` around to the fixed view direction (rotating a group by
- * theta maps a child at azimuth A to azimuth A - theta). Damped shortest-arc
- * pursuit with a snap, same feel as the retired camera pan.
+ * Sectors hang at their retiled SLOT azimuths (tileSlotAzimuths -- the same
+ * even spacing PaintedPlates cuts the shells to, so frames abut seamlessly);
+ * the beat's authored azimuth is looked up through the same map here so the
+ * drum always turns the right painting to the front. Rotation.y =
+ * slotAzimuth - viewAzimuth brings a shell hung at `slotAzimuth` around to
+ * the fixed view direction (rotating a group by theta maps a child at
+ * azimuth A to azimuth A - theta). Damped shortest-arc pursuit with a snap,
+ * same feel as the retired camera pan.
  */
 const TURN_RATE = 0.5
 /** Snap out the asymptotic tail -- a settled stage must actually be still. */
 const TURN_SNAP_RAD = 0.002
 
-export function WorldTurntable({ lerpedRef, azimuthByBeatDeg, children }: WorldTurntableProps) {
+export function WorldTurntable({ lerpedRef, plateSet, children }: WorldTurntableProps) {
   const groupRef = useRef<Group>(null)
   const angleRef = useRef<number | null>(null)
+
+  const slotByAuthoredDeg = useMemo(
+    () =>
+      tileSlotAzimuths([
+        ...plateSet.plates.map((def) => def.azimuthDeg),
+        ...(plateSet.windows ?? []).map((window) => window.plate.azimuthDeg),
+      ]),
+    [plateSet],
+  )
 
   useFrame((_, delta) => {
     const lerped = lerpedRef.current
     const group = groupRef.current
     if (!lerped || !group) return
-    const deg = azimuthByBeatDeg[lerped.toId]
-    const sectorRad = deg === undefined ? DEFAULT_CAMERA_AZIMUTH_RAD : (deg * Math.PI) / 180
+    const authoredDeg = plateSet.cameraAzimuthDeg[lerped.toId]
+    const slotDeg = authoredDeg === undefined ? undefined : slotByAuthoredDeg.get(authoredDeg) ?? authoredDeg
+    const sectorRad = slotDeg === undefined ? DEFAULT_CAMERA_AZIMUTH_RAD : (slotDeg * Math.PI) / 180
     const target = sectorRad - DEFAULT_CAMERA_AZIMUTH_RAD
     if (angleRef.current === null) angleRef.current = target // first frame: open already facing the first beat
     const error = Math.abs(
