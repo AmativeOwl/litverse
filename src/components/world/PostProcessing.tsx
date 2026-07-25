@@ -45,7 +45,12 @@ export function PostProcessing({ lerpedRef }: PostProcessingProps) {
   })
 
   return (
-    <EffectComposer>
+    // multisampling 2, not the library's silent WebGL2 default of 8: the
+    // composer's MSAA buffer scales with viewport x dpr, and 8x at cinema
+    // mode's fullscreen size was a large share of the frame budget. The art
+    // is soft flat color fields -- 2x covers the few hard geometry edges,
+    // and Bloom's mipmap blur hides the rest.
+    <EffectComposer multisampling={2}>
       <Bloom
         ref={bloomRef as unknown as BloomRef}
         mipmapBlur

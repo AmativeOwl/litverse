@@ -6,7 +6,6 @@ import type { SceneBeat } from '../types'
 import type { LibraryEntry } from '../data/library'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
-import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
 import { PaintedPlates } from './world/PaintedPlates'
 import { Particles } from './world/Particles'
@@ -84,11 +83,11 @@ function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: Scen
           sentenceIds={scene.sentenceIds}
         />
       </WorldTurntable>
-      {/* Floor unmounted with the zoetrope pivot (file kept): its job died
-          with the 3D crowd -- nothing casts shadows on it, settled dwells
-          hide it behind the wall, and mid-turn it was the last source of
-          the bright "white space" band under the haze drum. */}
-      <Lighting lerpedRef={lerpedRef} />
+      {/* Floor and Lighting unmounted (files kept): the 3D-lit era ended
+          with the painted pivot -- every remaining material is unlit
+          MeshBasicMaterial, so lights illuminated nothing and the floor was
+          the last source of the bright "white space" band under the haze
+          drum. */}
       <Particles lerpedRef={lerpedRef} />
       <CameraRig lerpedRef={lerpedRef} />
       {/* Motif one-shots were authored around the scene origin for the old
@@ -116,16 +115,19 @@ export default function WorldScene({ entry }: WorldSceneProps) {
     <div className="h-full w-full bg-neutral-950">
       <Canvas
         camera={{ position: [0, 2.6, 9], fov: 50, near: 0.1, far: 100 }}
-        dpr={[1, 2]}
-        shadows
-        // Explicit renderer configuration rather than relying on R3F's
-        // (currently matching) implicit defaults, so this stays correct even
-        // if those defaults ever change: MSAA on, ACES filmic tone mapping
-        // (a physically-based operator that rolls off highlights instead of
-        // clipping them, unlike the default linear/no-tonemap response) for
-        // an accurate HDR-to-display mapping, and explicit high-precision
-        // sRGB color output for correct color reproduction on screen.
-        gl={{ antialias: true, powerPreference: 'high-performance', precision: 'highp' }}
+        // dpr capped at 1.5 (was 2) and default-framebuffer MSAA off: every
+        // per-pixel cost scales with viewport x dpr squared, and cinema
+        // mode's fullscreen canvas at dpr 2 ran ~4x the half-pane's pixels
+        // -- the observed lag. The EffectComposer renders the scene into
+        // its own buffers and owns anti-aliasing (multisampling there), so
+        // canvas-level MSAA was pure waste; `shadows` is likewise gone --
+        // nothing casts or receives since the painted pivot (all materials
+        // are unlit MeshBasicMaterial).
+        dpr={[1, 1.5]}
+        // ACES filmic tone mapping (rolls off highlights instead of
+        // clipping) and explicit high-precision sRGB output, configured
+        // explicitly so renderer defaults changing can't shift the look.
+        gl={{ antialias: false, powerPreference: 'high-performance', precision: 'highp' }}
         onCreated={({ gl }) => {
           gl.toneMapping = ACESFilmicToneMapping
           gl.toneMappingExposure = 1
