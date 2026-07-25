@@ -4,10 +4,11 @@ import { LIBRARY, sentenceCountOf, type LibraryEntry } from '../data/library'
 interface LandingPageProps {
   onSelect: (entry: LibraryEntry) => void
   /**
-   * Returns to the bookcase home. Rendered as a quiet footer link in the
-   * pack's own colors (bottom-left, on the dots' baseline) rather than the
-   * old fixed top-left overlay, which sat awkwardly on the card's corner
-   * ornament.
+   * Returns to the bookcase home. Rendered as a spectral, floating link
+   * hovering top-center above the "Litverse presents" masthead -- barely
+   * there until hovered (per user direction; it replaced a bottom-left
+   * footer placement, itself a replacement for the original fixed top-left
+   * overlay that sat awkwardly on the card's corner ornament).
    */
   onExit?: () => void
 }
@@ -603,11 +604,15 @@ export default function LandingPage({ onSelect, onExit }: LandingPageProps) {
       </div>
 
       {onExit && (
+        // Spectral: a ghost of a control drifting above the masthead --
+        // barely-there ink and a faint pack-colored aura until hover/focus
+        // draws it into this world. top-14 keeps it clear of both packs'
+        // inner frame rules at any viewport height.
         <button
           type="button"
           onClick={onExit}
-          className="absolute bottom-6 left-6 z-10 cursor-pointer font-sans text-[10px] uppercase tracking-[0.3em] opacity-70 transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 sm:left-8"
-          style={{ color: pack.meta, outlineColor: pack.rule }}
+          className="absolute left-1/2 top-14 z-10 -translate-x-1/2 cursor-pointer font-sans text-[10px] uppercase tracking-[0.35em] opacity-40 transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 focus-visible:opacity-90 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4"
+          style={{ color: pack.kicker, textShadow: `0 0 14px ${pack.rule}`, outlineColor: pack.rule }}
         >
           ← The library
         </button>
