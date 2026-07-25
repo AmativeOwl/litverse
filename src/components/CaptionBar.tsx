@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import type { Passage, Sentence } from '../types'
 import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
 import { useReadingStore } from '../store/readingStore'
+import PlaybackControls from './PlaybackControls'
 
 interface CaptionBarProps {
   passage: Passage
@@ -24,6 +25,7 @@ export default function CaptionBar({ passage }: CaptionBarProps) {
   const currentSentenceIndex = useReadingStore((state) => state.currentSentenceIndex)
   const currentWordId = useReadingStore((state) => state.currentWordId)
   const playbackState = useReadingStore((state) => state.playbackState)
+  const narrationAvailable = useReadingStore((state) => state.narrationAvailable)
 
   const sentence = sentences[currentSentenceIndex]
   if (!sentence) return null
@@ -49,29 +51,17 @@ export default function CaptionBar({ passage }: CaptionBarProps) {
           </span>
         ))}
       </p>
-      <div className="pointer-events-auto flex items-center gap-2 text-xs text-neutral-400">
-        <button
-          type="button"
-          className="rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 hover:border-amber-400/60 hover:text-neutral-100"
-          onClick={() => seekToSentence(Math.max(0, currentSentenceIndex - 1))}
-        >
-          ◂ Prev
-        </button>
-        <button
-          type="button"
-          className="rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 hover:border-amber-400/60 hover:text-neutral-100"
-          onClick={() => (playbackState === 'playing' ? narrationPause() : narrationPlay())}
-        >
-          {playbackState === 'playing' ? 'Pause' : 'Play'}
-        </button>
-        <button
-          type="button"
-          className="rounded-full border border-neutral-700 bg-neutral-900/80 px-3 py-1 hover:border-amber-400/60 hover:text-neutral-100"
-          onClick={() => seekToSentence(Math.min(sentences.length - 1, currentSentenceIndex + 1))}
-        >
-          Next ▸
-        </button>
-        <span className="ml-2 select-none opacity-70">Esc to return</span>
+      <div className="pointer-events-auto flex items-center gap-3 text-xs text-neutral-400">
+        <PlaybackControls
+          size="md"
+          playing={playbackState === 'playing'}
+          onPrev={() => seekToSentence(Math.max(0, currentSentenceIndex - 1))}
+          onTogglePlay={() => (playbackState === 'playing' ? narrationPause() : narrationPlay())}
+          onNext={() => seekToSentence(Math.min(sentences.length - 1, currentSentenceIndex + 1))}
+          playDisabled={!narrationAvailable}
+          playDisabledTitle="This book has no pre-rendered narration — click sentences to read through it."
+        />
+        <span className="select-none text-[11px] uppercase tracking-[0.18em] opacity-70">Esc to return</span>
       </div>
     </div>
   )

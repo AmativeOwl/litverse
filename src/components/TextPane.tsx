@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, type CSSProperties, type RefObject } from 'react'
 import { pause as narrationPause, play as narrationPlay, seekToSentence } from '../lib/narrationController'
 import { useReadingStore } from '../store/readingStore'
+import PlaybackControls from './PlaybackControls'
 import type { Passage, SceneBeat } from '../types'
 
 /** Fallback accent when `activeSceneBeatId` doesn't (yet) match a known beat -- keeps the original amber look. */
@@ -226,31 +227,16 @@ export default function TextPane({ passage = fallbackPassage, beats }: TextPaneP
       {/* Sticky so playback stays reachable however deep the reader has
           scrolled -- floats as a pill over the text (backdrop blur + a solid
           enough tint to stay legible over the serif type beneath). */}
-      <div className="sticky top-4 z-20 mb-8 flex flex-wrap items-center gap-2 rounded-full border border-neutral-700/80 bg-neutral-900/85 px-4 py-2 font-sans text-xs text-neutral-400 shadow-lg shadow-black/40 backdrop-blur-md">
-        <button
-          type="button"
-          className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
-          onClick={() => seekToSentence(Math.max(0, currentSentenceIndex - 1))}
-        >
-          ◀ Prev sentence
-        </button>
-        <button
-          type="button"
-          className="rounded border border-neutral-700 px-2 py-1 hover:bg-neutral-800"
-          onClick={() => seekToSentence(Math.min(totalSentences - 1, currentSentenceIndex + 1))}
-        >
-          Next sentence ▶
-        </button>
-        <button
-          type="button"
-          className="rounded border border-neutral-700 px-2 py-1 enabled:hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40"
-          disabled={!narrationAvailable}
-          title={narrationAvailable ? undefined : 'This book has no pre-rendered narration — click sentences to read through it.'}
-          onClick={() => (playbackState === 'playing' ? narrationPause() : narrationPlay())}
-        >
-          {playbackState === 'playing' ? 'Pause' : 'Play'}
-        </button>
-        <span className="ml-auto">
+      <div className="sticky top-4 z-20 mb-8 flex flex-wrap items-center gap-3 rounded-full border border-neutral-700/80 bg-neutral-900/85 py-1.5 pl-2 pr-4 font-sans text-xs text-neutral-400 shadow-lg shadow-black/40 backdrop-blur-md">
+        <PlaybackControls
+          playing={playbackState === 'playing'}
+          onPrev={() => seekToSentence(Math.max(0, currentSentenceIndex - 1))}
+          onTogglePlay={() => (playbackState === 'playing' ? narrationPause() : narrationPlay())}
+          onNext={() => seekToSentence(Math.min(totalSentences - 1, currentSentenceIndex + 1))}
+          playDisabled={!narrationAvailable}
+          playDisabledTitle="This book has no pre-rendered narration — click sentences to read through it."
+        />
+        <span className="ml-auto text-[11px] uppercase tracking-[0.18em] text-neutral-500">
           {narrationAvailable ? `sentence ${currentSentenceIndex} · ${playbackState}` : `sentence ${currentSentenceIndex} · silent reading`}
         </span>
       </div>
