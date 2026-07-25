@@ -185,6 +185,19 @@ function PlateMesh({ plate }: { plate: BuiltPlate }) {
   )
 }
 
+/**
+ * The haze drum: a full-360-degree closed backdrop cylinder just outside the
+ * far shells, self-tinted to the live fog/background blend every frame.
+ * Sectors only span their own arcs, so while the turntable rotates between
+ * distant walls the seam between paintings sweeps across the view -- without
+ * this drum that seam showed raw floor-to-horizon brightness (the "white
+ * space"). With it, the void between paintings is always the beat's own
+ * haze.
+ */
+const HAZE_DRUM_RADIUS = 27
+const HAZE_DRUM_HEIGHT = 18
+const HAZE_DRUM_CENTER_Y = 5
+
 export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: PaintedPlatesProps) {
   const built = useMemo<BuiltPlate[]>(
     () => plateSet.plates.map((def) => buildPlate(def, beatsById)),
@@ -212,11 +225,16 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
   const windowsRef = useRef(builtWindows)
   windowsRef.current = builtWindows
   const lastRepaintRef = useRef(0)
+  const hazeMaterialRef = useRef<THREE.MeshBasicMaterial>(null)
 
   useFrame(({ clock }, delta) => {
     const lerped = lerpedRef.current
     if (!lerped) return
     workingColor.set(lerped.palette.fog)
+
+    if (hazeMaterialRef.current) {
+      hazeMaterialRef.current.color.set(lerped.palette.background).lerp(workingColor, 0.6)
+    }
 
     // -- living paintings: repaint visible animated plates "on twos"
     if (clock.elapsedTime - lastRepaintRef.current >= REPAINT_INTERVAL_SECONDS) {
@@ -260,6 +278,12 @@ export function PaintedPlates({ lerpedRef, plateSet, beatsById, sentenceIds }: P
 
   return (
     <group>
+      <mesh position={[0, HAZE_DRUM_CENTER_Y, 0]}>
+        <cylinderGeometry
+          args={[HAZE_DRUM_RADIUS, HAZE_DRUM_RADIUS, HAZE_DRUM_HEIGHT, 64, 1, true]}
+        />
+        <meshBasicMaterial ref={hazeMaterialRef} side={THREE.BackSide} fog={false} />
+      </mesh>
       {built.map((plate) => (
         <PlateMesh key={plate.def.id} plate={plate} />
       ))}

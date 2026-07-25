@@ -6,12 +6,12 @@ import type { SceneBeat } from '../types'
 import type { LibraryEntry } from '../data/library'
 import { Atmosphere } from './world/Atmosphere'
 import { CameraRig } from './world/CameraRig'
-import { Floor } from './world/Floor'
 import { Lighting } from './world/Lighting'
 import { MotifEffects } from './world/MotifEffects'
 import { PaintedPlates } from './world/PaintedPlates'
 import { Particles } from './world/Particles'
 import { PostProcessing } from './world/PostProcessing'
+import { WorldTurntable } from './world/WorldTurntable'
 import { useLerpedSceneBeat } from './world/useLerpedSceneBeat'
 
 /**
@@ -74,17 +74,30 @@ function WorldSceneContents({ entry, scene }: { entry: LibraryEntry; scene: Scen
           BETWEEN the viewer and a shell they live inside would break the
           illusion. Particles stay as in-world dust. */}
       <Atmosphere lerpedRef={lerpedRef} />
-      <PaintedPlates
-        lerpedRef={lerpedRef}
-        plateSet={entry.plateSet}
-        beatsById={scene.beatsById}
-        sentenceIds={scene.sentenceIds}
-      />
+      {/* The zoetrope stage: the ring of shell paintings rotates to face the
+          fixed viewer -- the images move, the camera never travels. */}
+      <WorldTurntable lerpedRef={lerpedRef} azimuthByBeatDeg={entry.plateSet.cameraAzimuthDeg}>
+        <PaintedPlates
+          lerpedRef={lerpedRef}
+          plateSet={entry.plateSet}
+          beatsById={scene.beatsById}
+          sentenceIds={scene.sentenceIds}
+        />
+      </WorldTurntable>
+      {/* Floor unmounted with the zoetrope pivot (file kept): its job died
+          with the 3D crowd -- nothing casts shadows on it, settled dwells
+          hide it behind the wall, and mid-turn it was the last source of
+          the bright "white space" band under the haze drum. */}
       <Lighting lerpedRef={lerpedRef} />
-      <Floor lerpedRef={lerpedRef} />
       <Particles lerpedRef={lerpedRef} />
-      <CameraRig lerpedRef={lerpedRef} azimuthByBeatDeg={entry.plateSet.cameraAzimuthDeg} />
-      <MotifEffects />
+      <CameraRig lerpedRef={lerpedRef} />
+      {/* Motif one-shots were authored around the scene origin for the old
+          across-the-origin camera; with the viewer now fixed inside the
+          shell, they become a viewer-anchored layer, translated into the
+          gap between the viewer (r13) and the mid shell (r20). */}
+      <group position={[0, 0.5, -14]}>
+        <MotifEffects />
+      </group>
       <PostProcessing lerpedRef={lerpedRef} />
     </>
   )

@@ -1,189 +1,60 @@
 import { useRef, type RefObject } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-import { easeInOutCubic, type LerpedSceneBeat } from './beatMath'
-import {
-  computeCameraPose,
-  DEFAULT_CAMERA_AZIMUTH_RAD,
-  lerpAngleRad,
-} from './cameraMath'
+import type { LerpedSceneBeat } from './beatMath'
+import { computeCameraPose, DEFAULT_CAMERA_AZIMUTH_RAD } from './cameraMath'
 
 interface CameraRigProps {
   lerpedRef: RefObject<LerpedSceneBeat>
-  /**
-   * Which part of the world each beat is *about*: beat id -> azimuth degrees
-   * (scene polar convention x = cos, z = sin) of the sector that sentence's
-   * prose describes. The rig faces the camera toward this anchor, so each
-   * beat frames its own vignette -- the beach sentence looks at the
-   * waterfront plate, the weekend sentence at the cars. Sourced from the
-   * per-scene plate registry (ScenePlateSet.cameraAzimuthDeg) so the camera
-   * and the paintings always agree; beats missing from the map fall back to
-   * the original fixed framing.
-   */
-  azimuthByBeatDeg: Record<string, number>
-}
-
-/** Full zoom while dwelling at a card. */
-const ZOOM_DWELL = 1
-/**
- * The shot cycle (user-specified): PARALLAX DRIFT wide -- the camera
- * tracks laterally so the 3D layers slide against the flat card -- then a
- * SNAP PUSH-IN (a fast, decisive axial dolly with an ease-out landing, the
- * card purely scaling up centered), then a SCALE-MATCHED LOCK: every card
- * lands on the identical framing (fixed distance + normalized CARD_FOV),
- * so consecutive cards read as matched cuts. Exit is a brisk damped
- * retreat, then the drift-glide to the next wall.
- * - FOCUS_SECONDS: a held beat facing the frame before the move -- "focus
- *   on the frame" -- so the push reads as a deliberate decision.
- * - PUSH_SECONDS: the push itself -- a single committed dolly, slow but
- *   still a snap: one accelerate-decelerate motion (ease-in-out), never a
- *   drifting settle.
- * - RETREAT_RATE: damped exit (~95% in ~2s).
- * - PAN: azimuth pursuit (~95% in ~6s), decoupled from the ~1s beat lerp.
- * Sequencing keys on remaining pan distance; same-sector card swaps have
- * zero pan distance, so the lock simply holds while plates crossfade.
- */
-const FOCUS_SECONDS = 0.7
-// Long enough that the mid-move PEAK velocity (~1.5x average for an
-// ease-in-out) stays gentle -- the felt speed of the dolly, not just its
-// duration, is what reads (user feedback).
-const PUSH_SECONDS = 5.0
-const RETREAT_RATE = 1.4
-const PAN_RATE = 0.5
-const PAN_SETTLED_RAD = 0.15
-/** Look-around inside the shell: a slow pendulum sweep of the gaze. One full
- * left-right period ~17s. Amplitude is set for the close-up dwell (camera
- * ~7 units off the shell surface): 0.16 rad of azimuth sweep works out to
- * roughly +/-24 degrees of gaze rotation at that standoff -- a real
- * head-turn around the interior without ever centering the arc's edge.
- * (The old 0.24 was tuned for the 16-unit standoff; up close it swung
- * ~+/-37 degrees, more sprinkler than gaze.) */
-const DWELL_YAW_SPEED = 0.37
-const DWELL_YAW_AMPLITUDE_RAD = 0.16
-/** The yaw eases in over this many seconds after the crossing lands. */
-const DWELL_YAW_RAMP_SECONDS = 3
-
-type ShotPhase = 'wide' | 'focus' | 'push' | 'dwell' | 'retreat'
-
-function azimuthRadForBeat(azimuthByBeatDeg: Record<string, number>, beatId: string): number {
-  const deg = azimuthByBeatDeg[beatId]
-  return deg === undefined ? DEFAULT_CAMERA_AZIMUTH_RAD : (deg * Math.PI) / 180
 }
 
 /**
- * Applies `computeCameraPose` to the default R3F camera every frame. This is
- * the scripted rig the design constraints require in place of
- * `OrbitControls` -- the camera is never user-driven here.
+ * The fixed interior viewpoint of the zoetrope model: the camera stands
+ * permanently inside the cyclorama (the zoom=1 pose of computeCameraPose:
+ * DWELL_RADIUS out from center toward a fixed azimuth, ~7 units off the mid
+ * shell surface, aspect-aware dwell lens) and NEVER travels. All scene
+ * changes are the WorldTurntable rotating the paintings past the viewer --
+ * "the images move, not me." The camera's only motion is the slow
+ * look-around yaw below: a head-turn, not a walk.
  *
- * Tracks how long the *current* camera behavior has been active (not global
- * clock time), so a one-shot move like push-in/pull-back always restarts
- * cleanly from its own t=0 whenever `camera.behavior` changes, rather than
- * evaluating a pose for an arbitrary elapsed time it never actually played
- * through.
- *
- * The azimuth anchor eases along the shortest arc between the outgoing and
- * incoming beats' anchors during a transition (same eased-t treatment the
- * numeric beat fields get inside lerpSceneBeat), so the camera pans smoothly
- * from one vignette to the next instead of snapping.
+ * This retires the shot cycle (wide -> focus -> push -> dwell -> retreat)
+ * of the camera-travel era; the scripted-rig constraint holds -- there is
+ * still no user-driven camera anywhere.
  */
-export function CameraRig({ lerpedRef, azimuthByBeatDeg }: CameraRigProps) {
+
+/** Look-around: a slow pendulum sweep of the gaze. One full left-right
+ * period ~17s; 0.16 rad of azimuth sweep is roughly +/-24 degrees of gaze
+ * rotation at the ~7-unit standoff -- a head-turn around the interior
+ * without ever centering a shell's arc edge. */
+const YAW_SPEED = 0.37
+const YAW_AMPLITUDE_RAD = 0.16
+/** The yaw eases in over the first few seconds after mount (sin * ramp^2:
+ * zero yaw AND zero yaw-velocity at t=0, so the scene opens still). */
+const YAW_RAMP_SECONDS = 3
+
+export function CameraRig({ lerpedRef }: CameraRigProps) {
   const { camera, size } = useThree()
   const lookAtTarget = useRef(new THREE.Vector3())
-  // shot-choreography state -- mutated per frame, never React state
-  const zoomRef = useRef(0)
-  const azimuthRef = useRef<number | null>(null)
-  const phaseRef = useRef<ShotPhase>('wide')
-  const pushStartRef = useRef(0)
-  const dwellStartRef = useRef(0)
   const aspectRef = useRef(size.width / Math.max(1, size.height))
   aspectRef.current = size.width / Math.max(1, size.height)
 
-  useFrame(({ clock }, delta) => {
+  useFrame(({ clock }) => {
     const lerped = lerpedRef.current
     if (!lerped) return
 
-    // --- the camera's own pan: damped shortest-arc pursuit of the target ----
-    const targetAzimuth = azimuthRadForBeat(azimuthByBeatDeg, lerped.toId)
-    if (azimuthRef.current === null) azimuthRef.current = targetAzimuth
-    const panError = Math.abs(
-      Math.atan2(Math.sin(targetAzimuth - azimuthRef.current), Math.cos(targetAzimuth - azimuthRef.current)),
-    )
-    azimuthRef.current = lerpAngleRad(
-      azimuthRef.current,
-      targetAzimuth,
-      1 - Math.exp(-delta * PAN_RATE),
-    )
-    // snap out the asymptotic tail -- a locked frame must actually lock
-    if (panError < 0.002) azimuthRef.current = targetAzimuth
-    const azimuthRad = azimuthRef.current
+    const t = clock.elapsedTime
+    const ramp = Math.min(1, t / YAW_RAMP_SECONDS)
+    const yawRad = Math.sin(t * YAW_SPEED) * YAW_AMPLITUDE_RAD * ramp * ramp
 
-    // --- the shot cycle: drift -> focus -> one committed push -> lock -------
-    const settled = panError <= PAN_SETTLED_RAD
-    switch (phaseRef.current) {
-      case 'wide':
-        zoomRef.current = 0
-        if (settled) {
-          phaseRef.current = 'focus'
-          pushStartRef.current = clock.elapsedTime
-        }
-        break
-      case 'focus':
-        // held beat facing the frame before the move
-        zoomRef.current = 0
-        if (!settled) {
-          phaseRef.current = 'wide'
-        } else if (clock.elapsedTime - pushStartRef.current >= FOCUS_SECONDS) {
-          phaseRef.current = 'push'
-          pushStartRef.current = clock.elapsedTime
-        }
-        break
-      case 'push': {
-        if (!settled) {
-          phaseRef.current = 'retreat'
-          break
-        }
-        const u = (clock.elapsedTime - pushStartRef.current) / PUSH_SECONDS
-        zoomRef.current = easeInOutCubic(u) * ZOOM_DWELL
-        if (u >= 1) {
-          zoomRef.current = ZOOM_DWELL
-          phaseRef.current = 'dwell'
-          dwellStartRef.current = clock.elapsedTime
-        }
-        break
-      }
-      case 'dwell':
-        zoomRef.current = ZOOM_DWELL
-        if (!settled) phaseRef.current = 'retreat'
-        break
-      case 'retreat':
-        zoomRef.current += (0 - zoomRef.current) * (1 - Math.exp(-delta * RETREAT_RATE))
-        if (zoomRef.current < 0.005) {
-          zoomRef.current = 0
-          phaseRef.current = 'wide'
-        }
-        break
-    }
-
-    // The wide pose is fully static (speed 0 -- no drift, no bob): the only
-    // camera movement is the slow smooth pan between walls, the single
-    // committed threshold crossing, and -- inside the shell -- the slow
-    // look-around yaw below. (Beat data's named behaviors are superseded.)
-    // The yaw is a gentle pendulum that ramps in over its first swing
-    // (sin(t)*sin envelope keeps the dwell entry seamless: zero yaw, zero
-    // yaw-velocity at the moment the crossing lands).
-    const dwellSeconds = phaseRef.current === 'dwell' ? clock.elapsedTime - dwellStartRef.current : 0
-    const yawEnvelope = Math.min(1, dwellSeconds / DWELL_YAW_RAMP_SECONDS)
-    const dwellYawRad =
-      Math.sin(dwellSeconds * DWELL_YAW_SPEED) * DWELL_YAW_AMPLITUDE_RAD * yawEnvelope * yawEnvelope
     const pose = computeCameraPose(
       'static-drift',
       0,
       lerped.camera.fov,
-      clock.elapsedTime,
-      azimuthRad,
-      zoomRef.current,
+      t,
+      DEFAULT_CAMERA_AZIMUTH_RAD,
+      1, // permanently inside -- zoom never leaves the interior pose
       aspectRef.current,
-      dwellYawRad,
+      yawRad,
     )
 
     camera.position.set(pose.position[0], pose.position[1], pose.position[2])
