@@ -65,6 +65,8 @@ export interface StylePack {
   titleUppercase?: boolean
   /** Optional letterspacing for the title (e.g. the water pack's quiet wide tracking). */
   titleTracking?: string
+  /** Lift the bill's column high on the card (frontispiece layout: type above, the pack's painted vignette below). */
+  columnRaised?: boolean
   kicker: string
   title: string
   titleShadow: string

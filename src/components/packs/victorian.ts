@@ -333,6 +333,7 @@ export function paintVictorianCover(ctx: CanvasRenderingContext2D, w: number, h:
 export const VICTORIAN_PACK: StylePack = {
   paint: paintVictorianCard,
   bg: VC_IVORY,
+  columnRaised: true,
   titleFontFamily: "'Bodoni MT', Didot, 'Playfair Display', Georgia, serif",
   kicker: VC_BRASS,
   title: VC_INK,

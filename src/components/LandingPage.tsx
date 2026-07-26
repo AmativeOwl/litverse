@@ -76,9 +76,15 @@ function TitleCardCanvas({ pack, reduced }: { pack: StylePack; reduced: boolean 
     const paintOnce = (t: number) => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const { clientWidth, clientHeight } = canvas
-      if (canvas.width !== clientWidth * dpr || canvas.height !== clientHeight * dpr) {
-        canvas.width = clientWidth * dpr
-        canvas.height = clientHeight * dpr
+      // Round the backing-store size: fractional dpr (Windows display
+      // scaling, e.g. 1.125) otherwise never equals the integer canvas
+      // width, which reallocated the full-viewport buffer on every painted
+      // frame and starved the main thread.
+      const targetW = Math.round(clientWidth * dpr)
+      const targetH = Math.round(clientHeight * dpr)
+      if (canvas.width !== targetW || canvas.height !== targetH) {
+        canvas.width = targetW
+        canvas.height = targetH
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       packRef.current.paint(ctx, clientWidth, clientHeight, t)
@@ -180,8 +186,14 @@ export default function LandingPage({ entries = LIBRARY, onSelect, onExit }: Lan
       >
         <TitleCardCanvas pack={pack} reduced={reduced} />
         {/* pt outweighs pb so the centered column sits lower, ceding the
-            top of the card to the floating library cloud */}
-        <main className="relative flex h-full flex-col items-center justify-center px-8 pb-14 pt-32 text-center">
+            top of the card to the floating library cloud -- unless the pack
+            asks for a raised column (frontispiece layout: type high, the
+            painted vignette below it) */}
+        <main
+          className={`relative flex h-full flex-col items-center justify-center px-8 text-center ${
+            pack.columnRaised ? 'pb-24 pt-20' : 'pb-14 pt-32'
+          }`}
+        >
           <p
             className="font-sans text-[11px] font-semibold uppercase tracking-[0.45em]"
             style={{ color: pack.kicker }}
