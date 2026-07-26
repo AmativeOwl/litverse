@@ -111,6 +111,15 @@ function TitleCardCanvas({ pack, reduced }: { pack: StylePack; reduced: boolean 
 /** Content-fade duration for the program change between bills (ms). */
 const FADE_MS = 280
 
+/**
+ * Long titles set a step smaller so the bill's whole column stays inside
+ * the painted frame (Leagues' 39-character title at text-6xl wraps to
+ * three display lines and pushed the column past the border rules).
+ */
+function titleSizeClass(title: string): string {
+  return title.length > 30 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'
+}
+
 export default function LandingPage({ entries = LIBRARY, onSelect, onExit }: LandingPageProps) {
   const [index, setIndex] = useState(0)
   const [fading, setFading] = useState(false)
@@ -182,7 +191,7 @@ export default function LandingPage({ entries = LIBRARY, onSelect, onExit }: Lan
 
           <section className="mt-6 flex flex-col items-center">
             <h1
-              className={`max-w-3xl text-5xl leading-tight sm:text-6xl ${pack.titleItalic ? 'italic' : ''} ${
+              className={`max-w-3xl leading-tight ${titleSizeClass(entry.title)} ${pack.titleItalic ? 'italic' : ''} ${
                 (pack.titleUppercase ?? !pack.titleItalic) ? 'uppercase' : ''
               }`}
               style={{
