@@ -36,7 +36,7 @@ const STORYBOOK_PAINTER: CardPainter = {
     }
   },
 
-  subjects: (ctx, safe, w, _h, t) => {
+  subjects: (ctx, safe, w, h, t) => {
     // wobbly double vignette ring, low center -- the picture zone the type
     // column sits above
     const cx = w / 2
@@ -130,6 +130,16 @@ const STORYBOOK_PAINTER: CardPainter = {
       ctx.arc(px, py, 4.2, 0, Math.PI * 2)
       ctx.fill()
     }
+
+    // center scrim: a cream pool behind the type column (the gothic card's
+    // legibility device) -- the ring, key, and pips recede where the bill's
+    // type sits instead of striking through the lettering
+    const scrim = ctx.createRadialGradient(w / 2, h * 0.5, h * 0.1, w / 2, h * 0.5, h * 0.72)
+    scrim.addColorStop(0, 'rgba(253,246,227,0.92)')
+    scrim.addColorStop(0.6, 'rgba(253,246,227,0.5)')
+    scrim.addColorStop(1, 'rgba(253,246,227,0)')
+    ctx.fillStyle = scrim
+    ctx.fillRect(safe.x, safe.y, safe.w, safe.h)
   },
 
   frame: (ctx, w, h) => {

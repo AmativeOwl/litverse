@@ -316,6 +316,28 @@ export function removeUserBook(id: string): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(loadUserBooks().filter((b) => b.id !== id)))
 }
 
+/**
+ * Edit a shelved book's DETAILS (title/author/style pack). Deliberately not
+ * the text: the passage was compiled once at add time and the raw prose
+ * isn't retained, so a text change is remove + re-add. The id stays stable
+ * so nothing downstream re-keys.
+ */
+export function updateUserBook(
+  id: string,
+  changes: { title?: string; author?: string; stylePackId?: StylePackId },
+): UserBookRecord | null {
+  const books = loadUserBooks()
+  const book = books.find((b) => b.id === id)
+  if (!book) return null
+  const title = changes.title?.trim()
+  if (title !== undefined && !title) throw new Error('Give the book a title.')
+  if (title) book.title = title
+  if (changes.author !== undefined) book.author = changes.author.trim() || 'Unknown'
+  if (changes.stylePackId) book.stylePackId = changes.stylePackId
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(books))
+  return book
+}
+
 export function toLibraryEntry(record: UserBookRecord): LibraryEntry {
   const opening = record.passage.paragraphs[0]?.sentences[0]?.words.map((w) => w.text).join(' ') ?? ''
   return {

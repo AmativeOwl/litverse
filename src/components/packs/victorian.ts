@@ -62,10 +62,12 @@ const VICTORIAN_PAINTER: CardPainter = {
   },
 
   subjects: (ctx, safe, w, _h, t) => {
-    // the oval engraved vignette, low center (the type column sits above)
+    // the oval engraved vignette, low center (the type column sits above;
+    // dropped + shrunk a touch so the Nautilus hull rides between the quote
+    // and the Begin control instead of directly under the author line)
     const vcx = w / 2
-    const vcy = safe.y + safe.h * 0.72
-    const vrx = Math.min(safe.w * 0.32, safe.h * 0.62)
+    const vcy = safe.y + safe.h * 0.76
+    const vrx = Math.min(safe.w * 0.28, safe.h * 0.56)
     const vry = vrx * 0.48
     const ovalClip = () => {
       ctx.beginPath()
@@ -152,6 +154,16 @@ const VICTORIAN_PAINTER: CardPainter = {
     ctx.strokeStyle = VC_INK
     ctx.lineWidth = 2.2
     ctx.stroke()
+
+    // center scrim: an ivory pool behind the type column (the gothic card's
+    // legibility device) -- the hatched sea and Nautilus recede where the
+    // title-page type sits instead of printing through it
+    const scrim = ctx.createRadialGradient(w / 2, _h * 0.5, _h * 0.1, w / 2, _h * 0.5, _h * 0.72)
+    scrim.addColorStop(0, 'rgba(242,236,221,0.94)')
+    scrim.addColorStop(0.6, 'rgba(242,236,221,0.55)')
+    scrim.addColorStop(1, 'rgba(242,236,221,0)')
+    ctx.fillStyle = scrim
+    ctx.fillRect(safe.x, safe.y, safe.w, safe.h)
   },
 
   frame: (ctx, w, h) => {

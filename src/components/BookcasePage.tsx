@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { LibraryEntry } from '../data/library'
 import { USER_CATEGORY } from '../lib/userLibrary'
 import { COVER_PAINTERS } from './packs'
@@ -10,6 +10,10 @@ interface BookcasePageProps {
   onSeeAll: () => void
   /** Opens the add-a-book desk; its shelf shows an empty slot inviting it. */
   onAddBook: () => void
+  /** Opens the desk in edit mode for a reader-added book (title/author/pack). */
+  onEditBook: (entry: LibraryEntry) => void
+  /** Removes a reader-added book from the shelf (two-step confirm lives on the cover). */
+  onRemoveBook: (entry: LibraryEntry) => void
 }
 
 /**
@@ -28,8 +32,23 @@ interface BookcasePageProps {
  * painters live in `./packs` (one module per pack, shared with
  * LandingPage's title cards).
  */
-function BookCover({ entry, onSelect }: { entry: LibraryEntry; onSelect: (entry: LibraryEntry) => void }) {
+function BookCover({
+  entry,
+  onSelect,
+  onEdit,
+  onRemove,
+}: {
+  entry: LibraryEntry
+  onSelect: (entry: LibraryEntry) => void
+  /** Present only for reader-added books -- built-ins are part of the programme. */
+  onEdit?: (entry: LibraryEntry) => void
+  onRemove?: (entry: LibraryEntry) => void
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  // Two-step remove: first click arms ("Sure?"), second within the window
+  // removes -- an inline confirm in the shelf's own idiom, no blocking dialog.
+  const [confirmingRemove, setConfirmingRemove] = useState(false)
+  const disarmTimerRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -46,19 +65,70 @@ function BookCover({ entry, onSelect }: { entry: LibraryEntry; onSelect: (entry:
     paint(ctx, cssW, cssH, entry)
   }, [entry])
 
+  useEffect(() => () => {
+    if (disarmTimerRef.current !== null) window.clearTimeout(disarmTimerRef.current)
+  }, [])
+
+  const handleRemoveClick = () => {
+    if (!onRemove) return
+    if (confirmingRemove) {
+      onRemove(entry)
+      return
+    }
+    setConfirmingRemove(true)
+    if (disarmTimerRef.current !== null) window.clearTimeout(disarmTimerRef.current)
+    disarmTimerRef.current = window.setTimeout(() => setConfirmingRemove(false), 3500)
+  }
+
+  const control =
+    'pointer-events-auto rounded-full border px-2 py-0.5 font-sans text-[0.55rem] uppercase tracking-[0.15em] backdrop-blur-[2px] transition-colors'
+
   return (
-    <button
-      type="button"
-      onClick={() => onSelect(entry)}
-      className="group relative block shrink-0 transition-transform duration-200 hover:-translate-y-2 focus-visible:-translate-y-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a8802c]"
-      aria-label={`${entry.title} by ${entry.author}`}
-      title={`${entry.tagline} · ${sentenceLabel(entry)}`}
-    >
-      <canvas
-        ref={canvasRef}
-        className="block h-56 w-[9.5rem] rounded-[2px] shadow-[0_6px_14px_rgba(34,48,79,0.35)] transition-shadow duration-200 group-hover:shadow-[0_14px_26px_rgba(34,48,79,0.45)]"
-      />
-    </button>
+    <div className="group relative shrink-0">
+      <button
+        type="button"
+        onClick={() => onSelect(entry)}
+        className="block cursor-pointer transition-transform duration-200 hover:-translate-y-2 focus-visible:-translate-y-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#a8802c]"
+        aria-label={`${entry.title} by ${entry.author}`}
+        title={`${entry.tagline} · ${sentenceLabel(entry)}`}
+      >
+        <canvas
+          ref={canvasRef}
+          className="block h-56 w-[9.5rem] rounded-[2px] shadow-[0_6px_14px_rgba(34,48,79,0.35)] transition-shadow duration-200 group-hover:shadow-[0_14px_26px_rgba(34,48,79,0.45)]"
+        />
+      </button>
+      {onEdit || onRemove ? (
+        // Curator controls, revealed on hover/focus so the shelf stays quiet.
+        <div className="pointer-events-none absolute inset-x-0 -top-3 flex justify-center gap-1.5 opacity-0 transition-opacity duration-200 focus-within:opacity-100 group-hover:opacity-100">
+          {onEdit ? (
+            <button
+              type="button"
+              onClick={() => onEdit(entry)}
+              aria-label={`Edit details of ${entry.title}`}
+              className={`${control} border-[#a8802c]/60 bg-[#efe4c9]/90 text-[#22304f] hover:border-[#22304f] hover:bg-[#22304f] hover:text-[#efe4c9]`}
+            >
+              ✎ Edit
+            </button>
+          ) : null}
+          {onRemove ? (
+            <button
+              type="button"
+              onClick={handleRemoveClick}
+              aria-label={
+                confirmingRemove ? `Confirm removing ${entry.title}` : `Remove ${entry.title} from the shelf`
+              }
+              className={`${control} ${
+                confirmingRemove
+                  ? 'border-[#8a1f1f] bg-[#8a1f1f] text-[#efe4c9]'
+                  : 'border-[#8a1f1f]/50 bg-[#efe4c9]/90 text-[#8a1f1f] hover:border-[#8a1f1f] hover:bg-[#8a1f1f] hover:text-[#efe4c9]'
+              }`}
+            >
+              {confirmingRemove ? 'Sure?' : '✕ Remove'}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
   )
 }
 
@@ -67,7 +137,14 @@ function sentenceLabel(entry: LibraryEntry): string {
   return `${count} sentences · narrated & painted`
 }
 
-export default function BookcasePage({ entries, onSelect, onSeeAll, onAddBook }: BookcasePageProps) {
+export default function BookcasePage({
+  entries,
+  onSelect,
+  onSeeAll,
+  onAddBook,
+  onEditBook,
+  onRemoveBook,
+}: BookcasePageProps) {
   const shelves = useMemo(() => {
     const byCategory = new Map<string, LibraryEntry[]>()
     for (const entry of entries) {
@@ -109,7 +186,13 @@ export default function BookcasePage({ entries, onSelect, onSeeAll, onAddBook }:
             </div>
             <div className="flex items-end gap-6 px-4">
               {books.map((entry) => (
-                <BookCover key={entry.id} entry={entry} onSelect={onSelect} />
+                <BookCover
+                  key={entry.id}
+                  entry={entry}
+                  onSelect={onSelect}
+                  onEdit={category === USER_CATEGORY ? onEditBook : undefined}
+                  onRemove={category === USER_CATEGORY ? onRemoveBook : undefined}
+                />
               ))}
               {category === USER_CATEGORY ? (
                 <button

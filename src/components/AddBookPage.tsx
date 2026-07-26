@@ -1,10 +1,17 @@
 import { useState } from 'react'
 import type { StylePackId } from '../data/library'
-import { addUserBook, type UserBookRecord } from '../lib/userLibrary'
+import { addUserBook, updateUserBook, type UserBookRecord } from '../lib/userLibrary'
 
 interface AddBookPageProps {
   onAdded: (record: UserBookRecord) => void
   onCancel: () => void
+  /**
+   * When set, the desk opens in EDIT mode for this already-shelved book:
+   * title/author/pack prefilled, no text field (the passage was compiled at
+   * add time and the raw prose isn't retained -- changing the text is
+   * remove + re-add).
+   */
+  editing?: UserBookRecord
 }
 
 /**
@@ -27,17 +34,23 @@ const STYLE_CHOICES: { id: StylePackId; name: string; blurb: string; swatches: [
  * Honest about the trade: narration requires the offline compiler, so
  * these books open as silent painted readers.
  */
-export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
+export default function AddBookPage({ onAdded, onCancel, editing }: AddBookPageProps) {
+  const [title, setTitle] = useState(editing?.title ?? '')
+  const [author, setAuthor] = useState(editing?.author ?? '')
   const [text, setText] = useState('')
-  const [stylePackId, setStylePackId] = useState<StylePackId>('deco')
+  const [stylePackId, setStylePackId] = useState<StylePackId>(editing?.stylePackId ?? 'deco')
   const [error, setError] = useState<string | null>(null)
 
   const submit = () => {
     try {
       setError(null)
-      onAdded(addUserBook({ title, author, text, stylePackId }))
+      if (editing) {
+        const updated = updateUserBook(editing.id, { title, author, stylePackId })
+        if (!updated) throw new Error('That book is no longer on the shelf.')
+        onAdded(updated)
+      } else {
+        onAdded(addUserBook({ title, author, text, stylePackId }))
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not compile that text.')
     }
@@ -50,9 +63,11 @@ export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
     <div className="min-h-screen w-screen overflow-y-auto bg-[#efe4c9] text-[#22304f]">
       <div className="mx-auto max-w-2xl px-8 py-12">
         <header className="mb-8 border-b border-[#a8802c]/40 pb-6">
-          <p className="mb-2 text-[0.65rem] uppercase tracking-[0.3em] text-[#a8802c]">The library · new acquisition</p>
+          <p className="mb-2 text-[0.65rem] uppercase tracking-[0.3em] text-[#a8802c]">
+            {editing ? 'The library · your additions' : 'The library · new acquisition'}
+          </p>
           <h1 className="text-3xl" style={{ fontFamily: 'var(--font-display)' }}>
-            ADD A BOOK
+            {editing ? 'EDIT BOOK DETAILS' : 'ADD A BOOK'}
           </h1>
         </header>
 
@@ -65,15 +80,22 @@ export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
             <span className="text-[0.65rem] uppercase tracking-[0.25em] text-[#a8802c]">Author</span>
             <input className={field} value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="Charlotte Perkins Gilman" />
           </label>
-          <label className="flex flex-col gap-1">
-            <span className="text-[0.65rem] uppercase tracking-[0.25em] text-[#a8802c]">Text (public domain)</span>
-            <textarea
-              className={`${field} min-h-64 leading-relaxed`}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Paste the passage or chapter here. Blank lines separate paragraphs."
-            />
-          </label>
+          {editing ? (
+            <p className="text-xs leading-relaxed text-[#22304f]/60">
+              The text itself was compiled when this book was shelved and can’t be edited here — to change
+              it, remove the book and add it again with the new text.
+            </p>
+          ) : (
+            <label className="flex flex-col gap-1">
+              <span className="text-[0.65rem] uppercase tracking-[0.25em] text-[#a8802c]">Text (public domain)</span>
+              <textarea
+                className={`${field} min-h-64 leading-relaxed`}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Paste the passage or chapter here. Blank lines separate paragraphs."
+              />
+            </label>
+          )}
 
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-1 text-[0.65rem] uppercase tracking-[0.25em] text-[#a8802c]">
@@ -113,11 +135,13 @@ export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
 
           {error ? <p className="text-sm text-[#8a1f1f]">{error}</p> : null}
 
-          <p className="text-xs leading-relaxed text-[#22304f]/60">
-            Compiling happens entirely in your browser — the text is segmented for reading and given a painted
-            mood arc, then kept on this device. Narrated voice requires the offline compiler, so added books open
-            as silent painted readers: click any sentence to move through the world.
-          </p>
+          {!editing && (
+            <p className="text-xs leading-relaxed text-[#22304f]/60">
+              Compiling happens entirely in your browser — the text is segmented for reading and given a painted
+              mood arc, then kept on this device. Narrated voice requires the offline compiler, so added books open
+              as silent painted readers: click any sentence to move through the world.
+            </p>
+          )}
 
           <div className="mt-2 flex gap-3">
             <button
@@ -125,7 +149,7 @@ export default function AddBookPage({ onAdded, onCancel }: AddBookPageProps) {
               onClick={submit}
               className="border border-[#22304f] bg-[#22304f] px-5 py-2 text-[0.7rem] uppercase tracking-[0.25em] text-[#efe4c9] transition-colors hover:bg-[#efe4c9] hover:text-[#22304f]"
             >
-              Compile &amp; shelve
+              {editing ? 'Save details' : 'Compile & shelve'}
             </button>
             <button
               type="button"

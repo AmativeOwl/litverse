@@ -8,7 +8,7 @@ import TextPane from './components/TextPane'
 import WorldScene from './components/WorldScene'
 import { LIBRARY, type LibraryEntry } from './data/library'
 import { destroy, loadPassage } from './lib/narrationController'
-import { loadUserBooks, toLibraryEntry, type UserBookRecord } from './lib/userLibrary'
+import { loadUserBooks, removeUserBook, toLibraryEntry, type UserBookRecord } from './lib/userLibrary'
 
 /**
  * Stages (see CLAUDE.md "Reading compiler + landing page", Phase A):
@@ -27,7 +27,7 @@ import { loadUserBooks, toLibraryEntry, type UserBookRecord } from './lib/userLi
 type Stage =
   | { phase: 'bookcase' }
   | { phase: 'carousel' }
-  | { phase: 'add' }
+  | { phase: 'add'; editing?: UserBookRecord }
   | { phase: 'loading'; entry: LibraryEntry }
   | { phase: 'reading'; entry: LibraryEntry }
 
@@ -70,6 +70,21 @@ function App() {
 
   const backToBookcase = useCallback(() => setStage({ phase: 'bookcase' }), [])
 
+  // Curator actions for the "Your additions" shelf. Both re-read localStorage
+  // so the shelves (and carousel) reflect the change immediately.
+  const handleEditBook = useCallback(
+    (entry: LibraryEntry) => {
+      const record = userBooks.find((b) => b.id === entry.id)
+      if (record) setStage({ phase: 'add', editing: record })
+    },
+    [userBooks],
+  )
+
+  const handleRemoveBook = useCallback((entry: LibraryEntry) => {
+    removeUserBook(entry.id)
+    setUserBooks(loadUserBooks())
+  }, [])
+
   // Close the current book and return home. Narration teardown is free:
   // leaving the reading stage flips readingEntry to null, so the loadPassage
   // effect's cleanup calls destroy(). Cinema must reset too, or the next
@@ -97,12 +112,15 @@ function App() {
         onSelect={handleSelect}
         onSeeAll={() => setStage({ phase: 'carousel' })}
         onAddBook={() => setStage({ phase: 'add' })}
+        onEditBook={handleEditBook}
+        onRemoveBook={handleRemoveBook}
       />
     )
   }
   if (stage.phase === 'add') {
     return (
       <AddBookPage
+        editing={stage.editing}
         onAdded={() => {
           setUserBooks(loadUserBooks())
           setStage({ phase: 'bookcase' })
