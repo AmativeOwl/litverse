@@ -143,12 +143,13 @@ const WORKER_PATH = resolve(__dirname, '../node_modules/@met4citizen/headtts/mod
 const MISAKI_BRIDGE_PATH = resolve(__dirname, 'misaki_g2p.py')
 const PYTHON_BIN = process.env.PYTHON_BIN ?? 'python3'
 const PASSAGE_ID = cliArgs.passage ?? 'gatsby-ch3'
-const PASSAGE = PASSAGES[PASSAGE_ID]
-if (!PASSAGE) {
+const PASSAGE_LOOKUP = PASSAGES[PASSAGE_ID]
+if (!PASSAGE_LOOKUP) {
   throw new Error(
     `Unknown passage id: ${PASSAGE_ID}. Known passages: ${Object.keys(PASSAGES).join(', ')}`,
   )
 }
+const PASSAGE: Passage = PASSAGE_LOOKUP
 const OUT_DIR = IS_TRIAL
   ? resolve(__dirname, `output/voice-trials/${VOICE_NAME}-${SPEED}`)
   : resolve(__dirname, `../public/narration/${PASSAGE_ID}`)
@@ -650,7 +651,7 @@ async function main() {
   }
 
   console.log(`Loading model "${MODEL_ID}" (CPU) -- this can take a while on first run...`)
-  const worker = new Worker(WORKER_PATH, { type: 'module' })
+  const worker = new Worker(WORKER_PATH)
   worker.on('error', (error) => {
     console.error('HeadTTS worker crashed:', error)
     process.exit(1)
