@@ -187,11 +187,12 @@ export default function LandingPage({ entries = LIBRARY, onSelect, onExit }: Lan
         <TitleCardCanvas pack={pack} reduced={reduced} />
         {/* pt outweighs pb so the centered column sits lower, ceding the
             top of the card to the floating library cloud -- unless the pack
-            asks for a raised column (frontispiece layout: type high, the
-            painted vignette below it) */}
+            asks for a raised column (frontispiece layout: the column
+            anchors to the top, a short breath below the library floater,
+            leaving the lower card to the painted vignette) */}
         <main
-          className={`relative flex h-full flex-col items-center justify-center px-8 text-center ${
-            pack.columnRaised ? 'pb-24 pt-20' : 'pb-14 pt-32'
+          className={`relative flex h-full flex-col items-center px-8 text-center ${
+            pack.columnRaised ? 'justify-start pb-14 pt-28' : 'justify-center pb-14 pt-32'
           }`}
         >
           <p
