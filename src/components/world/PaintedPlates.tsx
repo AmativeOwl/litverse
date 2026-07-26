@@ -6,7 +6,7 @@ import type { PlateDef, PlateLayer, ScenePlateSet } from '../../types-plates'
 import { useReadingStore } from '../../store/readingStore'
 import type { LerpedSceneBeat } from './beatMath'
 import { shellArcFromTheta, tileSlotAzimuths, vignetteVisibility } from './decoPlateKit'
-import { turntableMotion } from './WorldTurntable'
+import { turntableMotion } from './turntableMotion'
 
 interface PaintedPlatesProps {
   lerpedRef: RefObject<LerpedSceneBeat>

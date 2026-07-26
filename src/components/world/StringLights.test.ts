@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildPolePositions, nightnessOf, strandPointAt } from './StringLights'
+import { buildPolePositions, nightnessOf, strandPointAt } from './stringLightsMath'
 
 describe('buildPolePositions', () => {
   it('is deterministic and stays on the 8.5 arc', () => {

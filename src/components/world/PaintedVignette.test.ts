@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { vignetteVisibility } from './PaintedVignette'
+import { vignetteVisibility } from './decoPlateKit'
 
 const BEATS = new Set(['orchestra-tuning', 'dancing-under-lights'])
 

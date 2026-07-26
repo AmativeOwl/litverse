@@ -5,6 +5,7 @@ import type { ScenePlateSet } from '../../types-plates'
 import type { LerpedSceneBeat } from './beatMath'
 import { DEFAULT_CAMERA_AZIMUTH_RAD, lerpAngleRad } from './cameraMath'
 import { tileSlotAzimuths } from './decoPlateKit'
+import { turntableMotion } from './turntableMotion'
 
 interface WorldTurntableProps {
   lerpedRef: RefObject<LerpedSceneBeat>
@@ -36,17 +37,6 @@ interface WorldTurntableProps {
 const TURN_RATE = 0.5
 /** Snap out the asymptotic tail -- a settled stage must actually be still. */
 const TURN_SNAP_RAD = 0.002
-
-/**
- * Per-frame angular speed of the drum (rad/s), written here every frame and
- * read by PaintedPlates -- module-level mutable per the established
- * per-frame-ref idiom, never React state. The living-painting repaint loop
- * pauses while the drum is visibly turning: a 12fps canvas repaint means a
- * GPU texture upload, and those uploads read as hitches ("ticks") exactly
- * when the eye is tracking smooth rotation. Frozen card animation during a
- * ~6s slide is imperceptible; the hitches were not.
- */
-export const turntableMotion = { radPerSec: 0 }
 
 export function WorldTurntable({ lerpedRef, plateSet, children }: WorldTurntableProps) {
   const groupRef = useRef<Group>(null)
