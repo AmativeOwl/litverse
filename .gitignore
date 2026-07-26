@@ -35,3 +35,4 @@ npm-debug.log*
 .idea
 .DS_Store
 .venv-narration/
+.mcp.json
